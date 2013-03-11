@@ -1,0 +1,82 @@
+package ms.aurora.api;
+
+import ms.aurora.api.wrappers.RSTile;
+
+import java.awt.*;
+
+/**
+ * @author rvbiljouw
+ */
+public class Projection {
+    private final ClientContext context;
+
+    public Projection(ClientContext context) {
+        this.context = context;
+    }
+
+    public Point worldToScreen(RSTile tile) {
+        int x = tile.getX();
+        int y = tile.getY();
+        int z = tile.getZ();
+        if (x < 128 || y < 128 || x > 13056 || y > 13056) {
+            return new Point(-1, -1);
+        } else {
+            int tileBaseHeight = getTileHeight(x, y, context.getClient()
+                    .getPlane())
+                    - z;
+            x -= context.getClient().getCameraX();
+            tileBaseHeight -= context.getClient().getCameraZ();
+            y -= context.getClient().getCameraY();
+            int sinCurveY = CURVESIN[context.getClient().getCameraPitch()];
+            int cosCurveY = CURVECOS[context.getClient().getCameraPitch()];
+            int sinCurveX = CURVESIN[context.getClient().getCameraYaw()];
+            int cosCurveX = CURVECOS[context.getClient().getCameraYaw()];
+            int calculation = sinCurveX * y + cosCurveX * x >> 16;
+            y = y * cosCurveX - x * sinCurveX >> 16;
+            x = calculation;
+            calculation = cosCurveY * tileBaseHeight - sinCurveY * y >> 16;
+            y = sinCurveY * tileBaseHeight + cosCurveY * y >> 16;
+            tileBaseHeight = calculation;
+            if (y >= 50) {
+                return new Point(((x << 9) / y + 256), ((tileBaseHeight << 9)
+                        / y + 167));
+            } else {
+                return new Point(-1, -1);
+            }
+        }
+    }
+
+    private int getTileHeight(int x, int y, int plane) {
+        int _x = x >> 7;
+        int _y = y >> 7;
+        if (_x < 0 || _y < 0 || _x > 103 || _y > 103)
+            return 0;
+        int _plane = plane;
+        if (_plane < 3
+                && (context.getClient().getTileSettings()[1][_x][_y] & 0x2) == 2)
+            _plane++;
+        int _x2 = x & 0x7f;
+        int _y2 = y & 0x7f;
+        int i_30_ = (((128 - _x2)
+                * context.getClient().getTileHeights()[_plane][_x][_y] + context
+                .getClient().getTileHeights()[_plane][_x + 1][_y] * _x2) >> 7);
+        int i_31_ = ((context.getClient().getTileHeights()[_plane][_x][_y + 1]
+                * (128 - _x2) + _x2
+                * context.getClient().getTileHeights()[_plane][1 + _x][_y + 1]) >> 7);
+        return (128 - _y2) * i_30_ + _y2 * i_31_ >> 7;
+    }
+
+    public boolean tileOnScreen(RSTile tile) {
+        return !worldToScreen(tile).equals(new Point(-1, -1));
+    }
+
+    private static final int[] CURVESIN = new int[2048];
+    private static final int[] CURVECOS = new int[2048];
+
+    static {
+        for (int i = 0; i < 2048; i++) {
+            CURVESIN[i] = (int) (65536.0 * Math.sin(i * 0.0030679615));
+            CURVECOS[i] = (int) (65536.0 * Math.cos(i * 0.0030679615));
+        }
+    }
+}
