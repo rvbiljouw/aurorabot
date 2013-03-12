@@ -1,7 +1,6 @@
 package ms.aurora.api.wrappers;
 
 import com.google.common.base.Function;
-import com.sun.istack.internal.Nullable;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.rt3.Widget;
 
@@ -59,7 +58,7 @@ public class RSWidget {
 
     private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
         @Override
-        public RSWidget apply(@Nullable Widget component) {
+        public RSWidget apply(Widget component) {
             if (component != null)
                 return new RSWidget(context, component);
             return null;

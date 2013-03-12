@@ -2,9 +2,6 @@ package ms.aurora.core;
 
 import com.google.common.collect.Lists;
 import ms.aurora.api.drawing.Drawable;
-import ms.aurora.core.input.InputManager;
-import ms.aurora.core.input.impl.StandardKeyboardProvider;
-import ms.aurora.core.input.impl.TouchScreenProvider;
 import ms.aurora.core.script.ScriptManager;
 
 import java.applet.Applet;
@@ -21,8 +18,6 @@ public class Session implements Runnable {
     private final ScriptManager scriptManager = new ScriptManager(this);
     private final Applet applet;
 
-    private InputManager input;
-
     public Session(Applet applet) {
         this.applet = applet;
     }
@@ -30,15 +25,10 @@ public class Session implements Runnable {
     @Override
     public void run() {
         componentSessionMap.put(getApplet().hashCode(), this);
-        input = new InputManager(new TouchScreenProvider(), new StandardKeyboardProvider());
     }
 
     public Applet getApplet() {
         return applet;
-    }
-
-    public InputManager getInputManager() {
-        return input;
     }
 
     public ScriptManager getScriptManager() {

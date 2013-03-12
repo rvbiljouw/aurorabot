@@ -25,6 +25,8 @@ public interface Client {
 
     public boolean isMenuOpen();
 
+    public int getMenuCount();
+
     public int getMenuX();
 
     public int getMenuY();

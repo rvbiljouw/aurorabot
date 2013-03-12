@@ -25,9 +25,17 @@ public interface MouseProvider {
     public void clickMouse(int x, int y, boolean left);
 
     /**
+     * Clicks the mouse on the current location.
+     *
+     * @param left loc
+     */
+    public void clickMouse(boolean left);
+
+    /**
      * Set the target component for all further events.
      *
      * @param component
      */
     public void setComponent(Component component);
+
 }

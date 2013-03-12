@@ -55,6 +55,7 @@ public class ScriptLoader {
                             + ", does it have ScriptMetadata?");
                 }
             }
+            classLoader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

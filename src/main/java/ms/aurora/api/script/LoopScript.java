@@ -16,6 +16,7 @@ public abstract class LoopScript extends ClientContext implements Runnable, Draw
 
     @Override
     public void run() {
+        info("Entered");
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 int loopResult = loop();
@@ -23,12 +24,18 @@ public abstract class LoopScript extends ClientContext implements Runnable, Draw
                     Thread.sleep(loopResult);
                 } else {
                     // Returning -1 means exit.
+                    info("Exited by -1");
                     break;
                 }
             } catch (InterruptedException e) {
+                info("Interrupted.");
                 Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
             }
         }
+        info("Exited.");
     }
 
     @Override

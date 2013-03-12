@@ -6,10 +6,10 @@ import ms.aurora.api.rt3.Npc;
 /**
  * @author rvbiljouw
  */
-public class RSNpc extends RSCharacter {
+public class RSNPC extends RSCharacter {
     private final Npc wrapped;
 
-    public RSNpc(ClientContext clientContext, Npc wrapped) {
+    public RSNPC(ClientContext clientContext, Npc wrapped) {
         super(clientContext, wrapped);
         this.wrapped = wrapped;
     }

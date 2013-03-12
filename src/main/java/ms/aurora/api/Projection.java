@@ -38,12 +38,15 @@ public class Projection {
             y = sinCurveY * tileBaseHeight + cosCurveY * y >> 16;
             tileBaseHeight = calculation;
             if (y >= 50) {
-                return new Point(((x << 9) / y + 256), ((tileBaseHeight << 9)
-                        / y + 167));
-            } else {
-                return new Point(-1, -1);
+                int screenX = ((x << 9) / y + 256);
+                int screenY = ((tileBaseHeight << 9) / y + 167);
+                if (GAMESCREEN.contains(screenX, screenY)) {
+                    return new Point(((x << 9) / y + 256),
+                            ((tileBaseHeight << 9) / y + 167));
+                }
             }
         }
+        return new Point(-1, -1);
     }
 
     private int getTileHeight(int x, int y, int plane) {
@@ -79,4 +82,6 @@ public class Projection {
             CURVECOS[i] = (int) (65536.0 * Math.cos(i * 0.0030679615));
         }
     }
+
+    private static final Rectangle GAMESCREEN = new Rectangle(4, 4, 512, 334);
 }
