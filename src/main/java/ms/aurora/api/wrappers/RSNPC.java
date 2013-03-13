@@ -9,7 +9,7 @@ import ms.aurora.api.rt3.Npc;
 public class RSNPC extends RSCharacter {
     private final Npc wrapped;
 
-    public RSNPC(ClientContext clientContext, Npc wrapped) {
+    public RSNPC(ClientContext clientContext, ms.aurora.api.rt3.Npc wrapped) {
         super(clientContext, wrapped);
         this.wrapped = wrapped;
     }
@@ -21,4 +21,6 @@ public class RSNPC extends RSCharacter {
     public String getName() {
         return wrapped.getComposite().getName();
     }
+
 }
+                                                        
