@@ -80,11 +80,21 @@ public class RSWidget {
     }
 
     public int getWidth() {
-        return widget.getWidth();
+        int[] widthBounds = context.getClient().getBoundsWidth();
+        int width = widget.getWidth();
+        if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
+            width += widthBounds[getBoundsIndex()];
+        }
+        return width;
     }
 
     public int getHeight() {
-        return widget.getHeight();
+        int[] heightBounds = context.getClient().getBoundsHeight();
+        int height = widget.getHeight();
+        if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
+            height += heightBounds[getBoundsIndex()];
+        }
+        return height;
     }
 
     public int getParentId() {

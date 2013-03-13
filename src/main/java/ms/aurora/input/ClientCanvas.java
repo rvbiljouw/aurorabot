@@ -1,5 +1,6 @@
 package ms.aurora.input;
 
+import ms.aurora.api.ClientContext;
 import ms.aurora.api.drawing.Drawable;
 import ms.aurora.core.Session;
 
@@ -20,6 +21,7 @@ public class ClientCanvas extends Canvas implements MouseMotionListener,
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
     private Session session;
+    private ClientContext myContext;
     private int mouseX;
     private int mouseY;
     private int lastClickX;
@@ -52,11 +54,17 @@ public class ClientCanvas extends Canvas implements MouseMotionListener,
     private void drawSession(Graphics2D g) {
         if (session == null) {
             session = Session.lookupSession(getParent().hashCode());
-            return;
-        }
+            myContext = new ClientContext();
+            myContext.setSession(session);
+            ClientContext.set(myContext);
+        } else {
+            myContext = new ClientContext();
+            myContext.setSession(session);
+            ClientContext.set(myContext);
 
-        for (Drawable drawable : session.getDrawables()) {
-            drawable.draw(g);
+            for (Drawable drawable : session.getDrawables()) {
+                drawable.draw(g);
+            }
         }
     }
 

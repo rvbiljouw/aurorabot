@@ -10,7 +10,7 @@ import ms.aurora.input.InputManager;
  * @author rvbiljouw
  */
 public class ClientContext {
-    protected static final ThreadLocal<ClientContext> context = new ThreadLocal<ClientContext>();
+    public static final ThreadLocal<ClientContext> context = new ThreadLocal<ClientContext>();
 
     public final InputManager input;
     public final Projection projection;
@@ -49,4 +49,7 @@ public class ClientContext {
         return context.get();
     }
 
+    public static void set(ClientContext _context) {
+        context.set(_context);
+    }
 }

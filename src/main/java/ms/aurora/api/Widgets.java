@@ -19,7 +19,12 @@ import static ms.aurora.api.ClientContext.context;
  * To change this template use File | Settings | File Templates.
  */
 public class Widgets {
+
     public static RSWidget getWidget(int parent, int child) {
+        if(context.get() == null) {
+            System.out.println("Context isnt set. " + Thread.currentThread().getName());
+        }
+
         Widget[][] cache = context.get().getClient().getWidgetCache();
         return new RSWidget(context.get(), cache[parent][child]);
     }
@@ -52,4 +57,5 @@ public class Widgets {
             return null;
         }
     };
+
 }

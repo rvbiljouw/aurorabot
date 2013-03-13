@@ -16,7 +16,8 @@ public abstract class LoopScript extends ClientContext implements Runnable, Draw
 
     @Override
     public void run() {
-        context.set(this);
+        ClientContext.set(this);
+        input.initialize();
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 int loopResult = loop();
