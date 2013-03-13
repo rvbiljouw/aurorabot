@@ -4,6 +4,9 @@ import com.google.common.base.Function;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.wrappers.RSWidget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.ClientContext.context;
@@ -26,10 +29,27 @@ public class Widgets {
         return transform(newArrayList(cache[parent]), transform).toArray(new RSWidget[0]);
     }
 
+    /**
+     * @param predicate the string to search for
+     * @return a list of all the RSWidget that contain the specified text
+     */
+    public static RSWidget[] getWidgetsWithText(String predicate) {
+        List<RSWidget> satisfied = new ArrayList<RSWidget>();
+        for (Widget[] parents : context.get().getClient().getWidgetCache()) {
+            for (RSWidget child : transform(newArrayList(parents), transform).toArray(new RSWidget[0])) {
+                if (child.getText() != null && child.getText().contains(predicate))
+                    satisfied.add(child);
+            }
+        }
+        return satisfied.toArray(new RSWidget[0]);
+    }
+
     private static final Function<Widget, RSWidget> transform = new Function<Widget, RSWidget>() {
         @Override
         public RSWidget apply(Widget widget) {
-            return new RSWidget(context.get(), widget);
+            if (widget != null)
+                return new RSWidget(context.get(), widget);
+            return null;
         }
     };
 }
