@@ -8,6 +8,7 @@ import ms.aurora.browser.wrapper.Plaintext;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -29,17 +30,20 @@ public class ClientConfig implements ResponseHandler {
     @Override
     public void handleResponse(InputStream inputStream) {
         Plaintext plaintext = Plaintext.fromStream(inputStream);
-        plaintext.setText(plaintext.getText().replaceAll("param=", ""));
-        Matcher codeBaseMatcher = plaintext.regex(KV_PAIR_REGEX);
-        while (codeBaseMatcher.find()) {
-            parameters.put(codeBaseMatcher.group(1),
-                    codeBaseMatcher.group(2));
+        plaintext.setText(plaintext.getText().replaceAll("param=", "").replaceAll("msg=", ""));
+        Pattern pattern = Pattern.compile(KV_PAIR_REGEX);
+        String[] lines = plaintext.getText().split("\n");
+        for (String line : lines) {
+            Matcher codeBaseMatcher = pattern.matcher(line);
+            while (codeBaseMatcher.find()) {
+                parameters.put(codeBaseMatcher.group(1),
+                        codeBaseMatcher.group(2));
+            }
         }
 
         documentBase = parameters.get("codebase");
         archiveName = parameters.get("initial_jar");
         mainClass = parameters.get("initial_class").replace(".class", "");
-        System.out.println("Parameters " + documentBase + " " + archiveName + " " + mainClass);
     }
 
     public void visit() {

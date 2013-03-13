@@ -40,9 +40,6 @@ public class AppletStubImpl implements AppletStub {
 
     @Override
     public String getParameter(String name) {
-        if (name.equals("6")) {
-            return "http://www.runescape.com/slr.ws?order=LPWM";
-        }
         return appletParams.get(name);
     }
 
