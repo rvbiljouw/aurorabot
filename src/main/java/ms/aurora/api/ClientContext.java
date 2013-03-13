@@ -4,7 +4,7 @@ import ms.aurora.api.rt3.Client;
 import ms.aurora.api.rt3.Player;
 import ms.aurora.api.wrappers.RSPlayer;
 import ms.aurora.core.Session;
-import ms.aurora.core.input.InputManager;
+import ms.aurora.input.InputManager;
 
 /**
  * @author rvbiljouw

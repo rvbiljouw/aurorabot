@@ -1,7 +1,4 @@
-package ms.aurora.core.input.impl;
-
-import ms.aurora.core.input.KeyboardPredicate;
-import ms.aurora.core.input.KeyboardProvider;
+package ms.aurora.input;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -11,40 +8,24 @@ import java.util.Random;
 /**
  * @author tobiewarburton
  */
-public class StandardKeyboardProvider implements KeyboardProvider {
+public class VirtualKeyboard {
     private Random random = new Random();
     private Component component;
 
-    @Override
     public void type(String text) {
         for (char key : text.toCharArray())
             press(key);
     }
 
-    @Override
     public void press(char key) {
         holdKey(key, 0);
     }
 
-    @Override
     public void holdKey(char key, int duration) {
         _press(key, System.currentTimeMillis());
         _release(key, System.currentTimeMillis() + duration + random(20, 50));
     }
 
-    @Override
-    public void holdKeyUntil(char key, KeyboardPredicate predicate) {
-        _press(key, System.currentTimeMillis());
-        while (!predicate.satisfied()) {
-            try {
-                //TODO: put a sleep here?
-            } catch (Exception e) {
-            }
-        }
-        _release(key, System.currentTimeMillis() + random(20, 50));
-    }
-
-    @Override
     public void setComponent(Component component) {
         this.component = component;
     }
