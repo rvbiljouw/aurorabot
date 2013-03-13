@@ -61,4 +61,9 @@ public interface Widget {
 
     public int getScrollMaxVertical();
 
+    public int getUid();
+
+    public int getBoundsIndex();
+
+    public int getType();
 }

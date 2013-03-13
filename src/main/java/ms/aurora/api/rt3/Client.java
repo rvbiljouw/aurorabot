@@ -54,4 +54,7 @@ public interface Client {
 
     public Canvas getCanvas();
 
+    public Bag getWidgetNodeBag();
+    public int[] getBoundsX();
+    public int[] getBoundsY();
 }
