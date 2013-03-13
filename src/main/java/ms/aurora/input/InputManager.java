@@ -19,14 +19,16 @@ public class InputManager {
         this.context = context;
         this.mouse = new VirtualMouse();
         this.keyboard = new VirtualKeyboard();
-
-        ExecutorService inputThreadPool = Executors.newFixedThreadPool(2);
-        inputThreadPool.submit(mouse);
     }
 
     public synchronized VirtualMouse getMouse() {
         mouse.setComponent(((Applet) context.getClient())
                 .getComponentAt(0, 0));
         return mouse;
+    }
+
+    public void initialize() {
+        ExecutorService inputThreadPool = Executors.newFixedThreadPool(2);
+        inputThreadPool.submit(mouse);
     }
 }

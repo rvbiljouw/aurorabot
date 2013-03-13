@@ -57,4 +57,6 @@ public interface Client {
     public Bag getWidgetNodeBag();
     public int[] getBoundsX();
     public int[] getBoundsY();
+    public int[] getBoundsWidth();
+    public int[] getBoundsHeight();
 }

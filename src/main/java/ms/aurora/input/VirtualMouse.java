@@ -1,6 +1,7 @@
 package ms.aurora.input;
 
 import ms.aurora.input.algorithm.BezierAlgorithm;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -14,6 +15,7 @@ import java.awt.event.MouseMotionListener;
  * @author tobiewarburton
  */
 public class VirtualMouse implements MouseMotionListener, Runnable {
+    private static final Logger logger = Logger.getLogger(VirtualMouse.class);
     private final MousePathAlgorithm algorithm = new BezierAlgorithm();
     private Component component;
     private Point mousePosition = new Point(-1, -1);
@@ -139,6 +141,7 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
 
     @Override
     public void run() {
+
         int lastTargetX = 0;
         int lastTargetY = 0;
         while (!Thread.interrupted()) {
@@ -148,6 +151,7 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
                             new Point(targetX, targetY));
                     currentStep = 0;
                     moving = true;
+                    logger.info("Received a movement request.");
                 }
 
                 if (currentStep < currentPath.length && moving) {
