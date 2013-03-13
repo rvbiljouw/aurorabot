@@ -40,7 +40,6 @@ public class Menu {
     }
 
     private static List<String> getMenuContent() {
-        System.out.println("Acc clientcontext local for thread " + Thread.currentThread().getName());
         String[] actions = get().getClient().getMenuActions();
         String[] targets = get().getClient().getMenuTargets();
         List<String> menuContent = Lists.newArrayList();
