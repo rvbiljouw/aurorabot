@@ -1,4 +1,4 @@
-package ms.aurora.core.game;
+package ms.aurora.input;
 
 import ms.aurora.api.drawing.Drawable;
 import ms.aurora.core.Session;

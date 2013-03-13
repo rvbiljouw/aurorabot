@@ -10,6 +10,8 @@ import ms.aurora.input.InputManager;
  * @author rvbiljouw
  */
 public class ClientContext {
+    protected static final ThreadLocal<ClientContext> context = new ThreadLocal<ClientContext>();
+
     public final InputManager input;
     public final Projection projection;
     public final Menu menu;
@@ -18,9 +20,9 @@ public class ClientContext {
 
     public ClientContext() {
         input = new InputManager(this);
-        projection = new Projection(this);
-        menu = new Menu(this);
-        npcs = new Npcs(this);
+        projection = new Projection();
+        menu = new Menu();
+        npcs = new Npcs();
     }
 
     public void setSession(Session session) {
@@ -41,6 +43,10 @@ public class ClientContext {
 
     public Client getClient() {
         return (Client) session.getApplet();
+    }
+
+    public static ClientContext get() {
+        return context.get();
     }
 
 }

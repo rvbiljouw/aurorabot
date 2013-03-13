@@ -73,7 +73,7 @@ public class TransformingClassLoader extends ClassLoader {
                 }
 
                 if (classGen.getSuperclassName().equals("java.awt.Canvas")) {
-                    String canvasSuperclass = "ms/aurora/core/game/ClientCanvas";
+                    String canvasSuperclass = "ms/aurora/input/ClientCanvas";
                     ConstantPoolGen constantPool = classGen.getConstantPool();
                     constantPool.setConstant(classGen.getSuperclassNameIndex(),
                             new ConstantClass(constantPool.addUtf8(canvasSuperclass)));

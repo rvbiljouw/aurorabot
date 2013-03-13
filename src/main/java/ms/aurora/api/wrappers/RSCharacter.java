@@ -1,6 +1,8 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.ClientContext;
+import ms.aurora.api.Menu;
+import ms.aurora.api.Projection;
 import ms.aurora.api.util.Predicate;
 
 import java.awt.*;
@@ -18,7 +20,7 @@ public class RSCharacter extends RSRenderable {
     }
 
     public Point getScreenLocation() {
-        return context.projection.worldToScreen(getRegionalLocation());
+        return Projection.worldToScreen(getRegionalLocation());
     }
 
     public RSTile getLocation() {
@@ -82,7 +84,7 @@ public class RSCharacter extends RSRenderable {
      * @return
      */
     public boolean applyAction(String actionName) {
-        if (!context.projection.tileOnScreen(getRegionalLocation()))
+        if (!Projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
@@ -92,7 +94,7 @@ public class RSCharacter extends RSRenderable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return context.menu.click(actionName);
+        return Menu.click(actionName);
     }
 
     public int getHitsLoopCycle() {
