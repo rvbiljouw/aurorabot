@@ -1,21 +1,23 @@
 package ms.aurora.api;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import ms.aurora.api.rt3.Npc;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
 
 import java.util.Collection;
 
+import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.ClientContext.context;
-import static ms.aurora.api.util.Collections4.filter;
-import static ms.aurora.api.util.Collections4.fromArrayNonNull;
 
 public class Npcs {
 
     public static RSNPC get(final Predicate<RSNPC> predicate) {
-        return getClosest(filter(_getAll(),
+        return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSNPC>() {
                     @Override
                     public boolean apply(RSNPC object) {
@@ -42,8 +44,8 @@ public class Npcs {
     }
 
     private static Collection<RSNPC> _getAll() {
-        return transform(fromArrayNonNull(context.get().getClient()
-                .getAllNpcs()), transform);
+        return filter(transform(newArrayList(context.get().getClient()
+                .getAllNpcs()), transform), Predicates.notNull());
     }
 
     private static final Function<Npc, RSNPC> transform = new Function<Npc, RSNPC>() {

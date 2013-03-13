@@ -13,19 +13,22 @@ import java.awt.event.MouseMotionListener;
  * @author rvbiljouw
  * @author tobiewarburton
  */
-public class VirtualMouse implements MouseMotionListener {
+public class VirtualMouse implements MouseMotionListener, Runnable {
     private final MousePathAlgorithm algorithm = new BezierAlgorithm();
     private Component component;
     private Point mousePosition = new Point(-1, -1);
 
+    private Point[] currentPath = new Point[0];
+    private int currentStep = 0;
+    private boolean moving = false;
+
+    private int targetX = 0;
+    private int targetY = 0;
+
 
     public void moveMouse(int x, int y) {
-        Point[] path = algorithm.generatePath(mousePosition,
-                new Point(x, y));
-        for (Point step : path) {
-            hopMouse(step.x, step.y);
-            sleepNoException(random(1, 3));
-        }
+        targetX = x;
+        targetY = y;
     }
 
     public void clickMouse(boolean left) {
@@ -132,6 +135,42 @@ public class VirtualMouse implements MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
         mousePosition = e.getPoint();
+    }
+
+    @Override
+    public void run() {
+        int lastTargetX = 0;
+        int lastTargetY = 0;
+        while (!Thread.interrupted()) {
+            try {
+                if (targetX != lastTargetX || targetY != lastTargetY) {
+                    currentPath = algorithm.generatePath(mousePosition,
+                            new Point(targetX, targetY));
+                    currentStep = 0;
+                    moving = true;
+                }
+
+                if (currentStep < currentPath.length && moving) {
+                    Point next = currentPath[currentStep];
+                    hopMouse(next.x, next.y);
+                    if (mousePosition.distance(targetX, targetY) <= 3) { // If we're less than three pixels removed from target just call it quits.
+                        moving = false;
+                        currentStep = 0;
+                        currentPath = new Point[0];
+                    }
+                }
+                lastTargetX = targetX;
+                lastTargetY = targetY;
+
+                if(!moving) {
+                    Thread.sleep(random(60, 120)); // time before realizing something has changed.
+                } else {
+                    Thread.sleep(random(2, 10));
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static interface MousePathAlgorithm {

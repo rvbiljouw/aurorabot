@@ -1,9 +1,9 @@
 package ms.aurora.api.wrappers;
 
+import com.google.common.base.Predicate;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.Menu;
 import ms.aurora.api.Projection;
-import ms.aurora.api.util.Predicate;
 
 import java.awt.*;
 
@@ -95,6 +95,20 @@ public class RSCharacter extends RSRenderable {
             e.printStackTrace();
         }
         return Menu.click(actionName);
+    }
+
+    public boolean hover() {
+        if (!Projection.tileOnScreen(getRegionalLocation()))
+            return false;
+        Point screen = getScreenLocation();
+        context.input.getMouse().moveMouse(screen.x, screen.y);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public int getHitsLoopCycle() {
