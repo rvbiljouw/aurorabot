@@ -3,5 +3,5 @@ package ms.aurora.api.rt3;
 /**
  * @author rvbiljouw
  */
-public interface Object1 {
+public interface Object1 extends GameObject {
 }

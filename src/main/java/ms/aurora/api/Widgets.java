@@ -18,12 +18,10 @@ import static ms.aurora.api.ClientContext.context;
 public class Widgets {
 
     public static RSWidget getWidget(int parent, int child) {
-        if(context.get() == null) {
-            System.out.println("Context isnt set. " + Thread.currentThread().getName());
-        }
-
         Widget[][] cache = context.get().getClient().getWidgetCache();
-        return new RSWidget(context.get(), cache[parent][child]);
+        if (cache[parent][child] != null)
+            return new RSWidget(context.get(), cache[parent][child]);
+        return null;
     }
 
     public static RSWidget[] getWidgets(int parent) {

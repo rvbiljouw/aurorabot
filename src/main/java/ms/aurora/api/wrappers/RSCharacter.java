@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * @author rvbiljouw
  */
-public class RSCharacter extends RSRenderable {
+public class RSCharacter extends RSRenderable implements Locatable {
     private final ms.aurora.api.rt3.Character wrapped;
 
     public RSCharacter(ClientContext clientContext,
@@ -33,7 +33,7 @@ public class RSCharacter extends RSRenderable {
         return new RSTile(x, z, getHeight());
     }
 
-    public int distance(RSCharacter other) {
+    public int distance(Locatable other) {
         return (int) Point.distance(getX(), getY(), other.getX(), other.getY());
     }
 

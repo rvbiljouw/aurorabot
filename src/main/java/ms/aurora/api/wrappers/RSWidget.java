@@ -1,14 +1,13 @@
 package ms.aurora.api.wrappers;
 
-import com.google.common.base.Function;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.Widgets;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.rt3.WidgetNode;
 
-import java.util.Arrays;
+import java.util.List;
 
-import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author rvbiljouw
@@ -121,19 +120,17 @@ public class RSWidget {
     }
 
     public RSWidget[] getChildren() {
-        return transform(Arrays.asList(widget.getChildren()), MAP_WIDGET).toArray(new RSWidget[0]);
+        List<RSWidget> children = newArrayList();
+        if (widget.getChildren() != null) {
+            for (Widget child : widget.getChildren()) {
+                if (child != null)
+                    children.add(new RSWidget(context, child));
+            }
+        }
+        return children.toArray(new RSWidget[children.size()]);
     }
 
     public RSWidget getChild(int id) {
         return getChildren()[id];
     }
-
-    private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
-        @Override
-        public RSWidget apply(Widget component) {
-            if (component != null)
-                return new RSWidget(context, component);
-            return null;
-        }
-    };
 }
