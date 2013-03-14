@@ -1,13 +1,16 @@
 package ms.aurora.api.wrappers;
 
+import com.google.common.base.Function;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.Widgets;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.rt3.WidgetNode;
+import ms.aurora.api.util.Utilities;
 
-import java.util.List;
+import java.awt.*;
+import java.util.Arrays;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Collections2.transform;
 
 /**
  * @author rvbiljouw
@@ -33,27 +36,6 @@ public class RSWidget {
         return widget.getItemStackSize();
     }
 
-    public RSWidget getParent() {
-        if (widget == null) {
-            return null;
-        }
-        int uid = getParentId();
-        if (uid == -1) {
-            int groupIdx = getUid() >>> 16;
-            RSBag bag = new RSBag(context.getClient().getWidgetNodeBag());
-            for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
-                if (n.getId() == groupIdx) {
-                    uid = (int) n.getHash();
-                }
-            }
-        }
-        if (uid == -1) {
-            return null;
-        }
-        int parent = uid >> 16;
-        int child = uid & 0xffff;
-        return Widgets.getWidget(parent, child);
-    }
 
     public int getBoundsIndex() {
         return widget.getBoundsIndex();
@@ -119,18 +101,74 @@ public class RSWidget {
         return widget.getParentId();
     }
 
+    public String getText() {
+        return widget.getText();
+    }
+
     public RSWidget[] getChildren() {
-        List<RSWidget> children = newArrayList();
-        if (widget.getChildren() != null) {
-            for (Widget child : widget.getChildren()) {
-                if (child != null)
-                    children.add(new RSWidget(context, child));
-            }
-        }
-        return children.toArray(new RSWidget[children.size()]);
+        return transform(Arrays.asList(widget.getChildren()), MAP_WIDGET).toArray(new RSWidget[0]);
     }
 
     public RSWidget getChild(int id) {
         return getChildren()[id];
     }
+
+    public RSWidget getParent() {
+        if (widget == null) {
+            return null;
+        }
+        int uid = getParentId();
+        if (uid == -1) {
+            int groupIdx = getUid() >>> 16;
+            RSBag bag = new RSBag(context.getClient().getWidgetNodeBag());
+            for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
+                if (n.getId() == groupIdx) {
+                    uid = (int) n.getHash();
+                }
+            }
+        }
+        if (uid == -1) {
+            return null;
+        }
+        int parent = uid >> 16;
+        int child = uid & 0xffff;
+        return Widgets.getWidget(parent, child);
+    }
+
+    /**
+     *
+     * @return a rectangle representation of the widget area
+     */
+    public Rectangle getArea() {
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
+    /**
+     * returns the central point inside the widget bounds
+     * @return the central point inside the widget bounds.
+     */
+    public Point getCenterPoint() {
+        Rectangle area = getArea();
+        return new Point((int) area.getCenterX(), (int) area.getCenterY());
+    }
+
+    /**
+     * returns a random point inside the widget bounds
+     * @return the random point inside the widget
+     */
+    public Point getRandomPoint() {
+        Rectangle area = getArea();
+        int x = Utilities.random(area.x, area.width);
+        int y = Utilities.random(area.y, area.height);
+        return new Point(x, y);
+    }
+
+    private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
+        @Override
+        public RSWidget apply(Widget component) {
+            if (component != null)
+                return new RSWidget(context, component);
+            return null;
+        }
+    };
 }
