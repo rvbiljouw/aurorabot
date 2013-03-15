@@ -163,6 +163,14 @@ public class RSWidget {
         return new Point(x, y);
     }
 
+    public int[] getInventoryItems() {
+        return widget.getInventoryItems();
+    }
+
+    public int[] getInventoryStackSizes() {
+        return widget.getInventoryStackSizes();
+    }
+
     private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
         @Override
         public RSWidget apply(Widget component) {
