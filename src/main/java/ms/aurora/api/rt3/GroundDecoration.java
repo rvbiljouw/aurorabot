@@ -1,9 +1,9 @@
 package ms.aurora.api.rt3;
 
 /**
- * @author rvbiljouw
+ * @author tobiewarburton
  */
-public interface AnimableObject {
+public interface GroundDecoration {
 
     public int getHash();
 

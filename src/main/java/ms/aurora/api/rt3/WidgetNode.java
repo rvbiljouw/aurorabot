@@ -1,8 +1,8 @@
 package ms.aurora.api.rt3;
 
 /**
- * @author rvbiljouw
+ * @author tobiewarburton
  */
-public interface WidgetNode extends Node{
+public interface WidgetNode {
     public int getId();
 }

@@ -5,7 +5,8 @@ import ms.aurora.input.VirtualMouse;
 import java.awt.*;
 
 /**
- * @author rvbiljouw
+ * @author Benland100
+ * @author rvb
  */
 public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
     private java.util.Random random = new java.util.Random();
@@ -21,16 +22,16 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      *
      * @param points The vector of points to be manipulated
      */
-    private static void adaptiveMidpoints(final java.util.Vector<Point> points) {
+    private static void adaptiveMidpoints(java.util.Vector<Point> points) {
         int i = 0;
         while (i < points.size() - 1) {
-            final Point a = points.get(i++);
-            final Point b = points.get(i);
+            Point a = points.get(i++);
+            Point b = points.get(i);
             if (Math.abs(a.x - b.x) > 1 || Math.abs(a.y - b.y) > 1) {
                 if (Math.abs(a.x - b.x) != 0) {
-                    final double slope = (double) (a.y - b.y)
+                    double slope = (double) (a.y - b.y)
                             / (double) (a.x - b.x);
-                    final double incpt = a.y - slope * a.x;
+                    double incpt = a.y - slope * a.x;
                     for (int c = a.x < b.x ? a.x + 1 : b.x - 1; a.x < b.x ? c < b.x
                             : c > a.x; c += a.x < b.x ? 1 : -1) {
                         points.add(i++, new Point(c, (int) Math.round(incpt
@@ -54,18 +55,18 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      * @param msPerMove The ammount of time per each move
      * @return The stepped spline
      */
-    private Point[] applyDynamism(final Point[] spline,
-                                  final int msForMove, final int msPerMove) {
-        final int numPoints = spline.length;
-        final double msPerPoint = (double) msForMove / (double) numPoints;
-        final double undistStep = msPerMove / msPerPoint;
-        final int steps = (int) Math.floor(numPoints / undistStep);
-        final Point[] result = new Point[steps];
-        final double[] gaussValues = gaussTable(result.length);
+    private Point[] applyDynamism(Point[] spline,
+                                  int msForMove, int msPerMove) {
+        int numPoints = spline.length;
+        double msPerPoint = (double) msForMove / (double) numPoints;
+        double undistStep = msPerMove / msPerPoint;
+        int steps = (int) Math.floor(numPoints / undistStep);
+        Point[] result = new Point[steps];
+        double[] gaussValues = gaussTable(result.length);
         double currentPercent = 0;
         for (int i = 0; i < steps; i++) {
             currentPercent += gaussValues[i];
-            final int nextIndex = (int) Math.floor(numPoints * currentPercent);
+            int nextIndex = (int) Math.floor(numPoints * currentPercent);
             if (nextIndex < numPoints) {
                 result[i] = spline[nextIndex];
             } else {
@@ -85,9 +86,9 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      * @param steps Number of steps in the distribution
      * @return An array of values that contains the percents of the distribution
      */
-    private double[] gaussTable(final int steps) {
-        final double[] table = new double[steps];
-        final double step = 1D / steps;
+    private double[] gaussTable(int steps) {
+        double[] table = new double[steps];
+        double step = 1D / steps;
         double sum = 0;
         for (int i = 0; i < steps; i++) {
             sum += gaussian(i * step);
@@ -122,11 +123,11 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      * @param ctrlVariance Max X or Y variance of each control point from its origin
      * @return An array of Points that represents the control points of the spline
      */
-    private Point[] generateControls(final int sx, final int sy,
-                                     final int ex, final int ey, int ctrlSpacing, int ctrlVariance) {
-        final double dist = Math.sqrt((sx - ex) * (sx - ex) + (sy - ey)
+    private Point[] generateControls(int sx, int sy,
+                                     int ex, int ey, int ctrlSpacing, int ctrlVariance) {
+        double dist = Math.sqrt((sx - ex) * (sx - ex) + (sy - ey)
                 * (sy - ey));
-        final double angle = Math.atan2(ey - sy, ex - sx);
+        double angle = Math.atan2(ey - sy, ex - sx);
         int ctrlPoints = (int) Math.floor(dist / ctrlSpacing);
         ctrlPoints = ctrlPoints * ctrlSpacing == dist ? ctrlPoints - 1
                 : ctrlPoints;
@@ -135,20 +136,16 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
             ctrlSpacing = (int) dist / 3;
             ctrlVariance = (int) dist / 2;
         }
-        final Point[] result = new Point[ctrlPoints + 2];
+        Point[] result = new Point[ctrlPoints + 2];
         result[0] = new Point(sx, sy);
         for (int i = 1; i < ctrlPoints + 1; i++) {
-            final double radius = ctrlSpacing * i;
-            final Point cur = new Point((int) (sx + radius * Math.cos(angle)),
+            double radius = ctrlSpacing * i;
+            Point cur = new Point((int) (sx + radius * Math.cos(angle)),
                     (int) (sy + radius * Math.sin(angle)));
             double percent = 1D - (double) (i - 1) / (double) ctrlPoints;
             percent = percent > 0.5 ? percent - 0.5 : percent;
             percent += 0.25;
-            final int curVariance = (int) (ctrlVariance * percent);
-            /**
-             * Hopefully {@link java.util.Random} is thread safe. (it is in Sun
-             * JVM 1.5+)
-             */
+            int curVariance = (int) (ctrlVariance * percent);
             cur.x = (int) (cur.x + curVariance * 2
                     * random.nextDouble() - curVariance);
             cur.y = (int) (cur.y + curVariance * 2
@@ -166,27 +163,27 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      * @param controls An array of control points
      * @return An array of Points that represents the spline
      */
-    private Point[] generateSpline(final Point[] controls) {
-        final double degree = controls.length - 1;
-        final java.util.Vector<Point> spline = new java.util.Vector<Point>();
+    private Point[] generateSpline(Point[] controls) {
+        double degree = controls.length - 1;
+        java.util.Vector<Point> spline = new java.util.Vector<Point>();
         boolean lastFlag = false;
         for (double theta = 0; theta <= 1; theta += 0.01) {
             double x = 0;
             double y = 0;
             for (double index = 0; index <= degree; index++) {
-                final double probPoly = nCk((int) degree,
+                double probPoly = nCk((int) degree,
                         (int) index)
                         * Math.pow(theta, index)
                         * Math.pow(1D - theta, degree - index);
                 x += probPoly * controls[(int) index].x;
                 y += probPoly * controls[(int) index].y;
             }
-            final Point temp = new Point((int) x, (int) y);
+            Point temp = new Point((int) x, (int) y);
             try {
                 if (!temp.equals(spline.lastElement())) {
                     spline.add(temp);
                 }
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 spline.add(temp);
             }
             lastFlag = theta != 1.0;
@@ -202,7 +199,7 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
     /**
      * Binomial Coefficient "n choose k"
      */
-    private double nCk(final int n, final int k) {
+    private double nCk(int n, int k) {
         return fact(n)
                 / (fact(k) * fact(n - k));
     }
@@ -210,7 +207,7 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
     /**
      * Factorial "n!"
      */
-    private double fact(final int n) {
+    private double fact(int n) {
         double result = 1;
         for (int i = 1; i <= n; i++) {
             result *= i;
