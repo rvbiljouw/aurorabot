@@ -40,8 +40,7 @@ public class HTML {
     private XPathExpression getExpression(String expression) {
         XPath xpath = XPathFactory.newInstance().newXPath();
         try {
-            XPathExpression expr = xpath.compile(expression);
-            return expr;
+            return xpath.compile(expression);
         } catch (XPathExpressionException e) {
             throw new RuntimeException(
                     "Problem with XPath query " + expression, e);

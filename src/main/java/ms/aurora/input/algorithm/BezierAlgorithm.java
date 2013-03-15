@@ -3,6 +3,8 @@ package ms.aurora.input.algorithm;
 import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Benland100
@@ -22,7 +24,7 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      *
      * @param points The vector of points to be manipulated
      */
-    private static void adaptiveMidpoints(java.util.Vector<Point> points) {
+    private static void adaptiveMidpoints(List<Point> points) {
         int i = 0;
         while (i < points.size() - 1) {
             Point a = points.get(i++);
@@ -165,7 +167,7 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
      */
     private Point[] generateSpline(Point[] controls) {
         double degree = controls.length - 1;
-        java.util.Vector<Point> spline = new java.util.Vector<Point>();
+        List<Point> spline = new ArrayList<Point>();
         boolean lastFlag = false;
         for (double theta = 0; theta <= 1; theta += 0.01) {
             double x = 0;
@@ -180,7 +182,7 @@ public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
             }
             Point temp = new Point((int) x, (int) y);
             try {
-                if (!temp.equals(spline.lastElement())) {
+                if (!temp.equals(spline.get(spline.size() - 1))) {
                     spline.add(temp);
                 }
             } catch (Exception e) {

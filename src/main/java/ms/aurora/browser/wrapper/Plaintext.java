@@ -23,8 +23,7 @@ public class Plaintext {
 
     public Matcher regex(String expression) {
         Pattern pattern = Pattern.compile(expression);
-        Matcher matcher = pattern.matcher(text);
-        return matcher;
+        return  pattern.matcher(text);
     }
 
     public static Plaintext fromStream(InputStream stream) {
@@ -34,7 +33,7 @@ public class Plaintext {
             String text = "";
             String buffer = "";
             while ((buffer = streamReader.readLine()) != null) {
-                text += buffer + "\n";
+                text += new StringBuilder().append(buffer).append("\n").toString();
             }
             return new Plaintext(text);
         } catch (Exception e) {

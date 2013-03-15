@@ -172,7 +172,7 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
                     Thread.sleep(random(2, 10));
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error("Mouse thread was interrupted", e);
             }
         }
     }

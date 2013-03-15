@@ -13,16 +13,10 @@ public class ClientContext {
     public static final ThreadLocal<ClientContext> context = new ThreadLocal<ClientContext>();
 
     public final InputManager input;
-    public final Projection projection;
-    public final Menu menu;
-    public final Npcs npcs;
     private Session session;
 
     public ClientContext() {
         input = new InputManager(this);
-        projection = new Projection();
-        menu = new Menu();
-        npcs = new Npcs();
     }
 
     public void setSession(Session session) {

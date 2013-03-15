@@ -1,13 +1,12 @@
 package ms.aurora.api.util;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 13/03/2013
- * Time: 21:36
- * To change this template use File | Settings | File Templates.
+ * @author tobiewarburton
  */
-public class Utilities {
+public final class Utilities {
+
+    private Utilities() { }
+
     public static int random(int min, int max) {
         return (int) (min + (Math.random() * max));
     }

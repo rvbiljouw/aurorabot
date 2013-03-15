@@ -56,7 +56,7 @@ public class ScriptLoader {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           logger.error("Failed to load scripts", e);
         }
     }
 
