@@ -1,5 +1,7 @@
 package ms.aurora.browser;
 
+import ms.aurora.browser.exception.BrowsingException;
+
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -51,7 +53,7 @@ public class Browser {
                     URLConnection connection = targetURL.openConnection();
                     handler.handleResponse(connection.getInputStream());
                 } catch (Exception e) {
-                    throw new RuntimeException(
+                    throw new BrowsingException(
                             "Problem occured while requesting "
                                     + context.getURLAsString(), e);
                 }
