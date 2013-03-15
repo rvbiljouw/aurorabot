@@ -10,10 +10,10 @@ import java.lang.annotation.RetentionPolicy;
 public @interface ScriptMetadata {
     public String name();
 
-    public String[] contributors();
+    public String[] contributors() default {};
 
-    public double version();
+    public double version() default 1.0;
 
-    public String description();
+    public String description() default "";
 
 }

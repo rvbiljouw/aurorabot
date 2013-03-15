@@ -73,16 +73,17 @@ public class Objects {
 
         List<RSObject> objects = newArrayList();
         if (ground != null) {
-            if (ground.getObject1() != null) {
-                objects.add(new RSObject(context.get(), ground.getObject1(), x, y));
-            } else if (ground.getObject2() != null) {
-                objects.add(new RSObject(context.get(), ground.getObject2(), x, y));
-            } else if (ground.getObject4() != null) {
-                objects.add(new RSObject(context.get(), ground.getObject4(), x, y));
+            if (ground.getGroundDecoration() != null) {
+                objects.add(new RSObject(context.get(), ground.getGroundDecoration()));
+            } else if (ground.getWallDecoration() != null) {
+                objects.add(new RSObject(context.get(), ground.getWallDecoration()));
+            } else if (ground.getWallObject() != null) {
+                objects.add(new RSObject(context.get(), ground.getWallObject()));
             } else if (ground.getAnimableObjects() != null) {
                 for (AnimableObject object : ground.getAnimableObjects()) {
-                    if (object != null && (object.getId() >> 29 & 0x3) == 2) {
-                        objects.add(new RSObject(context.get(), object, x, y));
+                    RSObject fuckyou = new RSObject(context.get(), object);
+                    if (object != null && fuckyou.getId() != 0) {
+                        objects.add(fuckyou);
                     }
                 }
             }

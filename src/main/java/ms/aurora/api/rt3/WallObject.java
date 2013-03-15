@@ -3,7 +3,7 @@ package ms.aurora.api.rt3;
 /**
  * @author tobiewarburton
  */
-public interface WallObject {
+public interface WallObject extends GameObject {
 
     public int getHash();
 

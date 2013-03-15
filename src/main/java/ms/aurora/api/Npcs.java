@@ -16,7 +16,8 @@ import static ms.aurora.api.ClientContext.context;
 
 public final class Npcs {
 
-    private Npcs() { }
+    private Npcs() {
+    }
 
     public static RSNPC get(final Predicate<RSNPC> predicate) {
         return getClosest(Collections2.filter(_getAll(),
@@ -53,7 +54,10 @@ public final class Npcs {
     private static final Function<Npc, RSNPC> transform = new Function<Npc, RSNPC>() {
         @Override
         public RSNPC apply(Npc npc) {
-            return new RSNPC(context.get(), npc);
+            if (npc != null) {
+                return new RSNPC(context.get(), npc);
+            }
+            return null;
         }
     };
 }

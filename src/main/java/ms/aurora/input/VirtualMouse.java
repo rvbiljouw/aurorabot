@@ -29,8 +29,16 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
 
 
     public void moveMouse(int x, int y) {
-        targetX = x;
-        targetY = y;
+        currentPath = algorithm.generatePath(mousePosition,
+                new Point(x, y));
+        for(Point p : currentPath) {
+            hopMouse(p.x, p.y);
+            try {
+                Thread.sleep(random(2, 12));
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
     }
 
     public void clickMouse(boolean left) {
@@ -109,24 +117,30 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
         for (MouseMotionListener listener : component.getMouseMotionListeners()) {
             listener.mouseMoved(event);
         }
+        component.dispatchEvent(event);
     }
 
     private void _mouseClicked(MouseEvent event) {
         for (MouseListener listener : component.getMouseListeners()) {
             listener.mouseClicked(event);
         }
+        component.dispatchEvent(event);
+
     }
 
     private void _mousePressed(MouseEvent event) {
         for (MouseListener listener : component.getMouseListeners()) {
             listener.mousePressed(event);
         }
+        component.dispatchEvent(event);
+
     }
 
     private void _mouseReleased(MouseEvent event) {
         for (MouseListener listener : component.getMouseListeners()) {
             listener.mouseReleased(event);
         }
+        component.dispatchEvent(event);
     }
 
     @Override
@@ -141,8 +155,7 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
 
     @Override
     public void run() {
-
-        int lastTargetX = 0;
+       /* int lastTargetX = 0;
         int lastTargetY = 0;
         while (!Thread.interrupted()) {
             try {
@@ -155,7 +168,7 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
                 }
 
                 if (currentStep < currentPath.length && moving) {
-                    Point next = currentPath[currentStep];
+                    Point next = currentPath[currentStep++];
                     hopMouse(next.x, next.y);
                     if (mousePosition.distance(targetX, targetY) <= 3) { // If we're less than three pixels removed from target just call it quits.
                         moving = false;
@@ -174,7 +187,7 @@ public class VirtualMouse implements MouseMotionListener, Runnable {
             } catch (InterruptedException e) {
                 logger.error("Mouse thread was interrupted", e);
             }
-        }
+        } */
     }
 
     public static interface MousePathAlgorithm {

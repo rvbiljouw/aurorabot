@@ -5,6 +5,14 @@ package ms.aurora.api.rt3;
  */
 public interface GameObject {
 
-    public int getId();
+    public int getHash();
+
+    public int getX();
+
+    public int getY();
+
+    public int getZ();
+
+    public int getOrientation();
 
 }

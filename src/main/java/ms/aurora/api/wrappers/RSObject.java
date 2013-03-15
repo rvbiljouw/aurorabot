@@ -11,34 +11,30 @@ import java.awt.*;
 public class RSObject implements Locatable {
     private final ClientContext context;
     private final GameObject wrapped;
-    private int localX;
-    private int localY;
 
     public RSObject(ClientContext context, GameObject wrapped) {
         this.context = context;
         this.wrapped = wrapped;
-        this.localX = localX;
-        this.localY = localY;
     }
 
     public int getId() {
-        return wrapped.getId() >> 14 & 0x7fff;
+        return wrapped.getHash() >> 14 & 0x7fff;
     }
 
     public int getLocalX() {
-        return localX;
+        return wrapped.getX();
     }
 
     public int getLocalY() {
-        return localY;
+        return wrapped.getY();
     }
 
     public int getX() {
-        return context.getClient().getBaseX() + getLocalX();
+        return (wrapped.getX() >> 7) + context.getClient().getBaseX();
     }
 
     public int getY() {
-        return context.getClient().getBaseY() + getLocalY();
+        return (wrapped.getY() >> 7) + context.getClient().getBaseY();
     }
 
     public Point getScreenLocation() {
@@ -50,9 +46,9 @@ public class RSObject implements Locatable {
     }
 
     public RSTile getRegionalLocation() {
-        int x = getLocalX() * 128;
-        int z = getLocalY() * 128;
-        return new RSTile(x, z, 0);
+        int x = getLocalX();
+        int y = getLocalY();
+        return new RSTile(x, y, wrapped.getZ());
     }
 
     public int distance(Locatable other) {

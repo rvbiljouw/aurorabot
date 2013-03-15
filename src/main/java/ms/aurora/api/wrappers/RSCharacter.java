@@ -133,6 +133,10 @@ public class RSCharacter extends RSRenderable implements Locatable {
         return wrapped.getInteractingEntity();
     }
 
+    public boolean isMoving() {
+        return wrapped.getPathLength() > 0;
+    }
+
     public static final Predicate<RSCharacter> IDLE = new Predicate<RSCharacter>() {
         @Override
         public boolean apply(RSCharacter object) {

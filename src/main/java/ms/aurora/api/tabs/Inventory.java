@@ -82,8 +82,8 @@ public class Inventory {
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
-                Item item = new Item(items[i], stacks[i]);
-                item.slot = i;
+                Item item = new Item(items[i] - 1, stacks[i]);
+                item.slot = i + 1;
                 wrappers.add(item);
             }
         }
@@ -115,7 +115,7 @@ public class Inventory {
             return stackSize;
         }
 
-        private Point getLocation() {
+        public Point getLocation() {
             RSWidget inventory = getInventoryWidget();
             int col = (slot % 4);
             int row = (slot / 4);

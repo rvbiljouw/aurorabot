@@ -7,7 +7,7 @@ import java.awt.*;
 import static ms.aurora.api.ClientContext.get;
 
 /**
- * @author rvbiljouw
+ * @author no-one you know
  */
 public final class Projection {
 
