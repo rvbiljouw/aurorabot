@@ -1,5 +1,6 @@
 package ms.aurora.loader;
 
+import ms.aurora.loader.exception.MalformedStubException;
 import ms.aurora.loader.web.ClientConfig;
 
 import java.applet.AppletContext;
@@ -19,7 +20,7 @@ public class AppletStubImpl implements AppletStub {
         try {
             this.documentBase = new URL(config.getDocumentBase());
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Failed to initialize applet stub.", e);
+            throw new MalformedStubException("Failed to initialize applet stub.");
         }
     }
 

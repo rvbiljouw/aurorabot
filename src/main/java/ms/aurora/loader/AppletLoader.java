@@ -3,6 +3,7 @@ package ms.aurora.loader;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
 import ms.aurora.browser.ContextBuilder;
+import ms.aurora.loader.exception.AppletInitialisationException;
 import ms.aurora.loader.web.ClientConfig;
 import ms.aurora.loader.web.ClientDefinitionJSON;
 import ms.aurora.transform.TransformingClassLoader;
@@ -67,7 +68,7 @@ public class AppletLoader implements Runnable {
                 listener.onCompletion(applet);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load applet!", e);
+            throw new AppletInitialisationException("Failed to load applet!", e);
         }
     }
 

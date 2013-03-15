@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author rvbiljouw
  */
-public class ScriptLoader {
+public final class ScriptLoader {
     private final static Logger logger = Logger.getLogger(ScriptLoader.class);
     private final List<ScriptMetadata> metadatas = Lists.newArrayList();
     private final Map<ScriptMetadata, LoopScript> scriptMap = Maps.newHashMap();
@@ -56,7 +56,7 @@ public class ScriptLoader {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           logger.error("Failed to load scripts", e);
         }
     }
 

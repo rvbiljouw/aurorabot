@@ -72,10 +72,12 @@ public class ClientDefinition {
 
     public ClassDefinition lookup(String name) {
         for (ClassDefinition clazz : classes) {
-            if (clazz.getName().equals(name)) return clazz;
+            if (clazz.getName().equals(name)) {
+                return clazz;
+            }
         }
         return null;
     }
 
-    private static String INTERFACE_PREFIX = "ms/aurora/api/rt3/";
+    private static final String INTERFACE_PREFIX = "ms/aurora/api/rt3/";
 }

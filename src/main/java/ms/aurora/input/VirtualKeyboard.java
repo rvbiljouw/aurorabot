@@ -13,8 +13,9 @@ public class VirtualKeyboard {
     private Component component;
 
     public void type(String text) {
-        for (char key : text.toCharArray())
+        for (char key : text.toCharArray()) {
             press(key);
+        }
     }
 
     public void press(char key) {

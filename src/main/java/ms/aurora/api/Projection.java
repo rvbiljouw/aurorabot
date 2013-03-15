@@ -9,7 +9,10 @@ import static ms.aurora.api.ClientContext.get;
 /**
  * @author rvbiljouw
  */
-public class Projection {
+public final class Projection {
+
+    private Projection() {
+    }
 
     public static Point worldToScreen(RSTile tile) {
         int x = tile.getX();
@@ -49,12 +52,13 @@ public class Projection {
     private static int getTileHeight(int x, int y, int plane) {
         int _x = x >> 7;
         int _y = y >> 7;
-        if (_x < 0 || _y < 0 || _x > 103 || _y > 103)
+        if (_x < 0 || _y < 0 || _x > 103 || _y > 103) {
             return 0;
+        }
         int _plane = plane;
-        if (_plane < 3
-                && (get().getClient().getTileSettings()[1][_x][_y] & 0x2) == 2)
+        if (_plane < 3 && (get().getClient().getTileSettings()[1][_x][_y] & 0x2) == 2) {
             _plane++;
+        }
         int _x2 = x & 0x7f;
         int _y2 = y & 0x7f;
         int i_30_ = (((128 - _x2)

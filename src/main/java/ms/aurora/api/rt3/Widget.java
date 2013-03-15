@@ -53,8 +53,6 @@ public interface Widget {
 
     public int getWidth();
 
-    public String getComponentName();
-
     public int[][] getOpcodes();
 
     public String getSelectedAction();
@@ -63,7 +61,11 @@ public interface Widget {
 
     public int getUid();
 
-    public int getBoundsIndex();
-
     public int getType();
+
+    public int[] getInventoryItems();
+
+    public int[] getInventoryStackSizes();
+
+    public int getBoundsIndex();
 }

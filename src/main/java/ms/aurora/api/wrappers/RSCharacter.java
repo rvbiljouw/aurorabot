@@ -59,9 +59,9 @@ public class RSCharacter extends RSRenderable implements Locatable {
      */
     public RSCharacter getInteracting() {
         int interacting = getInteractingEntity();
-        if (interacting == -1)
+        if (interacting == -1) {
             return null;
-        if (interacting < 32767) {
+        } else if (interacting < 32767) {
             return new RSNPC(context,
                     context.getClient().getAllNpcs()[interacting]);
         } else if (interacting >= 32767) {
@@ -84,30 +84,20 @@ public class RSCharacter extends RSRenderable implements Locatable {
      * @return
      */
     public boolean applyAction(String actionName) {
-        if (!Projection.tileOnScreen(getRegionalLocation()))
+        if (!Projection.tileOnScreen(getRegionalLocation())) {
             return false;
+        }
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         return Menu.click(actionName);
     }
 
     public boolean hover() {
-        if (!Projection.tileOnScreen(getRegionalLocation()))
+        if (!Projection.tileOnScreen(getRegionalLocation())) {
             return false;
+        }
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         return true;
     }
 

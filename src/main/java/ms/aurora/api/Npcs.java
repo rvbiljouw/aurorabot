@@ -14,7 +14,9 @@ import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.ClientContext.context;
 
-public class Npcs {
+public final class Npcs {
+
+    private Npcs() { }
 
     public static RSNPC get(final Predicate<RSNPC> predicate) {
         return getClosest(Collections2.filter(_getAll(),

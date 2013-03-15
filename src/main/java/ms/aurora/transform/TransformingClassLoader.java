@@ -42,8 +42,11 @@ public class TransformingClassLoader extends ClassLoader {
                 while (classIn.available() > 0) {
                     int read = classIn.read(buffer, 0, buffer.length);
 
-                    if (read < 0) break;
-                    else classBytes.write(buffer, 0, read);
+                    if (read < 0) {
+                        break;
+                    } else {
+                        classBytes.write(buffer, 0, read);
+                    }
                 }
                 classMap.put(entry.getName().replace(".class", ""),
                         classBytes.toByteArray());
@@ -82,8 +85,8 @@ public class TransformingClassLoader extends ClassLoader {
                 }
                 classGen.update();
                 data = classGen.getJavaClass().getBytes();
-            } catch (Exception e) {
-                logger.error("Fucked up yo!", e);
+            } catch (IOException e) {
+                logger.error("Failed to load class due to I/O.", e);
             }
             return defineClass(name, data, 0, data.length);
         }

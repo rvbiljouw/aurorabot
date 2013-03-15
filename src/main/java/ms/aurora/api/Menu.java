@@ -7,7 +7,11 @@ import java.util.List;
 
 import static ms.aurora.api.ClientContext.get;
 
-public class Menu {
+public final class Menu {
+
+    private Menu() {
+
+    }
 
     public static int getIndex(String item) {
         for (String menuEntry : getMenuContent()) {

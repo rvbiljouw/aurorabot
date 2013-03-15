@@ -123,7 +123,7 @@ public class RSWidget {
             RSBag bag = new RSBag(context.getClient().getWidgetNodeBag());
             for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
                 if (n.getId() == groupIdx) {
-                    uid = (int) n.getHash();
+                    uid = (int) n.getId();
                 }
             }
         }
@@ -136,7 +136,6 @@ public class RSWidget {
     }
 
     /**
-     *
      * @return a rectangle representation of the widget area
      */
     public Rectangle getArea() {
@@ -145,6 +144,7 @@ public class RSWidget {
 
     /**
      * returns the central point inside the widget bounds
+     *
      * @return the central point inside the widget bounds.
      */
     public Point getCenterPoint() {
@@ -154,6 +154,7 @@ public class RSWidget {
 
     /**
      * returns a random point inside the widget bounds
+     *
      * @return the random point inside the widget
      */
     public Point getRandomPoint() {
@@ -163,11 +164,20 @@ public class RSWidget {
         return new Point(x, y);
     }
 
+    public int[] getInventoryItems() {
+        return widget.getInventoryItems();
+    }
+
+    public int[] getInventoryStackSizes() {
+        return widget.getInventoryStackSizes();
+    }
+
     private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
         @Override
         public RSWidget apply(Widget component) {
-            if (component != null)
+            if (component != null) {
                 return new RSWidget(context, component);
+            }
             return null;
         }
     };

@@ -1,6 +1,7 @@
 package ms.aurora.browser.wrapper;
 
 import com.google.common.collect.Lists;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -11,6 +12,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public class HTML {
+    private static Logger logger = Logger.getLogger(HTML.class);
     private Document dom;
 
     public HTML(Document dom) {
@@ -23,35 +25,28 @@ public class HTML {
 
     public List<Node> searchXPath(String expression) {
         List<Node> matchingElements = Lists.newArrayList();
-        XPathExpression expressionObj = getExpression(expression);
         try {
+            XPathExpression expressionObj = getExpression(expression);
             NodeList resultingNodeList = (NodeList) expressionObj.evaluate(dom,
                     XPathConstants.NODESET);
             for (int index = 0; index < resultingNodeList.getLength(); index++) {
                 matchingElements.add(resultingNodeList.item(index));
             }
         } catch (XPathExpressionException e) {
-            throw new RuntimeException("Failed to evaluate expression "
-                    + expression, e);
+            logger.error("Incorrect XPath expression", e);
         }
         return matchingElements;
     }
 
-    private XPathExpression getExpression(String expression) {
+    private XPathExpression getExpression(String expression) throws XPathExpressionException {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        try {
-            XPathExpression expr = xpath.compile(expression);
-            return expr;
-        } catch (XPathExpressionException e) {
-            throw new RuntimeException(
-                    "Problem with XPath query " + expression, e);
-        }
+        return xpath.compile(expression);
     }
 
     public static HTML fromStream(InputStream stream) {
         try {
             /*
-			 * UGLY ASS W3C API IS UGLY
+             * UGLY ASS W3C API IS UGLY
 			 */
             Tidy tidy = new Tidy();
             tidy.setXHTML(true);
@@ -59,9 +54,9 @@ public class HTML {
             dom.getDocumentElement().normalize();
             return new HTML(dom);
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Failed to parse Html content from stream.", e);
+            logger.error("Failed to parse HTML properly", e);
         }
+        return null;
     }
 
 }

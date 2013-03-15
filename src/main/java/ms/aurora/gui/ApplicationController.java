@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.applet.Applet;
 
-public class ApplicationController {
+public final class ApplicationController {
     private final Logger logger = Logger.getLogger(ApplicationController.class);
     private final BrowserPanel welcomePanel = new BrowserPanel(
             "http://www.aurora.ms");

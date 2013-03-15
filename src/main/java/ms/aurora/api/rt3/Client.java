@@ -31,6 +31,9 @@ public interface Client {
 
     public int getMenuY();
 
+    public int getMenuWidth();
+
+    public int getMenuHeight();
 
     public Player[] getAllPlayers();
 
@@ -54,9 +57,32 @@ public interface Client {
 
     public Canvas getCanvas();
 
+    public int getMinimapInt1();
+
+    public int getMinimapInt2();
+
+    public int getMinimapInt3();
+
     public Bag getWidgetNodeBag();
-    public int[] getBoundsX();
+
+    public Item[][][] getGroundItems();
+
+    public int getLoginIndex();
+
     public int[] getBoundsY();
-    public int[] getBoundsWidth();
+
+    public int[] getBoundsX();
+
     public int[] getBoundsHeight();
+
+    public int[] getBoundsWidth();
+
+    public int[] getSkillLevelBases();
+
+    public int[] getSkillExperiences();
+
+    public int[] getSkillLevels();
+
+    public Mouse getMouse();
+
 }

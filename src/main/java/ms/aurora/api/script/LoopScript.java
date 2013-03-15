@@ -31,7 +31,7 @@ public abstract class LoopScript extends ClientContext implements Runnable, Draw
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Script has thrown exception and has exited.", e);
                 return;
             }
         }

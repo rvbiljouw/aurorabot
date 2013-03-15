@@ -1,6 +1,6 @@
 package ms.aurora.browser;
 
-public class RequestBuilder {
+public final class RequestBuilder {
     private Request cachedRequest;
 
     public RequestBuilder(Class<? extends Request> requestType) {

@@ -12,19 +12,17 @@ import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.ClientContext.context;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 13/03/2013
- * Time: 15:58
- * To change this template use File | Settings | File Templates.
+ * @author tobiewarburton
+ * @author rvbiljouw
  */
-public class Widgets {
+public final class Widgets {
+
+    private Widgets() {
+    }
 
     public static RSWidget getWidget(int parent, int child) {
         Widget[][] cache = context.get().getClient().getWidgetCache();
-        if (cache[parent][child] != null)
-            return new RSWidget(context.get(), cache[parent][child]);
-        return null;
+        return new RSWidget(context.get(), cache[parent][child]);
     }
 
     public static RSWidget[] getWidgets(int parent) {
@@ -40,8 +38,9 @@ public class Widgets {
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
         for (Widget[] parents : context.get().getClient().getWidgetCache()) {
             for (RSWidget child : transform(newArrayList(parents), transform).toArray(new RSWidget[0])) {
-                if (child.getText() != null && child.getText().contains(predicate))
+                if (child.getText() != null && child.getText().contains(predicate)) {
                     satisfied.add(child);
+                }
             }
         }
         return satisfied.toArray(new RSWidget[0]);
@@ -50,8 +49,9 @@ public class Widgets {
     private static final Function<Widget, RSWidget> transform = new Function<Widget, RSWidget>() {
         @Override
         public RSWidget apply(Widget widget) {
-            if (widget != null)
+            if (widget != null) {
                 return new RSWidget(context.get(), widget);
+            }
             return null;
         }
     };

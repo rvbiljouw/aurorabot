@@ -28,7 +28,9 @@ public class GetRequest implements Request {
         for (String paramName : requestParams.keySet()) {
             String paramValue = requestParams.get(paramName);
             String paramToken = paramCounter == 0 ? "?" : "&";
-            paramString += (paramToken + paramName + "=" + paramValue);
+            paramString += new StringBuilder().append(paramToken).
+                    append(paramName).append("=").
+                    append(paramValue).toString();
         }
         return paramString;
     }
