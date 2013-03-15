@@ -73,6 +73,10 @@ public interface Client {
 
     public int[] getBoundsX();
 
+    public int[] getBoundsHeight();
+
+    public int[] getBoundsWidth();
+
     public int[] getSkillLevelBases();
 
     public int[] getSkillExperiences();
@@ -80,4 +84,5 @@ public interface Client {
     public int[] getSkillLevels();
 
     public Mouse getMouse();
+
 }

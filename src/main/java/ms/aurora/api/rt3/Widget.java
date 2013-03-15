@@ -66,4 +66,6 @@ public interface Widget {
     public int[] getInventoryItems();
 
     public int[] getInventoryStackSizes();
+
+    public int getBoundsIndex();
 }

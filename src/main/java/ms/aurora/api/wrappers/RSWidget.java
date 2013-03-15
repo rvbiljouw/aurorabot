@@ -123,7 +123,7 @@ public class RSWidget {
             RSBag bag = new RSBag(context.getClient().getWidgetNodeBag());
             for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
                 if (n.getId() == groupIdx) {
-                    uid = (int) n.getHash();
+                    uid = (int) n.getId();
                 }
             }
         }
