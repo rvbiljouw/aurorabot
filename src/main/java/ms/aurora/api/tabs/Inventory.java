@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Lists.newArrayList;
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author rvbiljouw
@@ -39,6 +40,14 @@ public class Inventory {
     }
 
     /**
+     * Retrieves the amount of inventory slots currently occupied.
+     * @return count
+     */
+    public int getCount() {
+        return getAll().length;
+    }
+
+    /**
      * Retrieves the first item that matches the predicate.
      *
      * @param predicate Predicate to match items against
@@ -48,6 +57,20 @@ public class Inventory {
         Item[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves the first item that matches the specified ID.
+     * @param id Item ID to look for
+     * @return item if it was found, otherwise null.
+     */
+    public static Item get(int id) {
+        for(Item item : getAll()) {
+            if(item.getId() == id) {
+                return item;
+            }
         }
         return null;
     }
@@ -70,6 +93,21 @@ public class Inventory {
     }
 
     /**
+     * Retrieves all items that match the specified ID.
+     * @param id Item ID to look for
+     * @return list of items found, which can be empty.
+     */
+    public static Item[] getAll(int id) {
+        List<Item> items = newArrayList();
+        for(Item item : getAll()) {
+            if(item.getId() == id) {
+                items.add(item);
+            }
+        }
+        return items.toArray(new Item[items.size()]);
+    }
+
+    /**
      * Retrieves all the items in the inventory
      *
      * @return an array containing all items in the inventory.
@@ -83,11 +121,198 @@ public class Inventory {
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
                 Item item = new Item(items[i] - 1, stacks[i]);
-                item.slot = i + 1;
+                item.slot = i;
                 wrappers.add(item);
             }
         }
         return wrappers.toArray(new Item[wrappers.size()]);
+    }
+
+    /**
+     * Checks if the inventory contains a specific item
+     *
+     * @param id Item to look for
+     * @return true if found, otherwise false.
+     */
+    public boolean contains(int id) {
+        for (Item item : getAll()) {
+            if (item.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the inventory contains at least the
+     * specified amount of the specified item,
+     * @param id Item to count
+     * @param amount Minimum amount to pass.
+     * @return true if the inventory contains at least the amount specified.
+     */
+    public boolean containsMinimum(int id, int amount) {
+        for (Item item : getAll()) {
+            if (item.getId() == id && item.getStackSize() >= amount) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the inventory contains at most the
+     * specified amount of the specified item,
+     * @param id Item to count
+     * @param amount Maximum amount to pass.
+     * @return true if the inventory contains at most the amount specified.
+     */
+    public boolean containsMaximum(int id, int amount) {
+        for (Item item : getAll()) {
+            if (item.getId() == id && item.getStackSize() <= amount) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the inventory contains at least one
+     * of the specified items
+     *
+     * @param ids A var-args list of item IDs.
+     * @return true if found, otherwise false.
+     */
+    public boolean containsAny(int... ids) {
+        for (int id : ids) {
+            if (contains(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the inventory contains all of the specified items
+     *
+     * @param ids A var-args list of item IDs.
+     * @return true if all the items were found, false otherwise.
+     */
+    public boolean containsAll(int... ids) {
+        for (int id : ids) {
+            if (!contains(id)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Counts all the items matching the specified ID.
+     * @param id Item ID of the items to count
+     * @return total amount of items matching id in inventory.
+     */
+    public int count(int id) {
+        int count = 0;
+        for(Item item : getAll()) {
+            if(item.getId() == id) {
+                count += item.getStackSize();
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Drops one item with the specified ID.
+     * @param id ID of the item to drop.
+     */
+    public void dropItem(int id) {
+        Item firstMatch = get(id);
+        if(firstMatch != null) {
+            firstMatch.applyAction("Drop");
+        }
+    }
+
+    /**
+     * Drops all items with the specified ID.
+     * @param id ID of the item to drop.
+     */
+    public void dropAll(int id) {
+        Item[] matches = getAll(id);
+        for(Item match : matches) {
+            match.applyAction("Drop");
+        }
+    }
+
+    /**
+     * Drops all items matching any of the IDs specified.
+     * @param ids A var-args list of IDs to drop.
+     */
+    public void dropAll(int... ids) {
+        for(int id : ids) {
+            dropAll(id);
+        }
+    }
+
+    /**
+     * Drops all the items NOT matching any of the IDs specified
+     * @param ids A var-args list of items to exclude from dropping.
+     */
+    public void dropAllExcept(int... ids) {
+        for(Item item : getAll()) {
+            boolean drop = true;
+            for(int id : ids) {
+                if(item.getId() == id) drop = false;
+            }
+
+            if(drop) {
+                item.applyAction("Drop");
+            }
+        }
+    }
+
+    /**
+     * Uses one item on all items matching the specified target ID.
+     * @param id ID of the main item
+     * @param targetId ID of the target item
+     */
+    public void useItemOnAll(int id, int targetId) {
+        Item main = get(id);
+        if(main != null) {
+            Item[] targets = getAll(targetId);
+            for(Item target : targets) {
+                main.applyAction("Use");
+                sleepNoException(140, 200);
+                target.click();
+                sleepNoException(500, 800);
+                while(ClientContext.get().getMyPlayer().getAnimation() != -1) {
+                    sleepNoException(140, 200);
+                }
+                sleepNoException(100, 120);
+            }
+        }
+    }
+
+    /**
+     * Uses one item on an item matching the specified target ID.
+     * @param id ID of the main item
+     * @param targetId ID of the target item
+     */
+    public void useItemOn(int id, int targetId) {
+        Item main = get(id);
+        if(main != null) {
+            Item[] targets = getAll(targetId);
+            for(Item target : targets) {
+                main.applyAction("Use");
+                sleepNoException(140, 200);
+                target.click();
+                sleepNoException(500, 800);
+                while(ClientContext.get().getMyPlayer().getAnimation() != -1) {
+                    sleepNoException(140, 200);
+                }
+                sleepNoException(100, 120);
+                return;
+            }
+        }
     }
 
     /**
@@ -115,19 +340,27 @@ public class Inventory {
             return stackSize;
         }
 
-        public Point getLocation() {
-            RSWidget inventory = getInventoryWidget();
+        public Rectangle getArea() {
             int col = (slot % 4);
             int row = (slot / 4);
-            return new Point(inventory.getX() + (col * 42),
-                    inventory.getY() + (row * 36));
+            int x = 580 + (col * 42);
+            int y = 228 + (row * 36);
+
+            return new Rectangle(x - (36 / 2), y - (32 / 2), 36, 32);
         }
 
         public void applyAction(String action) {
             VirtualMouse mouse = ClientContext.get().input.getMouse();
-            Point location = getLocation();
-            mouse.moveMouse(location.x, location.y);
+            Rectangle area = getArea();
+            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             Menu.click(action);
+        }
+
+        public void click() {
+            VirtualMouse mouse = ClientContext.get().input.getMouse();
+            Rectangle area = getArea();
+            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            mouse.clickMouse(true);
         }
     }
 

@@ -18,4 +18,12 @@ public final class Utilities {
             e.printStackTrace();
         }
     }
+
+    public static void sleepNoException(int min, int max) {
+        try {
+            Thread.sleep(random(min, max));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
