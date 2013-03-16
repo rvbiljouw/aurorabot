@@ -35,15 +35,16 @@ public class Inventory {
      *
      * @return true if inventory contains 28 items, false otherwise.
      */
-    public boolean isFull() {
+    public static boolean isFull() {
         return getAll().length == 28;
     }
 
     /**
      * Retrieves the amount of inventory slots currently occupied.
+     *
      * @return count
      */
-    public int getCount() {
+    public static int getCount() {
         return getAll().length;
     }
 
@@ -63,12 +64,13 @@ public class Inventory {
 
     /**
      * Retrieves the first item that matches the specified ID.
+     *
      * @param id Item ID to look for
      * @return item if it was found, otherwise null.
      */
     public static Item get(int id) {
-        for(Item item : getAll()) {
-            if(item.getId() == id) {
+        for (Item item : getAll()) {
+            if (item.getId() == id) {
                 return item;
             }
         }
@@ -94,13 +96,14 @@ public class Inventory {
 
     /**
      * Retrieves all items that match the specified ID.
+     *
      * @param id Item ID to look for
      * @return list of items found, which can be empty.
      */
     public static Item[] getAll(int id) {
         List<Item> items = newArrayList();
-        for(Item item : getAll()) {
-            if(item.getId() == id) {
+        for (Item item : getAll()) {
+            if (item.getId() == id) {
                 items.add(item);
             }
         }
@@ -134,7 +137,7 @@ public class Inventory {
      * @param id Item to look for
      * @return true if found, otherwise false.
      */
-    public boolean contains(int id) {
+    public static boolean contains(int id) {
         for (Item item : getAll()) {
             if (item.getId() == id) {
                 return true;
@@ -146,11 +149,12 @@ public class Inventory {
     /**
      * Checks if the inventory contains at least the
      * specified amount of the specified item,
-     * @param id Item to count
+     *
+     * @param id     Item to count
      * @param amount Minimum amount to pass.
      * @return true if the inventory contains at least the amount specified.
      */
-    public boolean containsMinimum(int id, int amount) {
+    public static boolean containsMinimum(int id, int amount) {
         for (Item item : getAll()) {
             if (item.getId() == id && item.getStackSize() >= amount) {
                 return true;
@@ -162,11 +166,12 @@ public class Inventory {
     /**
      * Checks if the inventory contains at most the
      * specified amount of the specified item,
-     * @param id Item to count
+     *
+     * @param id     Item to count
      * @param amount Maximum amount to pass.
      * @return true if the inventory contains at most the amount specified.
      */
-    public boolean containsMaximum(int id, int amount) {
+    public static boolean containsMaximum(int id, int amount) {
         for (Item item : getAll()) {
             if (item.getId() == id && item.getStackSize() <= amount) {
                 return true;
@@ -182,7 +187,7 @@ public class Inventory {
      * @param ids A var-args list of item IDs.
      * @return true if found, otherwise false.
      */
-    public boolean containsAny(int... ids) {
+    public static boolean containsAny(int... ids) {
         for (int id : ids) {
             if (contains(id)) {
                 return true;
@@ -197,7 +202,7 @@ public class Inventory {
      * @param ids A var-args list of item IDs.
      * @return true if all the items were found, false otherwise.
      */
-    public boolean containsAll(int... ids) {
+    public static boolean containsAll(int... ids) {
         for (int id : ids) {
             if (!contains(id)) {
                 return false;
@@ -208,13 +213,14 @@ public class Inventory {
 
     /**
      * Counts all the items matching the specified ID.
+     *
      * @param id Item ID of the items to count
      * @return total amount of items matching id in inventory.
      */
-    public int count(int id) {
+    public static int count(int id) {
         int count = 0;
-        for(Item item : getAll()) {
-            if(item.getId() == id) {
+        for (Item item : getAll()) {
+            if (item.getId() == id) {
                 count += item.getStackSize();
             }
         }
@@ -223,48 +229,52 @@ public class Inventory {
 
     /**
      * Drops one item with the specified ID.
+     *
      * @param id ID of the item to drop.
      */
-    public void dropItem(int id) {
+    public static void dropItem(int id) {
         Item firstMatch = get(id);
-        if(firstMatch != null) {
+        if (firstMatch != null) {
             firstMatch.applyAction("Drop");
         }
     }
 
     /**
      * Drops all items with the specified ID.
+     *
      * @param id ID of the item to drop.
      */
-    public void dropAll(int id) {
+    public static void dropAll(int id) {
         Item[] matches = getAll(id);
-        for(Item match : matches) {
+        for (Item match : matches) {
             match.applyAction("Drop");
         }
     }
 
     /**
      * Drops all items matching any of the IDs specified.
+     *
      * @param ids A var-args list of IDs to drop.
      */
-    public void dropAll(int... ids) {
-        for(int id : ids) {
+    public static void dropAll(int... ids) {
+        for (int id : ids) {
             dropAll(id);
         }
     }
 
     /**
      * Drops all the items NOT matching any of the IDs specified
+     *
      * @param ids A var-args list of items to exclude from dropping.
      */
-    public void dropAllExcept(int... ids) {
-        for(Item item : getAll()) {
+    public static void dropAllExcept(int... ids) {
+        for (Item item : getAll()) {
             boolean drop = true;
-            for(int id : ids) {
-                if(item.getId() == id) drop = false;
+            for (int id : ids) {
+                if (item.getId() == id) drop = false;
             }
 
-            if(drop) {
+            if (drop) {
                 item.applyAction("Drop");
             }
         }
@@ -272,19 +282,20 @@ public class Inventory {
 
     /**
      * Uses one item on all items matching the specified target ID.
-     * @param id ID of the main item
+     *
+     * @param id       ID of the main item
      * @param targetId ID of the target item
      */
-    public void useItemOnAll(int id, int targetId) {
+    public static void useItemOnAll(int id, int targetId) {
         Item main = get(id);
-        if(main != null) {
+        if (main != null) {
             Item[] targets = getAll(targetId);
-            for(Item target : targets) {
+            for (Item target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click();
                 sleepNoException(500, 800);
-                while(ClientContext.get().getMyPlayer().getAnimation() != -1) {
+                while (ClientContext.get().getMyPlayer().getAnimation() != -1) {
                     sleepNoException(140, 200);
                 }
                 sleepNoException(100, 120);
@@ -294,19 +305,20 @@ public class Inventory {
 
     /**
      * Uses one item on an item matching the specified target ID.
-     * @param id ID of the main item
+     *
+     * @param id       ID of the main item
      * @param targetId ID of the target item
      */
-    public void useItemOn(int id, int targetId) {
+    public static void useItemOn(int id, int targetId) {
         Item main = get(id);
-        if(main != null) {
+        if (main != null) {
             Item[] targets = getAll(targetId);
-            for(Item target : targets) {
+            for (Item target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click();
                 sleepNoException(500, 800);
-                while(ClientContext.get().getMyPlayer().getAnimation() != -1) {
+                while (ClientContext.get().getMyPlayer().getAnimation() != -1) {
                     sleepNoException(140, 200);
                 }
                 sleepNoException(100, 120);

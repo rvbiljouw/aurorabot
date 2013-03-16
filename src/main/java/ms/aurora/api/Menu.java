@@ -43,7 +43,7 @@ public final class Menu {
 
                 if (isMenuOpen()) {
                     int menuOptionX = get().getClient().getMenuX() + 10;
-                    int menuOptionY = get().getClient().getMenuY() + 24
+                    int menuOptionY = get().getClient().getMenuY() + 21
                             + (15 * itemIndex - 1);
                     get().input.getMouse().clickMouse(menuOptionX, menuOptionY,
                             true);

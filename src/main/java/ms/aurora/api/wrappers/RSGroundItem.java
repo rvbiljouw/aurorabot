@@ -67,4 +67,32 @@ public class RSGroundItem implements Locatable {
     public int getLocalY() {
         return localY;
     }
+
+    /**
+     * @param actionName
+     * @return
+     */
+    public boolean applyAction(String actionName) {
+        Point screen = getScreenLocation();
+        if (screen.x == -1 && screen.y == -1) return false;
+        context.input.getMouse().moveMouse(screen.x, screen.y);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ms.aurora.api.Menu.click(actionName);
+    }
+
+    public boolean hover() {
+        Point screen = getScreenLocation();
+        if (screen.x == -1 && screen.y == -1) return false;
+        context.input.getMouse().moveMouse(screen.x, screen.y);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }

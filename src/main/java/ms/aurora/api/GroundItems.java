@@ -23,7 +23,7 @@ public class GroundItems {
                         return predicate.apply(RSGroundItem);
                     }
                 }
-        ).toArray(new RSGroundItem[0]));
+        ).toArray(new RSGroundItem[]{}));
     }
 
     public static RSGroundItem[] getAll(final Predicate<RSGroundItem> predicate) {
@@ -56,13 +56,13 @@ public class GroundItems {
 
 
     private static List<RSGroundItem> _getAll() {
-        List<RSGroundItem> objects = newArrayList();
+        List<RSGroundItem> items = newArrayList();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
-                objects.addAll(getItemsAt(x, y));
+                items.addAll(getItemsAt(x, y));
             }
         }
-        return objects;
+        return items;
     }
 
     private static List<RSGroundItem> getItemsAt(int x, int y) {
