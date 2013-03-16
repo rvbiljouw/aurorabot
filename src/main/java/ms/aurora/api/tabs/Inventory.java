@@ -54,10 +54,10 @@ public class Inventory {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static Item get(final Predicate<Item> predicate) {
-        Item[] items = getAll(predicate);
-        if (items.length > 0) {
-            return items[0];
+    public static InventoryItem get(final Predicate<InventoryItem> predicate) {
+        InventoryItem[] inventoryItems = getAll(predicate);
+        if (inventoryItems.length > 0) {
+            return inventoryItems[0];
         }
         return null;
     }
@@ -65,13 +65,13 @@ public class Inventory {
     /**
      * Retrieves the first item that matches the specified ID.
      *
-     * @param id Item ID to look for
+     * @param id InventoryItem ID to look for
      * @return item if it was found, otherwise null.
      */
-    public static Item get(int id) {
-        for (Item item : getAll()) {
-            if (item.getId() == id) {
-                return item;
+    public static InventoryItem get(int id) {
+        for (InventoryItem inventoryItem : getAll()) {
+            if (inventoryItem.getId() == id) {
+                return inventoryItem;
             }
         }
         return null;
@@ -83,31 +83,31 @@ public class Inventory {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static Item[] getAll(final Predicate<Item> predicate) {
+    public static InventoryItem[] getAll(final Predicate<InventoryItem> predicate) {
         return filter(newArrayList(getAll()),
-                new com.google.common.base.Predicate<Item>() {
+                new com.google.common.base.Predicate<InventoryItem>() {
                     @Override
-                    public boolean apply(@Nullable Item item) {
-                        return predicate.apply(item);
+                    public boolean apply(@Nullable InventoryItem inventoryItem) {
+                        return predicate.apply(inventoryItem);
                     }
                 }
-        ).toArray(new Item[0]);
+        ).toArray(new InventoryItem[0]);
     }
 
     /**
      * Retrieves all items that match the specified ID.
      *
-     * @param id Item ID to look for
+     * @param id InventoryItem ID to look for
      * @return list of items found, which can be empty.
      */
-    public static Item[] getAll(int id) {
-        List<Item> items = newArrayList();
-        for (Item item : getAll()) {
-            if (item.getId() == id) {
-                items.add(item);
+    public static InventoryItem[] getAll(int id) {
+        List<InventoryItem> inventoryItems = newArrayList();
+        for (InventoryItem inventoryItem : getAll()) {
+            if (inventoryItem.getId() == id) {
+                inventoryItems.add(inventoryItem);
             }
         }
-        return items.toArray(new Item[items.size()]);
+        return inventoryItems.toArray(new InventoryItem[inventoryItems.size()]);
     }
 
     /**
@@ -115,31 +115,31 @@ public class Inventory {
      *
      * @return an array containing all items in the inventory.
      */
-    public static Item[] getAll() {
+    public static InventoryItem[] getAll() {
         RSWidget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
-        List<Item> wrappers = newArrayList();
+        List<InventoryItem> wrappers = newArrayList();
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
-                Item item = new Item(items[i] - 1, stacks[i]);
-                item.slot = i;
-                wrappers.add(item);
+                InventoryItem inventoryItem = new InventoryItem(items[i] - 1, stacks[i]);
+                inventoryItem.slot = i;
+                wrappers.add(inventoryItem);
             }
         }
-        return wrappers.toArray(new Item[wrappers.size()]);
+        return wrappers.toArray(new InventoryItem[wrappers.size()]);
     }
 
     /**
      * Checks if the inventory contains a specific item
      *
-     * @param id Item to look for
+     * @param id InventoryItem to look for
      * @return true if found, otherwise false.
      */
     public static boolean contains(int id) {
-        for (Item item : getAll()) {
-            if (item.getId() == id) {
+        for (InventoryItem inventoryItem : getAll()) {
+            if (inventoryItem.getId() == id) {
                 return true;
             }
         }
@@ -150,13 +150,13 @@ public class Inventory {
      * Checks if the inventory contains at least the
      * specified amount of the specified item,
      *
-     * @param id     Item to count
+     * @param id     InventoryItem to count
      * @param amount Minimum amount to pass.
      * @return true if the inventory contains at least the amount specified.
      */
     public static boolean containsMinimum(int id, int amount) {
-        for (Item item : getAll()) {
-            if (item.getId() == id && item.getStackSize() >= amount) {
+        for (InventoryItem inventoryItem : getAll()) {
+            if (inventoryItem.getId() == id && inventoryItem.getStackSize() >= amount) {
                 return true;
             }
         }
@@ -167,13 +167,13 @@ public class Inventory {
      * Checks if the inventory contains at most the
      * specified amount of the specified item,
      *
-     * @param id     Item to count
+     * @param id     InventoryItem to count
      * @param amount Maximum amount to pass.
      * @return true if the inventory contains at most the amount specified.
      */
     public static boolean containsMaximum(int id, int amount) {
-        for (Item item : getAll()) {
-            if (item.getId() == id && item.getStackSize() <= amount) {
+        for (InventoryItem inventoryItem : getAll()) {
+            if (inventoryItem.getId() == id && inventoryItem.getStackSize() <= amount) {
                 return true;
             }
         }
@@ -214,14 +214,14 @@ public class Inventory {
     /**
      * Counts all the items matching the specified ID.
      *
-     * @param id Item ID of the items to count
+     * @param id InventoryItem ID of the items to count
      * @return total amount of items matching id in inventory.
      */
     public static int count(int id) {
         int count = 0;
-        for (Item item : getAll()) {
-            if (item.getId() == id) {
-                count += item.getStackSize();
+        for (InventoryItem inventoryItem : getAll()) {
+            if (inventoryItem.getId() == id) {
+                count += inventoryItem.getStackSize();
             }
         }
         return count;
@@ -233,7 +233,7 @@ public class Inventory {
      * @param id ID of the item to drop.
      */
     public static void dropItem(int id) {
-        Item firstMatch = get(id);
+        InventoryItem firstMatch = get(id);
         if (firstMatch != null) {
             firstMatch.applyAction("Drop");
         }
@@ -245,8 +245,8 @@ public class Inventory {
      * @param id ID of the item to drop.
      */
     public static void dropAll(int id) {
-        Item[] matches = getAll(id);
-        for (Item match : matches) {
+        InventoryItem[] matches = getAll(id);
+        for (InventoryItem match : matches) {
             match.applyAction("Drop");
         }
     }
@@ -268,14 +268,14 @@ public class Inventory {
      * @param ids A var-args list of items to exclude from dropping.
      */
     public static void dropAllExcept(int... ids) {
-        for (Item item : getAll()) {
+        for (InventoryItem inventoryItem : getAll()) {
             boolean drop = true;
             for (int id : ids) {
-                if (item.getId() == id) drop = false;
+                if (inventoryItem.getId() == id) drop = false;
             }
 
             if (drop) {
-                item.applyAction("Drop");
+                inventoryItem.applyAction("Drop");
             }
         }
     }
@@ -287,10 +287,10 @@ public class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOnAll(int id, int targetId) {
-        Item main = get(id);
+        InventoryItem main = get(id);
         if (main != null) {
-            Item[] targets = getAll(targetId);
-            for (Item target : targets) {
+            InventoryItem[] targets = getAll(targetId);
+            for (InventoryItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click();
@@ -310,10 +310,10 @@ public class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOn(int id, int targetId) {
-        Item main = get(id);
+        InventoryItem main = get(id);
         if (main != null) {
-            Item[] targets = getAll(targetId);
-            for (Item target : targets) {
+            InventoryItem[] targets = getAll(targetId);
+            for (InventoryItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click();
@@ -330,16 +330,16 @@ public class Inventory {
     /**
      * A class encapsulating inventory items.
      */
-    public static class Item {
+    public static class InventoryItem {
         protected int slot;
         private int id;
         private int stackSize;
 
-        public Item(int id) {
+        public InventoryItem(int id) {
             this(id, 1);
         }
 
-        public Item(int id, int stackSize) {
+        public InventoryItem(int id, int stackSize) {
             this.id = id;
             this.stackSize = stackSize;
         }

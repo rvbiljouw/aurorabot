@@ -1,11 +1,11 @@
 package ms.aurora.api.wrappers;
 
 import com.google.common.base.Function;
-import ms.aurora.api.ClientContext;
-import ms.aurora.api.Widgets;
+import ms.aurora.api.*;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.rt3.WidgetNode;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -162,6 +162,20 @@ public class RSWidget {
         int x = Utilities.random(area.x, area.width);
         int y = Utilities.random(area.y, area.height);
         return new Point(x, y);
+    }
+
+    public void applyAction(String action) { //TODO: randomness
+        VirtualMouse mouse = ClientContext.get().input.getMouse();
+        Rectangle area = getArea();
+        mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+        ms.aurora.api.Menu.click(action);
+    }
+
+    public void click() { //TODO: randomness
+        VirtualMouse mouse = ClientContext.get().input.getMouse();
+        Rectangle area = getArea();
+        mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+        mouse.clickMouse(true);
     }
 
     public int[] getInventoryItems() {

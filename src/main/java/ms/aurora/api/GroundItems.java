@@ -19,8 +19,8 @@ public class GroundItems {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
                     @Override
-                    public boolean apply(RSGroundItem RSGroundItem) {
-                        return predicate.apply(RSGroundItem);
+                    public boolean apply(RSGroundItem item) {
+                        return predicate.apply(item);
                     }
                 }
         ).toArray(new RSGroundItem[]{}));
@@ -30,8 +30,8 @@ public class GroundItems {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
                     @Override
-                    public boolean apply(RSGroundItem RSGroundItem) {
-                        return predicate.apply(RSGroundItem);
+                    public boolean apply(RSGroundItem item) {
+                        return predicate.apply(item);
                     }
                 }
         ).toArray(new RSGroundItem[]{});

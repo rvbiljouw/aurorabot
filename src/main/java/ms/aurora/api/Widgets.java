@@ -22,12 +22,18 @@ public final class Widgets {
 
     public static RSWidget getWidget(int parent, int child) {
         Widget[][] cache = context.get().getClient().getWidgetCache();
-        return new RSWidget(context.get(), cache[parent][child]);
+        Widget[] p = cache[parent];
+        if (p == null) return null;
+        Widget c = p[child];
+        if (c == null) return null;
+        return new RSWidget(context.get(), c);
     }
 
     public static RSWidget[] getWidgets(int parent) {
         Widget[][] cache = context.get().getClient().getWidgetCache();
-        return transform(newArrayList(cache[parent]), transform).toArray(new RSWidget[0]);
+        Widget[] p = cache[parent];
+        if (p == null) return null;
+        return transform(newArrayList(p), transform).toArray(new RSWidget[0]);
     }
 
     /**
