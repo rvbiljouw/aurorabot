@@ -65,7 +65,7 @@ public interface Client {
 
     public Bag getWidgetNodeBag();
 
-    public Item[][][] getGroundItems();
+    public Deque[][][] getGroundItems();
 
     public int getLoginIndex();
 

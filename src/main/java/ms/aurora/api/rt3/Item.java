@@ -7,4 +7,5 @@ public interface Item {
 
     public int getId();
 
+    public int getStackSize();
 }
