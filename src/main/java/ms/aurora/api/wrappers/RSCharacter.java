@@ -2,10 +2,10 @@ package ms.aurora.api.wrappers;
 
 import com.google.common.base.Predicate;
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.Menu;
 import ms.aurora.api.Projection;
 
 import java.awt.*;
+
 
 /**
  * @author rvbiljouw
@@ -83,13 +83,10 @@ public class RSCharacter extends RSRenderable implements Locatable {
      * @param actionName
      * @return
      */
-    public boolean applyAction(String actionName) {
-        if (!Projection.tileOnScreen(getRegionalLocation())) {
-            return false;
-        }
+    public void applyAction(final String actionName) {
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
-        return Menu.click(actionName);
+        ms.aurora.api.Menu.click(actionName);
     }
 
     public boolean hover() {

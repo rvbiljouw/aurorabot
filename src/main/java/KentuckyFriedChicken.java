@@ -11,11 +11,11 @@ import ms.aurora.api.wrappers.RSNPC;
 public class KentuckyFriedChicken extends LoopScript {
     @Override
     public int loop() {
-        RSNPC closestChicken = Npcs.get(CHICKEN);
-        if(closestChicken != null && !getMyPlayer().isInCombat() && !getMyPlayer().isMoving()) {
+        final RSNPC closestChicken = Npcs.get(CHICKEN);
+        if (closestChicken != null) {
             closestChicken.applyAction("Attack");
         }
-        return 1000;
+        return 100;
     }
 
     private static final Predicate<RSNPC> CHICKEN = new Predicate<RSNPC>() {

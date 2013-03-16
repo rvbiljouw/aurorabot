@@ -15,11 +15,17 @@ public class RSNPC extends RSCharacter {
     }
 
     public int getId() {
-        return wrapped.getComposite().getId();
+        if (wrapped != null && wrapped.getComposite() != null) {
+            return wrapped.getComposite().getId();
+        }
+        return -1;
     }
 
     public String getName() {
-        return wrapped.getComposite().getName();
+        if (wrapped != null && wrapped.getComposite() != null) {
+            return wrapped.getComposite().getName();
+        }
+        return "undefined";
     }
 
 }

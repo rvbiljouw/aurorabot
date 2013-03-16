@@ -3,8 +3,6 @@ package ms.aurora.input;
 import ms.aurora.api.ClientContext;
 
 import java.applet.Applet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -28,7 +26,6 @@ public class InputManager {
     }
 
     public void initialize() {
-        ExecutorService inputThreadPool = Executors.newFixedThreadPool(2);
-        inputThreadPool.submit(mouse);
+
     }
 }
