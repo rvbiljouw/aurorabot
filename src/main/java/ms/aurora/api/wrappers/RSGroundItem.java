@@ -37,7 +37,7 @@ public class RSGroundItem implements Locatable {
     }
 
     public Point getScreenLocation() {
-        return Projection.worldToScreen(getRegionalLocation());
+        return Projection.worldToScreen(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
     }
 
     public RSTile getLocation() {
@@ -45,9 +45,7 @@ public class RSGroundItem implements Locatable {
     }
 
     public RSTile getRegionalLocation() {
-        int x = getLocalX();
-        int y = getLocalY();
-        return new RSTile(x, y, z);
+        return new RSTile(getLocalX(), getLocalY(), z);
     }
 
     public int distance(Locatable other) {
