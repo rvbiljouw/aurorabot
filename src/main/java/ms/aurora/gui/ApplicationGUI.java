@@ -9,6 +9,7 @@ public class ApplicationGUI extends JFrame {
     private static final long serialVersionUID = 2133982906411134266L;
     private JPanel contentPane;
     private JTabbedPane tabbedPane;
+    private JMenu mnTools;
 
     /**
      * Create the frame.
@@ -77,7 +78,7 @@ public class ApplicationGUI extends JFrame {
         JMenuItem mntmStopScript = new JMenuItem("Stop script");
         mnRun.add(mntmStopScript);
 
-        JMenu mnTools = new JMenu("Tools");
+        mnTools = new JMenu("Tools");
         menuBar.add(mnTools);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -91,5 +92,9 @@ public class ApplicationGUI extends JFrame {
 
     public JTabbedPane getTabbedPane() {
         return tabbedPane;
+    }
+
+    public JMenu getTools() {
+        return mnTools;
     }
 }

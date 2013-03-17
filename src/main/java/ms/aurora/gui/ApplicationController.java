@@ -1,10 +1,6 @@
 package ms.aurora.gui;
 
-import ms.aurora.api.script.LoopScript;
-import ms.aurora.api.script.ScriptMetadata;
 import ms.aurora.core.Session;
-import ms.aurora.core.script.ScriptLoader;
-import ms.aurora.gui.ScriptSelector.ScriptSelectionListener;
 import ms.aurora.loader.AppletLoader;
 import ms.aurora.loader.AppletLoader.CompletionListener;
 import org.apache.log4j.Logger;
@@ -55,21 +51,7 @@ public final class ApplicationController {
     }
 
     public void onSelectScript() {
-        Applet selectedApplet = getSelectedApplet();
-        if (selectedApplet != null) {
-            final Session session = Session.lookupSession(selectedApplet.hashCode());
-            final ScriptLoader scriptLoader = new ScriptLoader("./scripts/");
-            ScriptSelector selector = new ScriptSelector(scriptLoader.getMetadatas(), new ScriptSelectionListener() {
-                @Override
-                public void onSelected(ScriptMetadata metadata) {
-                    LoopScript script = scriptLoader.getScript(metadata);
-                    session.getScriptManager().start(script);
-                    session.addDrawable(script);
-                    logger.info("Started " + metadata.name());
-                }
-            });
-            selector.setVisible(true);
-        }
+
     }
 
     private Applet getSelectedApplet() {
@@ -78,6 +60,10 @@ public final class ApplicationController {
             return (Applet) component;
         }
         return null;
+    }
+
+    public void onTabChanged() {
+
     }
 
     private static final String TAB_PREFIX = "Session #";

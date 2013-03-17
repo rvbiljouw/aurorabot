@@ -29,6 +29,16 @@ public final class Npcs {
                 }).toArray(new RSNPC[0]));
     }
 
+    public static RSNPC[] getAll(final Predicate<RSNPC> predicate) {
+        return Collections2.filter(_getAll(),
+                new com.google.common.base.Predicate<RSNPC>() {
+                    @Override
+                    public boolean apply(RSNPC object) {
+                        return predicate.apply(object);
+                    }
+                }).toArray(new RSNPC[0]);
+    }
+
     private static RSNPC getClosest(RSNPC[] npcs) {
         RSNPC closest = null;
         int closestDistance = 9999;

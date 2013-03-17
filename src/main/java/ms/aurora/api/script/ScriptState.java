@@ -3,8 +3,8 @@ package ms.aurora.api.script;
 /**
  * @author rvbiljouw
  */
-public interface Action {
+public enum ScriptState {
 
-    public void perform();
+    RUNNING, PAUSED, START, STOP
 
 }
