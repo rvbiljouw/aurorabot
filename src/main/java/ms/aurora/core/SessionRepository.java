@@ -1,5 +1,6 @@
 package ms.aurora.core;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -16,5 +17,9 @@ public class SessionRepository {
 
     public static Session set(Integer appletHash, Session session) {
         return sessionMap.put(appletHash, session);
+    }
+
+    public static Collection<Session> getAll() {
+        return sessionMap.values();
     }
 }

@@ -1,34 +1,26 @@
 package ms.aurora.gui;
 
 import ms.aurora.core.Session;
+import ms.aurora.gui.plugin.PluginOverview;
+import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.loader.AppletLoader;
 import ms.aurora.loader.AppletLoader.CompletionListener;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.applet.Applet;
+import java.awt.*;
 
 public final class ApplicationController {
-    private final Logger logger = Logger.getLogger(ApplicationController.class);
-    private final BrowserPanel welcomePanel = new BrowserPanel(
-            "http://www.aurora.ms");
-    private final ApplicationGUI gui;
+    private final static Logger logger = Logger.getLogger(ApplicationController.class);
+    private final static ApplicationGUI gui = new ApplicationGUI();
 
-    public ApplicationController() {
-        this.gui = new ApplicationGUI(this);
-        this.initialized();
-    }
-
-    /**
-     * Called when the frame has been initialized.
-     */
-    public void initialized() {
-        gui.getTabbedPane().addTab("Welcome!", welcomePanel);
+    public static void startApplication() {
         gui.setVisible(true);
         logger.info("Initialized GUI");
     }
 
-    public void onNewClient() {
+    public static void onNewClient() {
         AppletLoader loader = new AppletLoader();
         loader.setCompletionListener(new CompletionListener() {
             @Override
@@ -41,7 +33,10 @@ public final class ApplicationController {
                         init.start();
 
                         String tabName = TAB_PREFIX + applet.hashCode();
-                        gui.getTabbedPane().addTab(tabName, applet);
+                        JPanel faggot = new JPanel();
+                        faggot.setBounds(0, 0, 768, 503);
+                        faggot.add(applet, BorderLayout.CENTER);
+                        gui.getTabbedPane().addTab(tabName, faggot);
                         logger.info("Initialized " + tabName);
                     }
                 });
@@ -50,20 +45,20 @@ public final class ApplicationController {
         loader.start();
     }
 
-    public void onSelectScript() {
-
+    public static void onSelectScript() {
+    	ScriptOverview overview = new ScriptOverview();
+    	overview.setVisible(true);
     }
 
-    private Applet getSelectedApplet() {
-        Object component = gui.getTabbedPane().getSelectedComponent();
-        if (component instanceof Applet) {
-            return (Applet) component;
-        }
-        return null;
+    public static void onPluginOverview() {
+        PluginOverview overview = new PluginOverview();
+        overview.setVisible(true);
     }
 
-    public void onTabChanged() {
-
+    public static void addToolsEntry(JMenu menu) {
+        gui.getTools().add(menu);
+        gui.getTools().repaint();
+        System.out.println("FUCK YOU");
     }
 
     private static final String TAB_PREFIX = "Session #";

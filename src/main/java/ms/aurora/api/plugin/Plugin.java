@@ -3,7 +3,10 @@ package ms.aurora.api.plugin;
 import ms.aurora.api.ClientContext;
 import ms.aurora.core.Session;
 import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.gui.ApplicationController;
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
 
 /**
  * @author rvbiljouw
@@ -64,6 +67,10 @@ public abstract class Plugin extends ClientContext {
 
     public boolean validate() {
         return getManifest() != null;
+    }
+
+    public void registerMenu(JMenu menu) {
+        ApplicationController.addToolsEntry(menu);
     }
 
     public PluginManifest getManifest() {

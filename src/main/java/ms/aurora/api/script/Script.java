@@ -73,6 +73,14 @@ public abstract class Script extends ClientContext implements Runnable {
     public void onFinish() {
 
     }
+    
+    public boolean validate() {
+    	return getManifest() != null;
+    }
+    
+    public ScriptManifest getManifest() {
+    	return getClass().getAnnotation(ScriptManifest.class);
+    }
 
 
 }

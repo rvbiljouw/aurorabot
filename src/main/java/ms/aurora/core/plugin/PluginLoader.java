@@ -1,7 +1,7 @@
 package ms.aurora.core.plugin;
 
 import ms.aurora.api.plugin.Plugin;
-import ms.aurora.settings.PluginSettings;
+import ms.aurora.core.model.PluginSource;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -21,16 +21,12 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class PluginLoader {
     private static final Logger logger = Logger.getLogger(PluginLoader.class);
-    private final List<Plugin> plugins = newArrayList();
+    private final static List<Plugin> plugins = newArrayList();
 
-    public PluginLoader() {
-
-    }
-
-    public void load() {
-        PluginSettings settings = PluginSettings.get();
-        for (String source : settings.getSources()) {
+    public static void load() {
+        for (PluginSource sourceObj : PluginSource.getAll()) {
             try {
+                String source = sourceObj.getSource();
                 URLClassLoader classLoader = new URLClassLoader(new URL[]{new URL("file:" + source)});
                 File sourceDirectory = new File(source);
                 for (File file : sourceDirectory.listFiles()) {
@@ -61,7 +57,7 @@ public class PluginLoader {
         }
     }
 
-    private void loadPlugin(ClassLoader classLoader, String source, String className) {
+    private static void loadPlugin(ClassLoader classLoader, String source, String className) {
         try {
             Class<?> pluginClass = classLoader.loadClass(className);
             Object instance = pluginClass.newInstance();
@@ -83,7 +79,25 @@ public class PluginLoader {
         }
     }
 
-    public List<Plugin> getPlugins() {
+    public static void reload() {
+        plugins.clear();
+    }
+
+    public static List<Plugin> getPlugins() {
+        if(plugins.size() == 0) {
+            load();
+        }
         return plugins;
+    }
+
+    static {
+        if(PluginSource.getBySource("./plugins/").size() == 0) {
+            PluginSource local = new PluginSource("./plugins/", false);
+            local.save();
+        }
+
+        logger.info("Loading plugins..");
+        load();
+        logger.info("Done.");
     }
 }

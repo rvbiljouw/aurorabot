@@ -23,6 +23,10 @@ public class PaintManager implements PaintListener {
         listeners.add(listener);
     }
 
+    public void deregister(PaintListener listener) {
+        listeners.remove(listener);
+    }
+
     @Override
     public void onRepaint(Graphics g) {
         for(PaintListener listener : listeners) {

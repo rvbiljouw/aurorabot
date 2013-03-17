@@ -14,11 +14,11 @@ public class ApplicationGUI extends JFrame {
     /**
      * Create the frame.
      */
-    public ApplicationGUI(final ApplicationController controller) {
+    public ApplicationGUI() {
         setResizable(false);
         setTitle("Project Aurora");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 765, 600);
+        setBounds(100, 100, 771, 600);
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -29,7 +29,7 @@ public class ApplicationGUI extends JFrame {
         JMenuItem mntmNewClient = new JMenuItem("New client");
         mntmNewClient.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.onNewClient();
+                ApplicationController.onNewClient();
             }
         });
         mnFile.add(mntmNewClient);
@@ -61,7 +61,7 @@ public class ApplicationGUI extends JFrame {
         JMenuItem mntmScripts = new JMenuItem("Select script");
         mntmScripts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.onSelectScript();
+                ApplicationController.onSelectScript();
             }
         });
         mnRun.add(mntmScripts);
@@ -80,13 +80,23 @@ public class ApplicationGUI extends JFrame {
 
         mnTools = new JMenu("Tools");
         menuBar.add(mnTools);
+
+        JMenuItem mntmPluginOverview = new JMenuItem("Plugin Overview");
+        mntmPluginOverview.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ApplicationController.onPluginOverview();
+            }
+        });
+        mnTools.add(mntmPluginOverview);
+
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPane.setBounds(0, 0, 765, 556);
+        tabbedPane.setBounds(0, 0, 770, 556);
         contentPane.add(tabbedPane);
     }
 

@@ -1,5 +1,6 @@
 package ms.aurora.input;
 
+import ms.aurora.api.ClientContext;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
@@ -15,10 +16,12 @@ public class ClientCanvas extends Canvas {
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
+    private final ClientContext context = new ClientContext();
     private Session session;
 
     public ClientCanvas() {
         super();
+        ClientContext.set(context);
     }
 
     @Override
@@ -38,6 +41,7 @@ public class ClientCanvas extends Canvas {
     private void dispatchEvent(Graphics g) {
         if (session == null) {
             session = SessionRepository.get(getParent().hashCode());
+            context.setSession(session);
         } else {
             session.getPaintManager().onRepaint(g);
         }

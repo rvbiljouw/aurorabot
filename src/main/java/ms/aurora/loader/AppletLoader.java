@@ -60,10 +60,7 @@ public class AppletLoader implements Runnable {
             appletInstance.setStub(appletStub);
             appletInstance.init();
             appletInstance.start();
-
-            appletInstance.setBounds(0, 66, 765, 503);
             applet = appletInstance;
-
             if (listener != null) {
                 listener.onCompletion(applet);
             }
