@@ -17,6 +17,14 @@ import static ms.aurora.api.ClientContext.context;
  */
 public class Objects {
 
+    /**
+     * a method which gets the closest {@link RSObject} in the current region which satisfy the {@link Predicate}
+     *
+     * @param predicate the {@link Predicate} which needs to be satisfied
+     * @return the closest {@link RSObject} which satisfies the given {@link Predicate} else null
+     * @see RSObject#distance(ms.aurora.api.wrappers.Locatable)
+     * @see Predicate
+     */
     public static RSObject get(final Predicate<RSObject> predicate) {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSObject>() {
@@ -28,6 +36,13 @@ public class Objects {
         ).toArray(new RSObject[0]));
     }
 
+    /**
+     * a method which gets all the {@link RSObject} in the current region which satisfy the given {@link Predicate}
+     *
+     * @param predicate the {@link Predicate} which needs to be satisfied
+     * @return an array containing all of the {@link RSObject} which satisfy the predicate
+     * @see Predicate
+     */
     public static RSObject[] getAll(final Predicate<RSObject> predicate) {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSObject>() {
@@ -39,6 +54,11 @@ public class Objects {
         ).toArray(new RSObject[]{});
     }
 
+    /**
+     * a method which gets all the {@link RSObject} in the current region
+     *
+     * @return an array of {@link RSObject} in the current region
+     */
     public static RSObject[] getAll() {
         return _getAll().toArray(new RSObject[0]);
     }
@@ -55,7 +75,6 @@ public class Objects {
         }
         return closest;
     }
-
 
     private static List<RSObject> _getAll() {
         List<RSObject> objects = newArrayList();

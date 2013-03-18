@@ -15,6 +15,15 @@ import static ms.aurora.api.ClientContext.context;
  * @author tobiewarburton
  */
 public class GroundItems {
+
+    /**
+     * finds the closest {@link RSGroundItem} which matches the given predicate
+     *
+     * @param predicate the {@link Predicate} in which is required to be satisfied
+     * @return the closest {@link RSGroundItem} which satisfies the predicate if there is one or null
+     * @see RSGroundItem#distance(ms.aurora.api.wrappers.Locatable)
+     * @see Predicate
+     */
     public static RSGroundItem get(final Predicate<RSGroundItem> predicate) {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
@@ -26,6 +35,13 @@ public class GroundItems {
         ).toArray(new RSGroundItem[]{}));
     }
 
+    /**
+     * finds an array of {@link RSGroundItem} which match the given predicate
+     *
+     * @param predicate the {@link Predicate} in which is required to be satisfied
+     * @return the array containing all {@link RSGroundItem} which satisfy the predicate
+     * @see Predicate
+     */
     public static RSGroundItem[] getAll(final Predicate<RSGroundItem> predicate) {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
@@ -37,6 +53,11 @@ public class GroundItems {
         ).toArray(new RSGroundItem[]{});
     }
 
+    /**
+     * finds an array containing all of the {@link RSGroundItem} in the current region
+     *
+     * @return an array containing all of the {@link RSGroundItem} in the current region
+     */
     public static RSGroundItem[] getAll() {
         return _getAll().toArray(new RSGroundItem[0]);
     }
