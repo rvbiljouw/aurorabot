@@ -14,10 +14,18 @@ public final class Projection {
     private Projection() {
     }
 
+    public static Point worldToScreen(RSTile location, int x, int z, int height) {
+        return worldToScreen(location.getX() - x, location.getY() - z, height);
+    }
+
     public static Point worldToScreen(RSTile tile) {
-        int x = tile.getX();
-        int y = tile.getY();
-        int z = tile.getZ();
+        return worldToScreen(tile.getX(), tile.getY(), tile.getZ());
+    }
+
+    public static Point worldToScreen(int _x, int _y, int _height) {
+        int x = _x;
+        int y = _y;
+        int z = _height;
         if (x < 128 || y < 128 || x > 13056 || y > 13056) {
             return new Point(-1, -1);
         } else {
@@ -85,4 +93,12 @@ public final class Projection {
     }
 
     private static final Rectangle GAMESCREEN = new Rectangle(4, 4, 512, 334);
+
+    public static int[] getCurveSin() {
+        return CURVESIN;
+    }
+
+    public static int[] getCurveCos() {
+        return CURVECOS;
+    }
 }

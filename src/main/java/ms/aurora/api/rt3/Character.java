@@ -26,4 +26,6 @@ public interface Character extends Renderable {
     public int getInteractingEntity();
 
     public int getPathLength();
+
+    public int getModelHeight();
 }

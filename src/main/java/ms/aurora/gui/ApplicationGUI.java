@@ -83,7 +83,7 @@ public class ApplicationGUI extends JFrame {
         mnRun.add(mntmPauseScript);
 
         JMenuItem mntmResumeScript = new JMenuItem("Resume script");
-        mntmPauseScript.addActionListener(new ActionListener() {
+        mntmResumeScript.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ScriptController.resumeScript();
@@ -92,7 +92,7 @@ public class ApplicationGUI extends JFrame {
         mnRun.add(mntmResumeScript);
 
         JMenuItem mntmStopScript = new JMenuItem("Stop script");
-        mntmPauseScript.addActionListener(new ActionListener() {
+        mntmStopScript.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ScriptController.stopScript();

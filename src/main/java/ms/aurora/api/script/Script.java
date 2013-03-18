@@ -1,6 +1,7 @@
 package ms.aurora.api.script;
 
 import ms.aurora.api.ClientContext;
+import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -32,27 +33,31 @@ public abstract class Script extends ClientContext implements Runnable {
         logger.error(message, t);
     }
 
-    public void setState(ScriptState state) {
+    public synchronized void setState(ScriptState state) {
         this.state = state;
+        info("New state " + state.name());
+    }
+
+    public synchronized ScriptState getState() {
+        return this.state;
     }
 
     @Override
     public void run() {
-        ClientContext.set(this);
-        input.initialize();
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                switch (state) {
+                switch (getState()) {
                     case START:
+                        init();
                         onStart();
-                        state = ScriptState.RUNNING;
+                        setState(ScriptState.RUNNING);
                         break;
 
 
                     case RUNNING:
                         int loopResult = tick();
                         if (loopResult != -1) {
-                            Thread.sleep(loopResult);
+                            Thread.sleep(loopResult + 600);
                         } else {
                             // Returning -1 means exit.
                             info("Exited by -1");
@@ -65,6 +70,8 @@ public abstract class Script extends ClientContext implements Runnable {
                         break;
 
                     case STOP:
+                        cleanup();
+                        onFinish();
                         return;
 
                 }
@@ -84,6 +91,21 @@ public abstract class Script extends ClientContext implements Runnable {
 
     public void onFinish() {
 
+    }
+
+    private void init() {
+        ClientContext.set(this);
+        input.initialize();
+
+        if(this instanceof PaintListener) {
+            getSession().getPaintManager().register((PaintListener)this);
+        }
+    }
+
+    private void cleanup() {
+        if(this instanceof PaintListener) {
+            getSession().getPaintManager().deregister((PaintListener)this);
+        }
     }
 
     public boolean validate() {

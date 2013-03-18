@@ -1,9 +1,9 @@
 package ms.aurora.api.wrappers;
 
-import com.google.common.base.Predicate;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.Players;
 import ms.aurora.api.Projection;
+import ms.aurora.api.rt3.Model;
 
 import java.awt.*;
 
@@ -33,7 +33,7 @@ public class RSCharacter extends RSRenderable implements Locatable {
     public RSTile getRegionalLocation() {
         int x = getLocalX();
         int z = getLocalY();
-        return new RSTile(x, z, getHeight());
+        return new RSTile(x, z, -(wrapped.getModelHeight() / 2));
     }
 
     public int distance(Locatable other) {
@@ -90,10 +90,10 @@ public class RSCharacter extends RSRenderable implements Locatable {
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
         ms.aurora.api.Menu.click(actionName);
-        sleepNoException(500, 600);
+        sleepNoException(700);
 
         while(Players.getLocal().isMoving()) {
-            sleepNoException(200, 300);
+            sleepNoException(600);
         }
     }
 
@@ -139,13 +139,18 @@ public class RSCharacter extends RSRenderable implements Locatable {
     }
 
     public boolean isMoving() {
-        return wrapped.getPathLength() > 0;
+        return wrapped.getPathLength() != 0;
     }
 
-    public static final Predicate<RSCharacter> IDLE = new Predicate<RSCharacter>() {
-        @Override
-        public boolean apply(RSCharacter object) {
-            return !object.isInCombat();
+    public RSModel getModel() {
+        Model model = _getModel();
+        if(model != null) {
+            return new RSModel(model, getLocalX(),  getLocalY(),  getTurnDirection());
         }
-    };
+        return null;
+    }
+
+    public String dbgString() {
+        return "Path: " + wrapped.getPathLength() + " IC: " + isInCombat();
+    }
 }
