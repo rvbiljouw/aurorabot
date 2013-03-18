@@ -7,8 +7,6 @@ import ms.aurora.browser.wrapper.Plaintext;
 
 import java.io.InputStream;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -31,14 +29,11 @@ public class ClientConfig implements ResponseHandler {
     public void handleResponse(InputStream inputStream) {
         Plaintext plaintext = Plaintext.fromStream(inputStream);
         plaintext.setText(plaintext.getText().replaceAll("param=", "").replaceAll("msg=", ""));
-        Pattern pattern = Pattern.compile(KV_PAIR_REGEX);
         String[] lines = plaintext.getText().split("\n");
         for (String line : lines) {
-            Matcher codeBaseMatcher = pattern.matcher(line);
-            while (codeBaseMatcher.find()) {
-                parameters.put(codeBaseMatcher.group(1),
-                        codeBaseMatcher.group(2));
-            }
+            String key = line.substring(0, line.indexOf('='));
+            String value = line.substring(line.indexOf('=') + 1, line.length());
+            parameters.put(key, value);
         }
 
         documentBase = parameters.get("codebase");
@@ -68,6 +63,5 @@ public class ClientConfig implements ResponseHandler {
         return parameters;
     }
 
-    private static final String KV_PAIR_REGEX = "(.*)=(.*)";
     private static final String URL = "/jav_config.ws";
 }

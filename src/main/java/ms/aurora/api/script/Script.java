@@ -61,7 +61,7 @@ public abstract class Script extends ClientContext implements Runnable {
                         break;
 
                     case PAUSED:
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                         break;
 
                     case STOP:
@@ -69,6 +69,7 @@ public abstract class Script extends ClientContext implements Runnable {
 
                 }
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
                 logger.error("Script has thrown exception and has exited.", e);

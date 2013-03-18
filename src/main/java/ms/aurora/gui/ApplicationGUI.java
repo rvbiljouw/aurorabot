@@ -1,5 +1,8 @@
 package ms.aurora.gui;
 
+import ms.aurora.gui.plugin.PluginController;
+import ms.aurora.gui.script.ScriptController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
@@ -62,7 +65,7 @@ public class ApplicationGUI extends JFrame {
         JMenuItem mntmScripts = new JMenuItem("Select script");
         mntmScripts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ApplicationController.onScriptOverview();
+                ScriptController.onScriptOverview();
             }
         });
         mnRun.add(mntmScripts);
@@ -71,12 +74,30 @@ public class ApplicationGUI extends JFrame {
         mnRun.add(scriptSeperator);
 
         JMenuItem mntmPauseScript = new JMenuItem("Pause script");
+        mntmPauseScript.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScriptController.pauseScript();
+            }
+        });
         mnRun.add(mntmPauseScript);
 
         JMenuItem mntmResumeScript = new JMenuItem("Resume script");
+        mntmPauseScript.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScriptController.resumeScript();
+            }
+        });
         mnRun.add(mntmResumeScript);
 
         JMenuItem mntmStopScript = new JMenuItem("Stop script");
+        mntmPauseScript.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScriptController.stopScript();
+            }
+        });
         mnRun.add(mntmStopScript);
 
         mnPlugins = new JMenu("Plug-ins");
@@ -86,7 +107,7 @@ public class ApplicationGUI extends JFrame {
         mntmPluginOverview.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ApplicationController.onPluginOverview();
+                PluginController.onPluginOverview();
             }
         });
         mnPlugins.add(mntmPluginOverview);
@@ -118,7 +139,7 @@ public class ApplicationGUI extends JFrame {
             mntmPluginOverview.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ApplicationController.onPluginOverview();
+                    PluginController.onPluginOverview();
                 }
             });
             this.mnPlugins.add(mntmPluginOverview);

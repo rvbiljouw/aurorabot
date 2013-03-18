@@ -2,7 +2,6 @@ package ms.aurora.gui.script;
 
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
-import ms.aurora.gui.ApplicationController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class ScriptWidget extends JPanel {
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ApplicationController.runScript(script);
+                ScriptController.runScript(script);
             }
         });
 		add(btnStart);

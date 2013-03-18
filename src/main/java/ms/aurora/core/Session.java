@@ -6,7 +6,7 @@ import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
-import ms.aurora.gui.ApplicationController;
+import ms.aurora.gui.plugin.PluginController;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -38,7 +38,7 @@ public class Session implements Runnable {
                 mntmPluginOverview.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        ApplicationController.onPluginOverview();
+                        PluginController.onPluginOverview();
                     }
                 });
                 pluginsMenu.add(mntmPluginOverview);

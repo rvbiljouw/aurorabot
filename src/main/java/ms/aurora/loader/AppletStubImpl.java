@@ -41,6 +41,7 @@ public class AppletStubImpl implements AppletStub {
 
     @Override
     public String getParameter(String name) {
+        System.out.println(name + " = " + appletParams.get(name));
         return appletParams.get(name);
     }
 

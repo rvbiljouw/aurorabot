@@ -5,12 +5,18 @@ import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+
+import static ms.aurora.api.ClientContext.set;
 
 /**
  * @author rvbiljouw
  */
-public class ClientCanvas extends Canvas {
+public class ClientCanvas extends Canvas implements MouseMotionListener,
+        MouseListener {
     private static final long serialVersionUID = 4392449009242794406L;
     private final BufferedImage backBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
@@ -18,10 +24,18 @@ public class ClientCanvas extends Canvas {
             BufferedImage.TYPE_INT_ARGB);
     private final ClientContext context = new ClientContext();
     private Session session;
+    private int mouseX;
+    private int mouseY;
+    private int lastClickX;
+    private int lastClickY;
+    private long lastPressTime;
+
 
     public ClientCanvas() {
         super();
-        ClientContext.set(context);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        set(context);
     }
 
     @Override
@@ -32,6 +46,7 @@ public class ClientCanvas extends Canvas {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.drawImage(backBuffer, 0, 0, null);
         dispatchEvent(graphics2D);
+        drawMouse(graphics2D);
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
@@ -57,5 +72,53 @@ public class ClientCanvas extends Canvas {
         x = 0;
         y = 0;
         super.setBounds(x,y,width,height);
+    }
+
+    private void drawMouse(Graphics2D g) {
+        g.setColor(Color.YELLOW);
+        g.drawLine(mouseX - 7, mouseY - 7, mouseX + 7, mouseY + 7);
+        g.drawLine(mouseX + 7, mouseY - 7, mouseX - 7, mouseY + 7);
+        if (System.currentTimeMillis() - lastPressTime < 1000) {
+            g.setColor(Color.RED);
+            g.drawLine(lastClickX - 7, lastClickY - 7, lastClickX + 7,
+                    lastClickY + 7);
+            g.drawLine(lastClickX + 7, lastClickY - 7, lastClickX - 7,
+                    lastClickY + 7);
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        this.mouseX = e.getX();
+        this.mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        this.mouseX = e.getX();
+        this.mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        this.lastClickX = e.getX();
+        this.lastClickY = e.getY();
+        this.lastPressTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }

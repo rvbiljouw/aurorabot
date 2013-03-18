@@ -1,10 +1,7 @@
 package ms.aurora.gui;
 
-import ms.aurora.api.script.Script;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
-import ms.aurora.gui.plugin.PluginOverview;
-import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.loader.AppletLoader;
 import ms.aurora.loader.AppletLoader.CompletionListener;
 import org.apache.log4j.Logger;
@@ -39,16 +36,6 @@ public final class ApplicationController {
         });
     }
 
-    public static void onScriptOverview() {
-        ScriptOverview overview = new ScriptOverview();
-        overview.setVisible(true);
-    }
-
-    public static void onPluginOverview() {
-        PluginOverview overview = new PluginOverview();
-        overview.setVisible(true);
-    }
-
     public static void onNewClient() {
         AppletLoader loader = new AppletLoader();
         loader.setCompletionListener(new CompletionListener() {
@@ -74,21 +61,6 @@ public final class ApplicationController {
         loader.start();
     }
 
-    public static void runScript(Script script) {
-        Applet applet = getSelectedApplet();
-        if (applet != null) {
-            Session session = SessionRepository.get(applet.hashCode());
-            if (session != null) {
-                session.getScriptManager().start(script);
-                System.out.println("started script lolol");
-            } else {
-                System.out.println("wot rofl");
-            }
-        } else {
-            System.out.println("No applet selected..");
-        }
-    }
-
     public static Applet getSelectedApplet() {
         JTabbedPane tabs = gui.getTabbedPane();
 
@@ -99,6 +71,15 @@ public final class ApplicationController {
                     return (Applet) component;
                 }
             }
+        }
+        return null;
+    }
+
+    public static Session getSelectedSession() {
+        Applet applet = getSelectedApplet();
+        if (applet != null) {
+            Session session = SessionRepository.get(applet.hashCode());
+            return session;
         }
         return null;
     }
