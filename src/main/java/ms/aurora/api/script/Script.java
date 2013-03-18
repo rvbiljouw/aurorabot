@@ -3,9 +3,6 @@ package ms.aurora.api.script;
 import ms.aurora.api.ClientContext;
 import org.apache.log4j.Logger;
 
-import static java.lang.Thread.currentThread;
-import static ms.aurora.api.util.Utilities.sleepNoException;
-
 /**
  * @author rvbiljouw
  */
@@ -41,27 +38,41 @@ public abstract class Script extends ClientContext implements Runnable {
 
     @Override
     public void run() {
-        while(!currentThread().isInterrupted()) {
-            switch(state) {
+        ClientContext.set(this);
+        input.initialize();
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                switch (state) {
+                    case START:
+                        onStart();
+                        state = ScriptState.RUNNING;
+                        break;
 
-                case START:
-                    onStart();
-                    state = ScriptState.RUNNING;
-                    break;
 
-                case RUNNING:
-                    int tick = tick();
-                    sleepNoException(tick, tick + 100);
-                    break;
+                    case RUNNING:
+                        int loopResult = tick();
+                        if (loopResult != -1) {
+                            Thread.sleep(loopResult);
+                        } else {
+                            // Returning -1 means exit.
+                            info("Exited by -1");
+                            return;
+                        }
+                        break;
 
-                case STOP:
-                    onFinish();
-                    currentThread().interrupt();
-                    break;
+                    case PAUSED:
+                        Thread.sleep(5000);
+                        break;
 
-                case PAUSED:
-                    sleepNoException(5000);
-                    break;
+                    case STOP:
+                        return;
+
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                logger.error("Script has thrown exception and has exited.", e);
+                return;
             }
         }
     }
@@ -73,13 +84,13 @@ public abstract class Script extends ClientContext implements Runnable {
     public void onFinish() {
 
     }
-    
+
     public boolean validate() {
-    	return getManifest() != null;
+        return getManifest() != null;
     }
-    
+
     public ScriptManifest getManifest() {
-    	return getClass().getAnnotation(ScriptManifest.class);
+        return getClass().getAnnotation(ScriptManifest.class);
     }
 
 

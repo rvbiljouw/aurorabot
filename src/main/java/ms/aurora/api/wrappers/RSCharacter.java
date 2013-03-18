@@ -2,9 +2,12 @@ package ms.aurora.api.wrappers;
 
 import com.google.common.base.Predicate;
 import ms.aurora.api.ClientContext;
+import ms.aurora.api.Players;
 import ms.aurora.api.Projection;
 
 import java.awt.*;
+
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 
 /**
@@ -87,6 +90,11 @@ public class RSCharacter extends RSRenderable implements Locatable {
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
         ms.aurora.api.Menu.click(actionName);
+        sleepNoException(500, 600);
+
+        while(Players.getLocal().isMoving()) {
+            sleepNoException(200, 300);
+        }
     }
 
     public boolean hover() {

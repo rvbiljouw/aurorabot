@@ -1,18 +1,13 @@
 package ms.aurora.gui.script;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.UIManager;
-
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.SwingConstants;
-
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
+import ms.aurora.gui.ApplicationController;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ScriptWidget extends JPanel {
 	private static final long serialVersionUID = 414689352878859224L;
@@ -21,7 +16,7 @@ public class ScriptWidget extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ScriptWidget(Script script) {
+	public ScriptWidget(final Script script) {
 		setBackground(UIManager.getColor("Panel.background"));
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		// 630, 150
@@ -33,6 +28,12 @@ public class ScriptWidget extends JPanel {
 		ScriptManifest manifest = script.getManifest();		
 		JButton btnStart = new JButton("Start");
 		btnStart.setBounds(538, 115, 84, 29);
+        btnStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ApplicationController.runScript(script);
+            }
+        });
 		add(btnStart);
 		
 		JButton btnMoreInfo = new JButton("More info");

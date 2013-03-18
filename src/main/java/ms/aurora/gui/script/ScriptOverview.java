@@ -1,5 +1,8 @@
 package ms.aurora.gui.script;
 
+import ms.aurora.api.script.Script;
+import ms.aurora.core.script.ScriptLoader;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -74,14 +77,10 @@ public class ScriptOverview extends JFrame {
         panel = new JPanel();
         scrollPane.setViewportView(panel);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addScripts();
-    }
 
-    public void addScripts() {
-        for (int i = 0; i < 20; i++) {
-            ScriptWidget widget = new ScriptWidget(new SampleScript());
+        for(Script script : ScriptLoader.getScripts()) {
+            ScriptWidget widget = new ScriptWidget(script);
             panel.add(widget);
-
         }
     }
 }

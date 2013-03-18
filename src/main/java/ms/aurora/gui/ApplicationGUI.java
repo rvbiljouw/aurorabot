@@ -9,7 +9,8 @@ public class ApplicationGUI extends JFrame {
     private static final long serialVersionUID = 2133982906411134266L;
     private JPanel contentPane;
     private JTabbedPane tabbedPane;
-    private JMenu mnTools;
+    private JMenuBar menuBar;
+    private JMenu mnPlugins;
 
     /**
      * Create the frame.
@@ -20,7 +21,7 @@ public class ApplicationGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 771, 600);
 
-        JMenuBar menuBar = new JMenuBar();
+        menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
         JMenu mnFile = new JMenu("File");
@@ -61,7 +62,7 @@ public class ApplicationGUI extends JFrame {
         JMenuItem mntmScripts = new JMenuItem("Select script");
         mntmScripts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ApplicationController.onSelectScript();
+                ApplicationController.onScriptOverview();
             }
         });
         mnRun.add(mntmScripts);
@@ -78,8 +79,8 @@ public class ApplicationGUI extends JFrame {
         JMenuItem mntmStopScript = new JMenuItem("Stop script");
         mnRun.add(mntmStopScript);
 
-        mnTools = new JMenu("Tools");
-        menuBar.add(mnTools);
+        mnPlugins = new JMenu("Plug-ins");
+        menuBar.add(mnPlugins);
 
         JMenuItem mntmPluginOverview = new JMenuItem("Plugin Overview");
         mntmPluginOverview.addActionListener(new ActionListener() {
@@ -88,7 +89,7 @@ public class ApplicationGUI extends JFrame {
                 ApplicationController.onPluginOverview();
             }
         });
-        mnTools.add(mntmPluginOverview);
+        mnPlugins.add(mntmPluginOverview);
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -104,7 +105,24 @@ public class ApplicationGUI extends JFrame {
         return tabbedPane;
     }
 
-    public JMenu getTools() {
-        return mnTools;
+    public void setTools(JMenu mnTools) {
+        menuBar.remove(this.mnPlugins);
+        if (mnTools != null) {
+            this.mnPlugins = mnTools;
+            menuBar.add(this.mnPlugins);
+        } else {
+            this.mnPlugins = new JMenu("Tools");
+            menuBar.add(mnTools);
+
+            JMenuItem mntmPluginOverview = new JMenuItem("Plugin Overview");
+            mntmPluginOverview.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ApplicationController.onPluginOverview();
+                }
+            });
+            this.mnPlugins.add(mntmPluginOverview);
+        }
+        repaint();
     }
 }

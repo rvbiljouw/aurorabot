@@ -19,16 +19,27 @@ public final class Npcs {
     private Npcs() {
     }
 
-    public static RSNPC get(final Predicate<RSNPC> predicate) {
+    /**
+     * @param predicates
+     * @return
+     */
+    public static RSNPC get(final Predicate<RSNPC>... predicates) {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSNPC>() {
                     @Override
                     public boolean apply(RSNPC object) {
-                        return predicate.apply(object);
+                        for (Predicate<RSNPC> predicate : predicates) {
+                            if (!predicate.apply(object)) return false;
+                        }
+                        return true;
                     }
                 }).toArray(new RSNPC[0]));
     }
 
+    /**
+     * @param predicate
+     * @return
+     */
     public static RSNPC[] getAll(final Predicate<RSNPC> predicate) {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSNPC>() {
@@ -39,6 +50,10 @@ public final class Npcs {
                 }).toArray(new RSNPC[0]);
     }
 
+    /**
+     * @param npcs
+     * @return
+     */
     private static RSNPC getClosest(RSNPC[] npcs) {
         RSNPC closest = null;
         int closestDistance = 9999;
@@ -52,10 +67,16 @@ public final class Npcs {
         return closest;
     }
 
+    /**
+     * @return
+     */
     public static RSNPC[] getAll() {
         return _getAll().toArray(new RSNPC[0]);
     }
 
+    /**
+     * @return
+     */
     private static Collection<RSNPC> _getAll() {
         return filter(transform(newArrayList(context.get().getClient()
                 .getAllNpcs()), transform), Predicates.notNull());

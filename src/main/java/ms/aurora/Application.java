@@ -1,29 +1,26 @@
 package ms.aurora;
 
+import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationController;
 import org.apache.log4j.Logger;
-import org.pushingpixels.substance.api.skin.SubstanceBusinessBlueSteelLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteGlassLookAndFeel;
 
 import javax.swing.*;
-import java.io.File;
+import java.awt.*;
 
 public final class Application {
     private static Logger logger = Logger.getLogger(Application.class);
-    private static File props = new File(System.getProperty("user.home") + "/.aurora");
 
     private Application() {
 
     }
 
     public static void main(String[] args) {
-        if(!props.exists()) {
-            props.mkdir();
-        }
-
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(new SubstanceBusinessBlueSteelLookAndFeel());
+                    UIManager.setLookAndFeel(new SubstanceGraphiteGlassLookAndFeel());
+                    Toolkit.getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
                     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
                     ApplicationController.startApplication();
                 } catch (Exception e) {

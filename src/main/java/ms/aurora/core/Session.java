@@ -6,20 +6,21 @@ import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
+import ms.aurora.gui.ApplicationController;
 
+import javax.swing.*;
 import java.applet.Applet;
-import java.util.Map;
-
-import static com.google.common.collect.Maps.newHashMap;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author rvbiljouw
  */
 public class Session implements Runnable {
-    private final static Map<String, Object> settings = newHashMap();
     private final ScriptManager scriptManager = new ScriptManager(this);
     private final PluginManager pluginManager = new PluginManager(this);
     private final PaintManager paintManager = new PaintManager(this);
+    private final JMenu pluginsMenu = new JMenu("Plug-ins");
     private final Applet applet;
 
     public Session(Applet applet) {
@@ -29,6 +30,20 @@ public class Session implements Runnable {
     @Override
     public void run() {
         SessionRepository.set(getApplet().hashCode(), this);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JMenuItem mntmPluginOverview = new JMenuItem("Plugin Overview");
+                mntmPluginOverview.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ApplicationController.onPluginOverview();
+                    }
+                });
+                pluginsMenu.add(mntmPluginOverview);
+            }
+        });
         refreshPlugins();
     }
 
@@ -44,12 +59,15 @@ public class Session implements Runnable {
         return paintManager;
     }
 
+    public JMenu getTools() {
+        return pluginsMenu;
+    }
+
     public Applet getApplet() {
         return applet;
     }
 
     public void refreshPlugins() {
-        System.out.println("Refreshing plugins");
         for (Plugin plugin : PluginLoader.getPlugins()) {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
@@ -64,13 +82,12 @@ public class Session implements Runnable {
         }
     }
 
-    public Object get(String key) {
-        return settings.get(key);
+    public void registerMenu(JMenu menu) {
+        pluginsMenu.add(menu);
     }
 
-    public void set(String key, Object object) {
-        settings.put(key, object);
+    public void deregisterMenu(JMenu menu) {
+        pluginsMenu.remove(menu);
     }
-
 
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ScriptManager {
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(16);
     private final Map<Script, Future<?>> futures = Maps.newHashMap();
     private final Session session;
 

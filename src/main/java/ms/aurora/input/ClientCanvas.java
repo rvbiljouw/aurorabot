@@ -46,4 +46,16 @@ public class ClientCanvas extends Canvas {
             session.getPaintManager().onRepaint(g);
         }
     }
+
+    @Override
+    public void requestFocus() {
+        System.out.println("Focus requested and fuck you.");
+    }
+
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        x = 0;
+        y = 0;
+        super.setBounds(x,y,width,height);
+    }
 }
