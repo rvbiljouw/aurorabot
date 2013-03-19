@@ -7,82 +7,82 @@ import java.awt.*;
  */
 public interface Client {
 
-    public Widget[][] getWidgetCache();
+    Widget[][] getWidgetCache();
 
-    public int getCameraX();
+    int getCameraX();
 
-    public int getCameraY();
+    int getCameraY();
 
-    public int getCameraZ();
+    int getCameraZ();
 
-    public int getCameraYaw();
+    int getCameraYaw();
 
-    public int getCameraPitch();
+    int getCameraPitch();
 
-    public String[] getMenuTargets();
+    String[] getMenuTargets();
 
-    public String[] getMenuActions();
+    String[] getMenuActions();
 
-    public boolean isMenuOpen();
+    boolean isMenuOpen();
 
-    public int getMenuCount();
+    int getMenuCount();
 
-    public int getMenuX();
+    int getMenuX();
 
-    public int getMenuY();
+    int getMenuY();
 
-    public int getMenuWidth();
+    int getMenuWidth();
 
-    public int getMenuHeight();
+    int getMenuHeight();
 
-    public Player[] getAllPlayers();
+    Player[] getAllPlayers();
 
-    public Player getLocalPlayer();
+    Player getLocalPlayer();
 
-    public Npc[] getAllNpcs();
+    Npc[] getAllNpcs();
 
-    public int getLoopCycle();
+    int getLoopCycle();
 
-    public WorldController getWorld();
+    WorldController getWorld();
 
-    public int getPlane();
+    int getPlane();
 
-    public int getBaseX();
+    int getBaseX();
 
-    public int getBaseY();
+    int getBaseY();
 
-    public byte[][][] getTileSettings();
+    byte[][][] getTileSettings();
 
-    public int[][][] getTileHeights();
+    int[][][] getTileHeights();
 
-    public Canvas getCanvas();
+    Canvas getCanvas();
 
-    public int getMinimapInt1();
+    int getMinimapInt1();
 
-    public int getMinimapInt2();
+    int getMinimapInt2();
 
-    public int getMinimapInt3();
+    int getMinimapInt3();
 
-    public Bag getWidgetNodeBag();
+    Bag getWidgetNodeBag();
 
-    public Deque[][][] getGroundItems();
+    Deque[][][] getGroundItems();
 
-    public int getLoginIndex();
+    int getLoginIndex();
 
-    public int[] getBoundsY();
+    int[] getBoundsY();
 
-    public int[] getBoundsX();
+    int[] getBoundsX();
 
-    public int[] getBoundsHeight();
+    int[] getBoundsHeight();
 
-    public int[] getBoundsWidth();
+    int[] getBoundsWidth();
 
-    public int[] getSkillLevelBases();
+    int[] getSkillLevelBases();
 
-    public int[] getSkillExperiences();
+    int[] getSkillExperiences();
 
-    public int[] getSkillLevels();
+    int[] getSkillLevels();
 
-    public Mouse getMouse();
+    Mouse getMouse();
 
 }

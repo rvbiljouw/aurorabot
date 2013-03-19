@@ -8,8 +8,10 @@ package ms.aurora.api.wrappers;
  */
 public interface Interactable {
 
-    public boolean applyAction(String action);
-    public boolean hover();
-    public boolean click(boolean left);
+    boolean applyAction(String action);
+
+    boolean hover();
+
+    boolean click(boolean left);
 
 }

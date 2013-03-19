@@ -7,14 +7,14 @@ import java.awt.*;
  */
 public interface Locatable {
 
-    public Point getScreenLocation();
+    Point getScreenLocation();
 
-    public RSTile getLocation();
+    RSTile getLocation();
 
-    public RSTile getRegionalLocation();
+    RSTile getRegionalLocation();
 
-    public int getX();
+    int getX();
 
-    public int getY();
+    int getY();
 
 }

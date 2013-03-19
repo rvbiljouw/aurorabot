@@ -333,7 +333,7 @@ public class Inventory {
      * A class encapsulating inventory items.
      */
     public static class InventoryItem {
-        protected int slot;
+        private int slot;
         private int id;
         private int stackSize;
 

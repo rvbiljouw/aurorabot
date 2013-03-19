@@ -5,6 +5,6 @@ package ms.aurora.api.rt3;
  */
 public interface Region {
 
-    public int[][] getClippingMasks();
+    int[][] getClippingMasks();
 
 }

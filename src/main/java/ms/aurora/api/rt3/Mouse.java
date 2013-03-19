@@ -5,12 +5,12 @@ package ms.aurora.api.rt3;
  */
 public interface Mouse {
 
-    public int getMouseX();
+    int getMouseX();
 
-    public int getMouseY();
+    int getMouseY();
 
-    public int getMousePressX();
+    int getMousePressX();
 
-    public int getMousePressY();
+    int getMousePressY();
 
 }

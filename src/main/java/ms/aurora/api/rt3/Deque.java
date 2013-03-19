@@ -5,8 +5,8 @@ package ms.aurora.api.rt3;
  */
 public interface Deque {
 
-    public Node getCurrent();
+    Node getCurrent();
 
-    public Node getHead();
+    Node getHead();
 
 }

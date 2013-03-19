@@ -5,6 +5,6 @@ package ms.aurora.api.rt3;
  */
 public interface PacketStream {
 
-    public int getBitOffset();
+    int getBitOffset();
 
 }

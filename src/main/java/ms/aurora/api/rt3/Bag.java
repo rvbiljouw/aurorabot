@@ -5,14 +5,14 @@ package ms.aurora.api.rt3;
  */
 public interface Bag {
 
-    public int getSentinelCount();
+    int getSentinelCount();
 
-    public Node getLastRetrived();
+    Node getLastRetrived();
 
-    public Node getCurrent();
+    Node getCurrent();
 
-    public Node[] getSentinels();
+    Node[] getSentinels();
 
-    public int getCurrentSentinel();
+    int getCurrentSentinel();
 
 }

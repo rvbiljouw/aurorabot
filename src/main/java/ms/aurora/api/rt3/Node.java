@@ -5,10 +5,10 @@ package ms.aurora.api.rt3;
  */
 public interface Node {
 
-    public Node getPrev();
+    Node getPrev();
 
-    public Node getNext();
+    Node getNext();
 
-    public long getHash();
+    long getHash();
 
 }

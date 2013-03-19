@@ -5,67 +5,67 @@ package ms.aurora.api.rt3;
  */
 public interface Widget {
 
-    public String getText();
+    String getText();
 
-    public String[] getActions();
+    String[] getActions();
 
-    public Widget[] getChildren();
+    Widget[] getChildren();
 
-    public Widget getDisabledComponent();
+    Widget getDisabledComponent();
 
-    public int getRotationX();
+    int getRotationX();
 
-    public int getRotationY();
+    int getRotationY();
 
-    public int getRotationZ();
+    int getRotationZ();
 
-    public int getOffsetX();
+    int getOffsetX();
 
-    public int getOffsetY();
+    int getOffsetY();
 
-    public int getModelZoom();
+    int getModelZoom();
 
-    public int getScrollMaxHorizontal();
+    int getScrollMaxHorizontal();
 
-    public int getBorderThickness();
+    int getBorderThickness();
 
-    public int getItemId();
+    int getItemId();
 
-    public int getComponentIndex();
+    int getComponentIndex();
 
-    public int getTextureId();
+    int getTextureId();
 
-    public int getY();
+    int getY();
 
-    public int getItemStackSize();
+    int getItemStackSize();
 
-    public int getX();
+    int getX();
 
-    public int getTextColor();
+    int getTextColor();
 
-    public int getShadowColor();
+    int getShadowColor();
 
-    public int getParentId();
+    int getParentId();
 
-    public int getFontId();
+    int getFontId();
 
-    public int getHeight();
+    int getHeight();
 
-    public int getWidth();
+    int getWidth();
 
-    public int[][] getOpcodes();
+    int[][] getOpcodes();
 
-    public String getSelectedAction();
+    String getSelectedAction();
 
-    public int getScrollMaxVertical();
+    int getScrollMaxVertical();
 
-    public int getUid();
+    int getUid();
 
-    public int getType();
+    int getType();
 
-    public int[] getInventoryItems();
+    int[] getInventoryItems();
 
-    public int[] getInventoryStackSizes();
+    int[] getInventoryStackSizes();
 
-    public int getBoundsIndex();
+    int getBoundsIndex();
 }

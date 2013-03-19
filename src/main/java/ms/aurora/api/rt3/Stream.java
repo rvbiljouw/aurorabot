@@ -5,8 +5,8 @@ package ms.aurora.api.rt3;
  */
 public interface Stream {
 
-    public int getOffset();
+    int getOffset();
 
-    public byte[] getPayload();
+    byte[] getPayload();
 
 }

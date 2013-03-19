@@ -85,9 +85,9 @@ public final class AppletLoader implements Runnable {
         return applet;
     }
 
-    public static interface CompletionListener {
+    public interface CompletionListener {
 
-        public void onCompletion(Applet applet);
+        void onCompletion(Applet applet);
 
     }
 }

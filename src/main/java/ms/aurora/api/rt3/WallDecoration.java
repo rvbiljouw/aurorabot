@@ -5,14 +5,14 @@ package ms.aurora.api.rt3;
  */
 public interface WallDecoration extends GameObject {
 
-    public int getHash();
+    int getHash();
 
-    public int getX();
+    int getX();
 
-    public int getY();
+    int getY();
 
-    public int getZ();
+    int getZ();
 
-    public int getOrientation();
+    int getOrientation();
 
 }

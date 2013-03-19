@@ -5,12 +5,12 @@ package ms.aurora.api.rt3;
  */
 public interface Ground {
 
-    public GroundDecoration getGroundDecoration();
+    GroundDecoration getGroundDecoration();
 
-    public WallDecoration getWallDecoration();
+    WallDecoration getWallDecoration();
 
-    public WallObject getWallObject();
+    WallObject getWallObject();
 
-    public AnimableObject[] getAnimableObjects();
+    AnimableObject[] getAnimableObjects();
 
 }

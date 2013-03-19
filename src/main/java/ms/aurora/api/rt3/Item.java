@@ -5,7 +5,7 @@ package ms.aurora.api.rt3;
  */
 public interface Item {
 
-    public int getId();
+    int getId();
 
-    public int getStackSize();
+    int getStackSize();
 }

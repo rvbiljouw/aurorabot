@@ -7,6 +7,6 @@ import java.io.RandomAccessFile;
  */
 public interface FileWrapper {
 
-    public RandomAccessFile getFile();
+    RandomAccessFile getFile();
 
 }

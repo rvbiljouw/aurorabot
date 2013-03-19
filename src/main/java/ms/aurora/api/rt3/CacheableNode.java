@@ -5,8 +5,8 @@ package ms.aurora.api.rt3;
  */
 public interface CacheableNode {
 
-    public CacheableNode getPrev();
+    CacheableNode getPrev();
 
-    public CacheableNode getNext();
+    CacheableNode getNext();
 
 }

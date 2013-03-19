@@ -9,14 +9,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PluginManifest {
 
-    public String name();
+    String name();
 
-    public String author() default "Author unknown.";
+    String author() default "Author unknown.";
 
-    public String shortDescription() default "No description available.";
+    String shortDescription() default "No description available.";
 
-    public String longDescription() default "No description available.";
+    String longDescription() default "No description available.";
 
-    public double version();
+    double version();
 
 }

@@ -5,6 +5,6 @@ package ms.aurora.api.util;
  */
 public interface Predicate<T> {
 
-    public boolean apply(T object);
+    boolean apply(T object);
 
 }

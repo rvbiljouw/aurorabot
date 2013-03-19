@@ -5,12 +5,12 @@ package ms.aurora.api.rt3;
  */
 public interface Player extends Character {
 
-    public PlayerComposite getComposite();
+    PlayerComposite getComposite();
 
-    public Model getModel();
+    Model getModel();
 
-    public boolean isVisible();
+    boolean isVisible();
 
-    public String getName();
+    String getName();
 
 }

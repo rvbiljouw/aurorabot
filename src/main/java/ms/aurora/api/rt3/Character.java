@@ -5,27 +5,27 @@ package ms.aurora.api.rt3;
  */
 public interface Character extends Renderable {
 
-    public int getLocalX();
+    int getLocalX();
 
-    public int getLocalY();
+    int getLocalY();
 
-    public int getHitsLoopCycle();
+    int getHitsLoopCycle();
 
-    public int getAnimation();
+    int getAnimation();
 
-    public int getCurrentHealth();
+    int getCurrentHealth();
 
-    public int getLoopCycleStatus();
+    int getLoopCycleStatus();
 
-    public int getTurnDirection();
+    int getTurnDirection();
 
-    public String getMessage();
+    String getMessage();
 
-    public int getMaxHealth();
+    int getMaxHealth();
 
-    public int getInteractingEntity();
+    int getInteractingEntity();
 
-    public int getPathLength();
+    int getPathLength();
 
-    public int getModelHeight();
+    int getModelHeight();
 }

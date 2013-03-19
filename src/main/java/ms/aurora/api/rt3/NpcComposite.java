@@ -5,8 +5,8 @@ package ms.aurora.api.rt3;
  */
 public interface NpcComposite {
 
-    public String getName();
+    String getName();
 
-    public int getId();
+    int getId();
 
 }

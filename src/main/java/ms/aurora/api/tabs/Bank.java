@@ -242,7 +242,7 @@ public class Bank {
 	 * A class encapsulating Bank items.
 	 */
 	public static class BankItem implements Interactable {
-		protected int slot;
+		private int slot;
 		private int id;
 		private int stackSize;
 		private RSWidget container;

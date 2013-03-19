@@ -5,10 +5,10 @@ package ms.aurora.api.rt3;
  */
 public interface Cache {
 
-    public Queue getQueue();
+    Queue getQueue();
 
-    public Bag getBag();
+    Bag getBag();
 
-    public CacheableNode getEmptyCacheableNode();
+    CacheableNode getEmptyCacheableNode();
 
 }

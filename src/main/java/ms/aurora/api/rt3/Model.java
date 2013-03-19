@@ -5,16 +5,16 @@ package ms.aurora.api.rt3;
  */
 public interface Model {
 
-    public int[] getVerticesX();
+    int[] getVerticesX();
 
-    public int[] getVerticesY();
+    int[] getVerticesY();
 
-    public int[] getVerticesZ();
+    int[] getVerticesZ();
 
-    public int[] getTrianglesX();
+    int[] getTrianglesX();
 
-    public int[] getTrianglesY();
+    int[] getTrianglesY();
 
-    public int[] getTrianglesZ();
+    int[] getTrianglesZ();
 
 }

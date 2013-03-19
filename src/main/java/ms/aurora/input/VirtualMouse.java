@@ -1,7 +1,6 @@
 package ms.aurora.input;
 
 import ms.aurora.input.algorithm.BezierAlgorithm;
-import ms.aurora.input.algorithm.TestAlgorithm;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -131,17 +130,19 @@ public class VirtualMouse implements MouseMotionListener {
         mousePosition = e.getPoint();
     }
 
-    public static interface MousePathAlgorithm {
-        public Point[] generatePath(Point origin, Point destination);
+    public interface MousePathAlgorithm {
+
+        Point[] generatePath(Point origin, Point destination);
+
     }
 
-    public static interface DynamicTarget {
-        public int getX();
+    public interface DynamicTarget {
+        int getX();
 
-        public int getY();
+        int getY();
 
-        public boolean isValid();
+        boolean isValid();
 
-        public void onComplete();
+        void onComplete();
     }
 }

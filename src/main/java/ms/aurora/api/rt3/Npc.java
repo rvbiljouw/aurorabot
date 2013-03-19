@@ -5,6 +5,6 @@ package ms.aurora.api.rt3;
  */
 public interface Npc extends Character {
 
-    public NpcComposite getComposite();
+    NpcComposite getComposite();
 
 }
