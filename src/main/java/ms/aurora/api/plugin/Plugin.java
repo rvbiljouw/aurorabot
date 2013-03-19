@@ -31,18 +31,10 @@ public abstract class Plugin extends ClientContext {
         logger.error(message, t);
     }
 
-    @Override
-    public final void setSession(Session session) {
-        super.setSession(session);
-
-        if (this instanceof PaintListener) {
-            session.getPaintManager().register((PaintListener) this);
-        }
-    }
-
     public final void setState(PluginState state) {
         switch (state) {
             case INIT:
+                init();
                 startup();
                 break;
 
@@ -52,9 +44,26 @@ public abstract class Plugin extends ClientContext {
 
             case STOPPED:
                 cleanup();
+                shutdown();
                 break;
         }
     }
+
+    private void init() {
+        if (this instanceof PaintListener) {
+            getSession().getPaintManager().
+                    register((PaintListener) this);
+        }
+    }
+
+    private void shutdown() {
+        if (this instanceof PaintListener) {
+            getSession().getPaintManager().
+                   deregister((PaintListener) this);
+        }
+    }
+
+
 
     public abstract void startup();
 
