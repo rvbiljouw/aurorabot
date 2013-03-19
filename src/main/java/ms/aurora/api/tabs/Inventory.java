@@ -1,6 +1,5 @@
 package ms.aurora.api.tabs;
 
-import com.sun.istack.internal.Nullable;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.Menu;
 import ms.aurora.api.Widgets;
@@ -89,7 +88,7 @@ public final class Inventory {
         return filter(newArrayList(getAll()),
                 new com.google.common.base.Predicate<InventoryItem>() {
                     @Override
-                    public boolean apply(@Nullable InventoryItem inventoryItem) {
+                    public boolean apply(InventoryItem inventoryItem) {
                         return predicate.apply(inventoryItem);
                     }
                 }
