@@ -17,7 +17,7 @@ public final class ObjectFilters {
      * @return true the id of the {@link ms.aurora.api.wrappers.RSObject} matches the specified else false
      * @see ms.aurora.api.wrappers.RSObject#getId()
      */
-    public static final Predicate<RSObject> ID(final int id) {
+    public static Predicate<RSObject> ID(final int id) {
         return new Predicate<RSObject>() {
             @Override
             public boolean apply(RSObject object) {

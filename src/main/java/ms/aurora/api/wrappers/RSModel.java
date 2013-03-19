@@ -76,8 +76,8 @@ public final class RSModel {
         return hull;
     }
 
-    public static final int[] SIN_TABLE = new int[16384];
-    public static final int[] COS_TABLE = new int[16384];
+    private static final int[] SIN_TABLE = new int[16384];
+    private static final int[] COS_TABLE = new int[16384];
 
     static {
         final double d = 0.00038349519697141029D;

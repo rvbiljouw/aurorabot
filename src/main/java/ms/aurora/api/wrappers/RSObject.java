@@ -18,41 +18,41 @@ public class RSObject implements Locatable, Interactable {
         this.wrapped = wrapped;
     }
 
-    public int getId() {
+    public final int getId() {
         return wrapped.getHash() >> 14 & 0x7fff;
     }
 
-    public int getLocalX() {
+    public final int getLocalX() {
         return wrapped.getX();
     }
 
-    public int getLocalY() {
+    public final int getLocalY() {
         return wrapped.getY();
     }
 
-    public int getX() {
+    public final int getX() {
         return (wrapped.getX() >> 7) + context.getClient().getBaseX();
     }
 
-    public int getY() {
+    public final int getY() {
         return (wrapped.getY() >> 7) + context.getClient().getBaseY();
     }
 
-    public Point getScreenLocation() {
+    public final Point getScreenLocation() {
         return Projection.worldToScreen(getRegionalLocation());
     }
 
-    public RSTile getLocation() {
+    public final RSTile getLocation() {
         return new RSTile(getX(), getY());
     }
 
-    public RSTile getRegionalLocation() {
+    public final RSTile getRegionalLocation() {
         int x = getLocalX();
         int y = getLocalY();
         return new RSTile(x, y, wrapped.getZ());
     }
 
-    public int distance(Locatable other) {
+    public final int distance(Locatable other) {
         return (int) Point.distance(getX(), getY(), other.getX(), other.getY());
     }
 
@@ -60,7 +60,7 @@ public class RSObject implements Locatable, Interactable {
      * @param actionName
      * @return
      */
-    public boolean applyAction(String actionName) {
+    public final boolean applyAction(String actionName) {
         if (!Projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
@@ -74,7 +74,7 @@ public class RSObject implements Locatable, Interactable {
         return ms.aurora.api.Menu.click(actionName);
     }
 
-    public boolean hover() {
+    public final boolean hover() {
         if (!Projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
@@ -89,7 +89,7 @@ public class RSObject implements Locatable, Interactable {
     }
 
     @Override
-    public boolean click(boolean left) {
+    public final boolean click(boolean left) {
         if (!Projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();

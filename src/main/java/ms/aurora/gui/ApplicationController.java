@@ -48,7 +48,7 @@ public final class ApplicationController {
                     public void run() {
                         Session session = new Session(applet);
                         Thread init = new Thread(session);
-                        init.run();
+                        init.start();
 
                         String tabName = TAB_PREFIX + applet.hashCode();
                         JPanel faggot = new JPanel();

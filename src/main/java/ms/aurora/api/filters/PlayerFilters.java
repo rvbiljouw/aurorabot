@@ -41,7 +41,7 @@ public final class PlayerFilters {
      * @return true if the name of the {@link RSPlayer} matches the specified name
      * @see ms.aurora.api.wrappers.RSPlayer#getName()
      */
-    public static final Predicate<RSPlayer> NAMED(final String name) {
+    public static Predicate<RSPlayer> NAMED(final String name) {
         return new Predicate<RSPlayer>() {
             @Override
             public boolean apply(RSPlayer object) {

@@ -19,15 +19,14 @@ public class RSRenderable {
         this.wrapped = wrapped;
     }
 
-    public int getHeight() {
+    public final int getHeight() {
         return -(wrapped.getHeight() / 2);
     }
 
-    protected Model _getModel() {
+    protected final Model _getModel() {
         Class<?> clazz = wrapped.getClass();
         for (Method method : clazz.getDeclaredMethods()) {
             if (Model.class.isAssignableFrom(method.getReturnType())) {
-                System.out.println(clazz.getSimpleName() + "." + method.toString() + " returns Model yayyaya");
                 if (method.getParameterTypes().length == 0) {
                     try {
                         method.setAccessible(true);

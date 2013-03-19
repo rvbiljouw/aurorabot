@@ -7,7 +7,7 @@ import ms.aurora.api.wrappers.RSNPC;
  * @author rvbiljouw
  * @author tobiewarburton
  */
-public class NpcFilters {
+public final class NpcFilters {
 
     private NpcFilters() { }
 
@@ -45,7 +45,7 @@ public class NpcFilters {
      * @return true the id of the {@link RSNPC} matches the specified else false
      * @see ms.aurora.api.wrappers.RSNPC#getId()
      */
-    public static final Predicate<RSNPC> ID(final int id) {
+    public static Predicate<RSNPC> ID(final int id) {
         return new Predicate<RSNPC>() {
             @Override
             public boolean apply(RSNPC object) {
@@ -59,7 +59,7 @@ public class NpcFilters {
      * @return true if the name of the {@link RSNPC} matches the specified name
      * @see ms.aurora.api.wrappers.RSNPC#getName()
      */
-    public static final Predicate<RSNPC> NAMED(final String name) {
+    public static Predicate<RSNPC> NAMED(final String name) {
         return new Predicate<RSNPC>() {
             @Override
             public boolean apply(RSNPC object) {

@@ -64,7 +64,7 @@ public final class ClientCanvas extends Canvas implements MouseMotionListener,
 
     @Override
     public void requestFocus() {
-        System.out.println("Focus requested and fuck you.");
+
     }
 
     @Override

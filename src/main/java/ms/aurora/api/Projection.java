@@ -93,12 +93,4 @@ public final class Projection {
     }
 
     private static final Rectangle GAMESCREEN = new Rectangle(4, 4, 512, 334);
-
-    public static int[] getCurveSin() {
-        return CURVESIN;
-    }
-
-    public static int[] getCurveCos() {
-        return CURVECOS;
-    }
 }

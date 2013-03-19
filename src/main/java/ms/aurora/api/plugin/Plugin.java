@@ -1,7 +1,6 @@
 package ms.aurora.api.plugin;
 
 import ms.aurora.api.ClientContext;
-import ms.aurora.core.Session;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
@@ -62,8 +61,6 @@ public abstract class Plugin extends ClientContext {
                    deregister((PaintListener) this);
         }
     }
-
-
 
     public abstract void startup();
 

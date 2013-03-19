@@ -74,10 +74,8 @@ public final class Session implements Runnable {
 
             if (config.isEnabled()) {
                 pluginManager.start(plugin.getClass());
-                System.out.println("Starting plugin " + config.getPluginMain());
             } else {
                 pluginManager.stop(plugin.getClass());
-                System.out.println("Stopping plugin " + config.getPluginMain());
             }
         }
     }

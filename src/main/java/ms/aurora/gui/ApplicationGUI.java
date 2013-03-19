@@ -132,8 +132,8 @@ public final class ApplicationGUI extends JFrame {
             this.mnPlugins = mnTools;
             menuBar.add(this.mnPlugins);
         } else {
-            this.mnPlugins = new JMenu("Tools");
-            menuBar.add(mnTools);
+            this.mnPlugins = new JMenu("Plug-ins");
+            menuBar.add(this.mnPlugins);
 
             JMenuItem mntmPluginOverview = new JMenuItem("Plugin Overview");
             mntmPluginOverview.addActionListener(new ActionListener() {

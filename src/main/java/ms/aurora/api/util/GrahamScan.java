@@ -10,7 +10,9 @@ import java.util.*;
  * @author Bart Kiers
  * @author A_C/Cov
  */
-public class GrahamScan {
+public final class GrahamScan {
+
+    private GrahamScan() { }
 
     /**
      * An enum denoting a directional-turn between 3 points (vectors).

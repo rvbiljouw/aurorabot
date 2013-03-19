@@ -8,7 +8,7 @@ import ms.aurora.core.model.PluginConfig;
 /**
  * @author rvbiljouw
  */
-public class PluginController {
+public final class PluginController {
 
     private PluginController() { }
 
