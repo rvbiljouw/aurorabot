@@ -1,5 +1,6 @@
 package ms.aurora.api;
 
+import ms.aurora.api.ClientContext;
 import ms.aurora.api.wrappers.RSPlayer;
 
 /**

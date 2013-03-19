@@ -1,6 +1,6 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.*;
 import ms.aurora.api.Projection;
 import ms.aurora.api.rt3.Item;
 
@@ -13,7 +13,7 @@ import java.awt.*;
  * Time: 01:11
  * To change this template use File | Settings | File Templates.
  */
-public class RSGroundItem implements Locatable {
+public class RSGroundItem implements Locatable, Interactable {
     private ClientContext context;
     private Item item;
     private int localX;
@@ -72,6 +72,7 @@ public class RSGroundItem implements Locatable {
      * @param actionName
      * @return
      */
+    @Override
     public boolean applyAction(String actionName) {
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
@@ -84,10 +85,24 @@ public class RSGroundItem implements Locatable {
         return ms.aurora.api.Menu.click(actionName);
     }
 
+    @Override
     public boolean hover() {
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
         context.input.getMouse().moveMouse(screen.x, screen.y);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean click(boolean left) {
+        Point screen = getScreenLocation();
+        if (screen.x == -1 && screen.y == -1) return false;
+        context.input.getMouse().clickMouse(screen.x, screen.y, left);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

@@ -2,6 +2,8 @@ package ms.aurora.api.wrappers;
 
 import com.google.common.base.Function;
 import ms.aurora.api.*;
+import ms.aurora.api.Menu;
+import ms.aurora.api.rt3.Mouse;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.rt3.WidgetNode;
 import ms.aurora.api.util.Utilities;
@@ -15,7 +17,7 @@ import static com.google.common.collect.Collections2.transform;
 /**
  * @author rvbiljouw
  */
-public class RSWidget {
+public class RSWidget implements Interactable {
     private ClientContext context;
     private Widget widget;
 
@@ -164,18 +166,30 @@ public class RSWidget {
         return new Point(x, y);
     }
 
-    public void applyAction(String action) { //TODO: randomness
+    @Override
+    public boolean applyAction(String action) {
         VirtualMouse mouse = ClientContext.get().input.getMouse();
-        Rectangle area = getArea();
-        mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-        ms.aurora.api.Menu.click(action);
+        Point randomPoint = this.getRandomPoint();
+        mouse.moveMouse(randomPoint.x, randomPoint.y);
+        Menu.click(action);
+        return true;
     }
 
-    public void click() { //TODO: randomness
+    @Override
+    public boolean hover() {
+        VirtualMouse virtualMouse = ClientContext.get().input.getMouse();
+        Point randomPoint = this.getRandomPoint();
+        virtualMouse.moveMouse(randomPoint.x, randomPoint.y);
+        Mouse clientMouse = ClientContext.get().getClient().getMouse();
+        return this.getArea().contains(clientMouse.getMouseX(), clientMouse.getMouseY());
+    }
+
+    @Override
+    public boolean click(boolean left) {
         VirtualMouse mouse = ClientContext.get().input.getMouse();
-        Rectangle area = getArea();
-        mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-        mouse.clickMouse(true);
+        Point randomPoint = this.getRandomPoint();
+        mouse.clickMouse(randomPoint.x, randomPoint.y, left);
+        return true;
     }
 
     public int[] getInventoryItems() {

@@ -1,6 +1,6 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.*;
 import ms.aurora.api.Players;
 import ms.aurora.api.Projection;
 import ms.aurora.api.rt3.Model;
@@ -13,7 +13,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 /**
  * @author rvbiljouw
  */
-public class RSCharacter extends RSRenderable implements Locatable {
+public class RSCharacter extends RSRenderable implements Locatable, Interactable {
     private final ms.aurora.api.rt3.Character wrapped;
 
     public RSCharacter(ClientContext clientContext,
@@ -86,7 +86,7 @@ public class RSCharacter extends RSRenderable implements Locatable {
      * @param actionName
      * @return
      */
-    public void applyAction(final String actionName) {
+    public boolean applyAction(final String actionName) {
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
         ms.aurora.api.Menu.click(actionName);
@@ -95,8 +95,10 @@ public class RSCharacter extends RSRenderable implements Locatable {
         while(Players.getLocal().isMoving()) {
             sleepNoException(600);
         }
+        return true;
     }
 
+    @Override
     public boolean hover() {
         if (!Projection.tileOnScreen(getRegionalLocation())) {
             return false;
@@ -104,6 +106,13 @@ public class RSCharacter extends RSRenderable implements Locatable {
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
         return true;
+    }
+
+    @Override
+    public boolean click(boolean left) {
+        Point screen = getScreenLocation();
+        context.input.getMouse().clickMouse(screen.x, screen.y, left);
+        return false;
     }
 
     public int getHitsLoopCycle() {

@@ -8,7 +8,10 @@ import java.util.List;
 
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.Widgets;
+import ms.aurora.api.Menu;
+import ms.aurora.api.rt3.Mouse;
 import ms.aurora.api.util.Predicate;
+import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.input.VirtualMouse;
 
@@ -38,7 +41,7 @@ public class Bank {
 			return true;
 		RSWidget close = Widgets.getWidget(BANK_ID, BANK_CLOSE_ID);
 		if (close != null) {
-			close.click();
+			close.click(true);
 			return true;
 		}
 		return false;
@@ -236,7 +239,7 @@ public class Bank {
 	/**
 	 * A class encapsulating Bank items.
 	 */
-	public static class BankItem {
+	public static class BankItem implements Interactable {
 		protected int slot;
 		private int id;
 		private int stackSize;
@@ -270,18 +273,30 @@ public class Bank {
 			return new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
 		}
 
-		public void applyAction(String action) {
+        @Override
+		public boolean applyAction(String action) {
 			VirtualMouse mouse = ClientContext.get().input.getMouse();
 			Rectangle area = getArea();
 			mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-			ms.aurora.api.Menu.click(action);
+			return Menu.click(action);
 		}
 
-		public void click() {
-			VirtualMouse mouse = ClientContext.get().input.getMouse();
-			Rectangle area = getArea();
-			mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-			mouse.clickMouse(true);
-		}
-	}
+        @Override
+        public boolean hover() {
+            VirtualMouse virtualMouse = ClientContext.get().input.getMouse();
+            Rectangle area = getArea();
+            virtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            Mouse clientMouse = ClientContext.get().getClient().getMouse();
+            return area.contains(clientMouse.getMouseX(), clientMouse.getMouseX());
+        }
+
+        @Override
+        public boolean click(boolean left) {
+            VirtualMouse mouse = ClientContext.get().input.getMouse();
+            Rectangle area = getArea();
+            mouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
+            return true;
+
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.*;
 import ms.aurora.api.Projection;
 import ms.aurora.api.rt3.GameObject;
 
@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * @author rvbiljouw
  */
-public class RSObject implements Locatable {
+public class RSObject implements Locatable, Interactable {
     private final ClientContext context;
     private final GameObject wrapped;
 
@@ -83,6 +83,20 @@ public class RSObject implements Locatable {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean click(boolean left) {
+        if (!Projection.tileOnScreen(getRegionalLocation()))
+            return false;
+        Point screen = getScreenLocation();
+        context.input.getMouse().clickMouse(screen.x, screen.y, left);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return true;

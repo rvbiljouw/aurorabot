@@ -2,6 +2,7 @@ package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Projection;
 import ms.aurora.api.rt3.Model;
+import ms.aurora.api.util.GrahamScan;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class RSModel {
         this.turnDirection = turnDirection;
     }
 
-    public Polygon[] getPolys() {
+    public Polygon[] getPolygons() {
         ArrayList<Polygon> polys = new ArrayList<Polygon>();
         setRotation(turnDirection);
 
@@ -63,6 +64,16 @@ public class RSModel {
             verticesZ[i] = verticesZ[i] * cos - verticesX[i] * sin >> 15;
             verticesX[i] = i1;
         }
+    }
+
+    public Polygon getHull() {
+        ArrayList<Point> centrePoints = new ArrayList<Point>();
+        for (Polygon poly: this.getPolygons())
+            centrePoints.add(new Point((int) poly.getBounds().getCenterX(), (int) poly.getBounds().getCenterY()));
+        Polygon hull = new Polygon();
+        for (Point p: GrahamScan.getConvexHull(centrePoints))
+            hull.addPoint(p.x, p.y);
+        return hull;
     }
 
     public static final int[] SIN_TABLE = new int[16384];

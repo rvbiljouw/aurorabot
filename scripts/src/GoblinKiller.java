@@ -1,7 +1,6 @@
 import ms.aurora.api.Npcs;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
-import ms.aurora.api.wrappers.RSModel;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.event.listeners.PaintListener;
 
@@ -16,6 +15,9 @@ import static ms.aurora.api.util.Utilities.random;
  */
 @ScriptManifest(name = "GoblinKiller", shortDescription = "Kills Goblins anywhere..", author = "rvbiljouw", version = 1.0)
 public class GoblinKiller extends Script implements PaintListener {
+
+    private Color fill = new Color(154, 205, 50, 100), border = new Color(50, 205, 50);
+
 
     @Override
     public int tick() {
@@ -38,10 +40,15 @@ public class GoblinKiller extends Script implements PaintListener {
     public void onRepaint(Graphics graphics) {
         RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null && goblin.getModel() != null) {
-            Polygon[] polys = new RSModel(goblin.getModel(), goblin.getLocalX(), goblin.getLocalY(), goblin.getTurnDirection()).getPolys();
+            /*Polygon[] polys = goblin.getModel().getPolygons();
             for(Polygon poly : polys) {
                 graphics.drawPolygon(poly);
-            }
+            }*/
+            Polygon p = goblin.getModel().getHull();
+            graphics.setColor(this.fill);
+            graphics.fillPolygon(p);
+            graphics.setColor(this.border);
+            graphics.drawPolygon(p);
         }
     }
 }
