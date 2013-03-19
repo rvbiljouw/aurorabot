@@ -13,7 +13,7 @@ import static com.google.common.collect.Maps.newHashMap;
 /**
  * @author rvbiljouw
  */
-public class ClientDefinition {
+public final class ClientDefinition {
     private final Logger logger = Logger.getLogger(ClientDefinition.class);
     private final List<ClassDefinition> classes = newArrayList();
     private final Plaintext source;

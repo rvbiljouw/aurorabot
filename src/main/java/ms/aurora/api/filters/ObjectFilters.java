@@ -8,6 +8,8 @@ import ms.aurora.api.wrappers.RSObject;
  */
 public class ObjectFilters {
 
+    private ObjectFilters() { }
+
     /**
      * a predicate which tests if the ID of the {@link ms.aurora.api.wrappers.RSObject} matches the specified.
      *

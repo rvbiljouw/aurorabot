@@ -8,6 +8,8 @@ import ms.aurora.api.wrappers.RSPlayer;
  */
 public class Players {
 
+    private Players() { }
+
     /**
      * gets the local {@link RSPlayer}
      *

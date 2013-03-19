@@ -21,6 +21,8 @@ import static com.google.common.collect.Lists.newArrayList;
 public class PluginLoader {
     private static final Logger logger = Logger.getLogger(PluginLoader.class);
 
+    private PluginLoader() { }
+
     public static List<Plugin> getPlugins() {
         List<Plugin> plugins = newArrayList();
         for (PluginSource sourceObj : PluginSource.getAll()) {

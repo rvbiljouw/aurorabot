@@ -5,7 +5,7 @@ import ms.aurora.browser.Request;
 
 import java.util.Map;
 
-public class GetRequest implements Request {
+public final class GetRequest implements Request {
     private Map<String, String> requestParams = Maps.newHashMap();
     private boolean overrideContext;
     private String url;

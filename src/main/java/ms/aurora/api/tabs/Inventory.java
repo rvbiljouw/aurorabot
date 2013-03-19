@@ -21,6 +21,8 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 public class Inventory {
     private static final int INVENTORY_ID = 149;
 
+    private Inventory() { }
+
     /**
      * Retrieves the inventory widget
      *

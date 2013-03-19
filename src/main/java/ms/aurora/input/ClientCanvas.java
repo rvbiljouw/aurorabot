@@ -15,7 +15,7 @@ import static ms.aurora.api.ClientContext.set;
 /**
  * @author rvbiljouw
  */
-public class ClientCanvas extends Canvas implements MouseMotionListener,
+public final class ClientCanvas extends Canvas implements MouseMotionListener,
         MouseListener {
     private static final long serialVersionUID = 4392449009242794406L;
     private final BufferedImage backBuffer = new BufferedImage(765, 503,

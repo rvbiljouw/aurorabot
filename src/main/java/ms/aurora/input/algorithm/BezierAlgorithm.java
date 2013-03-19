@@ -10,7 +10,7 @@ import java.util.List;
  * @author Benland100
  * @author rvb
  */
-public class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
+public final class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
     private java.util.Random random = new java.util.Random();
 
     public Point[] generatePath(Point start, Point dest) {

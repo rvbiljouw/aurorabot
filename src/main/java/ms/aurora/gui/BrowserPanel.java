@@ -9,7 +9,7 @@ import javafx.scene.web.WebViewBuilder;
 
 import javax.swing.*;
 
-public class BrowserPanel extends JPanel {
+public final class BrowserPanel extends JPanel {
     private static final long serialVersionUID = -8751526200873458952L;
     private static final String DEFAULT_URL = "http://www.aurora.ms";
     private String url = DEFAULT_URL;

@@ -12,28 +12,28 @@ public class AbstractModel {
             Persistence.createEntityManagerFactory("default");
 
 
-    public void save() {
+    public final void save() {
         EntityManager em = getEm();
         em.getTransaction().begin();
         em.persist(this);
         em.getTransaction().commit();
     }
 
-    public void update() {
+    public final void update() {
         EntityManager em = getEm();
         em.getTransaction().begin();
         em.merge(this);
         em.getTransaction().commit();
     }
 
-    public void remove() {
+    public final void remove() {
         EntityManager em = getEm();
         em.getTransaction().begin();
         em.remove(this);
         em.getTransaction().commit();
     }
 
-    public void refresh() {
+    public final void refresh() {
         EntityManager em = getEm();
         em.refresh(this);
     }

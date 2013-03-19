@@ -12,7 +12,7 @@ import java.applet.Applet;
 import java.net.JarURLConnection;
 import java.net.URL;
 
-public class AppletLoader implements Runnable {
+public final class AppletLoader implements Runnable {
     private final Context browserContext;
     private final Browser browser;
 

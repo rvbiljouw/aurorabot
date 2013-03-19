@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ApplicationGUI extends JFrame {
+public final class ApplicationGUI extends JFrame {
     private static final long serialVersionUID = 2133982906411134266L;
     private JPanel contentPane;
     private JTabbedPane tabbedPane;

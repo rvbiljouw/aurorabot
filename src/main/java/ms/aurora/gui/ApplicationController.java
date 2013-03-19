@@ -16,6 +16,8 @@ public final class ApplicationController {
     private final static Logger logger = Logger.getLogger(ApplicationController.class);
     private final static ApplicationGUI gui = new ApplicationGUI();
 
+    private ApplicationController() { }
+
     public static void startApplication() {
         gui.setVisible(true);
         logger.info("Initialized GUI");
@@ -78,8 +80,7 @@ public final class ApplicationController {
     public static Session getSelectedSession() {
         Applet applet = getSelectedApplet();
         if (applet != null) {
-            Session session = SessionRepository.get(applet.hashCode());
-            return session;
+            return SessionRepository.get(applet.hashCode());
         }
         return null;
     }

@@ -2,21 +2,21 @@ package ms.aurora.browser;
 
 public interface Request {
 
-    public void setParam(String paramName, String paramValue);
+    void setParam(String paramName, String paramValue);
 
-    public String getParams();
+    String getParams();
 
-    public void setPage(String page);
+    void setPage(String page);
 
-    public String getUrl();
+    String getUrl();
 
-    public void setUrl(String url);
+    void setUrl(String url);
 
-    public boolean isOverrideContext();
+    boolean isOverrideContext();
 
-    public void setOverrideContext(boolean overrideContext);
+    void setOverrideContext(boolean overrideContext);
 
-    public Type getRequestType();
+    Type getRequestType();
 
     public static enum Type {
         GET, POST

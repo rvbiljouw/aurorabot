@@ -19,15 +19,15 @@ public class ClientContext {
         input = new InputManager(this);
     }
 
-    public void setSession(Session session) {
+    public final void setSession(Session session) {
         this.session = session;
     }
 
-    public Session getSession() {
+    public final Session getSession() {
         return session;
     }
 
-    public RSPlayer getMyPlayer() {
+    public final RSPlayer getMyPlayer() {
         Player player = getClient().getLocalPlayer();
         if (player != null) {
             return new RSPlayer(this, player);
@@ -35,7 +35,7 @@ public class ClientContext {
         return null;
     }
 
-    public Client getClient() {
+    public final Client getClient() {
         return (Client) session.getApplet();
     }
 

@@ -5,7 +5,7 @@ import ms.aurora.browser.exception.BrowsingException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Browser {
+public final class Browser {
     private Context context;
 
     public Browser() {

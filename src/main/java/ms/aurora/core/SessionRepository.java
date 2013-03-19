@@ -11,6 +11,8 @@ import static com.google.common.collect.Maps.newHashMap;
 public class SessionRepository {
     private static final Map<Integer, Session> sessionMap = newHashMap();
 
+    private SessionRepository() { }
+
     public static Session get(Integer appletHash) {
         return sessionMap.get(appletHash);
     }

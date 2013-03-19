@@ -23,6 +23,8 @@ public class Bank {
 	private static final int BANK_PANE_ID = 89;
 	private static final int BANK_CLOSE_ID = 102;
 
+    private Bank() { }
+
 	/**
 	 * Retrieves the bank widget
 	 * 

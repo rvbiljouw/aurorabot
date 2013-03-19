@@ -21,6 +21,8 @@ import static com.google.common.collect.Lists.newArrayList;
 public final class ScriptLoader {
     private static final Logger logger = Logger.getLogger(ScriptLoader.class);
 
+    private ScriptLoader() { }
+
     public static List<Script> getScripts() {
         List<Script> scripts = newArrayList();
         for (ScriptSource sourceObj : ScriptSource.getAll()) {

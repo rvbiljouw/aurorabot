@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author rvbiljouw
  */
-public class ClassDefinition {
+public final class ClassDefinition {
     private List<AccessorDefinition> accessors;
     private String name;
     private String iface;

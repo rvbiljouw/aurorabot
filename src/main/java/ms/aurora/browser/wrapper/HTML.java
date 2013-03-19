@@ -11,7 +11,7 @@ import javax.xml.xpath.*;
 import java.io.InputStream;
 import java.util.List;
 
-public class HTML {
+public final class HTML {
     private static Logger logger = Logger.getLogger(HTML.class);
     private Document dom;
 

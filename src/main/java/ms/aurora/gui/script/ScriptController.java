@@ -10,6 +10,8 @@ import static ms.aurora.gui.ApplicationController.getSelectedSession;
  */
 public class ScriptController {
 
+    private ScriptController() { }
+
     public static void onScriptOverview() {
         ScriptOverview overview = new ScriptOverview();
         overview.setVisible(true);

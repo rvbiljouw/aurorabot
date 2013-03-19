@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-public class AppletStubImpl implements AppletStub {
+public final class AppletStubImpl implements AppletStub {
     private final AppletContextImpl appletContextImpl = new AppletContextImpl(
             this);
     private Map<String, String> appletParams;

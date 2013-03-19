@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-public class AppletContextImpl implements AppletContext {
+public final class AppletContextImpl implements AppletContext {
 
     public AppletContextImpl(AppletStubImpl appletStubImpl) {
     }

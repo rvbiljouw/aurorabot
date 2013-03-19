@@ -1,5 +1,7 @@
 package ms.aurora.browser;
 
+import ms.aurora.browser.exception.RequestException;
+
 public final class RequestBuilder {
     private Request cachedRequest;
 
@@ -11,7 +13,7 @@ public final class RequestBuilder {
         try {
             cachedRequest = requestType.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("Creation of a request with type "
+            throw new RequestException("Creation of a request with type "
                     + requestType.getSimpleName() + " failed.", e);
         }
         return this;

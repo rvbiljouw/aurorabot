@@ -3,7 +3,7 @@ package ms.aurora.browser;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Context {
+public final class Context {
     private final String protocol;
     private final String domain;
     private final String token;

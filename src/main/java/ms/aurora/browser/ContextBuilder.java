@@ -1,10 +1,13 @@
 package ms.aurora.browser;
 
-public class ContextBuilder {
+public final class ContextBuilder {
+    public static final int HTTP_PORT = 80;
+    public static final int HTTPS_PORT = 443;
+
     private String contextProtocol = "http";
     private String contextDomain = "localhost";
     private String contextToken = "";
-    private int contextPort = 80;
+    private int contextPort = HTTP_PORT;
 
     public ContextBuilder protocol(String contextProtocol) {
         this.contextProtocol = contextProtocol;

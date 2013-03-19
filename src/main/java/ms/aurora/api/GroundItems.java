@@ -16,6 +16,8 @@ import static ms.aurora.api.ClientContext.context;
  */
 public class GroundItems {
 
+    private GroundItems() { }
+
     /**
      * finds the closest {@link RSGroundItem} which matches the given predicate
      *

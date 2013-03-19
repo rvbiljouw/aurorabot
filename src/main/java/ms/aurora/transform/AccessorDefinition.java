@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 /**
  * @author rvbiljouw
  */
-public class AccessorDefinition {
+public final class AccessorDefinition {
     private static final Logger logger = Logger.getLogger(AccessorDefinition.class);
     private String name;
     private String owner;

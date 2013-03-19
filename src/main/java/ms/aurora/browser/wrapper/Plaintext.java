@@ -1,12 +1,14 @@
 package ms.aurora.browser.wrapper;
 
+import ms.aurora.browser.exception.ParsingException;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Plaintext {
+public final class Plaintext {
     private String text;
 
     public Plaintext(String text) {
@@ -26,7 +28,7 @@ public class Plaintext {
         return  pattern.matcher(text);
     }
 
-    public static Plaintext fromStream(InputStream stream) {
+    public static Plaintext fromStream(InputStream stream) throws ParsingException {
         try {
             BufferedReader streamReader = new BufferedReader(
                     new InputStreamReader(stream));
@@ -37,7 +39,7 @@ public class Plaintext {
             }
             return new Plaintext(text);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to parse plaintext document.", e);
+            throw new ParsingException("Failed to parse plaintext document.", e);
         }
     }
 }

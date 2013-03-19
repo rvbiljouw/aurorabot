@@ -17,6 +17,8 @@ import static ms.aurora.api.ClientContext.context;
  */
 public class Objects {
 
+    private Objects() { }
+
     /**
      * a method which gets the closest {@link RSObject} in the current region which satisfy the {@link Predicate}
      *
