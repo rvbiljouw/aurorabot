@@ -19,7 +19,7 @@ public class InputManager {
         this.keyboard = new VirtualKeyboard();
     }
 
-    public synchronized VirtualMouse getMouse() {
+    public final synchronized VirtualMouse getMouse() {
         mouse.setComponent(((Applet) context.getClient())
                 .getComponentAt(0, 0));
         return mouse;

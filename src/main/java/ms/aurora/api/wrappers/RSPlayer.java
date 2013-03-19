@@ -6,7 +6,7 @@ import ms.aurora.api.rt3.Player;
 /**
  * @author rvbiljouw
  */
-public class RSPlayer extends RSCharacter {
+public final class RSPlayer extends RSCharacter {
     private final Player wrapped;
 
     public RSPlayer(ClientContext clientContextContext, Player wrapped) {

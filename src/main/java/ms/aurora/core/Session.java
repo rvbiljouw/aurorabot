@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 /**
  * @author rvbiljouw
  */
-public class Session implements Runnable {
+public final class Session implements Runnable {
     private final ScriptManager scriptManager = new ScriptManager(this);
     private final PluginManager pluginManager = new PluginManager(this);
     private final PaintManager paintManager = new PaintManager(this);

@@ -15,24 +15,24 @@ public abstract class Plugin extends ClientContext {
         ClientContext.set(this);
     }
 
-    public void info(String message) {
+    public final void info(String message) {
         logger.info(message);
     }
 
-    public void debug(String message) {
+    public final void debug(String message) {
         logger.debug(message);
     }
 
-    public void error(String message) {
+    public final void error(String message) {
         logger.error(message);
     }
 
-    public void error(String message, Throwable t) {
+    public final void error(String message, Throwable t) {
         logger.error(message, t);
     }
 
     @Override
-    public void setSession(Session session) {
+    public final void setSession(Session session) {
         super.setSession(session);
 
         if (this instanceof PaintListener) {
@@ -40,7 +40,7 @@ public abstract class Plugin extends ClientContext {
         }
     }
 
-    public void setState(PluginState state) {
+    public final void setState(PluginState state) {
         switch (state) {
             case INIT:
                 startup();
@@ -62,11 +62,11 @@ public abstract class Plugin extends ClientContext {
 
     public abstract void cleanup();
 
-    public boolean validate() {
+    public final boolean validate() {
         return getManifest() != null;
     }
 
-    public PluginManifest getManifest() {
+    public final PluginManifest getManifest() {
         return getClass().getAnnotation(PluginManifest.class);
     }
 }

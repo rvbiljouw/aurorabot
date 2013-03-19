@@ -6,7 +6,7 @@ import ms.aurora.api.wrappers.RSObject;
 /**
  * @author tobiewarburton
  */
-public class ObjectFilters {
+public final class ObjectFilters {
 
     private ObjectFilters() { }
 

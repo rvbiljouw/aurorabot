@@ -11,7 +11,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * @author rvbiljouw
  */
-public class PaintManager implements PaintListener {
+public final class PaintManager implements PaintListener {
     private final List<PaintListener> listeners = newArrayList();
     private final Session session;
 

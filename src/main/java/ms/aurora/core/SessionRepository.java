@@ -8,7 +8,7 @@ import static com.google.common.collect.Maps.newHashMap;
 /**
  * @author rvbiljouw
  */
-public class SessionRepository {
+public final class SessionRepository {
     private static final Map<Integer, Session> sessionMap = newHashMap();
 
     private SessionRepository() { }

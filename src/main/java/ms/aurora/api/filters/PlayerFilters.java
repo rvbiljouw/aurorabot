@@ -6,7 +6,7 @@ import ms.aurora.api.wrappers.RSPlayer;
 /**
  * @author tobiewarburton
  */
-public class PlayerFilters {
+public final class PlayerFilters {
 
     private PlayerFilters() { }
 

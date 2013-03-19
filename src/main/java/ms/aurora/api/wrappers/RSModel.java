@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * @author rvbiljouw
  */
-public class RSModel {
+public final class RSModel {
     private int[] trianglesX,
             trianglesY,
             trianglesZ,

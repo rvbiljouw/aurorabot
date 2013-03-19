@@ -12,8 +12,8 @@ import static com.google.common.collect.Maps.newHashMap;
 /**
  * @author rvbiljouw
  */
-public class PluginManager {
-    private final static Logger logger = Logger.getLogger(PluginManager.class);
+public final class PluginManager {
+    private static final Logger logger = Logger.getLogger(PluginManager.class);
     private final Map<Class<? extends Plugin>, Plugin> pluginMap = newHashMap();
     private final Session session;
 

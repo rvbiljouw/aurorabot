@@ -18,7 +18,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 /**
  * @author rvbiljouw
  */
-public class Inventory {
+public final class Inventory {
     private static final int INVENTORY_ID = 149;
 
     private Inventory() { }
@@ -332,7 +332,7 @@ public class Inventory {
     /**
      * A class encapsulating inventory items.
      */
-    public static class InventoryItem {
+    public static final class InventoryItem {
         private int slot;
         private int id;
         private int stackSize;

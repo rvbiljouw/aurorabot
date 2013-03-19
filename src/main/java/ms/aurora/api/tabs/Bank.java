@@ -18,7 +18,7 @@ import ms.aurora.input.VirtualMouse;
 /**
  * @author tobiewarburton
  */
-public class Bank {
+public final class Bank {
 	private static final int BANK_ID = 12;
 	private static final int BANK_PANE_ID = 89;
 	private static final int BANK_CLOSE_ID = 102;
@@ -241,7 +241,7 @@ public class Bank {
 	/**
 	 * A class encapsulating Bank items.
 	 */
-	public static class BankItem implements Interactable {
+	public static final class BankItem implements Interactable {
 		private int slot;
 		private int id;
 		private int stackSize;

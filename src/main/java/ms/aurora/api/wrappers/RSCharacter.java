@@ -22,37 +22,37 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         this.wrapped = wrapped;
     }
 
-    public Point getScreenLocation() {
+    public final Point getScreenLocation() {
         return Projection.worldToScreen(getRegionalLocation());
     }
 
-    public RSTile getLocation() {
+    public final RSTile getLocation() {
         return new RSTile(getX(), getY());
     }
 
-    public RSTile getRegionalLocation() {
+    public final RSTile getRegionalLocation() {
         int x = getLocalX();
         int z = getLocalY();
         return new RSTile(x, z, -(wrapped.getModelHeight() / 2));
     }
 
-    public int distance(Locatable other) {
+    public final int distance(Locatable other) {
         return (int) Point.distance(getX(), getY(), other.getX(), other.getY());
     }
 
-    public int getX() {
+    public final int getX() {
         return context.getClient().getBaseX() + (getLocalX() >> 7);
     }
 
-    public int getY() {
+    public final int getY() {
         return context.getClient().getBaseY() + (getLocalY() >> 7);
     }
 
-    public int getLocalX() {
+    public final int getLocalX() {
         return wrapped.getLocalX();
     }
 
-    public int getLocalY() {
+    public final int getLocalY() {
         return wrapped.getLocalY();
     }
 
@@ -60,7 +60,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return the character that the current character is interacting with, or
      *         null
      */
-    public RSCharacter getInteracting() {
+    public final RSCharacter getInteracting() {
         int interacting = getInteractingEntity();
         if (interacting == -1) {
             return null;
@@ -78,7 +78,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     /**
      * @return if the current character is in combat
      */
-    public boolean isInCombat() {
+    public final boolean isInCombat() {
         return context.getClient().getLoopCycle() < getLoopCycleStatus();
     }
 
@@ -86,7 +86,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @param actionName
      * @return
      */
-    public boolean applyAction(final String actionName) {
+    public final boolean applyAction(final String actionName) {
         Point screen = getScreenLocation();
         context.input.getMouse().moveMouse(screen.x, screen.y);
         ms.aurora.api.Menu.click(actionName);
@@ -99,7 +99,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     @Override
-    public boolean hover() {
+    public final boolean hover() {
         if (!Projection.tileOnScreen(getRegionalLocation())) {
             return false;
         }
@@ -109,49 +109,49 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     @Override
-    public boolean click(boolean left) {
+    public final boolean click(boolean left) {
         Point screen = getScreenLocation();
         context.input.getMouse().clickMouse(screen.x, screen.y, left);
         return false;
     }
 
-    public int getHitsLoopCycle() {
+    public final int getHitsLoopCycle() {
         return wrapped.getHitsLoopCycle();
     }
 
-    public int getAnimation() {
+    public final int getAnimation() {
         return wrapped.getAnimation();
     }
 
-    public int getCurrentHealth() {
+    public final int getCurrentHealth() {
         return wrapped.getCurrentHealth();
     }
 
-    public int getMaxHealth() {
+    public final int getMaxHealth() {
         return wrapped.getMaxHealth();
     }
 
-    public int getLoopCycleStatus() {
+    public final int getLoopCycleStatus() {
         return wrapped.getLoopCycleStatus();
     }
 
-    public int getTurnDirection() {
+    public final int getTurnDirection() {
         return wrapped.getTurnDirection();
     }
 
-    public String getMessage() {
+    public final String getMessage() {
         return wrapped.getMessage();
     }
 
-    public int getInteractingEntity() {
+    public final int getInteractingEntity() {
         return wrapped.getInteractingEntity();
     }
 
-    public boolean isMoving() {
+    public final boolean isMoving() {
         return wrapped.getPathLength() != 0;
     }
 
-    public RSModel getModel() {
+    public final RSModel getModel() {
         Model model = _getModel();
         if(model != null) {
             return new RSModel(model, getLocalX(),  getLocalY(),  getTurnDirection());
@@ -159,7 +159,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         return null;
     }
 
-    public String dbgString() {
+    public final String dbgString() {
         return "Path: " + wrapped.getPathLength() + " IC: " + isInCombat();
     }
 }

@@ -14,7 +14,7 @@ import static ms.aurora.api.ClientContext.context;
 /**
  * @author tobiewarburton
  */
-public class GroundItems {
+public final class GroundItems {
 
     private GroundItems() { }
 

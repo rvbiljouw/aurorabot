@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * @author rvbiljouw
  */
-public class TestAlgorithm implements VirtualMouse.MousePathAlgorithm {
+public final class TestAlgorithm implements VirtualMouse.MousePathAlgorithm {
     @Override
     public Point[] generatePath(Point origin, Point destination) {
         double dist = origin.distance(destination);

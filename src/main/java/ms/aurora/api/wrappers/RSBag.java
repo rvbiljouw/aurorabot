@@ -8,7 +8,7 @@ import java.util.Iterator;
 /**
  * @author rvbiljouw
  */
-public class RSBag implements Iterator<Node> {
+public final class RSBag implements Iterator<Node> {
     private final Bag bag;
     private int index = 0;
     private Node current;

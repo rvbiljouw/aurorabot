@@ -13,7 +13,7 @@ import java.awt.event.MouseMotionListener;
  * @author rvbiljouw
  * @author tobiewarburton
  */
-public class VirtualMouse implements MouseMotionListener {
+public final class VirtualMouse implements MouseMotionListener {
     private static final Logger logger = Logger.getLogger(VirtualMouse.class);
     private final MousePathAlgorithm algorithm = new BezierAlgorithm();
     private Component component;

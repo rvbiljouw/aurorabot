@@ -13,7 +13,7 @@ import java.awt.*;
  * Time: 01:11
  * To change this template use File | Settings | File Templates.
  */
-public class RSGroundItem implements Locatable, Interactable {
+public final class RSGroundItem implements Locatable, Interactable {
     private ClientContext context;
     private Item item;
     private int localX;

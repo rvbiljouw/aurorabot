@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ScriptWidget extends JPanel {
+public final class ScriptWidget extends JPanel {
 	private static final long serialVersionUID = 414689352878859224L;
 	private final Script script;
 

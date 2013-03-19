@@ -19,19 +19,19 @@ public abstract class GameEvent<T> {
         this.listenerType = listenerType;
     }
 
-    public T getObject() {
+    public final T getObject() {
         return object;
     }
 
-    public void setSource(Session session) {
+    public final void setSource(Session session) {
         this.session = session;
     }
 
-    public Session getSource() {
+    public final Session getSource() {
         return session;
     }
 
-    public Class<? extends EventListener> getListenerType() {
+    public final Class<? extends EventListener> getListenerType() {
         return listenerType;
     }
 

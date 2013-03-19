@@ -9,7 +9,7 @@ import java.util.EventListener;
 /**
  * @author rvbiljouw
  */
-public class PaintEvent extends GameEvent<Graphics> {
+public final class PaintEvent extends GameEvent<Graphics> {
 
     public PaintEvent(Graphics object) {
         super(object, PaintListener.class);

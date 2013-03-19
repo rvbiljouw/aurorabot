@@ -43,7 +43,7 @@ public class ClientContext {
         return context.get();
     }
 
-    public static void set(ClientContext _context) {
-        context.set(_context);
+    public static void set(ClientContext aContext) {
+        context.set(aContext);
     }
 }

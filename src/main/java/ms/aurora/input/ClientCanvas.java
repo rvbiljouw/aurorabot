@@ -69,9 +69,7 @@ public final class ClientCanvas extends Canvas implements MouseMotionListener,
 
     @Override
     public void setBounds(int x, int y, int width, int height) {
-        x = 0;
-        y = 0;
-        super.setBounds(x,y,width,height);
+        super.setBounds(0, 0, width, height);
     }
 
     private void drawMouse(Graphics2D g) {

@@ -11,7 +11,7 @@ import java.util.List;
         @NamedQuery(name = "pluginSource.getAll", query = "select s from PluginSource s"),
         @NamedQuery(name = "pluginSource.getBySource", query = "select s from PluginSource s where source = :source")
 })
-public class PluginSource extends AbstractModel {
+public final class PluginSource extends AbstractModel {
 
     @Id
     @GeneratedValue

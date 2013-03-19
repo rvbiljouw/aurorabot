@@ -8,7 +8,7 @@ import java.util.Iterator;
 /**
  * @author tobiewarburton
  */
-public class RSDeque implements Iterator<Node> {
+public final class RSDeque implements Iterator<Node> {
     private Deque deque;
     private Node current;
 

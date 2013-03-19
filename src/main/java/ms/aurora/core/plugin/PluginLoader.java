@@ -18,7 +18,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * @author rvbiljouw
  */
-public class PluginLoader {
+public final class PluginLoader {
     private static final Logger logger = Logger.getLogger(PluginLoader.class);
 
     private PluginLoader() { }

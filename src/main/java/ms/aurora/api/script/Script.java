@@ -17,33 +17,33 @@ public abstract class Script extends ClientContext implements Runnable {
 
     public abstract int tick();
 
-    public void info(String message) {
+    public final void info(String message) {
         logger.info(message);
     }
 
-    public void debug(String message) {
+    public final void debug(String message) {
         logger.debug(message);
     }
 
-    public void error(String message) {
+    public final void error(String message) {
         logger.error(message);
     }
 
-    public void error(String message, Throwable t) {
+    public final void error(String message, Throwable t) {
         logger.error(message, t);
     }
 
-    public synchronized void setState(ScriptState state) {
+    public final synchronized void setState(ScriptState state) {
         this.state = state;
         info("New state " + state.name());
     }
 
-    public synchronized ScriptState getState() {
+    public final synchronized ScriptState getState() {
         return this.state;
     }
 
     @Override
-    public void run() {
+    public final void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 switch (getState()) {
@@ -108,11 +108,11 @@ public abstract class Script extends ClientContext implements Runnable {
         }
     }
 
-    public boolean validate() {
+    public final boolean validate() {
         return getManifest() != null;
     }
 
-    public ScriptManifest getManifest() {
+    public final ScriptManifest getManifest() {
         return getClass().getAnnotation(ScriptManifest.class);
     }
 

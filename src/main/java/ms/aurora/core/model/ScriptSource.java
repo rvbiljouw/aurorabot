@@ -11,7 +11,7 @@ import java.util.List;
         @NamedQuery(name = "scriptSource.getBySource", query = "select s from ScriptSource s where s.source = :source"),
         @NamedQuery(name = "scriptSource.getAll", query = "select s from ScriptSource s")
 })
-public class ScriptSource extends AbstractModel {
+public final class ScriptSource extends AbstractModel {
 
     @Id
     @GeneratedValue

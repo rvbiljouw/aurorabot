@@ -22,10 +22,10 @@ public final class Projection {
         return worldToScreen(tile.getX(), tile.getY(), tile.getZ());
     }
 
-    public static Point worldToScreen(int _x, int _y, int _height) {
-        int x = _x;
-        int y = _y;
-        int z = _height;
+    public static Point worldToScreen(int aX, int aY, int aHeight) {
+        int x = aX;
+        int y = aY;
+        int z = aHeight;
         if (x < 128 || y < 128 || x > 13056 || y > 13056) {
             return new Point(-1, -1);
         } else {

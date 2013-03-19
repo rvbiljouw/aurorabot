@@ -13,7 +13,7 @@ import java.util.List;
         @NamedQuery(name = "pluginConfig.getAll",
                 query = "select p from PluginConfig p")
 })
-public class PluginConfig extends AbstractModel {
+public final class PluginConfig extends AbstractModel {
 
     @Id
     @GeneratedValue

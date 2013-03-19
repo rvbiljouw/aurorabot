@@ -13,8 +13,8 @@ import java.applet.Applet;
 import java.awt.*;
 
 public final class ApplicationController {
-    private final static Logger logger = Logger.getLogger(ApplicationController.class);
-    private final static ApplicationGUI gui = new ApplicationGUI();
+    private static final Logger logger = Logger.getLogger(ApplicationController.class);
+    private static final ApplicationGUI gui = new ApplicationGUI();
 
     private ApplicationController() { }
 

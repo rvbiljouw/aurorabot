@@ -15,7 +15,7 @@ import static ms.aurora.api.ClientContext.context;
 /**
  * @author rvbiljouw
  */
-public class Objects {
+public final class Objects {
 
     private Objects() { }
 

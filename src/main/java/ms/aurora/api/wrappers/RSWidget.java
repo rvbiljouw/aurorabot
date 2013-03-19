@@ -17,7 +17,7 @@ import static com.google.common.collect.Collections2.transform;
 /**
  * @author rvbiljouw
  */
-public class RSWidget implements Interactable {
+public final class RSWidget implements Interactable {
     private ClientContext context;
     private Widget widget;
 

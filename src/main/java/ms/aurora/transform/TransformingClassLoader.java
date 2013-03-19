@@ -22,7 +22,7 @@ import static com.google.common.collect.Maps.newHashMap;
 /**
  * @author rvbiljouw
  */
-public class TransformingClassLoader extends ClassLoader {
+public final class TransformingClassLoader extends ClassLoader {
     private final Logger logger = Logger.getLogger(TransformingClassLoader.class);
     private final Map<String, byte[]> classMap = newHashMap();
     private final ClientDefinition clientDef;

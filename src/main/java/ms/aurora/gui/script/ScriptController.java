@@ -8,7 +8,7 @@ import static ms.aurora.gui.ApplicationController.getSelectedSession;
 /**
  * @author rvbiljouw
  */
-public class ScriptController {
+public final class ScriptController {
 
     private ScriptController() { }
 

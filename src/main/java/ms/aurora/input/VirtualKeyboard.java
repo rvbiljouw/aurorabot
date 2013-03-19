@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * @author tobiewarburton
  */
-public class VirtualKeyboard {
+public final class VirtualKeyboard {
     private Random random = new Random();
     private Component component;
 
