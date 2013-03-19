@@ -10,7 +10,7 @@ import ms.aurora.core.model.PluginConfig;
  */
 public class PluginController {
 
-    private PluginController { }
+    private PluginController() { }
 
     public static void onPluginOverview() {
         PluginOverview overview = new PluginOverview();

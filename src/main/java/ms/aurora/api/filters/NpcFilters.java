@@ -9,7 +9,7 @@ import ms.aurora.api.wrappers.RSNPC;
  */
 public class NpcFilters {
 
-    private Inventory { }
+    private NpcFilters() { }
 
     /**
      * tests of the current {@link ms.aurora.api.wrappers.RSNPC} is not in combat
