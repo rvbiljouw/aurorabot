@@ -35,11 +35,11 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final int getX() {
-        return (wrapped.getX() >> 7) + context.getClient().getBaseX();
+        return (getLocalX() >> 7) + context.getClient().getBaseX();
     }
 
     public final int getY() {
-        return (wrapped.getY() >> 7) + context.getClient().getBaseY();
+        return (getLocalY() >> 7) + context.getClient().getBaseY();
     }
 
     public final Point getScreenLocation() {
@@ -53,7 +53,7 @@ public final class RSObject implements Locatable, Interactable {
     public final RSTile getRegionalLocation() {
         int x = getLocalX();
         int y = getLocalY();
-        return new RSTile(x, y, wrapped.getZ());
+        return new RSTile(x, y, 0);
     }
 
     public final int distance(Locatable other) {
