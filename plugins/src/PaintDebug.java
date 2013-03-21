@@ -16,6 +16,7 @@ public class PaintDebug extends Plugin {
     private PositionPaint positionPaint = new PositionPaint();
     private AnimationPaint animationPaint = new AnimationPaint();
     private InventoryPaint inventoryPaint = new InventoryPaint();
+    private MinimapPaint minimapPaint = new MinimapPaint();
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;
@@ -23,6 +24,7 @@ public class PaintDebug extends Plugin {
     private boolean positionPaintActive = false;
     private boolean animationPaintActive = false;
     private boolean inventoryPaintActive = false;
+    private boolean minimapPaintActive = false;
 
 
     private JMenu paint;
@@ -114,6 +116,20 @@ public class PaintDebug extends Plugin {
             }
         });
         paint.add(mouse);
+
+        JCheckBoxMenuItem minimap = new JCheckBoxMenuItem("Draw Minimap");
+        minimap.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!minimapPaintActive) {
+                    getSession().getPaintManager().register(minimapPaint);
+                } else {
+                    getSession().getPaintManager().deregister(minimapPaint);
+                }
+                minimapPaintActive = !minimapPaintActive;
+            }
+        });
+        paint.add(minimap);
 
         getSession().registerMenu(paint);
     }

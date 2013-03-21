@@ -118,6 +118,10 @@ public final class GrahamScan {
      *               is returned.
      */
     private static Point getLowestPoint(List<Point> points) {
+        if (points.size() == 0) {
+            return new Point(-1, -1);
+        }
+
         Point lowest = points.get(0);
         for (int i = 1; i < points.size(); i++) {
             Point temp = points.get(i);
@@ -141,6 +145,10 @@ public final class GrahamScan {
      */
     private static Set<Point> getSortedPointSet(List<Point> points) {
         final Point lowest = getLowestPoint(points);
+        if (lowest.x == -1 || lowest.y == -1) {
+            return new HashSet<Point>();
+        }
+
         TreeSet<Point> set = new TreeSet<Point>(new Comparator<Point>() {
             @Override
             public int compare(Point a, Point b) {

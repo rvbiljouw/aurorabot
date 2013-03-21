@@ -38,7 +38,8 @@ public final class AppletLoader implements Runnable {
     public void run() {
         ClientConfig clientConfig = new ClientConfig(browser);
         clientConfig.visit();
-        browser.setContext(ContextBuilder.get().domain("subjectdeleted.com").build());
+        //browser.setContext(ContextBuilder.get().domain("subjectdeleted.com").build());
+        browser.setContext(ContextBuilder.get().domain("aurora.ms").build());
         ClientDefinitionJSON definitionJSON = new ClientDefinitionJSON(browser);
         definitionJSON.visit();
 
