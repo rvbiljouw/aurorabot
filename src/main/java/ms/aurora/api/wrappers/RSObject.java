@@ -9,13 +9,17 @@ import java.awt.*;
 /**
  * @author rvbiljouw
  */
-public class RSObject implements Locatable, Interactable {
+public final class RSObject implements Locatable, Interactable {
     private final ClientContext context;
     private final GameObject wrapped;
+    private int localX;
+    private int localY;
 
-    public RSObject(ClientContext context, GameObject wrapped) {
+    public RSObject(ClientContext context, GameObject wrapped, int localX, int localY) {
         this.context = context;
         this.wrapped = wrapped;
+        this.localX = localX;
+        this.localY = localY;
     }
 
     public final int getId() {
@@ -23,11 +27,11 @@ public class RSObject implements Locatable, Interactable {
     }
 
     public final int getLocalX() {
-        return wrapped.getX();
+        return localX * 128;
     }
 
     public final int getLocalY() {
-        return wrapped.getY();
+        return localY * 128;
     }
 
     public final int getX() {
