@@ -25,6 +25,7 @@ public class GoblinKiller extends Script implements PaintListener {
             return random(700, 800);
         } else {
            // doAttack();
+            this.hoverGoblin();
             return random(600, 800);
         }
     }
@@ -33,6 +34,13 @@ public class GoblinKiller extends Script implements PaintListener {
         RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null) {
             goblin.applyAction("Attack");
+        }
+    }
+
+    private void hoverGoblin() {
+        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        if (goblin != null) {
+            goblin.hover();
         }
     }
 

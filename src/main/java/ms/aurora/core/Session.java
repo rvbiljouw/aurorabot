@@ -80,12 +80,22 @@ public final class Session implements Runnable {
         }
     }
 
-    public void registerMenu(JMenu menu) {
-        pluginsMenu.add(menu);
+    public void registerMenu(final JMenu menu) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                pluginsMenu.add(menu);
+            }
+        });
     }
 
-    public void deregisterMenu(JMenu menu) {
-        pluginsMenu.remove(menu);
+    public void deregisterMenu(final JMenu menu) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                pluginsMenu.remove(menu);
+            }
+        });
     }
 
 }

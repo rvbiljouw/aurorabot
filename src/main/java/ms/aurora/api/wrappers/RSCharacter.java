@@ -33,7 +33,8 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final RSTile getRegionalLocation() {
         int x = getLocalX();
         int z = getLocalY();
-        return new RSTile(x, z, -(wrapped.getModelHeight() / 2));
+        //return new RSTile(x, z, -(wrapped.getModelHeight() / 2));
+        return new RSTile(x, z, -(wrapped.getHeight() / 2));
     }
 
     public final int distance(Locatable other) {
@@ -103,7 +104,10 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         if (!Projection.tileOnScreen(getRegionalLocation())) {
             return false;
         }
-        Point screen = getScreenLocation();
+        //Point screen = getScreenLocation();
+        Point screen = this.getModel().getRandomHullPoint();
+        if (screen == null) return false;
+        System.out.println(screen);
         context.input.getMouse().moveMouse(screen.x, screen.y);
         return true;
     }
@@ -136,7 +140,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final int getTurnDirection() {
-        return wrapped.getTurnDirection();
+        return Math.abs(wrapped.getTurnDirection() - 1024);
     }
 
     public final String getMessage() {
