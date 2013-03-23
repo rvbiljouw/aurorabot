@@ -35,7 +35,7 @@ public final class ClientDefinitionJSON implements ResponseHandler {
 
     public void visit() {
         GetRequest request = new GetRequest();
-        request.setPage("/updater/output.json");
+        request.setPage("/output.json");
         browser.doRequest(request, this);
     }
 

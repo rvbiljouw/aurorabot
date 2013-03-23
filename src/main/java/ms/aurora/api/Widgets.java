@@ -20,6 +20,15 @@ public final class Widgets {
     private Widgets() {
     }
 
+    public static RSWidget[][] getAll() {
+        Widget[][] cache = context.get().getClient().getWidgetCache();
+        RSWidget[][] widgets = new RSWidget[cache.length][];
+        for (int i = 0; i < cache.length; i++) {
+            widgets[i] = transform(newArrayList(cache[i]), transform).toArray(new RSWidget[]{});
+        }
+        return widgets;
+    }
+
     public static RSWidget getWidget(int parent, int child) {
         Widget[][] cache = context.get().getClient().getWidgetCache();
         Widget[] p = cache[parent];
@@ -50,6 +59,17 @@ public final class Widgets {
             }
         }
         return satisfied.toArray(new RSWidget[0]);
+    }
+
+    public static boolean canContinue() {
+        RSWidget[] possible = getWidgetsWithText("Click here to continue");
+        return possible.length > 0;
+    }
+
+    public static void clickContinue() {
+        for (RSWidget widget : getWidgetsWithText("Click here to continue")) {
+            widget.click(true);
+        }
     }
 
     private static final Function<Widget, RSWidget> transform = new Function<Widget, RSWidget>() {
