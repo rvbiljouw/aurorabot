@@ -1,12 +1,14 @@
 package ms.aurora.api;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicates;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.wrappers.RSWidget;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.ClientContext.context;
@@ -22,11 +24,13 @@ public final class Widgets {
 
     public static RSWidget[][] getAll() {
         Widget[][] cache = context.get().getClient().getWidgetCache();
-        RSWidget[][] widgets = new RSWidget[cache.length][];
-        for (int i = 0; i < cache.length; i++) {
-            widgets[i] = transform(newArrayList(cache[i]), transform).toArray(new RSWidget[]{});
+        if (cache == null) return new RSWidget[0][];
+        List<RSWidget[]> widgets = new ArrayList<RSWidget[]>();
+        for (Widget[] tmp : cache) {
+            if (tmp == null) continue;
+            widgets.add(filter(transform(newArrayList(tmp), transform), Predicates.notNull()).toArray(new RSWidget[]{}));
         }
-        return widgets;
+        return widgets.toArray(new RSWidget[][]{});
     }
 
     public static RSWidget getWidget(int parent, int child) {
@@ -52,7 +56,7 @@ public final class Widgets {
     public static RSWidget[] getWidgetsWithText(String predicate) {
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
         for (Widget[] parents : context.get().getClient().getWidgetCache()) {
-            for (RSWidget child : transform(newArrayList(parents), transform).toArray(new RSWidget[0])) {
+            for (RSWidget child : filter(transform(newArrayList(parents), transform), Predicates.notNull()).toArray(new RSWidget[0])) {
                 if (child.getText() != null && child.getText().contains(predicate)) {
                     satisfied.add(child);
                 }

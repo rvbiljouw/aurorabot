@@ -19,7 +19,7 @@ public class InterfaceExplorer implements PaintListener {
     public RSWidget current;
 
 
-    public InterfaceExplorer() {
+    public void init() {
         explorer = new Explorer();
     }
 
@@ -61,17 +61,17 @@ public class InterfaceExplorer implements PaintListener {
         }
 
         private void init() {
-            setSize(500, 500);
+            setSize(600, 500);
             setResizable(false);
             setVisible(true);
             setLayout(new BorderLayout());
 
             treePanel.setLayout(new BorderLayout());
-            treePanel.setMaximumSize(new Dimension(250, 500));
+            treePanel.setMaximumSize(new Dimension(300, 500));
             treePanel.add(tree);
 
             tablePanel.setLayout(new BorderLayout());
-            tablePanel.setMaximumSize(new Dimension(250, 500));
+            tablePanel.setMaximumSize(new Dimension(300, 500));
             tablePanel.add(table);
 
             tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -83,12 +83,15 @@ public class InterfaceExplorer implements PaintListener {
                     display((RSWidget) node.getUserObject());
                 }
             });
+            add(treePanel, BorderLayout.WEST);
+            add(tablePanel, BorderLayout.EAST);
         }
 
         public void reload() {
             root = new DefaultMutableTreeNode("root");
             for (RSWidget[] widgets : Widgets.getAll()) {
-                if (widgets.length < 1) continue;
+                if (widgets == null) continue;
+                if (widgets.length == 0) continue;
                 DefaultMutableTreeNode child = new DefaultMutableTreeNode(widgets[0]);
                 for (int i = 1; i < widgets.length; i++) {
                     child.add(new DefaultMutableTreeNode(widgets[i]));
@@ -102,6 +105,8 @@ public class InterfaceExplorer implements PaintListener {
         public void display(RSWidget widget) {
             current = widget;
             Object[][] model = new Object[][]{
+                    {"parent", widget.getParentId()},
+                    {"id", widget.getId()},
                     {"x", widget.getX()},
                     {"y", widget.getY()},
                     {"width", widget.getWidth()},

@@ -21,6 +21,9 @@ public final class RSWidget implements Interactable {
     private ClientContext context;
     private Widget widget;
 
+    private int parent;
+    private int child;
+
     public RSWidget(ClientContext context, Widget widget) {
         this.context = context;
         this.widget = widget;
@@ -99,10 +102,6 @@ public final class RSWidget implements Interactable {
         return height;
     }
 
-    public int getParentId() {
-        return widget.getParentId();
-    }
-
     public String getText() {
         return widget.getText();
     }
@@ -125,17 +124,32 @@ public final class RSWidget implements Interactable {
             RSBag bag = new RSBag(context.getClient().getWidgetNodeBag());
             for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
                 if (n.getId() == groupIdx) {
-                    uid = (int) n.getId();
+                    uid = n.getId();
                 }
             }
         }
         if (uid == -1) {
             return null;
         }
-        int parent = uid >> 16;
-        int child = uid & 0xffff;
+        parent = uid >> 16;
+        child = uid & 0xffff;
         return Widgets.getWidget(parent, child);
     }
+
+    /**
+     * @return The widget's id
+     */
+    public int getId() {
+        return (widget.getParentId() & 0xFFFF);
+    }
+
+    /**
+     * @return The widget's parent id
+     */
+    public int getParentId() {
+        return widget.getParentId() >> 16;
+    }
+
 
     /**
      * @return a rectangle representation of the widget area

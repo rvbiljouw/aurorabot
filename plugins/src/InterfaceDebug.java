@@ -11,14 +11,12 @@ import java.awt.event.ActionListener;
 @PluginManifest(name = "Interface Debug", author = "tobiewarburton", version = 1.0)
 public class InterfaceDebug extends Plugin {
     private InterfaceExplorer explorer = new InterfaceExplorer();
-
     private boolean interfacePaintActive = false;
-
-
     private JMenu menu;
 
     @Override
     public void startup() {
+        explorer.init();
         menu = new JMenu("Interfaces");
 
         JCheckBoxMenuItem interfaces = new JCheckBoxMenuItem("Toggle Interface Explorer");
@@ -48,7 +46,6 @@ public class InterfaceDebug extends Plugin {
     public void cleanup() {
         getSession().deregisterMenu(menu);
     }
-
 
 
 }
