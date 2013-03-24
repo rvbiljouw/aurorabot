@@ -11,11 +11,11 @@ import java.lang.reflect.Method;
  * @author rvbiljouw
  */
 public class RSRenderable {
-    public final ClientContext context;
+    public final ClientContext ctx;
     private final Renderable wrapped;
 
-    public RSRenderable(ClientContext context, Renderable wrapped) {
-        this.context = context;
+    public RSRenderable(ClientContext ctx, Renderable wrapped) {
+        this.ctx = ctx;
         this.wrapped = wrapped;
     }
 

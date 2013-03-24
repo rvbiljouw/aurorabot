@@ -1,6 +1,5 @@
 package ms.aurora.api.random.impl;
 
-import ms.aurora.api.ClientContext;
 import ms.aurora.api.random.Random;
 
 /**
@@ -10,7 +9,7 @@ import ms.aurora.api.random.Random;
 public class AutoLogin extends Random {
     @Override
     public boolean activate() {
-        return ClientContext.get().getClient().getLoginIndex() == 10;
+        return getClient().getLoginIndex() == 10;
     }
 
     @Override

@@ -21,24 +21,25 @@ public class GoblinKiller extends Script implements PaintListener {
 
     @Override
     public int tick() {
-        if (getMyPlayer().isMoving() || getMyPlayer().isInCombat() || getMyPlayer().getInteracting() != null) {
+        if (players.getLocal().isMoving() || players.getLocal().isInCombat() ||
+                players.getLocal().getInteracting() != null) {
             return random(700, 800);
         } else {
-           // doAttack();
-            this.hoverGoblin();
+            doAttack();
+            //this.hoverGoblin();
             return random(600, 800);
         }
     }
 
     private void doAttack() {
-        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        RSNPC goblin = npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null) {
             goblin.applyAction("Attack");
         }
     }
 
     private void hoverGoblin() {
-        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        RSNPC goblin = npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null) {
             goblin.hover();
         }
@@ -46,7 +47,7 @@ public class GoblinKiller extends Script implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        RSNPC goblin = npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null && goblin.getModel() != null) {
             /*Polygon[] polys = goblin.getModel().getPolygons();
             for(Polygon poly : polys) {

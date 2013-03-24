@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  */
 @PluginManifest(name = "Interface Debug", author = "tobiewarburton", version = 1.0)
 public class InterfaceDebug extends Plugin {
-    private InterfaceExplorer explorer = new InterfaceExplorer();
+    private InterfaceExplorer explorer = new InterfaceExplorer(this);
     private boolean interfacePaintActive = false;
     private JMenu menu;
 

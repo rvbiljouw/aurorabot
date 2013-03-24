@@ -1,7 +1,5 @@
 package ms.aurora.api.random.impl;
 
-import ms.aurora.api.Npcs;
-import ms.aurora.api.Players;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
@@ -14,10 +12,12 @@ public class StrangePlant extends Random {
     private static final int STRANGE_PLANT_ID = 407;
     private static final int DEAD_ANIM = 350;
     private static final int ALIVE_ANIM = 348;
-    private static final Predicate<RSNPC> STRANGE_PLANT_PREDICATE = new Predicate<RSNPC>() {
+
+
+    private final Predicate<RSNPC> STRANGE_PLANT_PREDICATE = new Predicate<RSNPC>() {
         @Override
         public boolean apply(RSNPC object) {
-            return object.getId() == STRANGE_PLANT_ID && object.distance(Players.getLocal()) == 1;
+            return object.getId() == STRANGE_PLANT_ID && object.distance(players.getLocal()) == 1;
         }
     };
 
@@ -26,7 +26,7 @@ public class StrangePlant extends Random {
 
     @Override
     public boolean activate() {
-        plant = Npcs.get(STRANGE_PLANT_PREDICATE);
+        plant = npcs.get(STRANGE_PLANT_PREDICATE);
         return plant != null;
     }
 

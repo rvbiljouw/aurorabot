@@ -10,13 +10,13 @@ import ms.aurora.api.wrappers.RSWidget;
 public class Teleother extends Random {
     @Override
     public boolean activate() {
-        RSWidget tele = Widgets.getWidget(326, 2);
+        RSWidget tele = widgets.getWidget(326, 2);
         return tele != null && tele.getText().contains("wants to teleport");
     }
 
     @Override
     public int loop() {
-        RSWidget no = Widgets.getWidget(326, 8);
+        RSWidget no = widgets.getWidget(326, 8);
         if (no != null) {
             no.click(true);
         }

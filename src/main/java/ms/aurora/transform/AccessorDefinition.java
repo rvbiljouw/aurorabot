@@ -1,8 +1,9 @@
 package ms.aurora.transform;
 
-import com.sun.org.apache.bcel.internal.Constants;
-import com.sun.org.apache.bcel.internal.classfile.ConstantInteger;
-import com.sun.org.apache.bcel.internal.generic.*;
+
+import org.apache.bcel.Constants;
+import org.apache.bcel.classfile.ConstantInteger;
+import org.apache.bcel.generic.*;
 import org.apache.log4j.Logger;
 
 /**

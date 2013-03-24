@@ -12,7 +12,6 @@ public abstract class Script extends ClientContext implements Runnable {
     private ScriptState state = ScriptState.START;
 
     public Script() {
-        ClientContext.set(this);
     }
 
     public abstract int tick();
@@ -94,7 +93,6 @@ public abstract class Script extends ClientContext implements Runnable {
     }
 
     private void init() {
-        ClientContext.set(this);
         input.initialize();
 
         if(this instanceof PaintListener) {

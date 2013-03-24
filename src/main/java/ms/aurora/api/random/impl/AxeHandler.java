@@ -1,8 +1,5 @@
 package ms.aurora.api.random.impl;
 
-import ms.aurora.api.ClientContext;
-import ms.aurora.api.GroundItems;
-import ms.aurora.api.Players;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.tabs.Inventory;
 import ms.aurora.api.util.Predicate;
@@ -46,35 +43,35 @@ public class AxeHandler extends Random {
 
     @Override
     public boolean activate() {
-        RSGroundItem axe = GroundItems.get(AXE_HEAD_PREDICATE);
-        Inventory.InventoryItem handle = Inventory.get(HANDLE);
+        RSGroundItem axe = items.get(AXE_HEAD_PREDICATE);
+        Inventory.InventoryItem handle = inventory.get(HANDLE);
         return handle != null && axe != null;
     }
 
     @Override
     public int loop() {
-        if (Players.getLocal().isInCombat() || Players.getLocal().isMoving() || Players.getLocal().getAnimation() != -1) {
+        if (players.getLocal().isInCombat() || players.getLocal().isMoving() || players.getLocal().getAnimation() != -1) {
             return 200;
         }
         switch (getState()) {
             case DROP_ITEM:
-                Inventory.InventoryItem itemToDrop = Inventory.getAll()[0];
+                Inventory.InventoryItem itemToDrop = inventory.getAll()[0];
                 droppedItemId = itemToDrop.getId();
                 itemToDrop.applyAction("Drop");
                 droppedItem = true;
                 break;
             case PICKUP_DROPPED_ITEM:
-                RSGroundItem itemToPickup = GroundItems.get(DROPPED_ITEM_PREDICATE);
+                RSGroundItem itemToPickup = items.get(DROPPED_ITEM_PREDICATE);
                 itemToPickup.applyAction("Pickup");
                 break;
             case FIX:
-                Inventory.InventoryItem axeHead = Inventory.get(AXE_HEAD_INV_PREDICATE);
-                Inventory.InventoryItem axeHandle = Inventory.get(HANDLE);
+                Inventory.InventoryItem axeHead = inventory.get(AXE_HEAD_INV_PREDICATE);
+                Inventory.InventoryItem axeHandle = inventory.get(HANDLE);
                 axeHandle.applyAction("Use");
                 axeHead.applyAction("Use");
                 break;
             case PICKUP_HEAD:
-                RSGroundItem axeGroundItem = GroundItems.get(AXE_HEAD_PREDICATE);
+                RSGroundItem axeGroundItem = items.get(AXE_HEAD_PREDICATE);
                 axeGroundItem.applyAction("Pickup");
                 break;
             case EXIT:
@@ -84,13 +81,13 @@ public class AxeHandler extends Random {
     }
 
     public State getState() {
-        if (Inventory.isFull() && GroundItems.get(AXE_HEAD_PREDICATE) != null) {
+        if (inventory.isFull() && items.get(AXE_HEAD_PREDICATE) != null) {
             return State.DROP_ITEM;
-        } else if (GroundItems.get(AXE_HEAD_PREDICATE) != null) {
+        } else if (items.get(AXE_HEAD_PREDICATE) != null) {
             return State.PICKUP_HEAD;
-        } else if (Inventory.contains(HANDLE) && Inventory.get(AXE_HEAD_INV_PREDICATE) != null) {
+        } else if (inventory.contains(HANDLE) && inventory.get(AXE_HEAD_INV_PREDICATE) != null) {
             return State.FIX;
-        } else if (droppedItem && GroundItems.get(DROPPED_ITEM_PREDICATE) != null) {
+        } else if (droppedItem && items.get(DROPPED_ITEM_PREDICATE) != null) {
             return State.PICKUP_DROPPED_ITEM;
         } else {
             return State.EXIT;

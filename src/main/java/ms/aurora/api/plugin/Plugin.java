@@ -11,7 +11,7 @@ public abstract class Plugin extends ClientContext {
     private final Logger logger = Logger.getLogger(getClass());
 
     public Plugin() {
-        ClientContext.set(this);
+
     }
 
     public final void info(String message) {

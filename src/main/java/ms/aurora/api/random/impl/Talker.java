@@ -27,20 +27,20 @@ public class Talker extends Random {
 
     @Override
     public boolean activate() {
-        talker = Npcs.get(TALKERS_PREDICATE);
-        return talker != null && talker.getMessage().contains(Players.getLocal().getName());
+        talker = npcs.get(TALKERS_PREDICATE);
+        return talker != null && talker.getMessage().contains(players.getLocal().getName());
     }
 
     @Override
     public int loop() {
         if (talker != null) {
             talker.applyAction("Talk");
-            while (Players.getLocal().isMoving()) {
+            while (players.getLocal().isMoving()) {
                 Utilities.sleepNoException(100, 200);
             }
             Utilities.sleepNoException(600, 800);
-            while (Widgets.canContinue()) {
-                Widgets.clickContinue();
+            while (widgets.canContinue()) {
+                widgets.clickContinue();
             }
         }
         return -1;

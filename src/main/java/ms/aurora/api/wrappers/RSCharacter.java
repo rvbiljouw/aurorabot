@@ -1,8 +1,6 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.*;
-import ms.aurora.api.Players;
-import ms.aurora.api.Projection;
+import ms.aurora.api.ClientContext;
 import ms.aurora.api.rt3.Model;
 
 import java.awt.*;
@@ -23,7 +21,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final Point getScreenLocation() {
-        return Projection.worldToScreen(getRegionalLocation());
+        return ctx.projection.worldToScreen(getRegionalLocation());
     }
 
     public final RSTile getLocation() {
@@ -42,11 +40,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final int getX() {
-        return context.getClient().getBaseX() + (getLocalX() >> 7);
+        return ctx.getClient().getBaseX() + (getLocalX() >> 7);
     }
 
     public final int getY() {
-        return context.getClient().getBaseY() + (getLocalY() >> 7);
+        return ctx.getClient().getBaseY() + (getLocalY() >> 7);
     }
 
     public final int getLocalX() {
@@ -66,12 +64,12 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         if (interacting == -1) {
             return null;
         } else if (interacting < 32767) {
-            return new RSNPC(context,
-                    context.getClient().getAllNpcs()[interacting]);
+            return new RSNPC(ctx,
+                    ctx.getClient().getAllNpcs()[interacting]);
         } else if (interacting >= 32767) {
             int index = (interacting - 32767);
-            return new RSPlayer(context,
-                    context.getClient().getAllPlayers()[index]);
+            return new RSPlayer(ctx,
+                    ctx.getClient().getAllPlayers()[index]);
         }
         return null;
     }
@@ -80,7 +78,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return if the current character is in combat
      */
     public final boolean isInCombat() {
-        return context.getClient().getLoopCycle() < getLoopCycleStatus();
+        return ctx.getClient().getLoopCycle() < getLoopCycleStatus();
     }
 
     /**
@@ -89,11 +87,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      */
     public final boolean applyAction(final String actionName) {
         Point screen = getScreenLocation();
-        context.input.getMouse().moveMouse(screen.x, screen.y);
-        ms.aurora.api.Menu.click(actionName);
+        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        ctx.menu.click(actionName);
         sleepNoException(700);
 
-        while(Players.getLocal().isMoving()) {
+        while(ctx.players.getLocal().isMoving()) {
             sleepNoException(600);
         }
         return true;
@@ -101,21 +99,21 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
 
     @Override
     public final boolean hover() {
-        if (!Projection.tileOnScreen(getRegionalLocation())) {
+        if (!ctx.projection.tileOnScreen(getRegionalLocation())) {
             return false;
         }
         //Point screen = getScreenLocation();
         Point screen = this.getModel().getRandomHullPoint();
         if (screen == null) return false;
         System.out.println(screen);
-        context.input.getMouse().moveMouse(screen.x, screen.y);
+        ctx.input.getMouse().moveMouse(screen.x, screen.y);
         return true;
     }
 
     @Override
     public final boolean click(boolean left) {
         Point screen = getScreenLocation();
-        context.input.getMouse().clickMouse(screen.x, screen.y, left);
+        ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
         return false;
     }
 
@@ -158,7 +156,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final RSModel getModel() {
         Model model = _getModel();
         if(model != null) {
-            return new RSModel(model, getLocalX(),  getLocalY(),  getTurnDirection());
+            return new RSModel(ctx, model, getLocalX(),  getLocalY(),  getTurnDirection());
         }
         return null;
     }

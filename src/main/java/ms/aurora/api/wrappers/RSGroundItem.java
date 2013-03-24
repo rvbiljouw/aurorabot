@@ -1,7 +1,6 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.*;
-import ms.aurora.api.Projection;
+import ms.aurora.api.ClientContext;
 import ms.aurora.api.rt3.Item;
 
 import java.awt.*;
@@ -14,14 +13,14 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public final class RSGroundItem implements Locatable, Interactable {
-    private ClientContext context;
+    private ClientContext ctx;
     private Item item;
     private int localX;
     private int localY;
     private int z;
 
-    public RSGroundItem(ClientContext context, Item item, int localX, int localY, int z) {
-        this.context = context;
+    public RSGroundItem(ClientContext ctx, Item item, int localX, int localY, int z) {
+        this.ctx = ctx;
         this.item = item;
         this.localX = localX;
         this.localY = localY;
@@ -37,7 +36,7 @@ public final class RSGroundItem implements Locatable, Interactable {
     }
 
     public Point getScreenLocation() {
-        return Projection.worldToScreen(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
+        return ctx.projection.worldToScreen(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
     }
 
     public RSTile getLocation() {
@@ -53,11 +52,11 @@ public final class RSGroundItem implements Locatable, Interactable {
     }
 
     public int getX() {
-        return getLocalX() + context.getClient().getBaseX();
+        return getLocalX() + ctx.getClient().getBaseX();
     }
 
     public int getY() {
-        return getLocalY() + context.getClient().getBaseY();
+        return getLocalY() + ctx.getClient().getBaseY();
     }
 
     public int getLocalX() {
@@ -76,20 +75,20 @@ public final class RSGroundItem implements Locatable, Interactable {
     public boolean applyAction(String actionName) {
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
-        context.input.getMouse().moveMouse(screen.x, screen.y);
+        ctx.input.getMouse().moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return ms.aurora.api.Menu.click(actionName);
+        return ctx.menu.click(actionName);
     }
 
     @Override
     public boolean hover() {
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
-        context.input.getMouse().moveMouse(screen.x, screen.y);
+        ctx.input.getMouse().moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -102,7 +101,7 @@ public final class RSGroundItem implements Locatable, Interactable {
     public boolean click(boolean left) {
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
-        context.input.getMouse().clickMouse(screen.x, screen.y, left);
+        ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

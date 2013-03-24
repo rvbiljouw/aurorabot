@@ -1,8 +1,7 @@
 package ms.aurora.api.wrappers;
 
 import com.google.common.base.Function;
-import ms.aurora.api.*;
-import ms.aurora.api.Menu;
+import ms.aurora.api.ClientContext;
 import ms.aurora.api.rt3.Mouse;
 import ms.aurora.api.rt3.Widget;
 import ms.aurora.api.rt3.WidgetNode;
@@ -18,14 +17,14 @@ import static com.google.common.collect.Collections2.transform;
  * @author rvbiljouw
  */
 public final class RSWidget implements Interactable {
-    private ClientContext context;
+    private ClientContext ctx;
     private Widget widget;
 
     private int parent;
     private int child;
 
-    public RSWidget(ClientContext context, Widget widget) {
-        this.context = context;
+    public RSWidget(ClientContext ctx, Widget widget) {
+        this.ctx = ctx;
         this.widget = widget;
     }
 
@@ -59,7 +58,7 @@ public final class RSWidget implements Interactable {
         if (parent != null) {
             x = parent.getX();
         } else {
-            int[] posX = context.getClient().getBoundsX();
+            int[] posX = ctx.getClient().getBoundsX();
             if (getBoundsIndex() != -1 && posX[getBoundsIndex()] > 0) {
                 return (posX[getBoundsIndex()] + (getType() > 0 ? widget.getX() : 0));
             }
@@ -76,7 +75,7 @@ public final class RSWidget implements Interactable {
         if (parent != null) {
             y = parent.getY();
         } else {
-            int[] posY = context.getClient().getBoundsY();
+            int[] posY = ctx.getClient().getBoundsY();
             if (getBoundsIndex() != -1 && posY[getBoundsIndex()] > 0) {
                 return (posY[getBoundsIndex()] + (getType() > 0 ? widget.getY() : 0));
             }
@@ -85,7 +84,7 @@ public final class RSWidget implements Interactable {
     }
 
     public int getWidth() {
-        int[] widthBounds = context.getClient().getBoundsWidth();
+        int[] widthBounds = ctx.getClient().getBoundsWidth();
         int width = widget.getWidth();
         if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
             width += widthBounds[getBoundsIndex()];
@@ -94,7 +93,7 @@ public final class RSWidget implements Interactable {
     }
 
     public int getHeight() {
-        int[] heightBounds = context.getClient().getBoundsHeight();
+        int[] heightBounds = ctx.getClient().getBoundsHeight();
         int height = widget.getHeight();
         if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
             height += heightBounds[getBoundsIndex()];
@@ -121,7 +120,7 @@ public final class RSWidget implements Interactable {
         int uid = getParentId();
         if (uid == -1) {
             int groupIdx = getUid() >>> 16;
-            RSBag bag = new RSBag(context.getClient().getWidgetNodeBag());
+            RSBag bag = new RSBag(ctx.getClient().getWidgetNodeBag());
             for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
                 if (n.getId() == groupIdx) {
                     uid = n.getId();
@@ -133,7 +132,7 @@ public final class RSWidget implements Interactable {
         }
         parent = uid >> 16;
         child = uid & 0xffff;
-        return Widgets.getWidget(parent, child);
+        return ctx.widgets.getWidget(parent, child);
     }
 
     /**
@@ -182,25 +181,24 @@ public final class RSWidget implements Interactable {
 
     @Override
     public boolean applyAction(String action) {
-        VirtualMouse mouse = ClientContext.get().input.getMouse();
+        VirtualMouse mouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
         mouse.moveMouse(randomPoint.x, randomPoint.y);
-        Menu.click(action);
-        return true;
+        return ctx.menu.click(action);
     }
 
     @Override
     public boolean hover() {
-        VirtualMouse virtualMouse = ClientContext.get().input.getMouse();
+        VirtualMouse virtualMouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
         virtualMouse.moveMouse(randomPoint.x, randomPoint.y);
-        Mouse clientMouse = ClientContext.get().getClient().getMouse();
+        Mouse clientMouse = ctx.getClient().getMouse();
         return this.getArea().contains(clientMouse.getMouseX(), clientMouse.getMouseY());
     }
 
     @Override
     public boolean click(boolean left) {
-        VirtualMouse mouse = ClientContext.get().input.getMouse();
+        VirtualMouse mouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
         mouse.clickMouse(randomPoint.x, randomPoint.y, left);
         return true;
@@ -214,11 +212,16 @@ public final class RSWidget implements Interactable {
         return widget.getInventoryStackSizes();
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(getId());
+    }
+
     private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
         @Override
         public RSWidget apply(Widget component) {
             if (component != null) {
-                return new RSWidget(context, component);
+                return new RSWidget(ctx, component);
             }
             return null;
         }

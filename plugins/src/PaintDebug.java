@@ -10,13 +10,13 @@ import java.awt.event.ActionListener;
  */
 @PluginManifest(name = "Paint Debug", author = "rvbiljouw", version = 1.0)
 public class PaintDebug extends Plugin {
-    private NpcPaint npcPaint = new NpcPaint();
-    private MousePaint mousePaint = new MousePaint();
-    private ObjectPaint objectPaint = new ObjectPaint();
-    private PositionPaint positionPaint = new PositionPaint();
-    private AnimationPaint animationPaint = new AnimationPaint();
-    private InventoryPaint inventoryPaint = new InventoryPaint();
-    private MinimapPaint minimapPaint = new MinimapPaint();
+    private NpcPaint npcPaint = new NpcPaint(this);
+    private MousePaint mousePaint = new MousePaint(this);
+    private ObjectPaint objectPaint = new ObjectPaint(this);
+    private PositionPaint positionPaint = new PositionPaint(this);
+    private AnimationPaint animationPaint = new AnimationPaint(this);
+    private InventoryPaint inventoryPaint = new InventoryPaint(this);
+    private MinimapPaint minimapPaint = new MinimapPaint(this);
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;

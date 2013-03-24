@@ -1,11 +1,11 @@
 package ms.aurora.transform;
 
 
-import com.sun.org.apache.bcel.internal.classfile.ClassParser;
-import com.sun.org.apache.bcel.internal.classfile.ConstantClass;
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
-import com.sun.org.apache.bcel.internal.generic.ClassGen;
-import com.sun.org.apache.bcel.internal.generic.ConstantPoolGen;
+import org.apache.bcel.classfile.ClassParser;
+import org.apache.bcel.classfile.ConstantClass;
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.ClassGen;
+import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;

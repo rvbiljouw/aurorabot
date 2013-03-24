@@ -10,8 +10,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
-import static ms.aurora.api.ClientContext.set;
-
 /**
  * @author rvbiljouw
  */
@@ -35,7 +33,6 @@ public class ClientCanvas extends Canvas implements MouseMotionListener,
         super();
         addMouseListener(this);
         addMouseMotionListener(this);
-        set(context);
     }
 
     @Override

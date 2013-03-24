@@ -1,4 +1,4 @@
-import ms.aurora.api.Widgets;
+import ms.aurora.api.ClientContext;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.event.listeners.PaintListener;
 
@@ -14,6 +14,12 @@ import java.awt.*;
  * @author tobiewarburton
  */
 public class InterfaceExplorer implements PaintListener {
+    private final ClientContext ctx;
+
+    public InterfaceExplorer(ClientContext ctx) {
+        this.ctx = ctx;
+    }
+
     private Explorer explorer;
     private long last = -1;
     public RSWidget current;
@@ -63,7 +69,7 @@ public class InterfaceExplorer implements PaintListener {
         private void init() {
             setSize(600, 500);
             setResizable(false);
-            setVisible(true);
+            setVisible(false);
             setLayout(new BorderLayout());
 
             treePanel.setLayout(new BorderLayout());
@@ -89,7 +95,7 @@ public class InterfaceExplorer implements PaintListener {
 
         public void reload() {
             root = new DefaultMutableTreeNode("root");
-            for (RSWidget[] widgets : Widgets.getAll()) {
+            for (RSWidget[] widgets : ctx.widgets.getAll()) {
                 if (widgets == null) continue;
                 if (widgets.length == 0) continue;
                 DefaultMutableTreeNode child = new DefaultMutableTreeNode(widgets[0]);

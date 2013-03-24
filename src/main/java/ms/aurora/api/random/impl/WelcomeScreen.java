@@ -10,12 +10,12 @@ import ms.aurora.api.wrappers.RSWidget;
 public class WelcomeScreen extends Random {
     @Override
     public boolean activate() {
-        return Widgets.getWidget(378, 45) != null;
+        return widgets.getWidget(378, 45) != null;
     }
 
     @Override
     public int loop() {
-        RSWidget play = Widgets.getWidget(378, 45);
+        RSWidget play = widgets.getWidget(378, 45);
         if (play != null) {
             play.click(true);
         }

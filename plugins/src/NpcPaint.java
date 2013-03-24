@@ -1,8 +1,6 @@
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.Npcs;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.event.GameEvent;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -11,12 +9,17 @@ import java.awt.*;
  * @author rvbiljouw
  */
 public class NpcPaint implements PaintListener {
-
     private static final Rectangle GAMESCREEN = new Rectangle(4, 4, 512, 334);
+
+    private final ClientContext ctx;
+
+    public NpcPaint(ClientContext ctx) {
+        this.ctx = ctx;
+    }
 
     @Override
     public void onRepaint(Graphics graphics) {
-        RSNPC[] npcs = Npcs.getAll(RSNPC_PREDICATE);
+        RSNPC[] npcs = ctx.npcs.getAll(RSNPC_PREDICATE);
         for(RSNPC npc : npcs) {
             /*graphics.drawString(String.format("Npc: %s | Id: %s | Location: %s", npc.getName(), npc.getId(), npc.getScreenLocation()), x, y);
             y += graphics.getFontMetrics().getHeight(); */
@@ -33,7 +36,7 @@ public class NpcPaint implements PaintListener {
     private final Predicate<RSNPC> RSNPC_PREDICATE = new Predicate<RSNPC>() {
         @Override
         public boolean apply(RSNPC object) {
-            return object.distance(ClientContext.get().getMyPlayer()) < 10;
+            return object.distance(ctx.players.getLocal()) < 10;
         }
     };
 }

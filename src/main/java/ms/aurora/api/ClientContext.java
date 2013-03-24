@@ -1,8 +1,8 @@
 package ms.aurora.api;
 
 import ms.aurora.api.rt3.Client;
-import ms.aurora.api.rt3.Player;
-import ms.aurora.api.wrappers.RSPlayer;
+import ms.aurora.api.tabs.Bank;
+import ms.aurora.api.tabs.Inventory;
 import ms.aurora.core.Session;
 import ms.aurora.input.InputManager;
 
@@ -10,13 +10,32 @@ import ms.aurora.input.InputManager;
  * @author rvbiljouw
  */
 public class ClientContext {
-    public static final ThreadLocal<ClientContext> context = new ThreadLocal<ClientContext>();
-
     public final InputManager input;
+    public final Players players;
+    public final Npcs npcs;
+    public final GroundItems items;
+    public final Objects objects;
+    public final Projection projection;
+    public final Widgets widgets;
+    public final Menu menu;
+
+    public final Bank bank;
+    public final Inventory inventory;
+
     private Session session;
 
     public ClientContext() {
         input = new InputManager(this);
+        players = new Players(this);
+        npcs = new Npcs(this);
+        items = new GroundItems(this);
+        objects = new Objects(this);
+        projection = new Projection(this);
+        widgets = new Widgets(this);
+        menu = new Menu(this);
+
+        bank = new Bank(this);
+        inventory = new Inventory(this);
     }
 
     public final void setSession(Session session) {
@@ -27,23 +46,7 @@ public class ClientContext {
         return session;
     }
 
-    public final RSPlayer getMyPlayer() {
-        Player player = getClient().getLocalPlayer();
-        if (player != null) {
-            return new RSPlayer(this, player);
-        }
-        return null;
-    }
-
     public final Client getClient() {
         return (Client) session.getApplet();
-    }
-
-    public static ClientContext get() {
-        return context.get();
-    }
-
-    public static void set(ClientContext aContext) {
-        context.set(aContext);
     }
 }

@@ -1,7 +1,9 @@
 package ms.aurora.api;
 
 import com.google.common.collect.Collections2;
-import ms.aurora.api.rt3.*;
+import ms.aurora.api.rt3.Client;
+import ms.aurora.api.rt3.Deque;
+import ms.aurora.api.rt3.Item;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSDeque;
 import ms.aurora.api.wrappers.RSGroundItem;
@@ -9,14 +11,16 @@ import ms.aurora.api.wrappers.RSGroundItem;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ms.aurora.api.ClientContext.context;
 
 /**
  * @author tobiewarburton
  */
 public final class GroundItems {
+    private ClientContext ctx;
 
-    private GroundItems() { }
+    public GroundItems(ClientContext ctx) {
+        this.ctx = ctx;
+    }
 
     /**
      * finds the closest {@link RSGroundItem} which matches the given predicate
@@ -26,7 +30,7 @@ public final class GroundItems {
      * @see RSGroundItem#distance(ms.aurora.api.wrappers.Locatable)
      * @see Predicate
      */
-    public static RSGroundItem get(final Predicate<RSGroundItem> predicate) {
+    public RSGroundItem get(final Predicate<RSGroundItem> predicate) {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
                     @Override
@@ -44,7 +48,7 @@ public final class GroundItems {
      * @return the array containing all {@link RSGroundItem} which satisfy the predicate
      * @see Predicate
      */
-    public static RSGroundItem[] getAll(final Predicate<RSGroundItem> predicate) {
+    public RSGroundItem[] getAll(final Predicate<RSGroundItem> predicate) {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
                     @Override
@@ -60,15 +64,15 @@ public final class GroundItems {
      *
      * @return an array containing all of the {@link RSGroundItem} in the current region
      */
-    public static RSGroundItem[] getAll() {
+    public RSGroundItem[] getAll() {
         return _getAll().toArray(new RSGroundItem[0]);
     }
 
-    private static RSGroundItem getClosest(RSGroundItem[] objects) {
+    private RSGroundItem getClosest(RSGroundItem[] objects) {
         RSGroundItem closest = null;
         int closestDistance = 9999;
         for (RSGroundItem object : objects) {
-            int distance = object.distance(context.get().getMyPlayer());
+            int distance = object.distance(ctx.players.getLocal());
             if (distance < closestDistance) {
                 closestDistance = distance;
                 closest = object;
@@ -78,7 +82,7 @@ public final class GroundItems {
     }
 
 
-    private static List<RSGroundItem> _getAll() {
+    private List<RSGroundItem> _getAll() {
         List<RSGroundItem> items = newArrayList();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
@@ -88,8 +92,8 @@ public final class GroundItems {
         return items;
     }
 
-    private static List<RSGroundItem> getItemsAt(int x, int y) {
-        Client client = context.get().getClient();
+    private List<RSGroundItem> getItemsAt(int x, int y) {
+        Client client = ctx.getClient();
         int z = client.getPlane();
         Deque _deque = client.getGroundItems()[z][x][y];
         List<RSGroundItem> items = newArrayList();
@@ -98,7 +102,7 @@ public final class GroundItems {
             while (deque.hasNext()) {
                 Item item = (Item) deque.next();
                 if (item != null)
-                    items.add(new RSGroundItem(context.get(), item, x, y, z));
+                    items.add(new RSGroundItem(ctx, item, x, y, z));
             }
         }
         return items;

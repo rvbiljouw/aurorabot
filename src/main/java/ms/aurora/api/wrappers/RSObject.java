@@ -1,7 +1,6 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.*;
-import ms.aurora.api.Projection;
 import ms.aurora.api.rt3.GameObject;
 
 import java.awt.*;
@@ -10,13 +9,13 @@ import java.awt.*;
  * @author rvbiljouw
  */
 public final class RSObject implements Locatable, Interactable {
-    private final ClientContext context;
+    private final ClientContext ctx;
     private final GameObject wrapped;
     private int localX;
     private int localY;
 
-    public RSObject(ClientContext context, GameObject wrapped, int localX, int localY) {
-        this.context = context;
+    public RSObject(ClientContext ctx, GameObject wrapped, int localX, int localY) {
+        this.ctx = ctx;
         this.wrapped = wrapped;
         this.localX = localX;
         this.localY = localY;
@@ -35,15 +34,15 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final int getX() {
-        return (getLocalX() >> 7) + context.getClient().getBaseX();
+        return (getLocalX() >> 7) + ctx.getClient().getBaseX();
     }
 
     public final int getY() {
-        return (getLocalY() >> 7) + context.getClient().getBaseY();
+        return (getLocalY() >> 7) + ctx.getClient().getBaseY();
     }
 
     public final Point getScreenLocation() {
-        return Projection.worldToScreen(getRegionalLocation());
+        return ctx.projection.worldToScreen(getRegionalLocation());
     }
 
     public final RSTile getLocation() {
@@ -65,24 +64,24 @@ public final class RSObject implements Locatable, Interactable {
      * @return
      */
     public final boolean applyAction(String actionName) {
-        if (!Projection.tileOnScreen(getRegionalLocation()))
+        if (!ctx.projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
-        context.input.getMouse().moveMouse(screen.x, screen.y);
+        ctx.input.getMouse().moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return ms.aurora.api.Menu.click(actionName);
+        return ctx.menu.click(actionName);
     }
 
     public final boolean hover() {
-        if (!Projection.tileOnScreen(getRegionalLocation()))
+        if (!ctx.projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
-        context.input.getMouse().moveMouse(screen.x, screen.y);
+        ctx.input.getMouse().moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -94,10 +93,10 @@ public final class RSObject implements Locatable, Interactable {
 
     @Override
     public final boolean click(boolean left) {
-        if (!Projection.tileOnScreen(getRegionalLocation()))
+        if (!ctx.projection.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
-        context.input.getMouse().clickMouse(screen.x, screen.y, left);
+        ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
