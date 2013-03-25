@@ -3,8 +3,9 @@ package ms.aurora.api.methods;
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import ms.aurora.api.ClientContext;
-import ms.aurora.rt3.Widget;
 import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.rt3.Widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,31 +25,33 @@ public final class Widgets {
         this.ctx = ctx;
     }
 
-    public RSWidget[][] getAll() {
+    public RSWidgetGroup[] getAll() {
         Widget[][] cache = ctx.getClient().getWidgetCache();
-        if (cache == null) return new RSWidget[0][];
-        List<RSWidget[]> widgets = new ArrayList<RSWidget[]>();
-        for (Widget[] tmp : cache) {
-            if (tmp == null) continue;
-            widgets.add(filter(transform(newArrayList(tmp), transform), Predicates.notNull()).toArray(new RSWidget[]{}));
+        if (cache == null) return new RSWidgetGroup[0];
+
+        List<RSWidgetGroup> groups = newArrayList();
+        for(int i = 0; i < cache.length; i++) {
+            RSWidgetGroup group = getWidgets(i);
+            if(group != null) {
+                groups.add(group);
+            }
         }
-        return widgets.toArray(new RSWidget[][]{});
+        return groups.toArray(new RSWidgetGroup[]{});
     }
 
     public RSWidget getWidget(int parent, int child) {
-        Widget[][] cache = ctx.getClient().getWidgetCache();
-        Widget[] p = cache[parent];
-        if (p == null) return null;
-        Widget c = p[child];
-        if (c == null) return null;
-        return new RSWidget(ctx, c);
+        RSWidgetGroup group = getWidgets(parent);
+        if (group != null && group.getWidgets()[child] != null) {
+            return group.getWidgets()[child];
+        }
+        return null;
     }
 
-    public RSWidget[] getWidgets(int parent) {
-        Widget[][] cache = ctx.getClient().getWidgetCache();
-        Widget[] p = cache[parent];
-        if (p == null) return null;
-        return transform(newArrayList(p), transform).toArray(new RSWidget[0]);
+    public RSWidgetGroup getWidgets(int parent) {
+        if (ctx.getClient().getWidgetCache()[parent] != null) {
+            return new RSWidgetGroup(ctx, ctx.getClient().getWidgetCache()[parent], parent);
+        }
+        return null;
     }
 
     /**
@@ -82,7 +85,7 @@ public final class Widgets {
         @Override
         public RSWidget apply(Widget widget) {
             if (widget != null) {
-                return new RSWidget(ctx, widget);
+                return new RSWidget(ctx, widget, 0, 0);
             }
             return null;
         }

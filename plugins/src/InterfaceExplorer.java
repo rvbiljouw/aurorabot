@@ -1,5 +1,6 @@
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.RSWidgetGroup;
 import ms.aurora.event.listeners.PaintListener;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author tobiewarburton
@@ -31,10 +34,6 @@ public class InterfaceExplorer implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        if (System.currentTimeMillis() - last > 1000 * 60) {
-            last = System.currentTimeMillis();
-            explorer.reload();
-        }
         if (current != null) {
             graphics.drawRect(current.getX(), current.getY(), current.getWidth(), current.getHeight());
         }
@@ -47,7 +46,6 @@ public class InterfaceExplorer implements PaintListener {
     class Explorer extends JFrame {
         private JTree tree;
         private JTable table;
-        private JPanel treePanel;
         private JPanel tablePanel;
         private DefaultMutableTreeNode root;
 
@@ -59,7 +57,6 @@ public class InterfaceExplorer implements PaintListener {
                     return false;
                 }
             };
-            treePanel = new JPanel();
             tablePanel = new JPanel();
 
             init();
@@ -67,17 +64,13 @@ public class InterfaceExplorer implements PaintListener {
         }
 
         private void init() {
-            setSize(600, 500);
+            setSize(1280, 768);
             setResizable(false);
             setVisible(false);
             setLayout(new BorderLayout());
 
-            treePanel.setLayout(new BorderLayout());
-            treePanel.setMaximumSize(new Dimension(300, 500));
-            treePanel.add(tree);
-
             tablePanel.setLayout(new BorderLayout());
-            tablePanel.setMaximumSize(new Dimension(300, 500));
+            tablePanel.setMaximumSize(new Dimension(640, 738));
             tablePanel.add(table);
 
             tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -89,20 +82,47 @@ public class InterfaceExplorer implements PaintListener {
                     display((RSWidget) node.getUserObject());
                 }
             });
-            add(treePanel, BorderLayout.WEST);
+            tree.setMinimumSize(new Dimension(640, 738));
+
+            JScrollPane scrollPane = new JScrollPane(tree);
+            scrollPane.setMinimumSize(new Dimension(640, 738));
+            scrollPane.setPreferredSize(new Dimension(640, 738));
+            add(scrollPane, BorderLayout.WEST);
+
+            tablePanel.setMinimumSize(new Dimension(640, 738));
+            tablePanel.setPreferredSize(new Dimension(640, 738));
             add(tablePanel, BorderLayout.EAST);
+
+            JButton button = new JButton("Reload");
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    reload();
+                }
+            });
+            add(button, BorderLayout.SOUTH);
         }
 
         public void reload() {
             root = new DefaultMutableTreeNode("root");
-            for (RSWidget[] widgets : ctx.widgets.getAll()) {
-                if (widgets == null) continue;
-                if (widgets.length == 0) continue;
-                DefaultMutableTreeNode child = new DefaultMutableTreeNode(widgets[0]);
-                for (int i = 1; i < widgets.length; i++) {
-                    child.add(new DefaultMutableTreeNode(widgets[i]));
+            for (RSWidgetGroup group : ctx.widgets.getAll()) {
+                if (group == null) continue;
+                RSWidget[] groupItems = group.getWidgets();
+
+
+                DefaultMutableTreeNode iface = new DefaultMutableTreeNode("[" + group.getIndex() + "]");
+                for (int i = 0; i < groupItems.length; i++) {
+                    if (groupItems[i] != null) {
+                        DefaultMutableTreeNode groupItem = new DefaultMutableTreeNode(groupItems[i]);
+                        for (RSWidget actualChild : groupItems[i].getChildren()) {
+                            if (actualChild != null) {
+                                groupItem.add(new DefaultMutableTreeNode(actualChild));
+                            }
+                        }
+                        iface.add(groupItem);
+                    }
                 }
-                root.add(child);
+                root.add(iface);
             }
             tree.setModel(new DefaultTreeModel(root));
             tree.clearSelection();
@@ -111,15 +131,16 @@ public class InterfaceExplorer implements PaintListener {
         public void display(RSWidget widget) {
             current = widget;
             Object[][] model = new Object[][]{
-                    {"parent", widget.getParentId()},
-                    {"id", widget.getId()},
+                    {"parent", widget.getGroup()},
+                    {"id", widget.getIndex()},
                     {"x", widget.getX()},
                     {"y", widget.getY()},
                     {"width", widget.getWidth()},
                     {"height", widget.getHeight()},
                     {"items", widget.getInventoryItems()},
                     {"item id", widget.getItemId()},
-                    {"item stack size", widget.getItemStackSize()}
+                    {"item stack size", widget.getItemStackSize()},
+                    {"text", widget.getText()}
             };
             table.setModel(new DefaultTableModel(model, new String[]{"key", "value"}));
         }

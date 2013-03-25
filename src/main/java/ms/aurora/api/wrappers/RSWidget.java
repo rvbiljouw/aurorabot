@@ -1,17 +1,13 @@
 package ms.aurora.api.wrappers;
 
-import com.google.common.base.Function;
 import ms.aurora.api.ClientContext;
+import ms.aurora.api.util.Utilities;
+import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
 import ms.aurora.rt3.Widget;
 import ms.aurora.rt3.WidgetNode;
-import ms.aurora.api.util.Utilities;
-import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
-import java.util.Arrays;
-
-import static com.google.common.collect.Collections2.transform;
 
 /**
  * @author rvbiljouw
@@ -19,13 +15,14 @@ import static com.google.common.collect.Collections2.transform;
 public final class RSWidget implements Interactable {
     private ClientContext ctx;
     private Widget widget;
+    private int group;
+    private int index;
 
-    private int parent;
-    private int child;
-
-    public RSWidget(ClientContext ctx, Widget widget) {
+    public RSWidget(ClientContext ctx, Widget widget, int group, int index) {
         this.ctx = ctx;
         this.widget = widget;
+        this.group = group;
+        this.index = index;
     }
 
     public int getUid() {
@@ -86,18 +83,18 @@ public final class RSWidget implements Interactable {
     public int getWidth() {
         int[] widthBounds = ctx.getClient().getBoundsWidth();
         int width = widget.getWidth();
-        if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
+        /*if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
             width += widthBounds[getBoundsIndex()];
-        }
+        }      */
         return width;
     }
 
     public int getHeight() {
         int[] heightBounds = ctx.getClient().getBoundsHeight();
         int height = widget.getHeight();
-        if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
+        /*if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
             height += heightBounds[getBoundsIndex()];
-        }
+        } */
         return height;
     }
 
@@ -106,7 +103,20 @@ public final class RSWidget implements Interactable {
     }
 
     public RSWidget[] getChildren() {
-        return transform(Arrays.asList(widget.getChildren()), MAP_WIDGET).toArray(new RSWidget[0]);
+        Widget[] children = widget.getChildren();
+        if (children != null) {
+            RSWidget[] wrappedChildren = new RSWidget[children.length];
+            for (int i = 0; i < children.length; i++) {
+                if (children[i] != null) {
+                    RSWidget widget = new RSWidget(ctx, children[i], index, i);
+                    wrappedChildren[i] = widget;
+                } else {
+                    wrappedChildren[i] = null;
+                }
+            }
+            return wrappedChildren;
+        }
+        return new RSWidget[0];
     }
 
     public RSWidget getChild(int id) {
@@ -130,8 +140,8 @@ public final class RSWidget implements Interactable {
         if (uid == -1) {
             return null;
         }
-        parent = uid >> 16;
-        child = uid & 0xffff;
+        int parent = uid >> 16;
+        int child = uid & 0xffff;
         return ctx.widgets.getWidget(parent, child);
     }
 
@@ -214,16 +224,22 @@ public final class RSWidget implements Interactable {
 
     @Override
     public String toString() {
-        return String.valueOf(getId());
+        return String.valueOf(group + "," + index);
     }
 
-    private final Function<Widget, RSWidget> MAP_WIDGET = new Function<Widget, RSWidget>() {
-        @Override
-        public RSWidget apply(Widget component) {
-            if (component != null) {
-                return new RSWidget(ctx, component);
-            }
-            return null;
-        }
-    };
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
 }

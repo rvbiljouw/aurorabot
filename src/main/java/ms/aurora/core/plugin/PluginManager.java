@@ -5,6 +5,7 @@ import ms.aurora.api.plugin.PluginState;
 import ms.aurora.core.Session;
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -24,9 +25,14 @@ public final class PluginManager {
     public void start(Class<? extends Plugin> pluginClass) {
         try {
             if (!pluginMap.containsKey(pluginClass)) {
-                Plugin plugin = pluginClass.newInstance();
+               final Plugin plugin = pluginClass.newInstance();
                 plugin.setSession(session);
-                plugin.setState(PluginState.INIT);
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        plugin.setState(PluginState.INIT);
+                    }
+                });
                 pluginMap.put(pluginClass, plugin);
             }
         } catch (Exception e) {
