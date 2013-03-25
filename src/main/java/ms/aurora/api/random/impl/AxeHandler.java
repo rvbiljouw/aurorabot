@@ -1,7 +1,7 @@
 package ms.aurora.api.random.impl;
 
 import ms.aurora.api.random.Random;
-import ms.aurora.api.tabs.Inventory;
+import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSGroundItem;
 

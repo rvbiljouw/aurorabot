@@ -1,5 +1,5 @@
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.rt3.Mouse;
+import ms.aurora.rt3.Mouse;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;

@@ -1,5 +1,5 @@
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.Players;
+import ms.aurora.api.methods.Players;
 import ms.aurora.api.wrappers.RSPlayer;
 import ms.aurora.event.listeners.PaintListener;
 

@@ -1,6 +1,6 @@
 package ms.aurora.api.random.impl;
 
-import ms.aurora.api.Widgets;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSWidget;
 

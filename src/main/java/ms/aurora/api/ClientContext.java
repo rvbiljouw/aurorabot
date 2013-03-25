@@ -1,8 +1,9 @@
 package ms.aurora.api;
 
-import ms.aurora.api.rt3.Client;
-import ms.aurora.api.tabs.Bank;
-import ms.aurora.api.tabs.Inventory;
+import ms.aurora.api.methods.*;
+import ms.aurora.rt3.Client;
+import ms.aurora.api.methods.tabs.Bank;
+import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.core.Session;
 import ms.aurora.input.InputManager;
 

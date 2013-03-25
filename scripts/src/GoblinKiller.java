@@ -1,4 +1,3 @@
-import ms.aurora.api.Npcs;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.api.wrappers.RSNPC;
@@ -6,8 +5,8 @@ import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
 
-import static ms.aurora.api.filters.NpcFilters.NAMED;
-import static ms.aurora.api.filters.NpcFilters.NOT_IN_COMBAT;
+import static ms.aurora.api.methods.filters.NpcFilters.NAMED;
+import static ms.aurora.api.methods.filters.NpcFilters.NOT_IN_COMBAT;
 import static ms.aurora.api.util.Utilities.random;
 
 /**

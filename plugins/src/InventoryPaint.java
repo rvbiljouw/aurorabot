@@ -1,5 +1,5 @@
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.tabs.Inventory;
+import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;

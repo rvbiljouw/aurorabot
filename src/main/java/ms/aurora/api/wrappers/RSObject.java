@@ -1,7 +1,7 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.*;
-import ms.aurora.api.rt3.GameObject;
+import ms.aurora.rt3.GameObject;
 
 import java.awt.*;
 

@@ -1,7 +1,7 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.rt3.Deque;
-import ms.aurora.api.rt3.Node;
+import ms.aurora.rt3.Deque;
+import ms.aurora.rt3.Node;
 
 import java.util.Iterator;
 

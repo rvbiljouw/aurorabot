@@ -1,7 +1,7 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.rt3.Item;
+import ms.aurora.rt3.Item;
 
 import java.awt.*;
 

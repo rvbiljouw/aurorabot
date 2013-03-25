@@ -1,8 +1,8 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.rt3.Model;
-import ms.aurora.api.rt3.Renderable;
+import ms.aurora.rt3.Model;
+import ms.aurora.rt3.Renderable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

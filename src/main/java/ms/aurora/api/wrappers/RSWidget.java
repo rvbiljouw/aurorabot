@@ -2,9 +2,9 @@ package ms.aurora.api.wrappers;
 
 import com.google.common.base.Function;
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.rt3.Mouse;
-import ms.aurora.api.rt3.Widget;
-import ms.aurora.api.rt3.WidgetNode;
+import ms.aurora.rt3.Mouse;
+import ms.aurora.rt3.Widget;
+import ms.aurora.rt3.WidgetNode;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 

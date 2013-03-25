@@ -79,5 +79,5 @@ public final class ClientDefinition {
         return null;
     }
 
-    private static final String INTERFACE_PREFIX = "ms/aurora/api/rt3/";
+    private static final String INTERFACE_PREFIX = "ms/aurora/rt3/";
 }

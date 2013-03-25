@@ -1,7 +1,7 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.ClientContext;
-import ms.aurora.api.rt3.Model;
+import ms.aurora.rt3.Model;
 
 import java.awt.*;
 
@@ -12,10 +12,10 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  * @author rvbiljouw
  */
 public class RSCharacter extends RSRenderable implements Locatable, Interactable {
-    private final ms.aurora.api.rt3.Character wrapped;
+    private final ms.aurora.rt3.Character wrapped;
 
     public RSCharacter(ClientContext clientContext,
-                       ms.aurora.api.rt3.Character wrapped) {
+                       ms.aurora.rt3.Character wrapped) {
         super(clientContext, wrapped);
         this.wrapped = wrapped;
     }
