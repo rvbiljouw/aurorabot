@@ -76,6 +76,10 @@ public final class Calculations {
         return new Point(-1, -1);
     }
 
+    public Point worldToMinimap(RSTile tile) {
+        return this.worldToMinimap(tile.getX(), tile.getY());
+    }
+
     public Point worldToMinimap(int x, int y) {
         x -= ctx.getClient().getBaseX();
         y -= ctx.getClient().getBaseY();
