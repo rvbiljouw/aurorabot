@@ -36,7 +36,7 @@ public final class RSGroundItem implements Locatable, Interactable {
     }
 
     public Point getScreenLocation() {
-        return ctx.projection.worldToScreen(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
+        return ctx.calculations.worldToScreen(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
     }
 
     public RSTile getLocation() {

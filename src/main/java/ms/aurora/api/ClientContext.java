@@ -16,9 +16,10 @@ public class ClientContext {
     public final Npcs npcs;
     public final GroundItems items;
     public final Objects objects;
-    public final Projection projection;
+    public final Calculations calculations;
     public final Widgets widgets;
     public final Menu menu;
+    public final Walking walking;
 
     public final Bank bank;
     public final Inventory inventory;
@@ -31,9 +32,10 @@ public class ClientContext {
         npcs = new Npcs(this);
         items = new GroundItems(this);
         objects = new Objects(this);
-        projection = new Projection(this);
+        calculations = new Calculations(this);
         widgets = new Widgets(this);
         menu = new Menu(this);
+        walking = new Walking(this);
 
         bank = new Bank(this);
         inventory = new Inventory(this);

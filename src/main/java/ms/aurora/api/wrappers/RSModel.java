@@ -44,9 +44,9 @@ public final class RSModel {
 
         for (int i = 0; i < trianglesX.length; i++) {
             if (i >= trianglesY.length && i >= trianglesZ.length) return null;
-            Point x = ctx.projection.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], - verticesY[trianglesX[i]]);
-            Point y = ctx.projection.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], - verticesY[trianglesY[i]]);
-            Point z = ctx.projection.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], - verticesY[trianglesZ[i]]);
+            Point x = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], - verticesY[trianglesX[i]]);
+            Point y = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], - verticesY[trianglesY[i]]);
+            Point z = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], - verticesY[trianglesZ[i]]);
             if (x.x > 0 && x.y > 0 && y.x > 0 && y.y > 0 && z.x > 0 && z.y > 0) {
                 int xx[] = {
                         x.x, y.x, z.x
@@ -74,9 +74,9 @@ public final class RSModel {
         ArrayList<Point> modelVertices = new ArrayList<Point>();
         for (int i = 0; i < trianglesX.length; i++) {
             if (i >= trianglesY.length && i >= trianglesZ.length) return null;
-            Point x = ctx.projection.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], - verticesY[trianglesX[i]]);
-            Point y = ctx.projection.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], - verticesY[trianglesY[i]]);
-            Point z = ctx.projection.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], - verticesY[trianglesZ[i]]);
+            Point x = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], - verticesY[trianglesX[i]]);
+            Point y = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], - verticesY[trianglesY[i]]);
+            Point z = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], - verticesY[trianglesZ[i]]);
             if (x.x > 0 && x.y > 0 && y.x > 0 && y.y > 0 && z.x > 0 && z.y > 0) {
                 modelVertices.add(x);
                 modelVertices.add(y);

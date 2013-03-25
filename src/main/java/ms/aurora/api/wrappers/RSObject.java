@@ -42,7 +42,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final Point getScreenLocation() {
-        return ctx.projection.worldToScreen(getRegionalLocation());
+        return ctx.calculations.worldToScreen(getRegionalLocation());
     }
 
     public final RSTile getLocation() {
@@ -64,7 +64,7 @@ public final class RSObject implements Locatable, Interactable {
      * @return
      */
     public final boolean applyAction(String actionName) {
-        if (!ctx.projection.tileOnScreen(getRegionalLocation()))
+        if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -78,7 +78,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final boolean hover() {
-        if (!ctx.projection.tileOnScreen(getRegionalLocation()))
+        if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -93,7 +93,7 @@ public final class RSObject implements Locatable, Interactable {
 
     @Override
     public final boolean click(boolean left) {
-        if (!ctx.projection.tileOnScreen(getRegionalLocation()))
+        if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
         ctx.input.getMouse().clickMouse(screen.x, screen.y, left);

@@ -38,7 +38,7 @@ public class MinimapPaint implements PaintListener {
 
         graphics.drawRect(mm.getX(), mm.getY(), mm.getWidth() / 2, mm.getHeight() / 2);
 
-        Point minimapLoc = ctx.projection.worldToMinimap(ctx.players.getLocal().getX(), ctx.players.getLocal().getY());
+        Point minimapLoc = ctx.calculations.worldToMinimap(ctx.players.getLocal().getX(), ctx.players.getLocal().getY());
         graphics.drawOval(minimapLoc.x - 1, minimapLoc.y - 1, 3, 3);
         graphics.drawString("Player on minimap: " + minimapLoc, x, y);
     }

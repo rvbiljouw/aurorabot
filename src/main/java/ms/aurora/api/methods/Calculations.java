@@ -10,13 +10,25 @@ import java.awt.*;
 /**
  * @author no-one you know
  */
-public final class Projection {
+public final class Calculations {
+
     private final ClientContext ctx;
 
-    public Projection(ClientContext ctx) {
+    public Calculations(ClientContext ctx) {
         this.ctx = ctx;
     }
 
+    public double distance(RSTile t1, RSTile t2) {
+        return this.distance(t1.getX(), t1.getY(), t2.getX(), t2.getY());
+    }
+
+    public double distance(Point p1, Point p2) {
+        return this.distance(p1.x, p1.y, p2.x, p2.y);
+    }
+
+    public double distance(int x1, int y1, int x2, int y2){
+        return Math.hypot(x1 - x2, y1 - y2);
+    }
 
     public Point worldToScreen(RSTile location, int x, int z, int height) {
         return worldToScreen(location.getX() - x, location.getY() - z, height);
