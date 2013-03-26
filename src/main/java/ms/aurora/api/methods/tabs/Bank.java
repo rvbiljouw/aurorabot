@@ -37,7 +37,7 @@ public final class Bank {
 	}
 
 	public boolean isOpen() {
-		return getBankWidget() != null;
+		return getBankWidget() != null; // TODO - this shit need fixing, thinks the bank is always open
 	}
 
 	public boolean close() {

@@ -2,6 +2,7 @@ package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.util.Predicate;
+import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.input.VirtualMouse;
 
@@ -296,7 +297,7 @@ public final class Inventory {
             for (InventoryItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
-                target.click();
+                target.click(true);
                 sleepNoException(500, 800);
                 while (ctx.players.getLocal().getAnimation() != -1) {
                     sleepNoException(140, 200);
@@ -319,7 +320,7 @@ public final class Inventory {
             for (InventoryItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
-                target.click();
+                target.click(true);
                 sleepNoException(500, 800);
                 while (ctx.players.getLocal().getAnimation() != -1) {
                     sleepNoException(140, 200);
@@ -333,7 +334,7 @@ public final class Inventory {
     /**
      * A class encapsulating inventory items.
      */
-    public final class InventoryItem {
+    public final class InventoryItem implements Interactable {
         private int slot;
         private int id;
         private int stackSize;
@@ -364,18 +365,29 @@ public final class Inventory {
             return new Rectangle(x - (36 / 2), y - (32 / 2), 36, 32);
         }
 
-        public void applyAction(String action) {
+        @Override
+        public boolean applyAction(String action) {
             VirtualMouse mouse = ctx.input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            ctx.menu.click(action);
+            return ctx.menu.click(action);
         }
 
-        public void click() {
+        @Override
+        public boolean hover() {
             VirtualMouse mouse = ctx.input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            mouse.clickMouse(true);
+            return true;
+        }
+
+        @Override
+        public boolean click(boolean left) {
+            VirtualMouse mouse = ctx.input.getMouse();
+            Rectangle area = getArea();
+            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            mouse.clickMouse(left);
+            return true;
         }
     }
 
