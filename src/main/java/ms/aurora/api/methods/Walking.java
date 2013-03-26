@@ -23,7 +23,7 @@ public class Walking {
 
     public RSTile[] reversePath(RSTile... path) {
         RSTile temp;
-        for(int start = 0, end = path.length -1 ; start < end; start++, end--){
+        for(int start = 0, end = path.length -1; start < end; start++, end--){
             temp = path[start];
             path[start] = path[end];
             path[end] = temp;
@@ -31,8 +31,8 @@ public class Walking {
         return path;
     }
 
-    public RSTilePath createPath(RSTile[] path, boolean reverse) {
-        return new RSTilePath(this.ctx, reverse ? this.reversePath(path) : path);
+    public RSTilePath createPath(RSTile[] path) {
+        return new RSTilePath(this.ctx, path);
     }
 
     public boolean clickTile(RSTile tile) {

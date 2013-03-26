@@ -87,11 +87,12 @@ public final class Calculations {
         int calculatedY = y * 4 + 2 - ctx.players.getLocal().getLocalY() / 32;
 
         RSWidget mm = ctx.widgets.getWidget(548, 85);
+        Rectangle minimap = new Rectangle(mm.getX(), mm.getY(), mm.getWidth() + 25, mm.getHeight());
 
         int angle = 0x7ff & ctx.getClient().getMinimapInt3() + ctx.getClient().getMinimapInt1();
         int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;
 
-        int mmDist = Math.max(mm.getHeight() / 2, mm.getWidth() / 2);
+        int mmDist = Math.max(minimap.height / 2, minimap.width / 2);
         if (mmDist * mmDist >= actDistSq) {
             int cs = CURVESIN[angle];
             int fact = 256 + ctx.getClient().getMinimapInt2();
@@ -101,8 +102,8 @@ public final class Calculations {
             int i_25_ = -(calculatedX * cs) + calculatedY * cc >> 16;
             int i_26_ =   calculatedX * cc  + calculatedY * cs >> 16;
 
-            int screenX = mm.getX() + (mm.getWidth() / 2) + i_26_;
-            int screenY = -i_25_ + mm.getY() + (mm.getHeight() / 2);
+            int screenX = minimap.x + (minimap.width / 2) + i_26_;
+            int screenY = -i_25_ + minimap.y + (minimap.height / 2);
             return new Point(screenX, screenY);
         }
         return new Point(-1, -1);//not on minimap
