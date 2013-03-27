@@ -20,6 +20,8 @@ public class ClientContext {
     public final Widgets widgets;
     public final Menu menu;
     public final Walking walking;
+    public final Skills skills;
+    public final Camera camera;
 
     public final Bank bank;
     public final Inventory inventory;
@@ -36,6 +38,8 @@ public class ClientContext {
         widgets = new Widgets(this);
         menu = new Menu(this);
         walking = new Walking(this);
+        skills = new Skills(this);
+        camera = new Camera(this);
 
         bank = new Bank(this);
         inventory = new Inventory(this);

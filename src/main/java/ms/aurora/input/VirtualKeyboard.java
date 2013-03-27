@@ -27,6 +27,14 @@ public final class VirtualKeyboard {
         _release(key, System.currentTimeMillis() + duration + random(20, 50));
     }
 
+    public void holdKey(char key) {
+        _press(key, System.currentTimeMillis());
+    }
+
+    public void releaseKey(char key) {
+        _release(key, System.currentTimeMillis());
+    }
+
     public void setComponent(Component component) {
         this.component = component;
     }

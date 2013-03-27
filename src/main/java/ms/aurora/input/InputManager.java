@@ -3,6 +3,7 @@ package ms.aurora.input;
 import ms.aurora.api.ClientContext;
 
 import java.applet.Applet;
+import java.awt.*;
 
 
 /**
@@ -20,9 +21,17 @@ public class InputManager {
     }
 
     public final synchronized VirtualMouse getMouse() {
-        mouse.setComponent(((Applet) context.getClient())
-                .getComponentAt(0, 0));
+        mouse.setComponent(this.getComponent());
         return mouse;
+    }
+
+    public final synchronized VirtualKeyboard getKeyboard() {
+        this.keyboard.setComponent(this.getComponent());
+        return this.keyboard;
+    }
+
+    private final synchronized Component getComponent() {
+        return ((Applet) context.getClient()).getComponentAt(0, 0);
     }
 
     public void initialize() {
