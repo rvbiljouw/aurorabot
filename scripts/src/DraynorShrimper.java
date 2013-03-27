@@ -4,9 +4,11 @@ import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.event.listeners.PaintListener;
+
+import java.awt.*;
 
 import static ms.aurora.api.methods.filters.NpcFilters.ID;
-import static ms.aurora.api.methods.filters.NpcFilters.NAMED;
 
 /**
  * Date: 26/03/13
@@ -15,7 +17,7 @@ import static ms.aurora.api.methods.filters.NpcFilters.NAMED;
  * @author A_C/Cov
  */
 @ScriptManifest(name = "Draynor Shrimper", author = "A_C", version = 1.0, shortDescription = "Catches and banks shrimps in draynor")
-public class DraynorShrimper extends Script {
+public class DraynorShrimper extends Script implements PaintListener {
 
     private static final RSTile FISHING_RSTILE = new RSTile(3087, 3229), BANK_RSTILE = new RSTile(3094, 3243);
     private static final RSTile[] FISHING_SPOT_PATH = new RSTile[] { new RSTile(3094,3243), new RSTile(3091,3247),
@@ -46,11 +48,8 @@ public class DraynorShrimper extends Script {
                 return Utilities.random(500, 1000);
             } else {
                 if (!this.bank.isOpen()) {
-                    RSNPC banker = this.npcs.get(NAMED("Banker"));
-                    if (banker != null) {
-                        if (banker.applyAction("Bank Banker")) {
-                            return Utilities.random(500, 1000);
-                        }
+                    if (this.bank.open()) {
+                        return Utilities.random(500, 1000);
                     }
                 } else {
                     Inventory.InventoryItem item = this.inventory.get(317);
@@ -79,4 +78,9 @@ public class DraynorShrimper extends Script {
         }
     }
 
+    @Override
+    public void onRepaint(Graphics graphics) {
+        graphics.drawString("Bank Open: " + this.bank.isOpen(), 10, 40);
+        //graphics.drawString("Bank Pane Length: " + this.widgets.getWidgets(12).getWidgets().length, 10, 52);
+    }
 }

@@ -21,7 +21,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final Point getScreenLocation() {
-        return ctx.calculations.worldToScreen(getRegionalLocation());
+        return this.getModel().getRandomHullPoint();
     }
 
     public final RSTile getLocation() {
@@ -102,10 +102,8 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         if (!ctx.calculations.tileOnScreen(getRegionalLocation())) {
             return false;
         }
-        //Point screen = getScreenLocation();
-        Point screen = this.getModel().getRandomHullPoint();
+        Point screen = getScreenLocation();
         if (screen == null) return false;
-        System.out.println(screen);
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
         return true;
     }

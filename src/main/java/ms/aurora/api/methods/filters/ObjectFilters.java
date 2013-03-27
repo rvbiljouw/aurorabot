@@ -26,4 +26,25 @@ public final class ObjectFilters {
         };
     }
 
+    /**
+     * a predicate which tests if the ID of the {@link ms.aurora.api.wrappers.RSObject} matches the specified.
+     *
+     * @param ids the id array of the {@link ms.aurora.api.wrappers.RSObject} you want to match
+     * @return true the id of the {@link ms.aurora.api.wrappers.RSObject} matches the specified else false
+     * @see ms.aurora.api.wrappers.RSObject#getId()
+     */
+    public static Predicate<RSObject> ID(final int... ids) {
+        return new Predicate<RSObject>() {
+            @Override
+            public boolean apply(RSObject object) {
+                for (int id: ids) {
+                    if (object.getId() == id) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
+
 }

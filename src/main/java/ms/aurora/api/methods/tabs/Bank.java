@@ -1,11 +1,13 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.ClientContext;
-import ms.aurora.rt3.Mouse;
+import ms.aurora.api.methods.filters.NpcFilters;
+import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.rt3.Mouse;
 
 import java.awt.*;
 import java.util.List;
@@ -20,6 +22,9 @@ public final class Bank {
 	private static final int BANK_ID = 12;
 	private static final int BANK_PANE_ID = 89;
 	private static final int BANK_CLOSE_ID = 102;
+
+    private static final int[] BANK_NPCS = { 494, 495, 496 };
+    private static final int[] BANK_OBJECTS = { 2213 };
 
     private final ClientContext ctx;
 
@@ -37,8 +42,24 @@ public final class Bank {
 	}
 
 	public boolean isOpen() {
-		return getBankWidget() != null; // TODO - this shit need fixing, thinks the bank is always open
+		return this.ctx.widgets.getWidget(BANK_ID, BANK_CLOSE_ID) != null;
 	}
+
+    public boolean open() {
+        if (this.isOpen()) {
+            return true;
+        }
+        Interactable bank = this.ctx.npcs.get(NpcFilters.ID(BANK_NPCS));
+        if (bank == null) {
+            bank = this.ctx.objects.get(ObjectFilters.ID(BANK_OBJECTS));
+            if (bank == null) {
+                return false;
+            }
+        }
+        bank.applyAction("Bank(.*)Bank");
+        // TODO - Conditional wait for bank to open
+        return this.isOpen();
+    }
 
 	public boolean close() {
 		if (!isOpen())

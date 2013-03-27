@@ -6,6 +6,8 @@ import ms.aurora.api.util.Utilities;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Menu {
     private final ClientContext ctx;
@@ -15,8 +17,12 @@ public final class Menu {
     }
 
     public int getIndex(String item) {
+
+        Pattern pattern = Pattern.compile(item);
         for (String menuEntry : getMenuContent()) {
-            if (menuEntry.toLowerCase().contains(item.toLowerCase())) {
+
+            Matcher matcher = pattern.matcher(menuEntry);
+            if (matcher.find()) {
                 return getMenuContent().indexOf(menuEntry);
             }
         }
