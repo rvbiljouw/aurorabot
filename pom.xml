@@ -68,6 +68,11 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.1.10.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.oracle.javafx</groupId>
+            <artifactId>javafx</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,17 +1,16 @@
 package ms.aurora.core;
 
+import java.applet.Applet;
+
+import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
+
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
-import ms.aurora.gui.plugin.PluginController;
-
-import javax.swing.*;
-import java.applet.Applet;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author rvbiljouw
@@ -30,21 +29,6 @@ public final class Session implements Runnable {
     @Override
     public void run() {
         SessionRepository.set(getApplet().hashCode(), this);
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JMenuItem mntmPluginOverview = new JMenuItem("Plugin Overview");
-                mntmPluginOverview.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        PluginController.onPluginOverview();
-                    }
-                });
-                pluginsMenu.add(mntmPluginOverview);
-            }
-        });
-        refreshPlugins();
     }
 
     public ScriptManager getScriptManager() {

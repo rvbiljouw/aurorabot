@@ -1,32 +1,39 @@
 package ms.aurora;
 
-import ms.aurora.event.GlobalEventQueue;
-import ms.aurora.gui.ApplicationController;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import ms.aurora.gui.ApplicationGUI;
 import org.apache.log4j.Logger;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteGlassLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public final class Application {
     private static Logger logger = Logger.getLogger(Application.class);
+    private static JFrame appWindow;
 
-    private Application() {
+    public static void main(final String[] args) {
+        appWindow = new JFrame("Aurora!");
+        final JFXPanel panel = new JFXPanel();
+        panel.setSize(765, 600);
+        appWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        appWindow.setContentPane(panel);
+        appWindow.setSize(765, 600);
+        appWindow.setVisible(true);
 
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+        Platform.runLater(new Runnable() {
+            @Override
             public void run() {
-                try {
-                    //UIManager.setLookAndFeel(new SubstanceGraphiteGlassLookAndFeel());
-                    Toolkit.getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
-                    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-                    ApplicationController.startApplication();
-                } catch (Exception e) {
-                    logger.error("Couldn't initialize substance L&F", e);
-                }
+                Scene scene = new Scene(new ApplicationGUI());
+                panel.setScene(scene);
             }
         });
+    }
+
+    public static void registerComponent(Component component) {
+        appWindow.add(component);
     }
 }
