@@ -36,6 +36,7 @@ public class Magic {
         CONFUSE(2),
         ENCHANT_CBOW_4(3);
 
+        // TODO: Add more spells
 
         int id;
 

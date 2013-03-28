@@ -1,5 +1,7 @@
 package ms.aurora.gui;
 
+import ms.aurora.gui.account.AccountManager;
+import ms.aurora.gui.account.actions.ShowAccountManager;
 import ms.aurora.gui.plugin.PluginController;
 import ms.aurora.gui.script.ScriptController;
 
@@ -51,6 +53,7 @@ public final class ApplicationGUI extends JFrame {
         menuBar.add(mnEdit);
 
         JMenuItem mntmAccounts = new JMenuItem("Accounts");
+        mntmAccounts.setAction(new ShowAccountManager());
         mnEdit.add(mntmAccounts);
 
         JSeparator accSettSeperator = new JSeparator();

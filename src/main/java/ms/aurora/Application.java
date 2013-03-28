@@ -19,7 +19,7 @@ public final class Application {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(new SubstanceGraphiteGlassLookAndFeel());
+                    //UIManager.setLookAndFeel(new SubstanceGraphiteGlassLookAndFeel());
                     Toolkit.getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
                     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
                     ApplicationController.startApplication();
