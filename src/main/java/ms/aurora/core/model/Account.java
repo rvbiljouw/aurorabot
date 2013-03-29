@@ -16,8 +16,8 @@ public class Account extends AbstractModel {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String username;
-	private String password;
+	private String username = "";
+	private String password = "";
 	private String bankPin = "0000";
 	private boolean members = true;
 

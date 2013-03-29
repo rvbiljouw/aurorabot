@@ -7,23 +7,26 @@
 <?import javafx.scene.paint.*?>
 <?scenebuilder-stylesheet ../../../../blue.css?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="825.0" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
-  <children>
-    <Label layoutX="28.0" layoutY="26.0" styleClass="big-label" text="Accounts" />
-    <TableView layoutX="53.0" layoutY="97.0" prefHeight="329.0" prefWidth="720.0">
-      <columns>
-        <TableColumn prefWidth="75.0" text="Column X" />
-        <TableColumn prefWidth="75.0" text="Column X" />
-      </columns>
-    </TableView>
-    <ToolBar layoutX="53.0" layoutY="426.0" prefWidth="720.0">
-      <items>
-        <Button mnemonicParsing="false" text="New account" />
-        <Button mnemonicParsing="false" text="Edit selected" />
-        <Button mnemonicParsing="false" text="Remove selected" />
-      </items>
-    </ToolBar>
-    <Button layoutX="732.0" layoutY="480.0" mnemonicParsing="false" onAction="#onOk" text="OK" />
-    <Button layoutX="659.0" layoutY="480.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
-  </children>
-</AnchorPane>
+<fx:root type="javafx.scene.layout.AnchorPane" minHeight="532.0" prefHeight="532.0" prefWidth="825.0" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
+  <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="825.0" styleClass="pane">
+    <children>
+      <Label layoutX="28.0" layoutY="26.0" styleClass="big-label" text="Accounts" />
+      <TableView id="tbl" fx:id="tblAccounts" editable="true" layoutX="53.0" layoutY="97.0" prefHeight="329.0" prefWidth="720.0">
+        <columns>
+          <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="209.0" text="Username / Email address" fx:id="colUsername" />
+          <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="205.0" text="Password" fx:id="colPassword" />
+          <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="175.0" text="Bank PIN" fx:id="colBankPin" />
+          <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="130.0" text="Members?" fx:id="colMembers" />
+        </columns>
+      </TableView>
+      <ToolBar layoutX="53.0" layoutY="426.0" prefWidth="720.0">
+        <items>
+          <Button mnemonicParsing="false" onAction="#onNewAccount" text="New account" />
+          <Button mnemonicParsing="false" onAction="#onRemoveSelected" text="Remove selected" />
+        </items>
+      </ToolBar>
+      <Button layoutX="732.0" layoutY="470.0" mnemonicParsing="false" onAction="#onOk" text="OK" />
+      <Button layoutX="659.0" layoutY="470.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+    </children>
+  </AnchorPane>
+</fx:root>

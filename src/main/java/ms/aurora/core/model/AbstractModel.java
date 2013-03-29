@@ -29,7 +29,7 @@ public class AbstractModel {
     public final void remove() {
         EntityManager em = getEm();
         em.getTransaction().begin();
-        em.remove(this);
+        em.remove(em.merge(this));
         em.getTransaction().commit();
     }
 

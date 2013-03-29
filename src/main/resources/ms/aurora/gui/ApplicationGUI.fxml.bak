@@ -28,7 +28,11 @@
               <MenuItem mnemonicParsing="false" onAction="#onCloseClicked" text="Close" fx:id="mntmClose" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit" fx:id="mnEdit" />
+          <Menu mnemonicParsing="false" text="Edit" fx:id="mnEdit">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onAccountManager" text="Accounts" />
+            </items>
+          </Menu>
           <Menu mnemonicParsing="false" text="Script" fx:id="mnHelp">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Start script" />
@@ -39,7 +43,7 @@
       <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
         <items>
           <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
-          <Button mnemonicParsing="false" text="Run Script" />
+          <Button mnemonicParsing="false" onAction="#onStartScript" text="Run Script" />
           <Button mnemonicParsing="false" text="Stop Script" />
           <Region prefHeight="21.0" prefWidth="345.0" />
           <ToggleButton mnemonicParsing="false" text="Disable input" />

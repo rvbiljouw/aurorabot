@@ -9,6 +9,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.widget.AppletWidget;
 import ms.aurora.loader.AppletLoader;
@@ -76,6 +77,20 @@ public class ApplicationGUI extends AnchorPane {
             stage.setScene(scene);
             stage.show();
         }
+    }
+
+    @FXML
+    void onAccounts(ActionEvent evt) {
+        Stage stage = new Stage();
+        stage.setTitle("Select a script");
+        stage.setWidth(825);
+        stage.setHeight(530);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        AccountOverview overview = new AccountOverview();
+        Scene scene = new Scene(overview);
+        scene.getStylesheets().add("blue.css");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
