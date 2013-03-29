@@ -137,7 +137,7 @@ public class ScriptOverview extends AnchorPane {
 
             this.name = new SimpleStringProperty(script.getManifest().name());
             this.shortDesc = new SimpleStringProperty(script.getManifest().shortDescription());
-            this.category = new SimpleStringProperty("TODO: Categories.");
+            this.category = new SimpleStringProperty(script.getManifest().category());
             this.author = new SimpleStringProperty(script.getManifest().author());
         }
 

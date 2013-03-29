@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import java.util.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?scenebuilder-stylesheet ../../../../blue.css?>
 
 <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
   <AnchorPane id="AnchorPane" fx:id="appletPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="765.0">
     <children>
-      <ProgressBar layoutX="14.0" layoutY="431.0" prefHeight="35.0" prefWidth="737.0" progress="0.0" />
-      <Label layoutX="89.0" layoutY="368.0" text="RuneScape is loading, please wait">
+      <ProgressBar layoutX="14.0" layoutY="431.0" prefHeight="35.0" prefWidth="737.0" progress="-0.44" />
+      <Label layoutX="222.0" layoutY="368.0" text="Loading, please wait">
         <font>
           <Font size="36.0" />
         </font>
       </Label>
     </children>
   </AnchorPane>
+  <stylesheets>
+    <URL value="@../../../../blue.css" />
+  </stylesheets>
 </fx:root>

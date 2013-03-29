@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-stylesheet ../../../../blue.css?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="825.0" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <Label layoutX="28.0" layoutY="26.0" styleClass="big-label" text="Accounts" />
+    <TableView layoutX="53.0" layoutY="97.0" prefHeight="329.0" prefWidth="720.0">
+      <columns>
+        <TableColumn prefWidth="75.0" text="Column X" />
+        <TableColumn prefWidth="75.0" text="Column X" />
+      </columns>
+    </TableView>
+    <ToolBar layoutX="53.0" layoutY="426.0" prefWidth="720.0">
+      <items>
+        <Button mnemonicParsing="false" text="New account" />
+        <Button mnemonicParsing="false" text="Edit selected" />
+        <Button mnemonicParsing="false" text="Remove selected" />
+      </items>
+    </ToolBar>
+  </children>
+</AnchorPane>

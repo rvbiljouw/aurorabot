@@ -19,17 +19,17 @@ public final class Application {
     public static void main(final String[] args) {
         appWindow = new JFrame("Aurora!");
         final JFXPanel panel = new JFXPanel();
-        panel.setSize(765, 600);
+        panel.setSize(780, 620);
         appWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
         appWindow.setContentPane(panel);
-        appWindow.setSize(765, 600);
+        appWindow.setSize(780, 620);
         appWindow.setVisible(true);
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 Scene scene = new Scene(new ApplicationGUI());
-                scene.getStylesheets().add("modena.css");
+                scene.getStylesheets().add("blue.css");
                 panel.setScene(scene);
             }
         });

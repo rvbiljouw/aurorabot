@@ -66,17 +66,18 @@ public class ApplicationGUI extends AnchorPane {
 
     @FXML
     void onStartScript(ActionEvent evt) {
-        if (getSelectedApplet() != null) {
+       // if (getSelectedApplet() != null) {
             Stage stage = new Stage();
             stage.setTitle("Select a script");
-            stage.setWidth(800);
-            stage.setHeight(620);
+            stage.setWidth(810);
+            stage.setHeight(640);
             stage.initModality(Modality.APPLICATION_MODAL);
             ScriptOverview overview = new ScriptOverview();
             Scene scene = new Scene(overview);
+            scene.getStylesheets().add("blue.css");
             stage.setScene(scene);
             stage.show();
-        }
+       // }
     }
 
     @FXML

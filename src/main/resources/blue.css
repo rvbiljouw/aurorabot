@@ -1,0 +1,32 @@
+.root {
+    -fx-base: #99E6FF;
+}
+
+.tab {
+    -fx-base: #dedede;
+}
+
+.menu-bar {
+    -fx-base: #00A4DB;
+}
+
+.menu .label {
+    -fx-text-fill: #ffffff;
+}
+
+.pane {
+    -fx-background-color:
+        linear-gradient(#E6E6E6 0%, #FFFFFF 50%, #E6E6E6 100%);
+}
+
+.text-field {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}
+
+.big-label {
+    -fx-font-size: 32pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-opacity: 1;
+}
