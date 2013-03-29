@@ -3,11 +3,12 @@ package ms.aurora;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import ms.aurora.core.Session;
 import ms.aurora.gui.ApplicationGUI;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.*;
+import java.applet.Applet;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -28,12 +29,16 @@ public final class Application {
             @Override
             public void run() {
                 Scene scene = new Scene(new ApplicationGUI());
+                scene.getStylesheets().add("modena.css");
                 panel.setScene(scene);
             }
         });
     }
 
-    public static void registerComponent(Component component) {
-        appWindow.add(component);
+    public static void registerApplet(Applet applet) {
+        appWindow.add(applet);
+
+        Session session = new Session(applet);
+        new Thread(session).start();
     }
 }

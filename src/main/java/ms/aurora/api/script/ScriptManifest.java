@@ -19,4 +19,5 @@ public @interface ScriptManifest {
 
     double version();
 
+    String category() default "Unknown";
 }

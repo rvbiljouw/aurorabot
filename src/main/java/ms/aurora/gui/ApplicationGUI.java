@@ -1,12 +1,15 @@
 package ms.aurora.gui;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.widget.AppletWidget;
 import ms.aurora.loader.AppletLoader;
 
@@ -16,7 +19,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class ApplicationGUI extends AnchorPane implements AppletLoader.CompletionListener {
+public class ApplicationGUI extends AnchorPane {
+    private static ApplicationGUI self;
 
     @FXML
     private ResourceBundle resources;
@@ -35,6 +39,7 @@ public class ApplicationGUI extends AnchorPane implements AppletLoader.Completio
 
         try {
             fxmlLoader.load();
+            self = this;
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -48,25 +53,42 @@ public class ApplicationGUI extends AnchorPane implements AppletLoader.Completio
 
     @FXML
     void onNewSession(ActionEvent event) {
+        AppletWidget widget = new AppletWidget();
         AppletLoader loader = new AppletLoader();
-        loader.setCompletionListener(this);
+        loader.setCompletionListener(widget);
         loader.start();
+
+        Tab widgetTab = new Tab("Session " + widget.hashCode());
+        widgetTab.setClosable(true);
+        widgetTab.setContent(widget);
+        tabPane.getTabs().add(widgetTab);
     }
 
-    @Override
-    public void onCompletion(final Applet applet) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Tab tab = new Tab("[ " + applet.hashCode() + " ]");
-                tab.setContent(new AppletWidget(applet));
-                tabPane.getTabs().add(tab);
-            }
-        });
+    @FXML
+    void onStartScript(ActionEvent evt) {
+        if (getSelectedApplet() != null) {
+            Stage stage = new Stage();
+            stage.setTitle("Select a script");
+            stage.setWidth(800);
+            stage.setHeight(620);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            ScriptOverview overview = new ScriptOverview();
+            Scene scene = new Scene(overview);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     @FXML
     void initialize() {
         assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'Application.fxml'.";
+    }
+
+    public static Applet getSelectedApplet() {
+        Tab tab = self.tabPane.getSelectionModel().getSelectedItem();
+        if (tab != null && tab.getContent() instanceof AppletWidget) {
+            return ((AppletWidget) tab.getContent()).getApplet();
+        }
+        return null;
     }
 }

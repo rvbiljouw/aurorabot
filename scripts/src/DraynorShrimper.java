@@ -16,7 +16,7 @@ import static ms.aurora.api.methods.filters.NpcFilters.ID;
  *
  * @author A_C/Cov
  */
-@ScriptManifest(name = "Draynor Shrimper", author = "A_C", version = 1.0, shortDescription = "Catches and banks shrimps in draynor")
+@ScriptManifest(name = "Draynor Shrimper", author = "A_C", version = 1.0, shortDescription = "Catches and banks shrimps in draynor", category = "Fishing")
 public class DraynorShrimper extends Script implements PaintListener {
 
     private static final RSTile FISHING_RSTILE = new RSTile(3087, 3229), BANK_RSTILE = new RSTile(3094, 3243);

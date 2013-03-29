@@ -12,7 +12,7 @@ import java.awt.*;
  *
  * @author A_C/Cov
  */
-@ScriptManifest(name = "Walking Test", shortDescription = "Walking Test", author = "A_C", version = 1.0)
+@ScriptManifest(name = "Walking Test", shortDescription = "Walking Test", author = "A_C", version = 1.0, category = "Utilities")
 public class WalkingTest extends Script implements PaintListener {
 
 

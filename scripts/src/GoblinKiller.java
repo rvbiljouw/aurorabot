@@ -12,7 +12,7 @@ import static ms.aurora.api.util.Utilities.random;
 /**
  * @author rvbiljouw
  */
-@ScriptManifest(name = "GoblinKiller", shortDescription = "Kills Goblins anywhere..", author = "rvbiljouw", version = 1.0)
+@ScriptManifest(name = "GoblinKiller", shortDescription = "Kills Goblins anywhere..", author = "rvbiljouw", version = 1.0, category = "Combat")
 public class GoblinKiller extends Script implements PaintListener {
 
     private Color fill = new Color(154, 205, 50, 100), border = new Color(50, 205, 50);
