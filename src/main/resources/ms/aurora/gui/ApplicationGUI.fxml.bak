@@ -13,7 +13,7 @@
     <children>
       <TabPane fx:id="tabPane" layoutX="0.0" layoutY="60.0" prefHeight="540.0" prefWidth="768.0" tabClosingPolicy="SELECTED_TAB">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="Welcome">
             <content>
               <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="768.0" />
             </content>
@@ -38,10 +38,10 @@
       </MenuBar>
       <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
         <items>
-          <Button mnemonicParsing="false" text="New session" />
+          <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
           <Button mnemonicParsing="false" text="Run Script" />
           <Button mnemonicParsing="false" text="Stop Script" />
-          <Region prefHeight="10.0" prefWidth="400.0" />
+          <Region prefHeight="21.0" prefWidth="345.0" />
           <ToggleButton mnemonicParsing="false" text="Disable input" />
         </items>
       </ToolBar>

@@ -23,7 +23,7 @@
         <Button mnemonicParsing="false" text="Remove selected" />
       </items>
     </ToolBar>
-    <Button layoutX="736.0" layoutY="480.0" mnemonicParsing="false" text="OK" />
-    <Button layoutX="670.0" layoutY="481.0" mnemonicParsing="false" text="Cancel" />
+    <Button layoutX="732.0" layoutY="480.0" mnemonicParsing="false" onAction="#onOk" text="OK" />
+    <Button layoutX="659.0" layoutY="480.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
   </children>
 </AnchorPane>

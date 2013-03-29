@@ -38,10 +38,10 @@
       </MenuBar>
       <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
         <items>
-          <Button mnemonicParsing="false" text="New session" />
-          <Button mnemonicParsing="false" text="Run Script" />
+          <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
+          <Button mnemonicParsing="false" onAction="#onStartScript" text="Run Script" />
           <Button mnemonicParsing="false" text="Stop Script" />
-          <Region prefHeight="10.0" prefWidth="400.0" />
+          <Region prefHeight="21.0" prefWidth="345.0" />
           <ToggleButton mnemonicParsing="false" text="Disable input" />
         </items>
       </ToolBar>

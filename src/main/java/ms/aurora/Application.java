@@ -19,10 +19,10 @@ public final class Application {
     public static void main(final String[] args) {
         appWindow = new JFrame("Aurora!");
         final JFXPanel panel = new JFXPanel();
-        panel.setSize(780, 620);
+        panel.setSize(768, 620);
         appWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
         appWindow.setContentPane(panel);
-        appWindow.setSize(780, 620);
+        appWindow.setSize(768, 620);
         appWindow.setVisible(true);
 
         Platform.runLater(new Runnable() {

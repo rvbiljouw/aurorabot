@@ -58,15 +58,13 @@ public class ApplicationGUI extends AnchorPane {
         loader.setCompletionListener(widget);
         loader.start();
 
-        Tab widgetTab = new Tab("Session " + widget.hashCode());
-        widgetTab.setClosable(true);
-        widgetTab.setContent(widget);
-        tabPane.getTabs().add(widgetTab);
+
+        tabPane.getTabs().add(widget.tab());
     }
 
     @FXML
     void onStartScript(ActionEvent evt) {
-       // if (getSelectedApplet() != null) {
+        if (getSelectedApplet() != null) {
             Stage stage = new Stage();
             stage.setTitle("Select a script");
             stage.setWidth(810);
@@ -77,7 +75,7 @@ public class ApplicationGUI extends AnchorPane {
             scene.getStylesheets().add("blue.css");
             stage.setScene(scene);
             stage.show();
-       // }
+        }
     }
 
     @FXML

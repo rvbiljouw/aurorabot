@@ -1,14 +1,18 @@
 package ms.aurora.gui.widget;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.loader.AppletLoader;
 
+import javax.swing.*;
 import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +21,9 @@ import java.util.ResourceBundle;
 /**
  * @author rvbiljouw
  */
-public class AppletWidget extends AnchorPane implements AppletLoader.CompletionListener {
+public class AppletWidget extends AnchorPane implements AppletLoader.CompletionListener, ChangeListener<Boolean> {
+    private final Tab tab = new Tab();
+
     @FXML
     private ResourceBundle resources;
 
@@ -31,6 +37,10 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
 
     public AppletWidget() {
         this.loadFace();
+        tab().setContent(this);
+        tab().setClosable(true);
+        tab().setText("Loading...");
+        tab().selectedProperty().addListener(this);
     }
 
     private void loadFace() {
@@ -49,6 +59,24 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
     @FXML
     void initialize() {
         assert appletPane != null : "fx:id=\"appletPane\" was not injected: check your FXML file 'AppletWidget.fxml'.";
+    }
+
+    @Override
+    public void onCompletion(final Applet applet) {
+        Application.registerApplet(applet);
+        toggleVisibility(tab().isSelected(), applet);
+        this.applet = applet;
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Utilities.sleepNoException(100);
+                toggleVisibility(tab().isSelected(), applet);
+            }
+        });
     }
 
     private int calculateRelX() {
@@ -71,35 +99,44 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
         return y;
     }
 
-    @Override
-    public void onCompletion(final Applet applet) {
-        visibleProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
-                toggleVisibility(observableValue, applet);
-            }
-        });
-
-        toggleVisibility(visibleProperty(), applet);
-        Application.registerApplet(applet);
-        this.applet = applet;
+    public Applet getApplet() {
+        return applet;
     }
 
-    private void toggleVisibility(ObservableValue<? extends Boolean> observableValue, Applet applet) {
-        if (observableValue.getValue()) {
-            applet.setBounds(calculateRelX(), calculateRelY(), applet.getWidth(),
+    public Tab tab() {
+        return tab;
+    }
+
+    private void toggleVisibility(Boolean observableValue, final Applet applet) {
+        if(applet == null) return;
+
+        int relX = calculateRelX();
+        int relY = calculateRelY();
+        if (observableValue) {
+            applet.setBounds(relX, relY, applet.getWidth(),
                     applet.getHeight());
             applet.setSize(765, 503);
             applet.setVisible(true);
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    tab().setText("Session " + applet.hashCode());
+                }
+            });
         } else {
-            applet.setBounds(calculateRelX() - applet.getWidth(), calculateRelY(),
+            applet.setBounds(relX - 1000, relY,
                     applet.getWidth(), applet.getHeight());
             applet.setSize(765, 503);
             applet.setVisible(false);
-        }
-    }
+            System.out.println("Applet now invisible. " + relX + "," + relY);
 
-    public Applet getApplet() {
-        return applet;
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    tab().setText("[ Session " + applet.hashCode() + " ]");
+                }
+            });
+        }
     }
 }
