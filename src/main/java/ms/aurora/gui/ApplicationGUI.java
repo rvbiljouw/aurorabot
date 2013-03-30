@@ -1,15 +1,18 @@
 package ms.aurora.gui;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import ms.aurora.core.Session;
+import ms.aurora.core.SessionRepository;
+import ms.aurora.core.script.ScriptManager;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
@@ -35,7 +38,16 @@ public class ApplicationGUI extends AnchorPane {
     private TabPane tabPane;
 
     @FXML
-    private Menu mnPlugins;
+    private volatile Menu mnPlugins;
+
+    @FXML
+    private Button btnRunScript;
+
+    @FXML
+    private Button btnStopScript;
+
+    @FXML
+    private MenuItem pluginOverview;
 
     public ApplicationGUI() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ApplicationGUI.fxml"));
@@ -71,16 +83,59 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onStartScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
-            Stage stage = new Stage();
-            stage.setTitle("Select a script");
-            stage.setWidth(810);
-            stage.setHeight(640);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            ScriptOverview overview = new ScriptOverview();
-            Scene scene = new Scene(overview);
-            scene.getStylesheets().add("blue.css");
-            stage.setScene(scene);
-            stage.show();
+            final Session session = SessionRepository.get(getSelectedApplet().hashCode());
+            final Button source = (Button)evt.getSource();
+
+            switch(session.getScriptManager().getState()) {
+                case RUNNING:
+                case PAUSED:
+                    session.getScriptManager().stop();
+                    source.setText("Play");
+                    break;
+
+                case STOPPED:
+                    Stage stage = new Stage();
+                    stage.setTitle("Select a script");
+                    stage.setWidth(810);
+                    stage.setHeight(640);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    ScriptOverview overview = new ScriptOverview();
+                    Scene scene = new Scene(overview);
+                    scene.getStylesheets().add("blue.css");
+                    stage.setScene(scene);
+                    stage.show();
+
+                    stage.setOnHiding(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+                            if (session.getScriptManager().getState() == ScriptManager.State.RUNNING) {
+                                source.setText("Stop");
+                            }
+                        }
+                    });
+                    break;
+
+
+            }
+        }
+    }
+
+    @FXML
+    void onPauseScript(ActionEvent evt) {
+        if (getSelectedApplet() != null) {
+            Session session = SessionRepository.get(getSelectedApplet().hashCode());
+            Button source = (Button)evt.getSource();
+            switch(session.getScriptManager().getState()) {
+                case RUNNING:
+                    session.getScriptManager().pause();
+                    source.setText("Resume");
+                    break;
+
+                case PAUSED:
+                    session.getScriptManager().resume();
+                    source.setText("Pause");
+                    break;
+            }
         }
     }
 
@@ -113,6 +168,16 @@ public class ApplicationGUI extends AnchorPane {
     }
 
     @FXML
+    void onToggleInput(ActionEvent evt) {
+        ToggleButton button = (ToggleButton) evt.getSource();
+        if (!button.isSelected()) {
+            button.setText("Disable input");
+        } else {
+            button.setText("Enable input");
+        }
+    }
+
+    @FXML
     void initialize() {
         assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'Application.fxml'.";
     }
@@ -125,7 +190,11 @@ public class ApplicationGUI extends AnchorPane {
         return null;
     }
 
-    public Menu getPluginsMenu() {
+    public synchronized Menu getPluginsMenu() {
         return mnPlugins;
+    }
+
+    public MenuItem getPluginOverview() {
+        return pluginOverview;
     }
 }

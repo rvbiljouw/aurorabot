@@ -15,7 +15,7 @@ import static com.google.common.collect.Maps.newHashMap;
  */
 public final class PluginManager {
     private static final Logger logger = Logger.getLogger(PluginManager.class);
-    private final Map<Class<? extends Plugin>, Plugin> pluginMap = newHashMap();
+    private final Map<String, Plugin> pluginMap = newHashMap();
     private final Session session;
 
     public PluginManager(Session session) {
@@ -24,7 +24,7 @@ public final class PluginManager {
 
     public void start(Class<? extends Plugin> pluginClass) {
         try {
-            if (!pluginMap.containsKey(pluginClass)) {
+            if (!pluginMap.containsKey(pluginClass.getName())) {
                final Plugin plugin = pluginClass.newInstance();
                 plugin.setSession(session);
                 SwingUtilities.invokeLater(new Runnable() {
@@ -33,7 +33,7 @@ public final class PluginManager {
                         plugin.setState(PluginState.INIT);
                     }
                 });
-                pluginMap.put(pluginClass, plugin);
+                pluginMap.put(pluginClass.getName(), plugin);
             }
         } catch (Exception e) {
             logger.error("Failed to initialize plugin", e);
@@ -41,10 +41,10 @@ public final class PluginManager {
     }
 
     public void stop(Class<? extends Plugin> pluginClass) {
-        if (pluginMap.containsKey(pluginClass)) {
-            Plugin plugin = pluginMap.get(pluginClass);
+        if (pluginMap.containsKey(pluginClass.getName())) {
+            Plugin plugin = pluginMap.get(pluginClass.getName());
             plugin.setState(PluginState.STOPPED);
-            pluginMap.remove(pluginClass);
+            pluginMap.remove(pluginClass.getName());
         }
     }
 

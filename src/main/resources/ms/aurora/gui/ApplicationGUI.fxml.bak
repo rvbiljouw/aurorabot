@@ -38,15 +38,19 @@
               <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Start script" />
             </items>
           </Menu>
+          <Menu mnemonicParsing="false" text="Plug-ins" fx:id="mnPlugins">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="Plugin Overview" />
+            </items>
+          </Menu>
         </menus>
       </MenuBar>
       <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
         <items>
           <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
-          <Button mnemonicParsing="false" onAction="#onStartScript" text="Run Script" />
-          <Button mnemonicParsing="false" text="Stop Script" />
-          <Region prefHeight="21.0" prefWidth="345.0" />
-          <ToggleButton mnemonicParsing="false" text="Disable input" />
+          <Button mnemonicParsing="false" onAction="#onStartScript" text="Play" />
+          <Button mnemonicParsing="false" onAction="#onPauseScript" text="Pause" />
+          <ToggleButton mnemonicParsing="false" onAction="#onToggleInput" text="Disable input" />
         </items>
       </ToolBar>
     </children>
