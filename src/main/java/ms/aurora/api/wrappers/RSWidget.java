@@ -222,6 +222,14 @@ public final class RSWidget implements Interactable {
         return widget.getInventoryStackSizes();
     }
 
+    public int getTextureId() {
+        return widget.getTextureId();
+    }
+
+    public String[] getActions() {
+        return widget.getActions();
+    }
+
     @Override
     public String toString() {
         return String.valueOf(group + "," + index);

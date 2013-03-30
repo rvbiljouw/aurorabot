@@ -20,7 +20,7 @@ public final class Session implements Runnable {
     private final ScriptManager scriptManager = new ScriptManager(this);
     private final PluginManager pluginManager = new PluginManager(this);
     private final PaintManager paintManager = new PaintManager(this);
-    private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
     private UpdateListener updateListener;
     private final Applet applet;
 

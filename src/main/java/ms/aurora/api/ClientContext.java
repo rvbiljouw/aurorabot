@@ -1,11 +1,13 @@
 package ms.aurora.api;
 
 import ms.aurora.api.methods.*;
-import ms.aurora.rt3.Client;
 import ms.aurora.api.methods.tabs.Bank;
 import ms.aurora.api.methods.tabs.Inventory;
+import ms.aurora.api.methods.tabs.Magic;
+import ms.aurora.api.methods.tabs.Tabs;
 import ms.aurora.core.Session;
 import ms.aurora.input.InputManager;
+import ms.aurora.rt3.Client;
 
 /**
  * @author rvbiljouw
@@ -25,6 +27,8 @@ public class ClientContext {
 
     public final Bank bank;
     public final Inventory inventory;
+    public final Tabs tabs;
+    public final Magic magic;
 
     private Session session;
 
@@ -43,6 +47,8 @@ public class ClientContext {
 
         bank = new Bank(this);
         inventory = new Inventory(this);
+        tabs = new Tabs(this);
+        magic = new Magic(this);
     }
 
     public final void setSession(Session session) {
