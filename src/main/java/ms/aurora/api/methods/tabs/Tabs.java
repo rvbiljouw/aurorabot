@@ -4,11 +4,7 @@ import ms.aurora.api.ClientContext;
 import ms.aurora.api.wrappers.RSWidget;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 30/03/13
- * Time: 18:46
- * To change this template use File | Settings | File Templates.
+ * @author tobiewarburton
  */
 public class Tabs {
     private final ClientContext ctx;
@@ -21,6 +17,7 @@ public class Tabs {
 
 
     public boolean openTab(Tab tab) {
+        if (getCurrent().equals(tab)) return true;
         RSWidget[] widgets = ctx.widgets.getWidgets(548).getWidgets();
         for (int i = 0; i < widgets.length; i++) {
             RSWidget widget = widgets[i];
@@ -36,7 +33,6 @@ public class Tabs {
                 }
             }
         }
-
         return false;
     }
 

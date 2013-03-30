@@ -1,0 +1,8 @@
+.idea/
+database/
+plugins/bin
+scripts/bin
+*.jar
+*.class
+*.log
+*.iml
