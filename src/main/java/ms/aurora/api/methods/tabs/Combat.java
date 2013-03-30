@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author rvbiljouw
+ * @author tobiewarburton
  */
 public class Combat {
     private final static Logger logger = Logger.getLogger(Combat.class);
@@ -17,26 +18,49 @@ public class Combat {
     }
 
     private RSWidgetGroup getCombatGroup() {
-        return ctx.widgets.getWidgets(89);
+        return ctx.widgets.getWidgets(92);
     }
 
     public String getWeaponName() {
         RSWidget widget = getCombatGroup().getWidgets()[0];
-        if(widget != null) {
+        if (widget != null) {
             return widget.getText();
         }
         return "undefined";
     }
 
     public void toggleAutoRetaliate() {
-        for(RSWidget child : getCombatGroup().getWidgets()) {
-            if(child.getText().contains("Auto Retaliate")) {
+        ctx.tabs.openTab(Tabs.Tab.COMBAT);
+        for (RSWidget child : getCombatGroup().getWidgets()) {
+            if (child.getText().contains("Auto Retaliate")) {
                 child.applyAction(" ");
                 return;
             }
         }
     }
 
-    // TODO: Attack styles.
+    public void toggleSpecialAttack() {
+        ctx.tabs.openTab(Tabs.Tab.COMBAT);
+        for (RSWidget child : getCombatGroup().getWidgets()) {
+            if (child.getText().contains("S P E C I A L  A T T A C K")) {
+                child.applyAction(" ");
+                return;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param style the style to select for example Aggressive
+     */
+    public void selectCombatStyle(String style) {
+        ctx.tabs.openTab(Tabs.Tab.COMBAT);
+        for (RSWidget child : getCombatGroup().getWidgets()) {
+            if (child.getText().contains(style)) {
+                child.applyAction(" ");
+                return;
+            }
+        }
+    }
 
 }

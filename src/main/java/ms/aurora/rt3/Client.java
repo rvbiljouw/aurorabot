@@ -85,4 +85,6 @@ public interface Client {
 
     Mouse getMouse();
 
+    int[] getWidgetSettings();
+
 }

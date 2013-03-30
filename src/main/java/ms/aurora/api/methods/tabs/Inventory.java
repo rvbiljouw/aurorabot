@@ -367,6 +367,7 @@ public final class Inventory {
 
         @Override
         public boolean applyAction(String action) {
+            ctx.tabs.openTab(Tabs.Tab.INVENTORY);
             VirtualMouse mouse = ctx.input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
@@ -375,6 +376,7 @@ public final class Inventory {
 
         @Override
         public boolean hover() {
+            ctx.tabs.openTab(Tabs.Tab.INVENTORY);
             VirtualMouse mouse = ctx.input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
@@ -383,6 +385,7 @@ public final class Inventory {
 
         @Override
         public boolean click(boolean left) {
+            ctx.tabs.openTab(Tabs.Tab.INVENTORY);
             VirtualMouse mouse = ctx.input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());

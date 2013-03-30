@@ -22,6 +22,7 @@ public class Magic {
     }
 
     public void castSpell(Spell spell) {
+        ctx.tabs.openTab(Tabs.Tab.MAGIC);
         RSWidget spellButton = getSpellGroup().getWidgets()[spell.id];
         if (spellButton != null) {
             spellButton.applyAction("Cast");
