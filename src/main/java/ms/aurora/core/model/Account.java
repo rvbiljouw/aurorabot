@@ -19,7 +19,6 @@ public class Account extends AbstractModel {
 	private String username = "";
 	private String password = "";
 	private String bankPin = "0000";
-	private boolean members = true;
 
 	public Account(String username, String password) {
 		this.username = username;
@@ -65,16 +64,6 @@ public class Account extends AbstractModel {
 
 	public void setBankPin(String bankPin) {
 		this.bankPin = bankPin;
-	}
-
-
-	public boolean isMembers() {
-		return members;
-	}
-
-
-	public void setMembers(boolean members) {
-		this.members = members;
 	}
 	
 	public static List<Account> getAll() {

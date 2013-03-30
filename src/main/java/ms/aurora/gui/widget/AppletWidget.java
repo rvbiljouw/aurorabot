@@ -3,15 +3,16 @@ package ms.aurora.gui.widget;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
-import ms.aurora.core.SessionRepository;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.loader.AppletLoader;
 
@@ -20,11 +21,14 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static ms.aurora.core.SessionRepository.get;
 
 /**
  * @author rvbiljouw
  */
-public class AppletWidget extends AnchorPane implements AppletLoader.CompletionListener, ChangeListener<Boolean> {
+public class AppletWidget extends AnchorPane implements AppletLoader.CompletionListener, ChangeListener<Boolean>, Session.UpdateListener {
     private final Tab tab = new Tab();
     private final ApplicationGUI parent;
 
@@ -72,6 +76,8 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
         Application.registerApplet(applet);
         toggleVisibility(tab().isSelected(), applet);
         this.applet = applet;
+
+        setPluginMenu();
     }
 
     @Override
@@ -80,16 +86,9 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
             @Override
             public void run() {
                 Utilities.sleepNoException(100);
-
-                Session session = SessionRepository.get(applet.hashCode());
                 toggleVisibility(tab().isSelected(), applet);
-                if (session != null) {
-                    if (tab().isSelected()) {
-                        session.injectPluginMenu(parent.getPluginsMenu());
-                    } else {
-                        session.pullOutPluginMenu(parent.getPluginsMenu());
-                    }
-                }
+
+                setPluginMenu();
             }
         });
     }
@@ -144,8 +143,6 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
                     applet.getWidth(), applet.getHeight());
             applet.setSize(765, 503);
             applet.setVisible(false);
-            System.out.println("Applet now invisible. " + relX + "," + relY);
-
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -153,5 +150,36 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
                 }
             });
         }
+    }
+
+    private final ListChangeListener<MenuItem> menuChangeListener = new ListChangeListener<MenuItem>() {
+        @Override
+        public void onChanged(Change<? extends MenuItem> change) {
+            setPluginMenu();
+        }
+    };
+
+    private void setPluginMenu() {
+        final Session session = get(applet.hashCode());
+        if (session != null) {
+            session.setUpdateListener(this);
+            onUpdate(); // Force the first update.
+        }
+    }
+
+    @Override
+    public synchronized void onUpdate() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                final Session session = get(applet.hashCode());
+                CopyOnWriteArrayList<MenuItem> pluginMenu = session.getPluginMenu();
+                if(tab().isSelected()) {
+                    parent.getPluginsMenu().getItems().addAll(pluginMenu.toArray(new MenuItem[pluginMenu.size()]));
+                } else {
+                    parent.getPluginsMenu().getItems().removeAll(pluginMenu.toArray(new MenuItem[pluginMenu.size()]));
+                }
+            }
+        });
     }
 }

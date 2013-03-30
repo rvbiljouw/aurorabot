@@ -21,6 +21,10 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final Point getScreenLocation() {
+        return ctx.calculations.worldToScreen(getRegionalLocation());
+    }
+
+    private final Point getClickLocation() {
         return this.getModel().getRandomHullPoint();
     }
 
