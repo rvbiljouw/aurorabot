@@ -1,3 +1,6 @@
+import javafx.event.EventHandler;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Menu;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 
@@ -12,17 +15,17 @@ import java.awt.event.ActionListener;
 public class InterfaceDebug extends Plugin {
     private InterfaceExplorer explorer = new InterfaceExplorer(this);
     private boolean interfacePaintActive = false;
-    private JMenu menu;
+    private Menu menu;
 
     @Override
     public void startup() {
         explorer.init();
-        menu = new JMenu("Interfaces");
+        menu = new Menu("Interfaces");
 
-        JCheckBoxMenuItem interfaces = new JCheckBoxMenuItem("Toggle Interface Explorer");
-        interfaces.addActionListener(new ActionListener() {
+        CheckMenuItem interfaces = new CheckMenuItem("Toggle Interface Explorer");
+        interfaces.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!interfacePaintActive) {
                     getSession().getPaintManager().register(explorer);
                     explorer.toggle();
@@ -33,8 +36,7 @@ public class InterfaceDebug extends Plugin {
                 interfacePaintActive = !interfacePaintActive;
             }
         });
-        menu.add(interfaces);
-
+        menu.getItems().add(interfaces);
         getSession().registerMenu(menu);
     }
 

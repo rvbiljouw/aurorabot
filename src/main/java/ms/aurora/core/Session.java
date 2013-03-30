@@ -1,16 +1,23 @@
 package ms.aurora.core;
 
-import java.applet.Applet;
-
-import javax.swing.JMenu;
-import javax.swing.SwingUtilities;
-
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
+import ms.aurora.gui.plugin.PluginOverview;
+
+import javax.swing.*;
+import java.applet.Applet;
 
 /**
  * @author rvbiljouw
@@ -19,7 +26,7 @@ public final class Session implements Runnable {
     private final ScriptManager scriptManager = new ScriptManager(this);
     private final PluginManager pluginManager = new PluginManager(this);
     private final PaintManager paintManager = new PaintManager(this);
-    private final JMenu pluginsMenu = new JMenu("Plug-ins");
+    private final Menu pluginsMenu = new Menu("Plug-ins");
     private final Applet applet;
 
     public Session(Applet applet) {
@@ -43,10 +50,6 @@ public final class Session implements Runnable {
         return paintManager;
     }
 
-    public JMenu getTools() {
-        return pluginsMenu;
-    }
-
     public Applet getApplet() {
         return applet;
     }
@@ -64,22 +67,33 @@ public final class Session implements Runnable {
         }
     }
 
-    public void registerMenu(final JMenu menu) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void registerMenu(final Menu menu) {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                pluginsMenu.add(menu);
+                pluginsMenu.getItems().add(menu);
             }
         });
     }
 
-    public void deregisterMenu(final JMenu menu) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void deregisterMenu(final Menu menu) {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                pluginsMenu.remove(menu);
+                pluginsMenu.getItems().remove(menu);
             }
         });
     }
 
+    public void injectPluginMenu(Menu menu) {
+        menu.getItems().addAll(pluginsMenu.getItems());
+    }
+
+    public void pullOutPluginMenu(Menu menu) {
+        menu.getItems().removeAll(pluginsMenu.getItems());
+    }
+
+    public Menu getPluginMenu() {
+        return pluginsMenu;
+    }
 }

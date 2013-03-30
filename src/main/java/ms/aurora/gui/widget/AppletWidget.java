@@ -10,6 +10,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.core.Session;
+import ms.aurora.core.SessionRepository;
+import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.loader.AppletLoader;
 
 import javax.swing.*;
@@ -23,6 +26,7 @@ import java.util.ResourceBundle;
  */
 public class AppletWidget extends AnchorPane implements AppletLoader.CompletionListener, ChangeListener<Boolean> {
     private final Tab tab = new Tab();
+    private final ApplicationGUI parent;
 
     @FXML
     private ResourceBundle resources;
@@ -33,9 +37,11 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
     @FXML
     private AnchorPane appletPane;
 
+
     private Applet applet;
 
-    public AppletWidget() {
+    public AppletWidget(ApplicationGUI parent) {
+        this.parent = parent;
         this.loadFace();
         tab().setContent(this);
         tab().setClosable(true);
@@ -74,7 +80,16 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
             @Override
             public void run() {
                 Utilities.sleepNoException(100);
+
+                Session session = SessionRepository.get(applet.hashCode());
                 toggleVisibility(tab().isSelected(), applet);
+                if (session != null) {
+                    if (tab().isSelected()) {
+                        session.injectPluginMenu(parent.getPluginsMenu());
+                    } else {
+                        session.pullOutPluginMenu(parent.getPluginsMenu());
+                    }
+                }
             }
         });
     }
@@ -108,7 +123,7 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
     }
 
     private void toggleVisibility(Boolean observableValue, final Applet applet) {
-        if(applet == null) return;
+        if (applet == null) return;
 
         int relX = calculateRelX();
         int relY = calculateRelY();

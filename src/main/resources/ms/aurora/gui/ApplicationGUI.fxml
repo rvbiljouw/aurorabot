@@ -43,7 +43,7 @@
                             <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Start script"/>
                         </items>
                     </Menu>
-                    <Menu mnemonicParsing="false" text="Plugin">
+                    <Menu mnemonicParsing="false" text="Plug-ins" fx:id="mnPlugins">
                         <items>
                             <MenuItem mnemonicParsing="false" text="Plugin Overview" onAction="#onPluginOverview"/>
                         </items>

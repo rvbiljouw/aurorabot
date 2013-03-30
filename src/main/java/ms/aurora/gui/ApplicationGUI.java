@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -33,6 +34,9 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     private TabPane tabPane;
 
+    @FXML
+    private Menu mnPlugins;
+
     public ApplicationGUI() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ApplicationGUI.fxml"));
 
@@ -55,7 +59,7 @@ public class ApplicationGUI extends AnchorPane {
 
     @FXML
     void onNewSession(ActionEvent event) {
-        AppletWidget widget = new AppletWidget();
+        AppletWidget widget = new AppletWidget(this);
         AppletLoader loader = new AppletLoader();
         loader.setCompletionListener(widget);
         loader.start();
@@ -119,5 +123,9 @@ public class ApplicationGUI extends AnchorPane {
             return ((AppletWidget) tab.getContent()).getApplet();
         }
         return null;
+    }
+
+    public Menu getPluginsMenu() {
+        return mnPlugins;
     }
 }

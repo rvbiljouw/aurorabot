@@ -1,5 +1,6 @@
 package ms.aurora.api.plugin;
 
+import javafx.scene.control.Menu;
 import ms.aurora.api.ClientContext;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
@@ -74,5 +75,13 @@ public abstract class Plugin extends ClientContext {
 
     public final PluginManifest getManifest() {
         return getClass().getAnnotation(PluginManifest.class);
+    }
+
+    public void registerMenu(Menu menu) {
+        getSession().registerMenu(menu);
+    }
+
+    public void deregisterMenu(Menu menu) {
+        getSession().deregisterMenu(menu);
     }
 }

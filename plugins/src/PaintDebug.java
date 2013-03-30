@@ -1,3 +1,7 @@
+import javafx.event.EventHandler;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 
@@ -27,16 +31,15 @@ public class PaintDebug extends Plugin {
     private boolean minimapPaintActive = false;
 
 
-    private JMenu paint;
+    private Menu paint;
 
     @Override
     public void startup() {
-        paint = new JMenu("Debugging");
-
-        JCheckBoxMenuItem npcs = new JCheckBoxMenuItem("Draw NPCs");
-        npcs.addActionListener(new ActionListener() {
+        paint = new Menu("Debugging");
+        CheckMenuItem npcs = new CheckMenuItem("Draw NPCs");
+        npcs.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if(!npcPaintActive) {
                     getSession().getPaintManager().register(npcPaint);
                 } else {
@@ -45,13 +48,13 @@ public class PaintDebug extends Plugin {
                 npcPaintActive = !npcPaintActive;
             }
         });
-        paint.add(npcs);
+        paint.getItems().add(npcs);
 
-        JCheckBoxMenuItem objects = new JCheckBoxMenuItem("Draw Objects");
-        objects.addActionListener(new ActionListener() {
+        CheckMenuItem objects = new CheckMenuItem("Draw Objects");
+        objects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!objectPaintActive) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if(!objectPaintActive) {
                     getSession().getPaintManager().register(objectPaint);
                 } else {
                     getSession().getPaintManager().deregister(objectPaint);
@@ -59,12 +62,12 @@ public class PaintDebug extends Plugin {
                 objectPaintActive = !objectPaintActive;
             }
         });
-        paint.add(objects);
+        paint.getItems().add(objects);
 
-        JCheckBoxMenuItem inventory = new JCheckBoxMenuItem("Draw Inventory");
-        inventory.addActionListener(new ActionListener() {
+        CheckMenuItem inventory = new CheckMenuItem("Draw Inventory");
+        inventory.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!inventoryPaintActive) {
                     getSession().getPaintManager().register(inventoryPaint);
                 } else {
@@ -73,12 +76,12 @@ public class PaintDebug extends Plugin {
                 inventoryPaintActive = !inventoryPaintActive;
             }
         });
-        paint.add(inventory);
+        paint.getItems().add(inventory);
 
-        JCheckBoxMenuItem animation = new JCheckBoxMenuItem("Draw Animation");
-        animation.addActionListener(new ActionListener() {
+        CheckMenuItem animation = new CheckMenuItem("Draw Animation");
+        animation.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!animationPaintActive) {
                     getSession().getPaintManager().register(animationPaint);
                 } else {
@@ -87,12 +90,12 @@ public class PaintDebug extends Plugin {
                 animationPaintActive = !animationPaintActive;
             }
         });
-        paint.add(animation);
+        paint.getItems().add(animation);
 
-        JCheckBoxMenuItem position = new JCheckBoxMenuItem("Draw Position");
-        position.addActionListener(new ActionListener() {
+        CheckMenuItem position = new CheckMenuItem("Draw Position");
+        position.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!positionPaintActive) {
                     getSession().getPaintManager().register(positionPaint);
                 } else {
@@ -101,12 +104,12 @@ public class PaintDebug extends Plugin {
                 positionPaintActive = !positionPaintActive;
             }
         });
-        paint.add(position);
+        paint.getItems().add(position);
 
-        JCheckBoxMenuItem mouse = new JCheckBoxMenuItem("Draw Mouse");
-        mouse.addActionListener(new ActionListener() {
+        CheckMenuItem mouse = new CheckMenuItem("Draw Mouse");
+        mouse.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!mousePaintActive) {
                     getSession().getPaintManager().register(mousePaint);
                 } else {
@@ -115,12 +118,12 @@ public class PaintDebug extends Plugin {
                 mousePaintActive = !mousePaintActive;
             }
         });
-        paint.add(mouse);
+        paint.getItems().add(mouse);
 
-        JCheckBoxMenuItem minimap = new JCheckBoxMenuItem("Draw Minimap");
-        minimap.addActionListener(new ActionListener() {
+        CheckMenuItem minimap = new CheckMenuItem("Draw Minimap");
+        minimap.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!minimapPaintActive) {
                     getSession().getPaintManager().register(minimapPaint);
                 } else {
@@ -129,8 +132,7 @@ public class PaintDebug extends Plugin {
                 minimapPaintActive = !minimapPaintActive;
             }
         });
-        paint.add(minimap);
-
+        paint.getItems().add(minimap);
         getSession().registerMenu(paint);
     }
 
