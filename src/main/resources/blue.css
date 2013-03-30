@@ -25,6 +25,12 @@
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
 }
 
+.label {
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 14pt;
+    -fx-opacity: 0.6;
+}
+
 .big-label {
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";

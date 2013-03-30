@@ -21,6 +21,7 @@
       <ToolBar layoutX="53.0" layoutY="426.0" prefWidth="720.0">
         <items>
           <Button mnemonicParsing="false" onAction="#onNewAccount" text="New account" />
+          <Button mnemonicParsing="false" onAction="#onEditSelected" text="Edit selected" />
           <Button mnemonicParsing="false" onAction="#onRemoveSelected" text="Remove selected" />
         </items>
       </ToolBar>

@@ -1,18 +1,19 @@
 package ms.aurora.gui.account;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import jfx.messagebox.MessageBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ms.aurora.core.model.Account;
 
 import java.io.IOException;
@@ -64,39 +65,64 @@ public class AccountOverview extends AnchorPane {
 
     @FXML
     void onNewAccount(ActionEvent event) {
-        AccountModel newModel = new AccountModel(new Account());
-        accounts.add(newModel);
+        Stage stage = new Stage();
+        stage.setTitle("New account");
+        stage.setWidth(330);
+        stage.setHeight(264);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        NewAccount newDialog = new NewAccount();
+        Scene scene = new Scene(newDialog);
+        scene.getStylesheets().add("blue.css");
+        stage.setScene(scene);
+        stage.show();
+        stage.centerOnScreen();
+
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                initializeTable();
+            }
+        });
     }
 
     @FXML
     void onOk(ActionEvent event) {
-        for (AccountModel model : accounts) {
-            Account account = model.getAccount();
-            if (account.getUsername() == null || account.getUsername().length() == 0) {
-                MessageBox.show(getScene().getWindow(), "Username is required.", "Error!", MessageBox.OK);
-                return;
-            } else if (account.getPassword() == null || account.getPassword().length() == 0) {
-                MessageBox.show(getScene().getWindow(), "Password is required.", "Error!", MessageBox.OK);
-                return;
-            } else {
-                if (account.getId() == null) {
-                    account.save();
-                } else {
-                    account.update();
-                }
-            }
-        }
         getScene().getWindow().hide();
     }
 
     @FXML
     void onRemoveSelected(ActionEvent event) {
-        ObservableList<AccountModel> selectedAccounts = tblAccounts.getSelectionModel().getSelectedItems();
-        for (AccountModel model : selectedAccounts) {
-            accounts.remove(model);
-            model.getAccount().remove();
+        AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
+        if(selectedAccount != null) {
+            selectedAccount.getAccount().remove();
+            accounts.remove(selectedAccount);
         }
-        tblAccounts.setItems(accounts);
+        initializeTable();
+    }
+
+    @FXML
+    void onEditSelected(ActionEvent event) {
+        AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
+        if (selectedAccount != null) {
+            Stage stage = new Stage();
+            stage.setTitle("Edit account");
+            stage.setWidth(330);
+            stage.setHeight(264);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            EditAccount editDialog = new EditAccount(selectedAccount);
+            Scene scene = new Scene(editDialog);
+            scene.getStylesheets().add("blue.css");
+            stage.setScene(scene);
+            stage.show();
+            stage.centerOnScreen();
+
+            stage.setOnHiding(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    initializeTable();
+                }
+            });
+        }
     }
 
     @FXML
@@ -110,58 +136,15 @@ public class AccountOverview extends AnchorPane {
         colPassword.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("password"));
         colBankPin.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("bankPin"));
 
+        initializeTable();
+    }
+
+    private void initializeTable() {
+        accounts.clear();
         for (Account account : Account.getAll()) {
             AccountModel model = new AccountModel(account);
             accounts.add(model);
         }
         tblAccounts.setItems(accounts);
-        tblAccounts.setEditable(true);
-        tblAccounts.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    }
-
-    public static class AccountModel {
-        private final Account account;
-        private StringProperty username;
-        private StringProperty password;
-        private StringProperty bankPin;
-
-
-        public AccountModel(Account account) {
-            this.account = account;
-            this.username = new SimpleStringProperty(account.getUsername());
-            this.password = new SimpleStringProperty(account.getPassword());
-            this.bankPin = new SimpleStringProperty(account.getBankPin());
-        }
-
-        public String getUsername() {
-            return username.get();
-        }
-
-        public void setUsername(String username) {
-            getAccount().setUsername(username);
-            this.username.set(username);
-        }
-
-        public String getPassword() {
-            return password.get();
-        }
-
-        public void setPassword(String password) {
-            getAccount().setPassword(password);
-            this.password.set(password);
-        }
-
-        public String getBankPin() {
-            return bankPin.get();
-        }
-
-        public void setBankPin(String bankPin) {
-            getAccount().setBankPin(bankPin);
-            this.bankPin.set(bankPin);
-        }
-
-        public Account getAccount() {
-            return account;
-        }
     }
 }
