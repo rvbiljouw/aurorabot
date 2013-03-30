@@ -13,6 +13,7 @@ import javafx.stage.WindowEvent;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.core.script.ScriptManager;
+import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
@@ -171,8 +172,10 @@ public class ApplicationGUI extends AnchorPane {
     void onToggleInput(ActionEvent evt) {
         ToggleButton button = (ToggleButton) evt.getSource();
         if (!button.isSelected()) {
+            GlobalEventQueue.blocking = false;
             button.setText("Disable input");
         } else {
+            GlobalEventQueue.blocking = true;
             button.setText("Enable input");
         }
     }
