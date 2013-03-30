@@ -55,6 +55,7 @@ public final class Session implements Runnable {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
 
+            pluginManager.stop(plugin.getClass());
             if (config.isEnabled()) {
                 pluginManager.start(plugin.getClass());
             } else {
@@ -88,7 +89,7 @@ public final class Session implements Runnable {
         });
     }
 
-    public CopyOnWriteArrayList<MenuItem> getPluginMenu() {
+    public synchronized CopyOnWriteArrayList<MenuItem> getPluginMenu() {
         return pluginMenu;
     }
 

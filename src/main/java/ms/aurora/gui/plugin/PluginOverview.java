@@ -73,11 +73,13 @@ public class PluginOverview extends AnchorPane {
     @FXML
     void onCancel(ActionEvent event) {
         getScene().getWindow().hide();
+        refreshAllPlugins();
     }
 
     @FXML
     void onOk(ActionEvent event) {
         getScene().getWindow().hide();
+        refreshAllPlugins();
     }
 
     @FXML
@@ -94,7 +96,6 @@ public class PluginOverview extends AnchorPane {
                     config.update();
                 }
                 select.setState(true);
-                refreshAllPlugins();
             }
         }
         tblPlugins.setItems(rebuild());
@@ -115,7 +116,6 @@ public class PluginOverview extends AnchorPane {
                     config.update();
                 }
                 select.setState(false);
-                refreshAllPlugins();
             }
         }
         tblPlugins.setItems(rebuild());
