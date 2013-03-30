@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ms.aurora.gui.account.AccountOverview;
+import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.widget.AppletWidget;
 import ms.aurora.loader.AppletLoader;
@@ -77,6 +78,20 @@ public class ApplicationGUI extends AnchorPane {
             stage.setScene(scene);
             stage.show();
         }
+    }
+
+    @FXML
+    void onPluginOverview(ActionEvent evt) {
+        Stage stage = new Stage();
+        stage.setTitle("Plugin Overview");
+        stage.setWidth(810);
+        stage.setHeight(640);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        PluginOverview overview = new PluginOverview();
+        Scene scene = new Scene(overview);
+        scene.getStylesheets().add("blue.css");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

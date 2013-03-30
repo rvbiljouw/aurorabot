@@ -30,7 +30,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit" fx:id="mnEdit">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#onAccountManager" text="Accounts" />
+              <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Accounts" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Script" fx:id="mnHelp">
