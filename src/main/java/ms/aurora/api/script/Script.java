@@ -14,6 +14,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 public abstract class Script extends ClientContext implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
     private ScriptState state = ScriptState.START;
+    private Thread randomsThread;
 
     public Script() {
     }
@@ -58,8 +59,6 @@ public abstract class Script extends ClientContext implements Runnable {
 
 
                     case RUNNING:
-                        pollRandoms();
-
                         int loopResult = tick();
                         if (loopResult != -1) {
                             Thread.sleep(loopResult + 600);
@@ -85,7 +84,8 @@ public abstract class Script extends ClientContext implements Runnable {
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
                 logger.error("Script has thrown exception and has exited.", e);
-                return;
+            } finally {
+                state = ScriptState.STOP;
             }
         }
     }
@@ -104,24 +104,13 @@ public abstract class Script extends ClientContext implements Runnable {
         if(this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener)this);
         }
+        randomsThread = new Thread(new Randoms());
+        randomsThread.start();
     }
 
     private void cleanup() {
         if(this instanceof PaintListener) {
             getSession().getPaintManager().deregister((PaintListener)this);
-        }
-    }
-
-    private void pollRandoms() {
-        for(Random random : randoms) {
-            random.setSession(getSession());
-
-            while(random.activate()) {
-                int time = random.loop();
-                if(time == -1) continue;
-
-                sleepNoException(time);
-            }
         }
     }
 
@@ -131,6 +120,28 @@ public abstract class Script extends ClientContext implements Runnable {
 
     public final ScriptManifest getManifest() {
         return getClass().getAnnotation(ScriptManifest.class);
+    }
+
+    private class Randoms implements Runnable {
+
+        @Override
+        public void run() {
+            while(getState() != ScriptState.STOP) {
+                for(Random random : randoms) {
+                    random.setSession(getSession());
+
+                    while(random.activate()) {
+                        info("Random event " + random.getClass().getSimpleName() + " was triggered.");
+                        int time = random.loop();
+                        if(time == -1) continue;
+
+                        sleepNoException(time);
+                    }
+                }
+                sleepNoException(100);
+            }
+        }
+
     }
 
     private final Random[] randoms = {
