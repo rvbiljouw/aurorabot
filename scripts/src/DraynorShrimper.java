@@ -43,7 +43,7 @@ public class DraynorShrimper extends Script implements PaintListener {
                 }
             }
         } else if (this.nearTile(BANK_RSTILE)) {
-            if (!this.inventory.containsAny(317, 319)) {
+            if (!this.inventory.containsAny(317, 321)) {
                 this.walkToTile(FISHING_RSTILE, FISHING_SPOT_PATH);
                 return Utilities.random(500, 1000);
             } else {
@@ -53,7 +53,7 @@ public class DraynorShrimper extends Script implements PaintListener {
                     }
                 } else {
                     Inventory.InventoryItem item = this.inventory.get(317);
-                    Inventory.InventoryItem item2 = this.inventory.get(319);
+                    Inventory.InventoryItem item2 = this.inventory.get(321);
                     if (item != null) {
                         if (item.applyAction("Store All")) {
                             return Utilities.random(500, 1000);

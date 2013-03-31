@@ -81,11 +81,11 @@ public abstract class Script extends ClientContext implements Runnable {
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                state = ScriptState.STOP;
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
-                logger.error("Script has thrown exception and has exited.", e);
-            } finally {
                 state = ScriptState.STOP;
+                logger.error("Script has thrown exception and has exited.", e);
             }
         }
     }
@@ -104,8 +104,10 @@ public abstract class Script extends ClientContext implements Runnable {
         if(this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener)this);
         }
+        info("derp!");
         randomsThread = new Thread(new Randoms());
         randomsThread.start();
+        info("derpz!!");
     }
 
     private void cleanup() {
