@@ -70,6 +70,7 @@ public class ScriptOverview extends AnchorPane {
 
     @FXML
     void onCancel(ActionEvent event) {
+        getScene().getWindow().hide();
     }
 
     @FXML
@@ -79,6 +80,7 @@ public class ScriptOverview extends AnchorPane {
         if(session != null && model != null) {
             session.getScriptManager().start(model.script);
         }
+        getScene().getWindow().hide();
     }
 
     @FXML

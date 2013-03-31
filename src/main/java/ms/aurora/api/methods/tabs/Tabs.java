@@ -17,7 +17,7 @@ public class Tabs {
 
 
     public boolean openTab(Tab tab) {
-        if (getCurrent().equals(tab)) return true;
+        if (getCurrent() != null && getCurrent().equals(tab)) return true;
         RSWidget[] widgets = ctx.widgets.getWidgets(548).getWidgets();
         for (int i = 0; i < widgets.length; i++) {
             RSWidget widget = widgets[i];

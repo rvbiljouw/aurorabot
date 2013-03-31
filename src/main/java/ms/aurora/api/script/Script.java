@@ -1,8 +1,12 @@
 package ms.aurora.api.script;
 
 import ms.aurora.api.ClientContext;
+import ms.aurora.api.random.Random;
+import ms.aurora.api.random.impl.*;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
+
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author rvbiljouw
@@ -10,6 +14,7 @@ import org.apache.log4j.Logger;
 public abstract class Script extends ClientContext implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
     private ScriptState state = ScriptState.START;
+    private Thread randomsThread;
 
     public Script() {
     }
@@ -76,10 +81,11 @@ public abstract class Script extends ClientContext implements Runnable {
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                state = ScriptState.STOP;
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
+                state = ScriptState.STOP;
                 logger.error("Script has thrown exception and has exited.", e);
-                return;
             }
         }
     }
@@ -98,6 +104,10 @@ public abstract class Script extends ClientContext implements Runnable {
         if(this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener)this);
         }
+        info("derp!");
+        randomsThread = new Thread(new Randoms());
+        randomsThread.start();
+        info("derpz!!");
     }
 
     private void cleanup() {
@@ -114,5 +124,37 @@ public abstract class Script extends ClientContext implements Runnable {
         return getClass().getAnnotation(ScriptManifest.class);
     }
 
+    private class Randoms implements Runnable {
 
+        @Override
+        public void run() {
+            while(getState() != ScriptState.STOP) {
+                for(Random random : randoms) {
+                    random.setSession(getSession());
+
+                    while(random.activate()) {
+                        info("Random event " + random.getClass().getSimpleName() + " was triggered.");
+                        int time = random.loop();
+                        if(time == -1) continue;
+
+                        sleepNoException(time);
+                    }
+                }
+                sleepNoException(100);
+            }
+        }
+
+    }
+
+    private final Random[] randoms = {
+        new AutoLogin(),
+            new AxeHandler(),
+            new BeehiveSolver(),
+            new CapnArnav(),
+            new ScapeRuneIsland(),
+            new StrangePlant(),
+            new Talker(),
+            new Teleother(),
+            new WelcomeScreen()
+    };
 }

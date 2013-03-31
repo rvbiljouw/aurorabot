@@ -254,4 +254,9 @@ public final class RSWidget implements Interactable {
     public int getModelId() {
         return widget.getModelId();
     }
+
+    //TODO: Extra hook!
+    public int getBackgroundColor() {
+        return -1;
+    }
 }
