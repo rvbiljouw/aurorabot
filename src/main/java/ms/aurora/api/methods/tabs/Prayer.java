@@ -3,13 +3,12 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.ClientContext;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
-import ms.aurora.rt3.Widget;
 
 /**
  * @author rvbiljouw
  */
 public class Prayer {
-    private static final int PRAYER_BASE = 297;
+    private static final int PRAYER_BASE = 271;
     // Check if prayer is toggled by it's base ids.
     private final ClientContext ctx;
 
