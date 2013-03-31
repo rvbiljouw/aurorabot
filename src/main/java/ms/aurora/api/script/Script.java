@@ -1,8 +1,12 @@
 package ms.aurora.api.script;
 
 import ms.aurora.api.ClientContext;
+import ms.aurora.api.random.Random;
+import ms.aurora.api.random.impl.*;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
+
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author rvbiljouw
@@ -54,6 +58,8 @@ public abstract class Script extends ClientContext implements Runnable {
 
 
                     case RUNNING:
+                        pollRandoms();
+
                         int loopResult = tick();
                         if (loopResult != -1) {
                             Thread.sleep(loopResult + 600);
@@ -106,6 +112,19 @@ public abstract class Script extends ClientContext implements Runnable {
         }
     }
 
+    private void pollRandoms() {
+        for(Random random : randoms) {
+            random.setSession(getSession());
+
+            while(random.activate()) {
+                int time = random.loop();
+                if(time == -1) continue;
+
+                sleepNoException(time);
+            }
+        }
+    }
+
     public final boolean validate() {
         return getManifest() != null;
     }
@@ -114,5 +133,15 @@ public abstract class Script extends ClientContext implements Runnable {
         return getClass().getAnnotation(ScriptManifest.class);
     }
 
-
+    private final Random[] randoms = {
+        new AutoLogin(),
+            new AxeHandler(),
+            new BeehiveSolver(),
+            new CapnArnav(),
+            new ScapeRuneIsland(),
+            new StrangePlant(),
+            new Talker(),
+            new Teleother(),
+            new WelcomeScreen()
+    };
 }
