@@ -1,6 +1,5 @@
 package ms.aurora.api.random.impl;
 
-import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSWidget;
 
@@ -20,7 +19,7 @@ public class Teleother extends Random {
         if (no != null) {
             no.click(true);
         }
-        //TODO: disable accept aid
+        options.toggleAcceptAid();
         return -1;
     }
 }

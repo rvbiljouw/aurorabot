@@ -7,7 +7,6 @@ import ms.aurora.api.wrappers.RSNPC;
 /**
  * @author tobiewarburton
  */
-//TODO isValid for NPC rsbot.
 public class StrangePlant extends Random {
     private static final int STRANGE_PLANT_ID = 407;
     private static final int DEAD_ANIM = 350;
