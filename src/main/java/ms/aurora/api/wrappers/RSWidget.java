@@ -250,4 +250,9 @@ public final class RSWidget implements Interactable {
     public void setGroup(int group) {
         this.group = group;
     }
+
+    //TODO: Extra hook!
+    public int getBackgroundColor() {
+        return -1;
+    }
 }
