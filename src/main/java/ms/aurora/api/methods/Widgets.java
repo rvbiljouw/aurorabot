@@ -61,6 +61,8 @@ public final class Widgets {
     public RSWidget[] getWidgetsWithText(String predicate) {
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
         for (Widget[] parents : ctx.getClient().getWidgetCache()) {
+            if(parents == null) continue;
+
             for (RSWidget child : filter(transform(newArrayList(parents), transform), Predicates.notNull()).toArray(new RSWidget[0])) {
                 if (child.getText() != null && child.getText().contains(predicate)) {
                     satisfied.add(child);
