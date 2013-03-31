@@ -250,4 +250,8 @@ public final class RSWidget implements Interactable {
     public void setGroup(int group) {
         this.group = group;
     }
+
+    public int getModelId() {
+        return widget.getModelId();
+    }
 }

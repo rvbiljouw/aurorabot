@@ -68,4 +68,8 @@ public interface Widget {
     int[] getInventoryStackSizes();
 
     int getBoundsIndex();
+
+    int getModelId();
+
+    int getModelType();
 }

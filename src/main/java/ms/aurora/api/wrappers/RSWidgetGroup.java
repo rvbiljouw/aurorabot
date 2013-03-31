@@ -16,12 +16,16 @@ public class RSWidgetGroup {
         this.index = index;
         this.ctx = ctx;
 
-        for(int child = 0; child < widgets.length; child++) {
+        for (int child = 0; child < widgets.length; child++) {
             Widget widget = widgets[child];
-            if(widget != null) {
+            if (widget != null) {
                 this.widgets[child] = new RSWidget(ctx, widget, index, child);
             }
         }
+    }
+
+    public boolean isValid() {
+        return widgets.length > 0 && widgets[0] != null;
     }
 
     public RSWidget[] getWidgets() {

@@ -28,6 +28,8 @@ public class ClientContext {
     public final Magic magic;
     public final Options options;
 
+    public final Settings settings;
+
     private Session session;
 
     public ClientContext() {
@@ -48,6 +50,7 @@ public class ClientContext {
         tabs = new Tabs(this);
         magic = new Magic(this);
         options = new Options(this);
+        settings = new Settings(this);
     }
 
     public final void setSession(Session session) {
