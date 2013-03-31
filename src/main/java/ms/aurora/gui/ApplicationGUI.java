@@ -1,9 +1,11 @@
 package ms.aurora.gui;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -183,6 +185,24 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void initialize() {
         assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'Application.fxml'.";
+
+        mnPlugins.setOnShowing(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
+                if(selectedTab == null) {
+                    return;
+                }
+
+                Node component = selectedTab.getContent();
+                if(component instanceof AppletWidget) {
+                    ((AppletWidget)component).onMenuOpening();
+                } else {
+                    mnPlugins.getItems().clear();
+                    mnPlugins.getItems().add(pluginOverview);
+                }
+            }
+        });
     }
 
     public static Applet getSelectedApplet() {

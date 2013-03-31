@@ -5,8 +5,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -54,29 +52,6 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
         tab().setClosable(true);
         tab().setText("Loading...");
         tab().selectedProperty().addListener(this);
-
-        parent.getPluginsMenu().setOnShowing(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                if (applet != null) {
-                    final Session session = get(applet.hashCode());
-                    CopyOnWriteArrayList<MenuItem> pluginMenu = session.getPluginMenu();
-                    ObservableList<MenuItem> items = FXCollections.observableArrayList();
-                    if (tab().isSelected()) {
-                        for (MenuItem pluginItem : pluginMenu) {
-                            items.add(pluginItem);
-                        }
-                    } else {
-                        for (MenuItem pluginItem : pluginMenu) {
-                            items.remove(pluginItem);
-                        }
-                    }
-                    parent.getPluginsMenu().getItems().clear();
-                    parent.getPluginsMenu().getItems().add(parent.getPluginOverview());
-                    parent.getPluginsMenu().getItems().addAll(items);
-                }
-            }
-        });
     }
 
     private void loadFace() {
@@ -171,6 +146,20 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
                     tab().setText("[ Session " + applet.hashCode() + " ]");
                 }
             });
+        }
+    }
+
+    public void onMenuOpening() {
+        if (applet != null) {
+            final Session session = get(applet.hashCode());
+            CopyOnWriteArrayList<MenuItem> pluginMenu = session.getPluginMenu();
+            ObservableList<MenuItem> items = FXCollections.observableArrayList();
+            for (MenuItem pluginItem : pluginMenu) {
+                items.add(pluginItem);
+            }
+            parent.getPluginsMenu().getItems().clear();
+            parent.getPluginsMenu().getItems().add(parent.getPluginOverview());
+            parent.getPluginsMenu().getItems().addAll(items);
         }
     }
 }

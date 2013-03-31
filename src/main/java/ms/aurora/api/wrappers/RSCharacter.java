@@ -144,7 +144,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final String getMessage() {
-        return wrapped.getMessage();
+        return wrapped.getMessage() == null ? "" : wrapped.getMessage();
     }
 
     public final int getInteractingEntity() {
