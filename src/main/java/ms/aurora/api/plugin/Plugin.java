@@ -84,4 +84,9 @@ public abstract class Plugin extends Context {
     public void deregisterMenu(Menu menu) {
         getSession().deregisterMenu(menu);
     }
+
+    public void invokeLater(Runnable runnable) {
+        Thread thread = new Thread(getThreadGroup(), runnable);
+        thread.start();
+    }
 }

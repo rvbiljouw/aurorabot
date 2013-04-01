@@ -12,6 +12,7 @@ import static java.lang.Thread.currentThread;
  */
 public class Context {
     public final InputManager input;
+    private ThreadGroup threadGroup;
     private Session session;
 
     public Context(Session session) {
@@ -28,7 +29,7 @@ public class Context {
     }
 
     public final void setSession(Session session) {
-        System.out.println("we woz called...");
+        threadGroup = currentThread().getThreadGroup();
         this.session = session;
     }
 
@@ -41,5 +42,9 @@ public class Context {
 
     public static Context get() {
         return new Context(SessionRepository.get(currentThread().getThreadGroup()));
+    }
+
+    public ThreadGroup getThreadGroup() {
+        return threadGroup;
     }
 }

@@ -4,10 +4,6 @@ import javafx.scene.control.Menu;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  * @author tobiewarburton
  */

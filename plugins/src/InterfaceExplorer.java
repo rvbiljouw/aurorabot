@@ -1,5 +1,5 @@
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 import ms.aurora.event.listeners.PaintListener;
@@ -18,9 +18,9 @@ import java.awt.event.ActionListener;
  * @author tobiewarburton
  */
 public class InterfaceExplorer implements PaintListener {
-    private final Context ctx;
+    private final Plugin ctx;
 
-    public InterfaceExplorer(Context ctx) {
+    public InterfaceExplorer(Plugin ctx) {
         this.ctx = ctx;
     }
 
@@ -61,6 +61,7 @@ public class InterfaceExplorer implements PaintListener {
             tablePanel = new JPanel();
 
             init();
+            ctx.invokeLater(reloadDelegate);
         }
 
         private void init() {
@@ -79,7 +80,7 @@ public class InterfaceExplorer implements PaintListener {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
                     if (node == null) return;
                     if (!(node.getUserObject() instanceof RSWidget)) return;
-                    display((RSWidget) node.getUserObject());
+                    ctx.invokeLater(displayDelegate((RSWidget)node.getUserObject()));
                 }
             });
             tree.setMinimumSize(new Dimension(640, 738));
@@ -97,7 +98,7 @@ public class InterfaceExplorer implements PaintListener {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    reload();
+                    ctx.invokeLater(reloadDelegate);
                 }
             });
             add(button, BorderLayout.SOUTH);
@@ -143,6 +144,22 @@ public class InterfaceExplorer implements PaintListener {
                     {"text", widget.getText()}
             };
             table.setModel(new DefaultTableModel(model, new String[]{"key", "value"}));
+        }
+
+        private final Runnable reloadDelegate = new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        };
+
+        private final Runnable displayDelegate(final RSWidget widget) {
+            return new Runnable() {
+                @Override
+                public void run() {
+                    display(widget);
+                }
+            };
         }
     }
 }
