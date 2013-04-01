@@ -1,8 +1,10 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.ItemFilters;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.*;
@@ -26,11 +28,11 @@ public class FreakyForester extends Random {
 
     @Override
     public boolean activate() {
-        forester = npcs.get(NpcFilters.ID(FORESTER_ID));
+        forester = Npcs.get(NpcFilters.ID(FORESTER_ID));
         if (forester != null) {
             Utilities.sleepNoException(2000, 3000);
             if (forester != null) {
-                RSObject portal = objects.get(ObjectFilters.ID(PORTAL_ID));
+                RSObject portal = Objects.get(ObjectFilters.ID(PORTAL_ID));
                 return portal != null;
             }
         }
@@ -40,11 +42,11 @@ public class FreakyForester extends Random {
     public int getState() {
         if (done)
             return 3;
-        else if (widgets.canContinue())
+        else if (Widgets.canContinue())
             return 1;
         else if (phe == -1)
             return 0;
-        else if (inventory.contains(6178))
+        else if (Inventory.contains(6178))
             return 0;
         else if (phe != -1)
             return 2;
@@ -54,26 +56,26 @@ public class FreakyForester extends Random {
 
     @Override
     public int loop() {
-        forester = npcs.get(NpcFilters.ID(FORESTER_ID));
+        forester = Npcs.get(NpcFilters.ID(FORESTER_ID));
         if (forester == null)
             return -1;
 
-        if (players.getLocal().getAnimation() != -1)
+        if (Players.getLocal().getAnimation() != -1)
             return Utilities.random(3000, 5000);
-        else if (players.getLocal().isMoving())
+        else if (Players.getLocal().isMoving())
             return Utilities.random(200, 500);
 
         if (!done) {
-            done = searchText(241, "Thank you") || widgets.getWidget(242, 4).getText().contains("leave");
+            done = searchText(241, "Thank you") || Widgets.getWidget(242, 4).getText().contains("leave");
         }
 
-        if (inventory.contains(6179)) {
+        if (Inventory.contains(6179)) {
             phe = -1;
-            inventory.get(6179).applyAction("Drop");
+            Inventory.get(6179).applyAction("Drop");
             return Utilities.random(500, 900);
         }
 
-//        if (bank.isDepositOpen() || (inventory.getCount(false) == 28) && !inventory.containsAll(6178)) {
+//        if (bank.isDepositOpen() || (Inventory.getCount(false) == 28) && !Inventory.containsAll(6178)) {
 //            if (bank.isDepositOpen() && bank.getBoxCount() == 28) {
 //                interfaces.get(11).getComponent(17).getComponent(random(21, 27)).applyAction("Deposit");
 //                Utilities.sleepNoException(1000, 1500);
@@ -97,11 +99,11 @@ public class FreakyForester extends Random {
 
         switch (getState()) {
             case 0: // Talk to forester
-                if (calculations.tileOnScreen(forester.getLocation())
-                        && (calculations.distance(players.getLocal().getLocation(), forester.getLocation()) <= 5)) {
+                if (Calculations.tileOnScreen(forester.getLocation())
+                        && (Calculations.distance(Players.getLocal().getLocation(), forester.getLocation()) <= 5)) {
                     forester.applyAction("Talk");
                 } else {
-                    walking.clickMap(forester.getLocation());
+                    Walking.clickMap(forester.getLocation());
                 }
                 return Utilities.random(500, 800);
             case 1: // Talking
@@ -121,23 +123,23 @@ public class FreakyForester extends Random {
             case 2: // Kill pheasant
                 if (phe == -1)
                     return Utilities.random(200, 500);
-                final RSNPC Pheasant = npcs.get(NpcFilters.ID(phe));
-                final RSGroundItem tile = items.get(ItemFilters.ID(6178));
+                final RSNPC Pheasant = Npcs.get(NpcFilters.ID(phe));
+                final RSGroundItem tile = GroundItems.get(ItemFilters.ID(6178));
                 if (tile != null) {
                     tile.applyAction("Take");
                     return Utilities.random(600, 900);
                 } else if (Pheasant != null) {
-                    if (calculations.tileOnScreen(Pheasant.getLocation())) {
+                    if (Calculations.tileOnScreen(Pheasant.getLocation())) {
                         Pheasant.applyAction("Attack");
                         return Utilities.random(1000, 1500);
-                    } else if (calculations.distance(players.getLocal().getLocation(), Pheasant.getLocation()) >= 5) {
-                        walking.clickMap(Pheasant.getLocation());
+                    } else if (Calculations.distance(Players.getLocal().getLocation(), Pheasant.getLocation()) >= 5) {
+                        Walking.clickMap(Pheasant.getLocation());
                     }
                 } else
                     return Utilities.random(2000, 5000);
             case 3: // Get out
-                walking.clickTile(WALK_TO_TILE);
-                final RSObject portal = objects.get(ObjectFilters.ID(PORTAL_ID));
+                Walking.clickTile(WALK_TO_TILE);
+                final RSObject portal = Objects.get(ObjectFilters.ID(PORTAL_ID));
 
                 if (portal == null) {
                     return Utilities.random(800, 1200);
@@ -153,15 +155,15 @@ public class FreakyForester extends Random {
 
     public boolean myClickContinue() {
         Utilities.sleepNoException(800, 1000);
-        return widgets.getWidget(243, 7).click(true)
-                || widgets.getWidget(241, 5).click(true)
-                || widgets.getWidget(242, 6).click(true)
-                || widgets.getWidget(244, 8).click(true)
-                || widgets.getWidget(64, 5).click(true);
+        return Widgets.getWidget(243, 7).click(true)
+                || Widgets.getWidget(241, 5).click(true)
+                || Widgets.getWidget(242, 6).click(true)
+                || Widgets.getWidget(244, 8).click(true)
+                || Widgets.getWidget(64, 5).click(true);
     }
 
     public boolean searchText(final int interfac, final String text) {
-        final RSWidgetGroup talkFace = widgets.getWidgets(interfac);
+        final RSWidgetGroup talkFace = Widgets.getWidgets(interfac);
         if (!talkFace.isValid()) {
             return false;
         }

@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.random.Random;
@@ -26,7 +27,7 @@ public class Certer extends Random {
 
     @Override
     public boolean activate() {
-        return objects.get(ObjectFilters.ID(bookPiles)) != null;
+        return Objects.get(ObjectFilters.ID(bookPiles)) != null;
     }
 
     @Override
@@ -37,31 +38,31 @@ public class Certer extends Random {
             return -1;
         }
 
-        if (widgets.getWidget(241, 4).getText().contains("Ahem, ")) {
+        if (Widgets.getWidget(241, 4).getText().contains("Ahem, ")) {
             readyToLeave = false;
         }
 
-        if (widgets.getWidget(241, 4).getText().contains("Correct.") || widgets.getWidget(241, 4).getText().contains("You can go now.")) {
+        if (Widgets.getWidget(241, 4).getText().contains("Correct.") || Widgets.getWidget(241, 4).getText().contains("You can go now.")) {
             readyToLeave = true;
         }
 
         if (readyToLeave) {
             int PORTAL_ID = 11368;
-            final RSObject portal = objects.get(ObjectFilters.ID(PORTAL_ID));
+            final RSObject portal = Objects.get(ObjectFilters.ID(PORTAL_ID));
             if (portal != null) {
                 final RSTile portalLocation = portal.getLocation();
-                if (calculations.distance(players.getLocal().getLocation(), portal.getLocation()) < 4) {
+                if (Calculations.distance(Players.getLocal().getLocation(), portal.getLocation()) < 4) {
                     portal.applyAction("Enter");
                     return Utilities.random(3000, 4000);
                 } else {
-                    walking.clickMap(new RSTile(portalLocation.getX() - 1, portalLocation.getY()));
+                    Walking.clickMap(new RSTile(portalLocation.getX() - 1, portalLocation.getY()));
                     return Utilities.random(6000, 8000);
                 }
             }
         }
 
-        if (widgets.getWidget(184, 0) != null) {
-            final int modelID = widgets.getWidget(184, 8).getChildren()[3].getModelId();
+        if (Widgets.getWidget(184, 0) != null) {
+            final int modelID = Widgets.getWidget(184, 8).getChildren()[3].getModelId();
             String itemName = null;
             for (int i = 0; i < MODEL_IDS.length; i++) {
                 if (MODEL_IDS[i] == modelID) {
@@ -74,7 +75,7 @@ public class Certer extends Random {
             }
 
             for (int j = 0; j < 3; j++) {
-                final RSWidget iface = widgets.getWidget(184, 8).getChildren()[j];
+                final RSWidget iface = Widgets.getWidget(184, 8).getChildren()[j];
                 if (iface.getText().contains(itemName)) {
                     iface.click(true);
                     return Utilities.random(3000, 5000);
@@ -82,19 +83,19 @@ public class Certer extends Random {
             }
         }
 
-        if (widgets.canContinue()) {
-            widgets.clickContinue();
+        if (Widgets.canContinue()) {
+            Widgets.clickContinue();
             return Utilities.random(3000, 4000);
         }
 
-        final RSNPC certer = npcs.get(NpcFilters.NAMED("Niles", "Miles", "Giles"));
+        final RSNPC certer = Npcs.get(NpcFilters.NAMED("Niles", "Miles", "Giles"));
         if (certer != null) {
-            if (calculations.distance(players.getLocal().getLocation(), certer.getLocation()) < 4) {
+            if (Calculations.distance(Players.getLocal().getLocation(), certer.getLocation()) < 4) {
                 certer.applyAction("Talk-to");
                 return Utilities.random(4000, 5000);
             } else {
                 RSTile certerLocation = certer.getLocation();
-                walking.clickMap(new RSTile(certerLocation.getX() + 2, certerLocation.getY()));
+                Walking.clickMap(new RSTile(certerLocation.getX() + 2, certerLocation.getY()));
                 return Utilities.random(6000, 8000);
             }
         }

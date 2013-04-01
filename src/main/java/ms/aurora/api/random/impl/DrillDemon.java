@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.random.Random;
@@ -30,15 +31,15 @@ public class DrillDemon extends Random {
     @Override
     public int loop() {
 
-        if (players.getLocal().isMoving() || (players.getLocal().getAnimation() != -1)) {
+        if (Players.getLocal().isMoving() || (Players.getLocal().getAnimation() != -1)) {
             return Utilities.random(1200, 1500);
         }
 
-        final RSNPC demon = npcs.get(NpcFilters.ID(demonID));
-        final RSObject mat1 = objects.get(ObjectFilters.ID(10076));
-        final RSObject mat2 = objects.get(ObjectFilters.ID(10077));
-        final RSObject mat3 = objects.get(ObjectFilters.ID(10078));
-        final RSObject mat4 = objects.get(ObjectFilters.ID(10079));
+        final RSNPC demon = Npcs.get(NpcFilters.ID(demonID));
+        final RSObject mat1 = Objects.get(ObjectFilters.ID(10076));
+        final RSObject mat2 = Objects.get(ObjectFilters.ID(10077));
+        final RSObject mat3 = Objects.get(ObjectFilters.ID(10078));
+        final RSObject mat4 = Objects.get(ObjectFilters.ID(10079));
 
         if (demon == null)
             return -1;
@@ -46,8 +47,8 @@ public class DrillDemon extends Random {
         myClickContinue();
         Utilities.sleepNoException(750, 1000);
 
-        if (widgets.getWidgets(148).isValid()) {
-            switch (settings.getSetting(531)) {
+        if (Widgets.getWidgets(148).isValid()) {
+            switch (Settings.getSetting(531)) {
                 case 668:
                     sign1 = 1;
                     sign2 = 2;
@@ -195,10 +196,10 @@ public class DrillDemon extends Random {
             }
         }
 
-        if (widgets.getWidget(148, 1).getText().contains("jumps")) {
+        if (Widgets.getWidget(148, 1).getText().contains("jumps")) {
             if (sign1 == 1) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3160, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -211,18 +212,18 @@ public class DrillDemon extends Random {
                 mat3.applyAction("Use");
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 1) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3166, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
                 }
                 return Utilities.random(1000, 1500);
             }
-        } else if (widgets.getWidget(148, 1).getText().contains("push ups")) {
+        } else if (Widgets.getWidget(148, 1).getText().contains("push ups")) {
             if (sign1 == 2) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3160, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -235,18 +236,18 @@ public class DrillDemon extends Random {
                 mat3.applyAction("Use");
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 2) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3166, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
                 }
                 return Utilities.random(1000, 1500);
             }
-        } else if (widgets.getWidget(148, 1).getText().contains("sit ups")) {
+        } else if (Widgets.getWidget(148, 1).getText().contains("sit ups")) {
             if (sign1 == 3) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3160, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -259,18 +260,18 @@ public class DrillDemon extends Random {
                 mat3.applyAction("Use");
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 3) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3166, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
                 }
                 return Utilities.random(1000, 1500);
             }
-        } else if (widgets.getWidget(148, 1).getText().contains("jog on")) {
+        } else if (Widgets.getWidget(148, 1).getText().contains("jog on")) {
             if (sign1 == 4) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3160, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -283,8 +284,8 @@ public class DrillDemon extends Random {
                 mat3.applyAction("Use");
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 4) {
-                if (calculations.distance(players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    walking.clickMap(new RSTile(3166, 4820));
+                if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
+                    Walking.clickMap(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
@@ -301,16 +302,16 @@ public class DrillDemon extends Random {
 
     public boolean myClickContinue() {
         Utilities.sleepNoException(800, 1000);
-        return widgets.getWidget(243, 7).click(true)
-                || widgets.getWidget(241, 5).click(true)
-                || widgets.getWidget(242, 6).click(true)
-                || widgets.getWidget(244, 8).click(true)
-                || widgets.getWidget(64, 5).click(true);
+        return Widgets.getWidget(243, 7).click(true)
+                || Widgets.getWidget(241, 5).click(true)
+                || Widgets.getWidget(242, 6).click(true)
+                || Widgets.getWidget(244, 8).click(true)
+                || Widgets.getWidget(64, 5).click(true);
     }
 
     public boolean playerInArea(final int maxX, final int maxY, final int minX, final int minY) {
-        final int x = players.getLocal().getLocation().getX();
-        final int y = players.getLocal().getLocation().getY();
+        final int x = Players.getLocal().getLocation().getX();
+        final int y = Players.getLocal().getLocation().getY();
         if ((x >= minX) && (x <= maxX) && (y >= minY) && (y <= maxY))
             return true;
         return false;

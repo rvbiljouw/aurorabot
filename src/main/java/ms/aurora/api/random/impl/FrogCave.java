@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.random.Random;
@@ -23,10 +24,10 @@ public class FrogCave extends Random {
 
     @Override
     public boolean activate() {
-        if (npcs.get(NpcFilters.NAMED("Frog Herald")) != null
-                && objects.get(ObjectFilters.ID(5917)) != null) {
+        if (Npcs.get(NpcFilters.NAMED("Frog Herald")) != null
+                && Objects.get(ObjectFilters.ID(5917)) != null) {
             sleepNoException(2000, 3000);
-            return (npcs.get(NpcFilters.NAMED("Frog Herald")) != null) && (objects.get(ObjectFilters.ID(5917)) != null);
+            return (Npcs.get(NpcFilters.NAMED("Frog Herald")) != null) && (Objects.get(ObjectFilters.ID(5917)) != null);
         }
         return false;
     }
@@ -40,21 +41,21 @@ public class FrogCave extends Random {
                 tries = 0;
                 return -1;
             }
-            if (widgets.canContinue()) {
+            if (Widgets.canContinue()) {
                 talkedToHerald = true;
-                widgets.clickContinue();
+                Widgets.clickContinue();
                 return random(600, 800);
             }
-            if (players.getLocal().isMoving()) {
+            if (Players.getLocal().isMoving()) {
                 return random(600, 800);
             }
             if (!talkedToHerald) {
-                final RSNPC herald = npcs.get(NpcFilters.NAMED("Frog Herald"));
-                if (calculations.distance(players.getLocal().getLocation(), herald.getLocation()) < 5) {
+                final RSNPC herald = Npcs.get(NpcFilters.NAMED("Frog Herald"));
+                if (Calculations.distance(Players.getLocal().getLocation(), herald.getLocation()) < 5) {
                     herald.applyAction("Talk-to");
                     return random(500, 1000);
                 } else {
-                    walking.clickMap(herald.getLocation());
+                    Walking.clickMap(herald.getLocation());
                     return random(500, 700);
                 }
             }
@@ -62,11 +63,11 @@ public class FrogCave extends Random {
                 frog = findFrog();
             }
             if (frog != null && frog.getLocation() != null) {
-                if (calculations.distance(players.getLocal().getLocation(), frog.getLocation()) < 5) {
+                if (Calculations.distance(Players.getLocal().getLocation(), frog.getLocation()) < 5) {
                     frog.applyAction("Talk-to Frog");
                     return random(900, 1000);
                 } else {
-                    walking.clickMap(frog.getLocation());
+                    Walking.clickMap(frog.getLocation());
                     return random(500, 700);
                 }
             } else {
@@ -84,7 +85,7 @@ public class FrogCave extends Random {
     }
 
     private RSNPC findFrog() {
-        for (RSNPC npc : npcs.getAll()) {
+        for (RSNPC npc : Npcs.getAll()) {
             if (!npc.isMoving() && npc.getHeight() == -278) {
                 return npc;
             }

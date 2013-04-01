@@ -10,7 +10,7 @@ import ms.aurora.api.wrappers.RSGroundItem;
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-public class ItemFilters {
+public final class ItemFilters {
 
     private ItemFilters() {
 
