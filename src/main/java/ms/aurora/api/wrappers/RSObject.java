@@ -1,7 +1,9 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.*;
+import ms.aurora.api.ClientContext;
 import ms.aurora.rt3.GameObject;
+import ms.aurora.rt3.GroundDecoration;
+import ms.aurora.rt3.Model;
 
 import java.awt.*;
 
@@ -22,15 +24,15 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final int getId() {
-        return wrapped.getHash() >> 14 & 0x7fff;
+        return wrapped.getHash() >> 14 & 32767;
     }
 
     public final int getLocalX() {
-        return localX * 128;
+        return wrapped.getX();
     }
 
     public final int getLocalY() {
-        return localY * 128;
+        return wrapped.getY();
     }
 
     public final int getX() {
@@ -66,7 +68,7 @@ public final class RSObject implements Locatable, Interactable {
     public final boolean applyAction(String actionName) {
         if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
             return false;
-        Point screen = getScreenLocation();
+        Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
@@ -95,7 +97,7 @@ public final class RSObject implements Locatable, Interactable {
     public final boolean click(boolean left) {
         if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
             return false;
-        Point screen = getScreenLocation();
+        Point screen = getClickLocation();
         ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
         try {
             Thread.sleep(1000);
@@ -104,4 +106,18 @@ public final class RSObject implements Locatable, Interactable {
         }
         return true;
     }
+
+    private Point getClickLocation() {
+        return getModel().getRandomHullPoint();
+    }
+
+
+    public RSModel getModel() {
+        if (wrapped.getModel() != null && wrapped.getModel() instanceof Model) {
+            return new RSModel(ctx, (Model) wrapped.getModel(), getLocalX(), getLocalY(),
+                    wrapped instanceof GroundDecoration ? 0 : wrapped.getOrientation());
+        }
+        return null;
+    }
+
 }

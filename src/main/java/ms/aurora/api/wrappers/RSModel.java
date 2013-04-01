@@ -1,9 +1,9 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.ClientContext;
-import ms.aurora.rt3.Model;
 import ms.aurora.api.util.GrahamScan;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.rt3.Model;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,13 +19,15 @@ public final class RSModel {
             trianglesZ,
             verticesX,
             verticesY,
-            verticesZ;
+            verticesZ,
+            originalX,
+            originalZ;
     private int localX;
     private int localY;
-    private int turnDirection;
+    private int orientation;
 
 
-    public RSModel(ClientContext ctx, Model wrapped, int localX, int localY, int turnDirection) {
+    public RSModel(ClientContext ctx, Model wrapped, int localX, int localY, int orientation) {
         this.ctx = ctx;
         this.trianglesX = wrapped.getTrianglesX().clone();
         this.trianglesY = wrapped.getTrianglesY().clone();
@@ -35,18 +37,28 @@ public final class RSModel {
         this.verticesZ = wrapped.getVerticesZ().clone();
         this.localX = localX;
         this.localY = localY;
-        this.turnDirection = turnDirection;
+        this.orientation = orientation;
+        this.originalX = this.verticesX.clone();
+        this.originalZ = this.verticesZ.clone();
+
+        setRotation((64 * 128) & 0x3fff);
+        if (orientation != 0) {
+            setRotation(orientation & 0x3fff);
+        }
     }
 
     public Polygon[] getPolygons() {
-        ArrayList<Polygon> polys = new ArrayList<Polygon>();
-        setRotation(turnDirection);
+        setRotation((64 * 128) & 0x3fff);
+        if (orientation != 0) {
+            setRotation(orientation & 0x3fff);
+        }
 
+        ArrayList<Polygon> polys = new ArrayList<Polygon>();
         for (int i = 0; i < trianglesX.length; i++) {
             if (i >= trianglesY.length && i >= trianglesZ.length) return null;
-            Point x = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], - verticesY[trianglesX[i]]);
-            Point y = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], - verticesY[trianglesY[i]]);
-            Point z = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], - verticesY[trianglesZ[i]]);
+            Point x = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
+            Point y = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
+            Point z = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
             if (x.x > 0 && x.y > 0 && y.x > 0 && y.y > 0 && z.x > 0 && z.y > 0) {
                 int xx[] = {
                         x.x, y.x, z.x
@@ -63,20 +75,20 @@ public final class RSModel {
     protected void setRotation(int orientation) {
         int sin = SIN_TABLE[orientation];
         int cos = COS_TABLE[orientation];
-        for (int i = 0; i < verticesX.length; i++) {
-            int i1 = verticesZ[i] * sin + verticesX[i] * cos >> 15;
-            verticesZ[i] = verticesZ[i] * cos - verticesX[i] * sin >> 15;
-            verticesX[i] = i1;
+        for (int i = 0; i < this.originalX.length; ++i) {
+            this.verticesX[i] = this.originalX[i] * cos + this.originalZ[i] * sin >> 15;
+            this.verticesZ[i] = this.originalZ[i] * cos - this.originalX[i] * sin >> 15;
         }
+
     }
 
     public Polygon getHull() {
         ArrayList<Point> modelVertices = new ArrayList<Point>();
         for (int i = 0; i < trianglesX.length; i++) {
             if (i >= trianglesY.length && i >= trianglesZ.length) return null;
-            Point x = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], - verticesY[trianglesX[i]]);
-            Point y = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], - verticesY[trianglesY[i]]);
-            Point z = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], - verticesY[trianglesZ[i]]);
+            Point x = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
+            Point y = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
+            Point z = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
             if (x.x > 0 && x.y > 0 && y.x > 0 && y.y > 0 && z.x > 0 && z.y > 0) {
                 modelVertices.add(x);
                 modelVertices.add(y);
@@ -86,7 +98,7 @@ public final class RSModel {
         Polygon hull = new Polygon();
         java.util.List<Point> points = GrahamScan.getConvexHull(modelVertices);
         if (points == null) return hull;
-        for (Point p: points) {
+        for (Point p : points) {
             hull.addPoint(p.x, p.y);
         }
         return hull;
