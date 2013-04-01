@@ -9,7 +9,8 @@ import ms.aurora.api.wrappers.RSNPC;
  */
 public final class NpcFilters {
 
-    private NpcFilters() { }
+    private NpcFilters() {
+    }
 
     /**
      * tests of the current {@link ms.aurora.api.wrappers.RSNPC} is not in combat
@@ -65,7 +66,7 @@ public final class NpcFilters {
         return new Predicate<RSNPC>() {
             @Override
             public boolean apply(RSNPC object) {
-                for (int id: ids) {
+                for (int id : ids) {
                     if (object.getId() == id) {
                         return true;
                     }
@@ -76,15 +77,20 @@ public final class NpcFilters {
     }
 
     /**
-     * @param name the name of the {@link RSNPC} you want to match
+     * @param names the names of the {@link RSNPC} you want to match
      * @return true if the name of the {@link RSNPC} matches the specified name
      * @see ms.aurora.api.wrappers.RSNPC#getName()
      */
-    public static Predicate<RSNPC> NAMED(final String name) {
+    public static Predicate<RSNPC> NAMED(final String... names) {
         return new Predicate<RSNPC>() {
             @Override
             public boolean apply(RSNPC object) {
-                return object.getName().equals(name);
+                for (String name : names) {
+                    if (object.getName().equals(name)) {
+                        return true;
+                    }
+                }
+                return false;
             }
         };
     }
