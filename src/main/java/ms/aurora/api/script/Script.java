@@ -80,12 +80,17 @@ public abstract class Script extends Context implements Runnable {
 
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
                 state = ScriptState.STOP;
+                cleanup();
+                onFinish();
+                e.printStackTrace();
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
                 state = ScriptState.STOP;
+                cleanup();
+                onFinish();
                 logger.error("Script has thrown exception and has exited.", e);
+                Thread.currentThread().interrupt();
             }
         }
     }
