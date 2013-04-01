@@ -20,7 +20,6 @@ import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.widget.AppletWidget;
-import ms.aurora.loader.AppletLoader;
 
 import java.applet.Applet;
 import java.io.IOException;
@@ -75,11 +74,10 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onNewSession(ActionEvent event) {
         AppletWidget widget = new AppletWidget(this);
-        AppletLoader loader = new AppletLoader();
-        loader.setCompletionListener(widget);
-        loader.start();
-
-
+        Session session = new Session(widget);
+        ThreadGroup threadGroup = new ThreadGroup(String.valueOf(tabPane.getTabs().size() + 1));
+        Thread thread = new Thread(threadGroup, session);
+        thread.start();
         tabPane.getTabs().add(widget.tab());
     }
 

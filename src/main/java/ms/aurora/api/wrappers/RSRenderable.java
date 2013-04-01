@@ -1,6 +1,6 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 import ms.aurora.rt3.Model;
 import ms.aurora.rt3.Renderable;
 
@@ -11,10 +11,10 @@ import java.lang.reflect.Method;
  * @author rvbiljouw
  */
 public class RSRenderable {
-    public final ClientContext ctx;
+    public final Context ctx;
     private final Renderable wrapped;
 
-    public RSRenderable(ClientContext ctx, Renderable wrapped) {
+    public RSRenderable(Context ctx, Renderable wrapped) {
         this.ctx = ctx;
         this.wrapped = wrapped;
     }

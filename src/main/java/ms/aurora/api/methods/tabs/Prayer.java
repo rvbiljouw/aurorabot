@@ -1,6 +1,6 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 
@@ -10,24 +10,19 @@ import ms.aurora.api.wrappers.RSWidgetGroup;
 public class Prayer {
     private static final int PRAYER_BASE = 271;
     // Check if prayer is toggled by it's base ids.
-    private final ClientContext ctx;
-
-    public Prayer(ClientContext ctx) {
-        this.ctx = ctx;
-    }
 
     private RSWidgetGroup getPrayerWidget() {
-        ctx.tabs.openTab(Tabs.Tab.PRAYER);
-        return ctx.widgets.getWidgets(PRAYER_BASE);
+        Tabs.openTab(Tabs.Tab.PRAYER);
+        return Widgets.getWidgets(PRAYER_BASE);
     }
 
     public boolean isPrayerActive(Pray pray) {
-        RSWidget prayerWidget = ctx.widgets.getWidget(PRAYER_BASE, pray.id);
+        RSWidget prayerWidget = Widgets.getWidget(PRAYER_BASE, pray.id);
         return prayerWidget != null && prayerWidget.getBackgroundColor() != -1;
     }
 
     public boolean togglePrayer(Pray pray) {
-        RSWidget prayerWidget = ctx.widgets.getWidget(PRAYER_BASE, pray.id);
+        RSWidget prayerWidget = Widgets.getWidget(PRAYER_BASE, pray.id);
         if(prayerWidget != null) {
             return prayerWidget.click(true);
         }

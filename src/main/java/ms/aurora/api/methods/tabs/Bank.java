@@ -1,6 +1,10 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Menu;
+import ms.aurora.api.methods.Npcs;
+import ms.aurora.api.methods.Objects;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.util.Predicate;
@@ -26,45 +30,39 @@ public final class Bank {
     private static final int[] BANK_NPCS = { 494, 495, 496 };
     private static final int[] BANK_OBJECTS = { 2213 };
 
-    private final ClientContext ctx;
-
-    public Bank(ClientContext ctx) {
-        this.ctx = ctx;
-    }
-
 	/**
 	 * Retrieves the bank widget
 	 * 
 	 * @return bank
 	 */
-	private RSWidget getBankWidget() {
-		return ctx.widgets.getWidget(BANK_ID, BANK_PANE_ID);
+	private static RSWidget getBankWidget() {
+		return Widgets.getWidget(BANK_ID, BANK_PANE_ID);
 	}
 
-	public boolean isOpen() {
-		return this.ctx.widgets.getWidget(BANK_ID, BANK_CLOSE_ID) != null;
+	public static boolean isOpen() {
+		return Widgets.getWidget(BANK_ID, BANK_CLOSE_ID) != null;
 	}
 
-    public boolean open() {
-        if (this.isOpen()) {
+    public static boolean open() {
+        if (isOpen()) {
             return true;
         }
-        Interactable bank = this.ctx.npcs.get(NpcFilters.ID(BANK_NPCS));
+        Interactable bank = Npcs.get(NpcFilters.ID(BANK_NPCS));
         if (bank == null) {
-            bank = this.ctx.objects.get(ObjectFilters.ID(BANK_OBJECTS));
+            bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
             if (bank == null) {
                 return false;
             }
         }
         bank.applyAction("Bank(.*)Bank");
         // TODO - Conditional wait for bank to open
-        return this.isOpen();
+        return isOpen();
     }
 
-	public boolean close() {
+	public static boolean close() {
 		if (!isOpen())
 			return true;
-		RSWidget close = ctx.widgets.getWidget(BANK_ID, BANK_CLOSE_ID);
+		RSWidget close = Widgets.getWidget(BANK_ID, BANK_CLOSE_ID);
 		if (close != null) {
 			close.click(true);
 			return true;
@@ -79,7 +77,7 @@ public final class Bank {
 	 *            Predicate to match items against
 	 * @return the first matching item, or null if none were found.
 	 */
-	public BankItem get(final Predicate<BankItem> predicate) {
+	public static BankItem get(final Predicate<BankItem> predicate) {
 		BankItem[] items = getAll(predicate);
 		if (items.length > 0) {
 			return items[0];
@@ -94,7 +92,7 @@ public final class Bank {
 	 *            BankItem ID to look for
 	 * @return item if it was found, otherwise null.
 	 */
-	public BankItem get(int id) {
+	public static BankItem get(int id) {
 		for (BankItem item : getAll()) {
 			if (item.getId() == id) {
 				return item;
@@ -110,7 +108,7 @@ public final class Bank {
 	 *            Predicate to match items against.
 	 * @return An array of all matching items (can be empty).
 	 */
-	public BankItem[] getAll(final Predicate<BankItem> predicate) {
+	public static BankItem[] getAll(final Predicate<BankItem> predicate) {
 		return filter(newArrayList(getAll()),
 				new com.google.common.base.Predicate<BankItem>() {
 					@Override
@@ -127,7 +125,7 @@ public final class Bank {
 	 *            BankItem ID to look for
 	 * @return list of items found, which can be empty.
 	 */
-	public BankItem[] getAll(int id) {
+	public static BankItem[] getAll(int id) {
 		List<BankItem> items = newArrayList();
 		for (BankItem item : getAll()) {
 			if (item.getId() == id) {
@@ -142,7 +140,7 @@ public final class Bank {
 	 * 
 	 * @return an array containing all items in the Bank.
 	 */
-	public BankItem[] getAll() {
+	public static BankItem[] getAll() {
 		RSWidget bank = getBankWidget();
 		int[] items = bank.getInventoryItems();
 		int[] stacks = bank.getInventoryStackSizes();
@@ -165,7 +163,7 @@ public final class Bank {
 	 *            BankItem to look for
 	 * @return true if found, otherwise false.
 	 */
-	public boolean contains(int id) {
+	public static boolean contains(int id) {
 		for (BankItem item : getAll()) {
 			if (item.getId() == id) {
 				return true;
@@ -184,7 +182,7 @@ public final class Bank {
 	 *            Minimum amount to pass.
 	 * @return true if the Bank contains at least the amount specified.
 	 */
-	public boolean containsMinimum(int id, int amount) {
+	public static boolean containsMinimum(int id, int amount) {
 		for (BankItem item : getAll()) {
 			if (item.getId() == id && item.getStackSize() >= amount) {
 				return true;
@@ -203,7 +201,7 @@ public final class Bank {
 	 *            Maximum amount to pass.
 	 * @return true if the Bank contains at most the amount specified.
 	 */
-	public boolean containsMaximum(int id, int amount) {
+	public static boolean containsMaximum(int id, int amount) {
 		for (BankItem item : getAll()) {
 			if (item.getId() == id && item.getStackSize() <= amount) {
 				return true;
@@ -219,7 +217,7 @@ public final class Bank {
 	 *            A var-args list of item IDs.
 	 * @return true if found, otherwise false.
 	 */
-	public boolean containsAny(int... ids) {
+	public static boolean containsAny(int... ids) {
 		for (int id : ids) {
 			if (contains(id)) {
 				return true;
@@ -235,7 +233,7 @@ public final class Bank {
 	 *            A var-args list of item IDs.
 	 * @return true if all the items were found, false otherwise.
 	 */
-	public boolean containsAll(int... ids) {
+	public static boolean containsAll(int... ids) {
 		for (int id : ids) {
 			if (!contains(id)) {
 				return false;
@@ -251,7 +249,7 @@ public final class Bank {
 	 *            BankItem ID of the items to count
 	 * @return total amount of items matching id in Bank.
 	 */
-	public int count(int id) {
+	public static int count(int id) {
 		int count = 0;
 		for (BankItem item : getAll()) {
 			if (item.getId() == id) {
@@ -264,7 +262,7 @@ public final class Bank {
 	/**
 	 * A class encapsulating Bank items.
 	 */
-	public final class BankItem implements Interactable {
+	public static final class BankItem implements Interactable {
 		private int slot;
 		private int id;
 		private int stackSize;
@@ -300,24 +298,24 @@ public final class Bank {
 
         @Override
 		public boolean applyAction(String action) {
-			VirtualMouse mouse = ctx.input.getMouse();
+			VirtualMouse mouse = Context.get().input.getMouse();
 			Rectangle area = getArea();
 			mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-			return ctx.menu.click(action);
+			return Menu.click(action);
 		}
 
         @Override
         public boolean hover() {
-            VirtualMouse virtualMouse = ctx.input.getMouse();
+            VirtualMouse virtualMouse = Context.get().input.getMouse();
             Rectangle area = getArea();
             virtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            Mouse clientMouse = ctx.getClient().getMouse();
+            Mouse clientMouse = Context.get().getClient().getMouse();
             return area.contains(clientMouse.getMouseX(), clientMouse.getMouseX());
         }
 
         @Override
         public boolean click(boolean left) {
-            VirtualMouse mouse = ctx.input.getMouse();
+            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
             mouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
             return true;

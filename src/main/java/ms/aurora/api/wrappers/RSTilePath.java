@@ -1,8 +1,9 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
-
-import java.awt.*;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Players;
+import ms.aurora.api.methods.Walking;
 
 /**
  * Date: 25/03/13
@@ -12,17 +13,17 @@ import java.awt.*;
  */
 public class RSTilePath {
 
-    private ClientContext ctx;
+    private Context ctx;
     private RSTile[] path;
 
-    public RSTilePath(ClientContext ctx, RSTile... path) {
+    public RSTilePath(Context ctx, RSTile... path) {
         this.ctx = ctx;
         this.path = path;
     }
 
     public RSTile getNext() {
         for (int i = (this.path.length - 1); i  > -1; i--) {
-            if (this.ctx.calculations.distance(path[i], this.ctx.players.getLocal().getLocation()) <= 14) {
+            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
                 return path[i];
             }
         }
@@ -31,7 +32,7 @@ public class RSTilePath {
 
     public RSTile getPrevious() {
         for (int i = 0; i < this.path.length; i++) {
-            if (this.ctx.calculations.distance(path[i], this.ctx.players.getLocal().getLocation()) <= 14) {
+            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
                 return path[i];
             }
         }
@@ -49,10 +50,10 @@ public class RSTilePath {
     public boolean step() {
         RSTile tile = this.getNext();
         if (tile == null) return false;
-        if (this.ctx.calculations.distance(tile, this.ctx.players.getLocal().getLocation()) < 3) {
+        if (Calculations.distance(tile, Players.getLocal().getLocation()) < 3) {
             return true; // Return true as at end of path
         }
-        return !this.ctx.walking.clickMap(tile); // Invert to say we haven't reached end of path/path walking failed
+        return !Walking.clickMap(tile); // Invert to say we haven't reached end of path/path walking failed
     }
 
 }

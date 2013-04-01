@@ -1,3 +1,5 @@
+import ms.aurora.api.methods.Objects;
+import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Skills;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.methods.tabs.Inventory;
@@ -7,7 +9,6 @@ import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,23 +31,23 @@ public class IronPowerMiner extends Script implements PaintListener {
 
     @Override
     public void onStart() {
-        miningStartXp = skills.getExperience(Skills.Skill.MINING);
+        miningStartXp = Skills.getExperience(Skills.Skill.MINING);
         startTime = System.currentTimeMillis();
     }
 
     @Override
     public int tick() {
-        if (players.getLocal().isMoving()
-                || players.getLocal().getAnimation() != -1) {
+        if (Players.getLocal().isMoving()
+                || Players.getLocal().getAnimation() != -1) {
             return random(250, 500);
         }
-        if (inventory.isFull()) {
-            for (Inventory.InventoryItem ore : inventory.getAll(440)) {
+        if (Inventory.isFull()) {
+            for (Inventory.InventoryItem ore : Inventory.getAll(440)) {
                 ore.applyAction("Drop");
                 sleepNoException(200, 400);
             }
         }
-        RSObject rock = objects.get(ObjectFilters.ID(IRON_ROCK_ID));
+        RSObject rock = Objects.get(ObjectFilters.ID(IRON_ROCK_ID));
         if (rock != null) {
             rock.applyAction("Mine");
         }
@@ -59,7 +60,7 @@ public class IronPowerMiner extends Script implements PaintListener {
         int secs = ((int) ((runtime / 1000) % 60));
         int mins = ((int) (((runtime / 1000) / 60) % 60));
         int hours = ((int) ((((runtime / 1000) / 60) / 60) % 60));
-        int gained = skills.getExperience(Skills.Skill.MINING) - miningStartXp;
+        int gained = Skills.getExperience(Skills.Skill.MINING) - miningStartXp;
         float xpSecond = 0;
         if ((mins > 0 || hours > 0 || secs > 0) && gained > 0) {
             xpSecond = ((float) gained / (float) (secs + (mins * 60) + (hours * 60 * 60)));

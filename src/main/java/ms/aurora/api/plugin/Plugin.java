@@ -1,14 +1,14 @@
 package ms.aurora.api.plugin;
 
 import javafx.scene.control.Menu;
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
 /**
  * @author rvbiljouw
  */
-public abstract class Plugin extends ClientContext {
+public abstract class Plugin extends Context {
     private final Logger logger = Logger.getLogger(getClass());
 
     public Plugin() {

@@ -3,7 +3,6 @@ package ms.aurora;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.core.Session;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import org.apache.log4j.Logger;
@@ -41,8 +40,5 @@ public final class Application {
 
     public static void registerApplet(Applet applet) {
         appWindow.add(applet);
-
-        Session session = new Session(applet);
-        new Thread(session).start();
     }
 }

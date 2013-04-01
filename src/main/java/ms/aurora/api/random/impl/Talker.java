@@ -1,5 +1,8 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.Npcs;
+import ms.aurora.api.methods.Players;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.Utilities;
@@ -24,20 +27,20 @@ public class Talker extends Random {
 
     @Override
     public boolean activate() {
-        talker = npcs.get(TALKERS_PREDICATE);
-        return talker != null && talker.getMessage().contains(players.getLocal().getName());
+        talker = Npcs.get(TALKERS_PREDICATE);
+        return talker != null && talker.getMessage().contains(Players.getLocal().getName());
     }
 
     @Override
     public int loop() {
         if (talker != null) {
             talker.applyAction("Talk");
-            while (players.getLocal().isMoving()) {
+            while (Players.getLocal().isMoving()) {
                 Utilities.sleepNoException(100, 200);
             }
             Utilities.sleepNoException(600, 800);
-            while (widgets.canContinue()) {
-                widgets.clickContinue();
+            while (Widgets.canContinue()) {
+                Widgets.clickContinue();
             }
         }
         return -1;

@@ -1,6 +1,6 @@
 package ms.aurora.input;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -10,11 +10,11 @@ import java.awt.*;
  * @author rvbiljouw
  */
 public class InputManager {
-    private final ClientContext context;
+    private final Context context;
     private final VirtualMouse mouse;
     private final VirtualKeyboard keyboard;
 
-    public InputManager(ClientContext context) {
+    public InputManager(Context context) {
         this.context = context;
         this.mouse = new VirtualMouse();
         this.keyboard = new VirtualKeyboard();

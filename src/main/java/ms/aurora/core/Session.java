@@ -9,45 +9,46 @@ import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
+import ms.aurora.gui.widget.AppletWidget;
+import ms.aurora.loader.AppletLoader;
 
 import java.applet.Applet;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static ms.aurora.core.SessionRepository.set;
 
 /**
  * @author rvbiljouw
  */
 public final class Session implements Runnable {
-    private final ScriptManager scriptManager = new ScriptManager(this);
-    private final PluginManager pluginManager = new PluginManager(this);
-    private final PaintManager paintManager = new PaintManager(this);
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
-    private UpdateListener updateListener;
-    private final Applet applet;
+    private final PaintManager paintManager = new PaintManager(this);
+    private ScriptManager scriptManager;
+    private PluginManager pluginManager;
+    private AppletWidget container;
+    private Applet applet;
 
-    public Session(Applet applet) {
-        this.applet = applet;
+    public Session(AppletWidget container) {
+        this.container = container;
     }
 
     @Override
     public void run() {
-        SessionRepository.set(getApplet().hashCode(), this);
-        refreshPlugins();
+        AppletLoader loader = new AppletLoader();
+        loader.run();
+
+        if(loader.getApplet() != null) {
+            applet = loader.getApplet();
+            container.setApplet(applet);
+            set(applet.hashCode(), this);
+            initComponents();
+            refreshPlugins();
+        }
     }
 
-    public ScriptManager getScriptManager() {
-        return scriptManager;
-    }
-
-    public PluginManager getPluginManager() {
-        return pluginManager;
-    }
-
-    public PaintManager getPaintManager() {
-        return paintManager;
-    }
-
-    public Applet getApplet() {
-        return applet;
+    private void initComponents() {
+        scriptManager = new ScriptManager(this);
+        pluginManager = new PluginManager(this);
     }
 
     public void refreshPlugins() {
@@ -69,10 +70,6 @@ public final class Session implements Runnable {
             @Override
             public void run() {
                 pluginMenu.add(menu);
-                if(updateListener != null) {
-                    updateListener.onUpdate();
-                }
-                System.out.println("added item");
             }
         });
     }
@@ -82,9 +79,6 @@ public final class Session implements Runnable {
             @Override
             public void run() {
                 pluginMenu.remove(menu);
-                if(updateListener != null) {
-                    updateListener.onUpdate();
-                }
             }
         });
     }
@@ -93,13 +87,20 @@ public final class Session implements Runnable {
         return pluginMenu;
     }
 
-    public void setUpdateListener(UpdateListener updateListener) {
-        this.updateListener = updateListener;
+    public ScriptManager getScriptManager() {
+        return scriptManager;
     }
 
-    public interface UpdateListener {
-
-        public void onUpdate();
-
+    public PluginManager getPluginManager() {
+        return pluginManager;
     }
+
+    public PaintManager getPaintManager() {
+        return paintManager;
+    }
+
+    public Applet getApplet() {
+        return applet;
+    }
+
 }

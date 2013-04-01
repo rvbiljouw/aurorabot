@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.random.Random;
@@ -32,13 +33,13 @@ public class BeehiveSolver extends Random {
 
     @Override
     public boolean activate() {
-        return (npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID)) != null
-                && objects.get(ObjectFilters.ID(16168)) != null);
+        return (Npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID)) != null
+                && Objects.get(ObjectFilters.ID(16168)) != null);
     }
 
     @Override
     public int loop() {
-        beehiveKeeper = npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID));
+        beehiveKeeper = Npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID));
         if (beehiveKeeper == null) {
             //log.severe("Beekeeper Random Finished Succesfully");
             return -1;
@@ -48,7 +49,7 @@ public class BeehiveSolver extends Random {
             return 200;
         }
 
-        if (widgets.getWidget(236, 2).click(true)) {
+        if (Widgets.getWidget(236, 2).click(true)) {
             return Utilities.random(800, 1200);
         }
 
@@ -59,18 +60,18 @@ public class BeehiveSolver extends Random {
             }
             Utilities.random(1000,2000);
             //Wait is necessary for delay in the change of a setting.
-            if (settings.getSetting(805) == 109907968) {
+            if (Settings.getSetting(805) == 109907968) {
                 solved = true;
             } else {
                 closeWindow();
                 return Utilities.random(500, 1000);
             }
-            if (solved && widgets.getWidget(INTERFACE_BEEHIVE_WINDOW, BUILD_BEEHIVE).click(true)) {
+            if (solved && Widgets.getWidget(INTERFACE_BEEHIVE_WINDOW, BUILD_BEEHIVE).click(true)) {
                 return Utilities.random(900, 1600);
             }
         }
-        if (players.getLocal().getInteracting() == null) {
-            RSNPC npc = npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID));
+        if (Players.getLocal().getInteracting() == null) {
+            RSNPC npc = Npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID));
             if (npc != null) {
                 npc.applyAction("Talk-to");
             }
@@ -124,14 +125,14 @@ public class BeehiveSolver extends Random {
     }
 
     private void closeWindow() {
-        RSWidget widget = widgets.getWidget(INTERFACE_BEEHIVE_WINDOW, CLOSE_WINDOW);
+        RSWidget widget = Widgets.getWidget(INTERFACE_BEEHIVE_WINDOW, CLOSE_WINDOW);
         if (widget != null) {
             widget.click(true);
         }
     }
 
     public RSWidgetGroup getBeehiveInterface() {
-        return widgets.getWidgets(420);
+        return Widgets.getWidgets(420);
     }
 
     public Point returnMidInterface(RSWidget child) {
@@ -154,7 +155,7 @@ public class BeehiveSolver extends Random {
             case 4:
                 return 21;
             default:
-                RSWidget widget = widgets.getWidget(INTERFACE_BEEHIVE_WINDOW, CLOSE_WINDOW);
+                RSWidget widget = Widgets.getWidget(INTERFACE_BEEHIVE_WINDOW, CLOSE_WINDOW);
                 if (widget != null) {
                     widget.click(true);
                 }
@@ -165,10 +166,10 @@ public class BeehiveSolver extends Random {
 
     public boolean myClickContinue() { // this method is probably going to throw a billion nullpointers but yolo
         Utilities.sleepNoException(500, 1000);
-        return widgets.getWidget(243, 7).click(true)
-                || widgets.getWidget(241, 5).click(true)
-                || widgets.getWidget(242, 6).click(true)
-                || widgets.getWidget(244, 8).click(true)
-                || widgets.getWidget(64, 5).click(true);
+        return Widgets.getWidget(243, 7).click(true)
+                || Widgets.getWidget(241, 5).click(true)
+                || Widgets.getWidget(242, 6).click(true)
+                || Widgets.getWidget(244, 8).click(true)
+                || Widgets.getWidget(64, 5).click(true);
     }
 }

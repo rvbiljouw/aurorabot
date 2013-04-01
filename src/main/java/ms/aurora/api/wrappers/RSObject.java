@@ -1,6 +1,7 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Calculations;
 import ms.aurora.rt3.GameObject;
 import ms.aurora.rt3.GroundDecoration;
 import ms.aurora.rt3.Model;
@@ -11,12 +12,12 @@ import java.awt.*;
  * @author rvbiljouw
  */
 public final class RSObject implements Locatable, Interactable {
-    private final ClientContext ctx;
+    private final Context ctx;
     private final GameObject wrapped;
     private int localX;
     private int localY;
 
-    public RSObject(ClientContext ctx, GameObject wrapped, int localX, int localY) {
+    public RSObject(Context ctx, GameObject wrapped, int localX, int localY) {
         this.ctx = ctx;
         this.wrapped = wrapped;
         this.localX = localX;
@@ -44,7 +45,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final Point getScreenLocation() {
-        return ctx.calculations.worldToScreen(getRegionalLocation());
+        return Calculations.worldToScreen(getRegionalLocation());
     }
 
     public final RSTile getLocation() {
@@ -66,7 +67,7 @@ public final class RSObject implements Locatable, Interactable {
      * @return
      */
     public final boolean applyAction(String actionName) {
-        if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
+        if (!Calculations.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -76,11 +77,11 @@ public final class RSObject implements Locatable, Interactable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return ctx.menu.click(actionName);
+        return ms.aurora.api.methods.Menu.click(actionName);
     }
 
     public final boolean hover() {
-        if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
+        if (!Calculations.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -95,7 +96,7 @@ public final class RSObject implements Locatable, Interactable {
 
     @Override
     public final boolean click(boolean left) {
-        if (!ctx.calculations.tileOnScreen(getRegionalLocation()))
+        if (!Calculations.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getClickLocation();
         ctx.input.getMouse().clickMouse(screen.x, screen.y, left);

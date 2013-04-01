@@ -1,17 +1,17 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 import ms.aurora.rt3.Widget;
 
 /**
  * @author rvbiljouw
  */
 public class RSWidgetGroup {
-    private final ClientContext ctx;
+    private final Context ctx;
     private final RSWidget[] widgets;
     private final int index;
 
-    public RSWidgetGroup(ClientContext ctx, Widget[] widgets, int index) {
+    public RSWidgetGroup(Context ctx, Widget[] widgets, int index) {
         this.widgets = new RSWidget[widgets.length];
         this.index = index;
         this.ctx = ctx;

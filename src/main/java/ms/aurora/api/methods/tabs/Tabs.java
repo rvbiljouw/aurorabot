@@ -1,24 +1,17 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 
 /**
  * @author tobiewarburton
  */
 public class Tabs {
-    private final ClientContext ctx;
+    private static Tab current;
 
-    public Tab current;
-
-    public Tabs(ClientContext ctx) {
-        this.ctx = ctx;
-    }
-
-
-    public boolean openTab(Tab tab) {
+    public static boolean openTab(Tab tab) {
         if (getCurrent() != null && getCurrent().equals(tab)) return true;
-        RSWidget[] widgets = ctx.widgets.getWidgets(548).getWidgets();
+        RSWidget[] widgets = Widgets.getWidgets(548).getWidgets();
         for (int i = 0; i < widgets.length; i++) {
             RSWidget widget = widgets[i];
             if (widget.getActions() != null) {
@@ -27,7 +20,7 @@ public class Tabs {
                     String action = actions[j];
                     if (action.equals(tab.getName())) {
                         widget.click(true);
-                        this.current = tab;
+                        current = tab;
                         return true;
                     }
                 }
@@ -36,8 +29,8 @@ public class Tabs {
         return false;
     }
 
-    public Tab getCurrent() {
-        return this.current;
+    public static Tab getCurrent() {
+        return current;
     }
 
     public static enum Tab {

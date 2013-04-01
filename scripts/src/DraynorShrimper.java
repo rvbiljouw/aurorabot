@@ -1,3 +1,8 @@
+import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Npcs;
+import ms.aurora.api.methods.Players;
+import ms.aurora.api.methods.Walking;
+import ms.aurora.api.methods.tabs.Bank;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
@@ -28,13 +33,13 @@ public class DraynorShrimper extends Script implements PaintListener {
     @Override
     public int tick() {
 
-        if (this.nearTile(FISHING_RSTILE)) {
-            if (this.inventory.isFull()) {
-                this.walkToTile(BANK_RSTILE, BANK_SPOT_PATH);
+        if (nearTile(FISHING_RSTILE)) {
+            if (Inventory.isFull()) {
+                walkToTile(BANK_RSTILE, BANK_SPOT_PATH);
                 return Utilities.random(500, 1000);
             } else {
-                if (this.players.getLocal().getAnimation() == -1 && !this.players.getLocal().isMoving()) {
-                    RSNPC spot = this.npcs.get(ID(327));
+                if (Players.getLocal().getAnimation() == -1 && !Players.getLocal().isMoving()) {
+                    RSNPC spot = Npcs.get(ID(327));
                     if (spot != null) {
                         if (spot.applyAction("Net")) {
                             return Utilities.random(500, 1000);
@@ -42,18 +47,18 @@ public class DraynorShrimper extends Script implements PaintListener {
                     }
                 }
             }
-        } else if (this.nearTile(BANK_RSTILE)) {
-            if (!this.inventory.containsAny(317, 321)) {
-                this.walkToTile(FISHING_RSTILE, FISHING_SPOT_PATH);
+        } else if (nearTile(BANK_RSTILE)) {
+            if (!Inventory.containsAny(317, 321)) {
+                walkToTile(FISHING_RSTILE, FISHING_SPOT_PATH);
                 return Utilities.random(500, 1000);
             } else {
-                if (!this.bank.isOpen()) {
-                    if (this.bank.open()) {
+                if (!Bank.isOpen()) {
+                    if (Bank.open()) {
                         return Utilities.random(500, 1000);
                     }
                 } else {
-                    Inventory.InventoryItem item = this.inventory.get(317);
-                    Inventory.InventoryItem item2 = this.inventory.get(321);
+                    Inventory.InventoryItem item = Inventory.get(317);
+                    Inventory.InventoryItem item2 = Inventory.get(321);
                     if (item != null) {
                         if (item.applyAction("Store All")) {
                             return Utilities.random(500, 1000);
@@ -72,13 +77,13 @@ public class DraynorShrimper extends Script implements PaintListener {
     }
 
     private boolean nearTile(RSTile tile) {
-        return this.calculations.distance(this.players.getLocal().getLocation(), tile) < 5;
+        return Calculations.distance(Players.getLocal().getLocation(), tile) < 2;
     }
 
     private void walkToTile(RSTile target, RSTile[] path) {
-        while (!this.nearTile(target)) {
-            if (!this.players.getLocal().isMoving()) {
-                if (!walking.createPath(path).step()) {
+        while (!nearTile(target)) {
+            if (!Players.getLocal().isMoving()) {
+                if (!Walking.createPath(path).step()) {
                     Utilities.sleepNoException(500, 1000);
                 }
             }
@@ -87,7 +92,7 @@ public class DraynorShrimper extends Script implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        graphics.drawString("Bank Open: " + this.bank.isOpen(), 10, 40);
-        //graphics.drawString("Bank Pane Length: " + this.widgets.getWidgets(12).getWidgets().length, 10, 52);
+        graphics.drawString("Bank Open: " + Bank.isOpen(), 10, 40);
+        //graphics.drawString("Bank Pane Length: " + widgets.getWidgets(12).getWidgets().length, 10, 52);
     }
 }

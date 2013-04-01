@@ -1,6 +1,8 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Players;
 import ms.aurora.rt3.Model;
 
 import java.awt.*;
@@ -14,14 +16,14 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 public class RSCharacter extends RSRenderable implements Locatable, Interactable {
     private final ms.aurora.rt3.Character wrapped;
 
-    public RSCharacter(ClientContext clientContext,
+    public RSCharacter(Context context,
                        ms.aurora.rt3.Character wrapped) {
-        super(clientContext, wrapped);
+        super(context, wrapped);
         this.wrapped = wrapped;
     }
 
     public final Point getScreenLocation() {
-        return ctx.calculations.worldToScreen(getRegionalLocation());
+        return Calculations.worldToScreen(getRegionalLocation());
     }
 
     private final Point getClickLocation() {
@@ -91,10 +93,10 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final boolean applyAction(final String actionName) {
         Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
-        ctx.menu.click(actionName);
+        ms.aurora.api.methods.Menu.click(actionName);
         sleepNoException(700);
 
-        while(ctx.players.getLocal().isMoving()) {
+        while(Players.getLocal().isMoving()) {
             sleepNoException(600);
         }
         return true;
@@ -102,7 +104,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
 
     @Override
     public final boolean hover() {
-        if (!ctx.calculations.tileOnScreen(getRegionalLocation())) {
+        if (!Calculations.tileOnScreen(getRegionalLocation())) {
             return false;
         }
         Point screen = getClickLocation();

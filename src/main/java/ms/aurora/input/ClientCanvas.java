@@ -1,6 +1,6 @@
 package ms.aurora.input;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
@@ -20,7 +20,7 @@ public class ClientCanvas extends Canvas implements MouseMotionListener,
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
-    private final ClientContext context = new ClientContext();
+    private final Context context = new Context();
     private Session session;
     private int mouseX;
     private int mouseY;

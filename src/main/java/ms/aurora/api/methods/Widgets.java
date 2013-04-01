@@ -2,9 +2,10 @@ package ms.aurora.api.methods;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.rt3.Client;
 import ms.aurora.rt3.Widget;
 
 import java.util.ArrayList;
@@ -19,14 +20,9 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author rvbiljouw
  */
 public final class Widgets {
-    private final ClientContext ctx;
 
-    public Widgets(ClientContext ctx) {
-        this.ctx = ctx;
-    }
-
-    public RSWidgetGroup[] getAll() {
-        Widget[][] cache = ctx.getClient().getWidgetCache();
+    public static RSWidgetGroup[] getAll() {
+        Widget[][] cache = getClient().getWidgetCache();
         if (cache == null) return new RSWidgetGroup[0];
 
         List<RSWidgetGroup> groups = newArrayList();
@@ -39,7 +35,7 @@ public final class Widgets {
         return groups.toArray(new RSWidgetGroup[]{});
     }
 
-    public RSWidget getWidget(int parent, int child) {
+    public static RSWidget getWidget(int parent, int child) {
         RSWidgetGroup group = getWidgets(parent);
         if (group != null && group.getWidgets()[child] != null) {
             return group.getWidgets()[child];
@@ -47,9 +43,9 @@ public final class Widgets {
         return null;
     }
 
-    public RSWidgetGroup getWidgets(int parent) {
-        if (ctx.getClient().getWidgetCache()[parent] != null) {
-            return new RSWidgetGroup(ctx, ctx.getClient().getWidgetCache()[parent], parent);
+    public static RSWidgetGroup getWidgets(int parent) {
+        if (getClient().getWidgetCache()[parent] != null) {
+            return new RSWidgetGroup(Context.get(), getClient().getWidgetCache()[parent], parent);
         }
         return null;
     }
@@ -58,9 +54,9 @@ public final class Widgets {
      * @param predicate the string to search for
      * @return a list of all the RSWidget that contain the specified text
      */
-    public RSWidget[] getWidgetsWithText(String predicate) {
+    public static RSWidget[] getWidgetsWithText(String predicate) {
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
-        for (Widget[] parents : ctx.getClient().getWidgetCache()) {
+        for (Widget[] parents : getClient().getWidgetCache()) {
             if(parents == null) continue;
 
             for (RSWidget child : filter(transform(newArrayList(parents), transform), Predicates.notNull()).toArray(new RSWidget[0])) {
@@ -72,25 +68,29 @@ public final class Widgets {
         return satisfied.toArray(new RSWidget[0]);
     }
 
-    public boolean canContinue() {
+    public static boolean canContinue() {
         RSWidget[] possible = getWidgetsWithText("Click here to continue");
         return possible.length > 0;
     }
 
-    public void clickContinue() {
+    public static void clickContinue() {
         for (RSWidget widget : getWidgetsWithText("Click here to continue")) {
             widget.click(true);
         }
     }
 
-    private final Function<Widget, RSWidget> transform = new Function<Widget, RSWidget>() {
+    private static Client getClient() {
+        return Context.get().getClient();
+    }
+
+
+    private static final Function<Widget, RSWidget> transform = new Function<Widget, RSWidget>() {
         @Override
         public RSWidget apply(Widget widget) {
             if (widget != null) {
-                return new RSWidget(ctx, widget, 0, 0);
+                return new RSWidget(Context.get(), widget, 0, 0);
             }
             return null;
         }
     };
-
 }

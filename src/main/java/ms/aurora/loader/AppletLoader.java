@@ -15,8 +15,6 @@ import java.net.URL;
 public final class AppletLoader implements Runnable {
     private final Context browserContext;
     private final Browser browser;
-
-    private CompletionListener listener;
     private Applet applet;
     private Thread self;
 
@@ -61,9 +59,6 @@ public final class AppletLoader implements Runnable {
             appletInstance.init();
             appletInstance.start();
             applet = appletInstance;
-            if (listener != null) {
-                listener.onCompletion(applet);
-            }
         } catch (Exception e) {
             throw new AppletInitialisationException("Failed to load applet!", e);
         }
@@ -77,17 +72,7 @@ public final class AppletLoader implements Runnable {
         self.interrupt();
     }
 
-    public void setCompletionListener(CompletionListener listener) {
-        this.listener = listener;
-    }
-
     public Applet getApplet() {
         return applet;
-    }
-
-    public interface CompletionListener {
-
-        void onCompletion(Applet applet);
-
     }
 }

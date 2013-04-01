@@ -1,6 +1,6 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,13 +10,9 @@ import ms.aurora.api.ClientContext;
  * To change this template use File | Settings | File Templates.
  */
 public class Settings {
-    private ClientContext ctx;
 
-    public Settings(ClientContext ctx) {
-        this.ctx = ctx;
+    public static int getSetting(int index) {
+        return Context.get().getClient().getWidgetSettings()[index];
     }
 
-    public int getSetting(int index) {
-        return ctx.getClient().getWidgetSettings()[index];
-    }
 }

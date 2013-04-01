@@ -1,6 +1,7 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
@@ -13,12 +14,12 @@ import java.awt.*;
  * @author rvbiljouw
  */
 public final class RSWidget implements Interactable {
-    private ClientContext ctx;
+    private Context ctx;
     private Widget widget;
     private int group;
     private int index;
 
-    public RSWidget(ClientContext ctx, Widget widget, int group, int index) {
+    public RSWidget(Context ctx, Widget widget, int group, int index) {
         this.ctx = ctx;
         this.widget = widget;
         this.group = group;
@@ -142,7 +143,7 @@ public final class RSWidget implements Interactable {
         }
         int parent = uid >> 16;
         int child = uid & 0xffff;
-        return ctx.widgets.getWidget(parent, child);
+        return Widgets.getWidget(parent, child);
     }
 
     /**
@@ -194,7 +195,7 @@ public final class RSWidget implements Interactable {
         VirtualMouse mouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
         mouse.moveMouse(randomPoint.x, randomPoint.y);
-        return ctx.menu.click(action);
+        return ms.aurora.api.methods.Menu.click(action);
     }
 
     @Override

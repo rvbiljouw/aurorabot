@@ -1,4 +1,5 @@
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 import ms.aurora.event.listeners.PaintListener;
@@ -17,9 +18,9 @@ import java.awt.event.ActionListener;
  * @author tobiewarburton
  */
 public class InterfaceExplorer implements PaintListener {
-    private final ClientContext ctx;
+    private final Context ctx;
 
-    public InterfaceExplorer(ClientContext ctx) {
+    public InterfaceExplorer(Context ctx) {
         this.ctx = ctx;
     }
 
@@ -105,7 +106,7 @@ public class InterfaceExplorer implements PaintListener {
 
         public void reload() {
             root = new DefaultMutableTreeNode("root");
-            for (RSWidgetGroup group : ctx.widgets.getAll()) {
+            for (RSWidgetGroup group : Widgets.getAll()) {
                 if (group == null) continue;
                 RSWidget[] groupItems = group.getWidgets();
 

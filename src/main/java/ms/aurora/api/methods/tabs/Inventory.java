@@ -1,6 +1,9 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Menu;
+import ms.aurora.api.methods.Players;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
@@ -19,19 +22,13 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 public final class Inventory {
     private static final int INVENTORY_ID = 149;
 
-    private final ClientContext ctx;
-
-    public Inventory(ClientContext ctx) {
-        this.ctx = ctx;
-    }
-
     /**
      * Retrieves the inventory widget
      *
      * @return inventory
      */
-    private RSWidget getInventoryWidget() {
-        return ctx.widgets.getWidget(INVENTORY_ID, 0);
+    private static RSWidget getInventoryWidget() {
+        return Widgets.getWidget(INVENTORY_ID, 0);
     }
 
     /**
@@ -39,7 +36,7 @@ public final class Inventory {
      *
      * @return true if inventory contains 28 items, false otherwise.
      */
-    public boolean isFull() {
+    public static boolean isFull() {
         return getAll().length == 28;
     }
 
@@ -48,7 +45,7 @@ public final class Inventory {
      *
      * @return count
      */
-    public int getCount() {
+    public static int getCount() {
         return getAll().length;
     }
 
@@ -58,7 +55,7 @@ public final class Inventory {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public InventoryItem get(final Predicate<InventoryItem> predicate) {
+    public static InventoryItem get(final Predicate<InventoryItem> predicate) {
         InventoryItem[] inventoryItems = getAll(predicate);
         if (inventoryItems.length > 0) {
             return inventoryItems[0];
@@ -72,7 +69,7 @@ public final class Inventory {
      * @param id InventoryItem ID to look for
      * @return item if it was found, otherwise null.
      */
-    public InventoryItem get(int id) {
+    public static InventoryItem get(int id) {
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id) {
                 return inventoryItem;
@@ -87,7 +84,7 @@ public final class Inventory {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public InventoryItem[] getAll(final Predicate<InventoryItem> predicate) {
+    public static InventoryItem[] getAll(final Predicate<InventoryItem> predicate) {
         return filter(newArrayList(getAll()),
                 new com.google.common.base.Predicate<InventoryItem>() {
                     @Override
@@ -104,7 +101,7 @@ public final class Inventory {
      * @param id InventoryItem ID to look for
      * @return list of items found, which can be empty.
      */
-    public InventoryItem[] getAll(int id) {
+    public static InventoryItem[] getAll(int id) {
         List<InventoryItem> inventoryItems = newArrayList();
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id) {
@@ -119,7 +116,7 @@ public final class Inventory {
      *
      * @return an array containing all items in the inventory.
      */
-    public InventoryItem[] getAll() {
+    public static InventoryItem[] getAll() {
         RSWidget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
@@ -141,7 +138,7 @@ public final class Inventory {
      * @param id InventoryItem to look for
      * @return true if found, otherwise false.
      */
-    public boolean contains(int id) {
+    public static boolean contains(int id) {
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id) {
                 return true;
@@ -158,7 +155,7 @@ public final class Inventory {
      * @param amount Minimum amount to pass.
      * @return true if the inventory contains at least the amount specified.
      */
-    public boolean containsMinimum(int id, int amount) {
+    public static boolean containsMinimum(int id, int amount) {
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id && inventoryItem.getStackSize() >= amount) {
                 return true;
@@ -175,7 +172,7 @@ public final class Inventory {
      * @param amount Maximum amount to pass.
      * @return true if the inventory contains at most the amount specified.
      */
-    public boolean containsMaximum(int id, int amount) {
+    public static boolean containsMaximum(int id, int amount) {
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id && inventoryItem.getStackSize() <= amount) {
                 return true;
@@ -191,7 +188,7 @@ public final class Inventory {
      * @param ids A var-args list of item IDs.
      * @return true if found, otherwise false.
      */
-    public boolean containsAny(int... ids) {
+    public static boolean containsAny(int... ids) {
         for (int id : ids) {
             if (contains(id)) {
                 return true;
@@ -206,7 +203,7 @@ public final class Inventory {
      * @param ids A var-args list of item IDs.
      * @return true if all the items were found, false otherwise.
      */
-    public boolean containsAll(int... ids) {
+    public static boolean containsAll(int... ids) {
         for (int id : ids) {
             if (!contains(id)) {
                 return false;
@@ -221,7 +218,7 @@ public final class Inventory {
      * @param id InventoryItem ID of the items to count
      * @return total amount of items matching id in inventory.
      */
-    public int count(int id) {
+    public static int count(int id) {
         int count = 0;
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id) {
@@ -236,7 +233,7 @@ public final class Inventory {
      *
      * @param id ID of the item to drop.
      */
-    public void dropItem(int id) {
+    public static void dropItem(int id) {
         InventoryItem firstMatch = get(id);
         if (firstMatch != null) {
             firstMatch.applyAction("Drop");
@@ -248,7 +245,7 @@ public final class Inventory {
      *
      * @param id ID of the item to drop.
      */
-    public void dropAll(int id) {
+    public static void dropAll(int id) {
         InventoryItem[] matches = getAll(id);
         for (InventoryItem match : matches) {
             match.applyAction("Drop");
@@ -260,7 +257,7 @@ public final class Inventory {
      *
      * @param ids A var-args list of IDs to drop.
      */
-    public void dropAll(int... ids) {
+    public static void dropAll(int... ids) {
         for (int id : ids) {
             dropAll(id);
         }
@@ -271,7 +268,7 @@ public final class Inventory {
      *
      * @param ids A var-args list of items to exclude from dropping.
      */
-    public void dropAllExcept(int... ids) {
+    public static void dropAllExcept(int... ids) {
         for (InventoryItem inventoryItem : getAll()) {
             boolean drop = true;
             for (int id : ids) {
@@ -290,7 +287,7 @@ public final class Inventory {
      * @param id       ID of the main item
      * @param targetId ID of the target item
      */
-    public void useItemOnAll(int id, int targetId) {
+    public static void useItemOnAll(int id, int targetId) {
         InventoryItem main = get(id);
         if (main != null) {
             InventoryItem[] targets = getAll(targetId);
@@ -299,7 +296,7 @@ public final class Inventory {
                 sleepNoException(140, 200);
                 target.click(true);
                 sleepNoException(500, 800);
-                while (ctx.players.getLocal().getAnimation() != -1) {
+                while (Players.getLocal().getAnimation() != -1) {
                     sleepNoException(140, 200);
                 }
                 sleepNoException(100, 120);
@@ -322,7 +319,7 @@ public final class Inventory {
                 sleepNoException(140, 200);
                 target.click(true);
                 sleepNoException(500, 800);
-                while (ctx.players.getLocal().getAnimation() != -1) {
+                while (Players.getLocal().getAnimation() != -1) {
                     sleepNoException(140, 200);
                 }
                 sleepNoException(100, 120);
@@ -334,7 +331,7 @@ public final class Inventory {
     /**
      * A class encapsulating inventory items.
      */
-    public final class InventoryItem implements Interactable {
+    public static final class InventoryItem implements Interactable {
         private int slot;
         private int id;
         private int stackSize;
@@ -367,17 +364,17 @@ public final class Inventory {
 
         @Override
         public boolean applyAction(String action) {
-            ctx.tabs.openTab(Tabs.Tab.INVENTORY);
-            VirtualMouse mouse = ctx.input.getMouse();
+            Tabs.openTab(Tabs.Tab.INVENTORY);
+            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            return ctx.menu.click(action);
+            return Menu.click(action);
         }
 
         @Override
         public boolean hover() {
-            ctx.tabs.openTab(Tabs.Tab.INVENTORY);
-            VirtualMouse mouse = ctx.input.getMouse();
+            Tabs.openTab(Tabs.Tab.INVENTORY);
+            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             return true;
@@ -385,8 +382,8 @@ public final class Inventory {
 
         @Override
         public boolean click(boolean left) {
-            ctx.tabs.openTab(Tabs.Tab.INVENTORY);
-            VirtualMouse mouse = ctx.input.getMouse();
+            Tabs.openTab(Tabs.Tab.INVENTORY);
+            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
             mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             mouse.clickMouse(left);

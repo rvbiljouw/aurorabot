@@ -1,6 +1,6 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 
 /**
  * Date: 27/03/13
@@ -9,12 +9,6 @@ import ms.aurora.api.ClientContext;
  * @author A_C/Cov
  */
 public class Skills {
-
-    private final ClientContext ctx;
-
-    public Skills(ClientContext ctx) {
-        this.ctx = ctx;
-    }
 
     public enum Skill {
         ATACK(0),
@@ -46,15 +40,15 @@ public class Skills {
         }
     }
 
-    public int getExperience(Skill skill) {
-        return this.ctx.getClient().getSkillExperiences()[skill.index];
+    public static int getExperience(Skill skill) {
+        return Context.get().getClient().getSkillExperiences()[skill.index];
     }
 
-    public int getLevel(Skill skill) {
-        return this.ctx.getClient().getSkillLevels()[skill.index];
+    public static int getLevel(Skill skill) {
+        return Context.get().getClient().getSkillLevels()[skill.index];
     }
 
-    public int getXpForLevel(int level) {
+    public static int getXpForLevel(int level) {
         double total = 0;
         for (int i = 1; i < level; i++) {
             total += Math.floor(i + 300 * Math.pow(2, i / 7));
@@ -62,9 +56,9 @@ public class Skills {
         return (int) Math.floor(total / 4);
     }
 
-    public int getExperienceToLevel(Skill skill, int level) {
-        int xpForLevel = this.getXpForLevel(level > 99 ? 99 : level);
-        return xpForLevel - this.getExperience(skill);
+    public static int getExperienceToLevel(Skill skill, int level) {
+        int xpForLevel = getXpForLevel(level > 99 ? 99 : level);
+        return xpForLevel - getExperience(skill);
     }
 
 }

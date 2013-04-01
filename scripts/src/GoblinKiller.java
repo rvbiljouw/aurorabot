@@ -1,3 +1,5 @@
+import ms.aurora.api.methods.Npcs;
+import ms.aurora.api.methods.Players;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.api.wrappers.RSNPC;
@@ -20,8 +22,8 @@ public class GoblinKiller extends Script implements PaintListener {
 
     @Override
     public int tick() {
-        if (players.getLocal().isMoving() || players.getLocal().isInCombat() ||
-                players.getLocal().getInteracting() != null) {
+        if (Players.getLocal().isMoving() || Players.getLocal().isInCombat() ||
+                Players.getLocal().getInteracting() != null) {
             return random(700, 800);
         } else {
             doAttack();
@@ -31,14 +33,14 @@ public class GoblinKiller extends Script implements PaintListener {
     }
 
     private void doAttack() {
-        RSNPC goblin = npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null) {
             goblin.applyAction("Attack");
         }
     }
 
     private void hoverGoblin() {
-        RSNPC goblin = npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null) {
             goblin.hover();
         }
@@ -46,7 +48,7 @@ public class GoblinKiller extends Script implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        RSNPC goblin = npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
+        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null && goblin.getModel() != null) {
             /*Polygon[] polys = goblin.getModel().getPolygons();
             for(Polygon poly : polys) {

@@ -1,6 +1,6 @@
 package ms.aurora.api.script;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.event.listeners.PaintListener;
@@ -11,7 +11,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 /**
  * @author rvbiljouw
  */
-public abstract class Script extends ClientContext implements Runnable {
+public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
     private ScriptState state = ScriptState.START;
     private Thread randomsThread;

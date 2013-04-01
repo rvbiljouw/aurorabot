@@ -21,7 +21,6 @@ public final class ScriptManager {
     }
 
     public void start(Script script) {
-        script.setSession(session);
         Future<?> future = executorService.submit(script);
         futures.put(script, future);
         state = State.RUNNING;

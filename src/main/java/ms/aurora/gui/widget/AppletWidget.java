@@ -15,7 +15,6 @@ import ms.aurora.Application;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
 import ms.aurora.gui.ApplicationGUI;
-import ms.aurora.loader.AppletLoader;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -29,7 +28,7 @@ import static ms.aurora.core.SessionRepository.get;
 /**
  * @author rvbiljouw
  */
-public class AppletWidget extends AnchorPane implements AppletLoader.CompletionListener, ChangeListener<Boolean> {
+public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> {
     private final Tab tab = new Tab();
     private final ApplicationGUI parent;
 
@@ -72,8 +71,7 @@ public class AppletWidget extends AnchorPane implements AppletLoader.CompletionL
         assert appletPane != null : "fx:id=\"appletPane\" was not injected: check your FXML file 'AppletWidget.fxml'.";
     }
 
-    @Override
-    public void onCompletion(final Applet applet) {
+    public void setApplet(final Applet applet) {
         Application.registerApplet(applet);
         toggleVisibility(tab().isSelected(), applet);
         this.applet = applet;

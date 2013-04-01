@@ -1,6 +1,7 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.ClientContext;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 import org.apache.log4j.Logger;
@@ -11,18 +12,13 @@ import org.apache.log4j.Logger;
  */
 public class Magic {
     private final static Logger logger = Logger.getLogger(Magic.class);
-    private final ClientContext ctx;
 
-    public Magic(ClientContext ctx) {
-        this.ctx = ctx;
+    private static RSWidgetGroup getSpellGroup() {
+        return Widgets.getWidgets(192);
     }
 
-    private RSWidgetGroup getSpellGroup() {
-        return ctx.widgets.getWidgets(192);
-    }
-
-    public void castSpell(Spell spell) {
-        ctx.tabs.openTab(Tabs.Tab.MAGIC);
+    public static void castSpell(Spell spell) {
+        Tabs.openTab(Tabs.Tab.MAGIC);
         RSWidget spellButton = getSpellGroup().getWidgets()[spell.id];
         if (spellButton != null) {
             spellButton.applyAction("Cast");
