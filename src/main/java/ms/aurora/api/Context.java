@@ -28,10 +28,14 @@ public class Context {
     }
 
     public final void setSession(Session session) {
+        System.out.println("we woz called...");
         this.session = session;
     }
 
     public final Client getClient() {
+        if(session == null) {
+            System.out.println(currentThread().getThreadGroup().getName());
+        }
         return (Client) session.getApplet();
     }
 

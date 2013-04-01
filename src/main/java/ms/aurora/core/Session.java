@@ -15,6 +15,7 @@ import ms.aurora.loader.AppletLoader;
 import java.applet.Applet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static java.lang.Thread.currentThread;
 import static ms.aurora.core.SessionRepository.set;
 
 /**
@@ -63,6 +64,7 @@ public final class Session implements Runnable {
                 pluginManager.stop(plugin.getClass());
             }
         }
+        System.out.println(currentThread().getThreadGroup().getName() + " refreshplugins");
     }
 
     public void registerMenu(final Menu menu) {

@@ -61,7 +61,6 @@ public class InterfaceExplorer implements PaintListener {
             tablePanel = new JPanel();
 
             init();
-            reload();
         }
 
         private void init() {
