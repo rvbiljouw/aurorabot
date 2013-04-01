@@ -77,7 +77,7 @@ public class DraynorShrimper extends Script implements PaintListener {
     }
 
     private boolean nearTile(RSTile tile) {
-        return Calculations.distance(Players.getLocal().getLocation(), tile) < 2;
+        return Calculations.distance(Players.getLocal().getLocation(), tile) < 5;
     }
 
     private void walkToTile(RSTile target, RSTile[] path) {

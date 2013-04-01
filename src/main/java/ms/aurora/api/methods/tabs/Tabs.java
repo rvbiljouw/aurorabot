@@ -7,7 +7,7 @@ import ms.aurora.api.wrappers.RSWidget;
  * @author tobiewarburton
  */
 public class Tabs {
-    private static Tab current;
+    private static ThreadLocal<Tab> current = new ThreadLocal<>();
 
     public static boolean openTab(Tab tab) {
         if (getCurrent() != null && getCurrent().equals(tab)) return true;
@@ -20,7 +20,7 @@ public class Tabs {
                     String action = actions[j];
                     if (action.equals(tab.getName())) {
                         widget.click(true);
-                        current = tab;
+                        current.set(tab);
                         return true;
                     }
                 }
@@ -30,7 +30,7 @@ public class Tabs {
     }
 
     public static Tab getCurrent() {
-        return current;
+        return current.get();
     }
 
     public static enum Tab {

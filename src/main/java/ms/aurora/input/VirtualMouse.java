@@ -1,10 +1,12 @@
 package ms.aurora.input;
 
+import ms.aurora.api.Context;
 import ms.aurora.input.algorithm.BezierAlgorithm;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
@@ -16,8 +18,14 @@ import java.awt.event.MouseMotionListener;
 public final class VirtualMouse implements MouseMotionListener {
     private static final Logger logger = Logger.getLogger(VirtualMouse.class);
     private final MousePathAlgorithm algorithm = new BezierAlgorithm();
+    private final Context context;
     private Component component;
+
     private Point mousePosition = new Point(-1, -1);
+
+    public VirtualMouse(Context context) {
+        this.context = context;
+    }
 
 
     public void moveMouse(final int x, final int y) {
@@ -73,29 +81,32 @@ public final class VirtualMouse implements MouseMotionListener {
         MouseEvent event = new MouseEvent(component, MouseEvent.MOUSE_CLICKED,
                 System.currentTimeMillis(), 0, x, y, 1, false,
                 left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-        component.dispatchEvent(event);
+        context.getClient().getMouse().mouseClicked(event);
+        ((MouseListener)context.getClient().getCanvas()).mouseClicked(event);
     }
 
     public void pressMouse(int x, int y, boolean left) {
         MouseEvent event = new MouseEvent(component, MouseEvent.MOUSE_PRESSED,
                 System.currentTimeMillis(), 0, x, y, 1, false,
                 left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-        component.dispatchEvent(event);
+        context.getClient().getMouse().mousePressed(event);
+        ((MouseListener)context.getClient().getCanvas()).mousePressed(event);
     }
 
     public void releaseMouse(int x, int y, boolean left) {
         MouseEvent event = new MouseEvent(component, MouseEvent.MOUSE_RELEASED,
                 System.currentTimeMillis(), 0, x, y, 1, false,
                 left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-        component.dispatchEvent(event);
+        context.getClient().getMouse().mouseReleased(event);
+        ((MouseListener)context.getClient().getCanvas()).mouseReleased(event);
     }
 
     public void hopMouse(int x, int y) {
         MouseEvent event = new MouseEvent(component, MouseEvent.MOUSE_MOVED,
                 System.currentTimeMillis(), 0, x, y, 0, false);
         mouseMoved(event);
-
-        component.dispatchEvent(event);
+        context.getClient().getMouse().mouseMoved(event);
+        ((MouseMotionListener)context.getClient().getCanvas()).mouseMoved(event);
     }
 
     public void setComponent(Component component) {
