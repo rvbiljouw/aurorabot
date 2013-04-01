@@ -108,7 +108,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     private Point getClickLocation() {
-        return getModel().getRandomHullPoint();
+        return getModel().getRandomPoint();
     }
 
 

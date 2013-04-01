@@ -8,6 +8,8 @@ import ms.aurora.rt3.Model;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static ms.aurora.api.util.Utilities.random;
+
 /**
  * @author rvbiljouw
  */
@@ -104,12 +106,31 @@ public final class RSModel {
         return hull;
     }
 
+    /**
+     * wot lolol
+     *
+     * @return
+     */
+    public Point getRandomPoint() {
+        ArrayList<Point> points = new ArrayList<Point>();
+        for (int i = 0; i < verticesX.length; i++) {
+            if (i >= verticesY.length && i >= verticesZ.length) return null;
+            Point point = ctx.calculations.worldToScreen(new RSTile(localX, localY), verticesX[i], verticesZ[i], -verticesY[i]);
+            if (point.x != -1 && point.y != -1) {
+                points.add(point);
+            }
+        }
+        if (points.size() != 0)
+            return points.get(Utilities.random(0, points.size()));
+        else return new Point(-1, -1);
+    }
+
     public Point getRandomHullPoint() {
         Polygon hull = this.getHull();
         Rectangle bounds = hull.getBounds();
         Point p = new Point(-1, -1);
         do {
-            Point temp = new Point(Utilities.random(bounds.x, bounds.x + bounds.width), Utilities.random(bounds.y, bounds.y + bounds.height));
+            Point temp = new Point(random(bounds.x, bounds.x + bounds.width), random(bounds.y, bounds.y + bounds.height));
             if (hull.contains(temp)) {
                 p = temp;
             }
