@@ -9,6 +9,7 @@ import java.awt.*;
  * @author rvbiljouw
  */
 public class ObjectPaint implements PaintListener {
+    private static final Rectangle GAMESCREEN = new Rectangle(4, 4, 512, 334);
     private final ClientContext ctx;
 
     public ObjectPaint(ClientContext ctx) {
@@ -27,7 +28,7 @@ public class ObjectPaint implements PaintListener {
     private final Predicate<RSObject> RSOBJECT_PREDICATE = new Predicate<RSObject>() {
         @Override
         public boolean apply(RSObject object) {
-            return object.distance(ctx.players.getLocal()) < 10;
+            return object.distance(ctx.players.getLocal()) < 5;
         }
     };
 }

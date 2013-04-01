@@ -25,7 +25,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     private final Point getClickLocation() {
-        return this.getModel().getRandomHullPoint();
+        return this.getModel().getRandomPoint();
     }
 
     public final RSTile getLocation() {
@@ -35,7 +35,6 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final RSTile getRegionalLocation() {
         int x = getLocalX();
         int z = getLocalY();
-        //return new RSTile(x, z, -(wrapped.getModelHeight() / 2));
         return new RSTile(x, z, -(wrapped.getHeight() / 2));
     }
 
@@ -90,7 +89,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return
      */
     public final boolean applyAction(final String actionName) {
-        Point screen = getScreenLocation();
+        Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
         ctx.menu.click(actionName);
         sleepNoException(700);
@@ -106,7 +105,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         if (!ctx.calculations.tileOnScreen(getRegionalLocation())) {
             return false;
         }
-        Point screen = getScreenLocation();
+        Point screen = getClickLocation();
         if (screen == null) return false;
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
         return true;
@@ -114,7 +113,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
 
     @Override
     public final boolean click(boolean left) {
-        Point screen = getScreenLocation();
+        Point screen = getClickLocation();
         ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
         return false;
     }
@@ -140,7 +139,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final int getTurnDirection() {
-        return Math.abs(wrapped.getTurnDirection() - 1024);
+        return wrapped.getTurnDirection();
     }
 
     public final String getMessage() {

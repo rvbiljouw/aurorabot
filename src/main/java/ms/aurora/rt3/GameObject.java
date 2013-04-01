@@ -15,4 +15,6 @@ public interface GameObject {
 
     int getOrientation();
 
+    Renderable getModel();
+
 }

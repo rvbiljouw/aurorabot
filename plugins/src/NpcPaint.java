@@ -20,16 +20,12 @@ public class NpcPaint implements PaintListener {
     @Override
     public void onRepaint(Graphics graphics) {
         RSNPC[] npcs = ctx.npcs.getAll(RSNPC_PREDICATE);
-        for(RSNPC npc : npcs) {
-            /*graphics.drawString(String.format("Npc: %s | Id: %s | Location: %s", npc.getName(), npc.getId(), npc.getScreenLocation()), x, y);
-            y += graphics.getFontMetrics().getHeight(); */
+        for (RSNPC npc : npcs) {
             Point loc = npc.getScreenLocation();
             String s = String.format("Name: %s | Id: %s | Anim: %s | Rot: %s",
                     npc.getName(), npc.getId(), npc.getAnimation(), npc.getTurnDirection());
             int x = loc.x - (graphics.getFontMetrics().stringWidth(s) / 2);
             graphics.drawString(s, x, loc.y);
-            if (GAMESCREEN.contains(loc))
-                graphics.drawPolygon(npc.getModel().getHull());
         }
     }
 

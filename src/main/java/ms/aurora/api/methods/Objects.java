@@ -2,11 +2,11 @@ package ms.aurora.api.methods;
 
 import com.google.common.collect.Collections2;
 import ms.aurora.api.ClientContext;
+import ms.aurora.api.util.Predicate;
+import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.rt3.AnimableObject;
 import ms.aurora.rt3.Client;
 import ms.aurora.rt3.Ground;
-import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSObject;
 
 import java.util.List;
 
@@ -97,19 +97,29 @@ public final class Objects {
 
         List<RSObject> objects = newArrayList();
         if (ground != null) {
-            if (ground.getGroundDecoration() != null) {
-                objects.add(new RSObject(ctx, ground.getGroundDecoration(), x, y));
-            } else if (ground.getWallDecoration() != null) {
-                objects.add(new RSObject(ctx, ground.getWallDecoration(), x, y));
-            } else if (ground.getWallObject() != null) {
-                objects.add(new RSObject(ctx, ground.getWallObject(), x, y));
-            } else if (ground.getAnimableObjects() != null) {
-                for (AnimableObject object : ground.getAnimableObjects()) {
-                    RSObject fuckyou = new RSObject(ctx, object, x, y);
-                    if (object != null && fuckyou.getId() != 0) {
-                        objects.add(fuckyou);
+            try {
+                if (ground.getGroundDecoration() != null) {
+                    objects.add(new RSObject(ctx, ground.getGroundDecoration(), x, y));
+                }
+
+                if (ground.getWallDecoration() != null) {
+                    objects.add(new RSObject(ctx, ground.getWallDecoration(), x, y));
+                }
+
+                if (ground.getWallObject() != null) {
+                    objects.add(new RSObject(ctx, ground.getWallObject(), x, y));
+                }
+
+                if (ground.getAnimableObjects() != null) {
+                    for(AnimableObject object : ground.getAnimableObjects()) {
+                        RSObject wrapped = new RSObject(ctx, object, x ,y);
+                        if(object != null && wrapped.getId() != 0) {
+                            objects.add(wrapped);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return objects;
