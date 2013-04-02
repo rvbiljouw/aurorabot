@@ -7,16 +7,21 @@ import ms.aurora.api.wrappers.RSWidgetGroup;
 import org.apache.log4j.Logger;
 
 /**
+ * Combat setting functions
  * @author rvbiljouw
  * @author tobiewarburton
  */
-public class Combat {
+public final class Combat {
     private final static Logger logger = Logger.getLogger(Combat.class);
 
     private static RSWidgetGroup getCombatGroup() {
         return Widgets.getWidgets(92);
     }
 
+    /**
+     * Gets the name of the currently wielded weapon.
+     * @return weapon name
+     */
     public static String getWeaponName() {
         RSWidget widget = getCombatGroup().getWidgets()[0];
         if (widget != null) {
@@ -25,6 +30,9 @@ public class Combat {
         return "undefined";
     }
 
+    /**
+     * Toggles the auto retaliate button.
+     */
     public static void toggleAutoRetaliate() {
         Tabs.openTab(Tabs.Tab.COMBAT);
         for (RSWidget child : getCombatGroup().getWidgets()) {
@@ -35,6 +43,9 @@ public class Combat {
         }
     }
 
+    /**
+     * Toggles the special attack bar
+     */
     public static void toggleSpecialAttack() {
         Tabs.openTab(Tabs.Tab.COMBAT);
         for (RSWidget child : getCombatGroup().getWidgets()) {
@@ -46,7 +57,7 @@ public class Combat {
     }
 
     /**
-     *
+     * Selects a combat style.
      * @param style the style to select for example Aggressive
      */
     public static void selectCombatStyle(String style) {

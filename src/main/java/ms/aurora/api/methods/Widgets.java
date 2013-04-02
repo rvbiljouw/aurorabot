@@ -26,7 +26,7 @@ public final class Widgets {
     /**
      * Gets an array of all the NON-NULL widget groups in the client.
      *
-     * @return widget gruop;s
+     * @return widget groups
      */
     public static RSWidgetGroup[] getAll() {
         Widget[][] cache = getClient().getWidgetCache();
@@ -39,7 +39,7 @@ public final class Widgets {
                 groups.add(group);
             }
         }
-        return groups.toArray(new RSWidgetGroup[]{});
+        return groups.toArray(new RSWidgetGroup[groups.size()]);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class Widgets {
      *
      * @param parent parent index
      * @param child  child index
-     * @return
+     * @return widget or null
      */
     public static RSWidget getWidget(int parent, int child) {
         RSWidgetGroup group = getWidgets(parent);
@@ -78,16 +78,14 @@ public final class Widgets {
      */
     public static RSWidget[] getWidgetsWithText(String predicate) {
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
-        for (Widget[] parents : getClient().getWidgetCache()) {
-            if (parents == null) continue;
-
-            for (RSWidget child : filter(transform(newArrayList(parents), transform), Predicates.notNull()).toArray(new RSWidget[0])) {
-                if (child.getText() != null && child.getText().contains(predicate)) {
+        for(RSWidgetGroup groups : getAll()) {
+            for(RSWidget child : groups.getWidgets()) {
+                if(child != null && child.getText().contains(predicate)) {
                     satisfied.add(child);
                 }
             }
         }
-        return satisfied.toArray(new RSWidget[0]);
+        return satisfied.toArray(new RSWidget[satisfied.size()]);
     }
 
     /**

@@ -1,6 +1,7 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.methods.Settings;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 import org.apache.log4j.Logger;
@@ -23,13 +24,26 @@ public class Options {
     }
 
 
-    public static void toggleRun() {
+    public static void setRunning(boolean on) {
         Tabs.openTab(Tabs.Tab.OPTIONS);
-        getSettingsGroup().getWidgets()[0].click(true);
+        if (on == isRunning()) {
+            logger.debug("Running already " + on + ", not doing anything!");
+        } else {
+            getSettingsGroup().getWidgets()[0].click(true);
+        }
     }
 
     public static void toggleAcceptAid() {
         Tabs.openTab(Tabs.Tab.OPTIONS);
         getSettingsGroup().getWidgets()[4].click(true);
+    }
+
+    /**
+     * Checks if player is currently running
+     *
+     * @return running
+     */
+    public static boolean isRunning() {
+        return Settings.getSetting(173) == 1;
     }
 }

@@ -12,12 +12,10 @@ public class Tabs {
     public static boolean openTab(Tab tab) {
         if (getCurrent() != null && getCurrent().equals(tab)) return true;
         RSWidget[] widgets = Widgets.getWidgets(548).getWidgets();
-        for (int i = 0; i < widgets.length; i++) {
-            RSWidget widget = widgets[i];
+        for (RSWidget widget : widgets) {
             if (widget.getActions() != null) {
                 String[] actions = widget.getActions();
-                for (int j = 0; j < actions.length; j++) {
-                    String action = actions[j];
+                for (String action : actions) {
                     if (action.equals(tab.getName())) {
                         widget.click(true);
                         current.set(tab);
@@ -27,6 +25,10 @@ public class Tabs {
             }
         }
         return false;
+    }
+
+    public static boolean isOpen(Tab tab) {
+        return getCurrent() == tab;
     }
 
     public static Tab getCurrent() {
@@ -51,9 +53,6 @@ public class Tabs {
         MUSIC("MUSIC", 13, "Music Player");
 
         String name;
-
-        private static final Tab[] ALL = new Tab[]{COMBAT, STATS, QUESTS, INVENTORY, EQUIPMENT, PRAYER, MAGIC, CLAN_CHAT, FRIENDS_LIST, IGNORE_LIST, LOGOUT, OPTIONS, EMOTES, MUSIC};
-
 
         private Tab(String var1, int var2, String name) {
             this.name = name;
