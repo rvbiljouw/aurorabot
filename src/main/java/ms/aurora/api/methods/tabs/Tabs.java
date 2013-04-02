@@ -7,7 +7,7 @@ import ms.aurora.api.wrappers.RSWidget;
  * @author tobiewarburton
  */
 public class Tabs {
-    private static ThreadLocal<Tab> current = new ThreadLocal<>();
+    private static ThreadLocal<Tab> current = new ThreadLocal<Tab>();
 
     public static boolean openTab(Tab tab) {
         if (getCurrent() != null && getCurrent().equals(tab)) return true;

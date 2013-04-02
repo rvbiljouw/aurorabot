@@ -9,8 +9,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Menu related functions
+ * @author rvbiljouw
+ */
 public final class Menu {
 
+    /**
+     * Gets the index of a menu item in the list of menu items
+     * @param item The item to look for
+     * @return The index of the item if it was found, otherwise -1.
+     */
     public static int getIndex(String item) {
         Pattern pattern = Pattern.compile(item);
         for (String menuEntry : getMenuContent()) {
@@ -22,10 +31,20 @@ public final class Menu {
         return -1;
     }
 
+    /**
+     * Checks if the menu is open
+     * @return true if the menu is open
+     */
     public static boolean isMenuOpen() {
         return Context.get().getClient().isMenuOpen();
     }
 
+    /**
+     * Clicks an item in the menu
+     * Note: This method opens the menu if it's not already open.
+     * @param action Action to click
+     * @return true if success, false if failed.
+     */
     public static boolean click(String action) {
         int itemIndex = getIndex(action);
         if (itemIndex != -1) {
@@ -53,6 +72,10 @@ public final class Menu {
         return false;
     }
 
+    /**
+     * Retrieves a list of all menu content.
+     * @return menu content.
+     */
     private static List<String> getMenuContent() {
         String[] actions = Context.get().getClient().getMenuActions();
         String[] targets = Context.get().getClient().getMenuTargets();

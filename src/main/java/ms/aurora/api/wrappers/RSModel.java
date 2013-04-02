@@ -2,6 +2,7 @@ package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.util.GrahamScan;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.rt3.Model;
@@ -59,9 +60,9 @@ public final class RSModel {
         ArrayList<Polygon> polys = new ArrayList<Polygon>();
         for (int i = 0; i < trianglesX.length; i++) {
             if (i >= trianglesY.length && i >= trianglesZ.length) return null;
-            Point x = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
-            Point y = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
-            Point z = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
+            Point x = Viewport.convert(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
+            Point y = Viewport.convert(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
+            Point z = Viewport.convert(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
             if (x.x > 0 && x.y > 0 && y.x > 0 && y.y > 0 && z.x > 0 && z.y > 0) {
                 int xx[] = {
                         x.x, y.x, z.x
@@ -89,9 +90,9 @@ public final class RSModel {
         ArrayList<Point> modelVertices = new ArrayList<Point>();
         for (int i = 0; i < trianglesX.length; i++) {
             if (i >= trianglesY.length && i >= trianglesZ.length) return null;
-            Point x = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
-            Point y = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
-            Point z = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
+            Point x = Viewport.convert(new RSTile(localX, localY), verticesX[trianglesX[i]], verticesZ[trianglesX[i]], -verticesY[trianglesX[i]]);
+            Point y = Viewport.convert(new RSTile(localX, localY), verticesX[trianglesY[i]], verticesZ[trianglesY[i]], -verticesY[trianglesY[i]]);
+            Point z = Viewport.convert(new RSTile(localX, localY), verticesX[trianglesZ[i]], verticesZ[trianglesZ[i]], -verticesY[trianglesZ[i]]);
             if (x.x > 0 && x.y > 0 && y.x > 0 && y.y > 0 && z.x > 0 && z.y > 0) {
                 modelVertices.add(x);
                 modelVertices.add(y);
@@ -116,7 +117,7 @@ public final class RSModel {
         ArrayList<Point> points = new ArrayList<Point>();
         for (int i = 0; i < verticesX.length; i++) {
             if (i >= verticesY.length && i >= verticesZ.length) return null;
-            Point point = Calculations.worldToScreen(new RSTile(localX, localY), verticesX[i], verticesZ[i], -verticesY[i]);
+            Point point = Viewport.convert(new RSTile(localX, localY), verticesX[i], verticesZ[i], -verticesY[i]);
             if (point.x != -1 && point.y != -1) {
                 points.add(point);
             }

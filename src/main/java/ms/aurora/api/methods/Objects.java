@@ -8,15 +8,18 @@ import ms.aurora.rt3.AnimableObject;
 import ms.aurora.rt3.Client;
 import ms.aurora.rt3.Ground;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * Object related methods
+ *
  * @author rvbiljouw
  */
 public final class Objects {
-    
+
     /**
      * a method which gets the closest {@link RSObject} in the current region which satisfy the {@link Predicate}
      *
@@ -63,6 +66,12 @@ public final class Objects {
         return _getAll().toArray(new RSObject[0]);
     }
 
+    /**
+     * Gets the closest object out of an array of objects
+     *
+     * @param objects Array of objects
+     * @return Closest object
+     */
     private static RSObject getClosest(RSObject[] objects) {
         RSObject closest = null;
         int closestDistance = 9999;
@@ -76,7 +85,12 @@ public final class Objects {
         return closest;
     }
 
-    private static List<RSObject> _getAll() {
+    /**
+     * Gets a collection of all objects in the currently loaded region
+     *
+     * @return collection of objects
+     */
+    private static Collection<RSObject> _getAll() {
         List<RSObject> objects = newArrayList();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
@@ -86,7 +100,14 @@ public final class Objects {
         return objects;
     }
 
-    private static List<RSObject> getObjectsAt(int x, int y) {
+    /**
+     * Gets all the objects at specified x/y
+     *
+     * @param x local X coordinate
+     * @param y local Y coordinate
+     * @return collection of objects at the specified tile
+     */
+    private static Collection<RSObject> getObjectsAt(int x, int y) {
         Client client = Context.get().getClient();
         Ground ground = client.getWorld().getGroundArray()[client.getPlane()][x][y];
 
@@ -106,9 +127,9 @@ public final class Objects {
                 }
 
                 if (ground.getAnimableObjects() != null) {
-                    for(AnimableObject object : ground.getAnimableObjects()) {
-                        RSObject wrapped = new RSObject(Context.get(), object, x ,y);
-                        if(object != null && wrapped.getId() != 0) {
+                    for (AnimableObject object : ground.getAnimableObjects()) {
+                        RSObject wrapped = new RSObject(Context.get(), object, x, y);
+                        if (object != null && wrapped.getId() != 0) {
                             objects.add(wrapped);
                         }
                     }

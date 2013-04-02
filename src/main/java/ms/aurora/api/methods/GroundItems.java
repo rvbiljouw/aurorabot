@@ -15,6 +15,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * Ground item related functions
  * @author tobiewarburton
  */
 public final class GroundItems {
@@ -65,6 +66,11 @@ public final class GroundItems {
         return _getAll().toArray(new RSGroundItem[0]);
     }
 
+    /**
+     * Gets the closest ground item out of an array of ground items
+     * @param objects array of ground items
+     * @return closest ground item
+     */
     private static RSGroundItem getClosest(RSGroundItem[] objects) {
         RSGroundItem closest = null;
         int closestDistance = 9999;
@@ -78,7 +84,10 @@ public final class GroundItems {
         return closest;
     }
 
-
+    /**
+     * Fetches a list of all ground items in the currently loaded region.
+     * @return list of ground items
+     */
     private static List<RSGroundItem> _getAll() {
         List<RSGroundItem> items = newArrayList();
         for (int x = 0; x < 104; x++) {
@@ -89,6 +98,12 @@ public final class GroundItems {
         return items;
     }
 
+    /**
+     * Gets a list of all the ground items on a specific tile
+     * @param x shifted local X of the tile
+     * @param y shifted local Y of the tile
+     * @return list of items on tile
+     */
     private static List<RSGroundItem> getItemsAt(int x, int y) {
         Client client = Context.get().getClient();
         int z = client.getPlane();

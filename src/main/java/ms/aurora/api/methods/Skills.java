@@ -3,13 +3,14 @@ package ms.aurora.api.methods;
 import ms.aurora.api.Context;
 
 /**
- * Date: 27/03/13
- * Time: 16:51
- *
+ * Skill related functions
  * @author A_C/Cov
  */
-public class Skills {
+public final class Skills {
 
+    /**
+     * An enum representing all skills
+     */
     public enum Skill {
         ATACK(0),
         STRENGTH(2),
@@ -40,14 +41,29 @@ public class Skills {
         }
     }
 
+    /**
+     * Retrieves the experience for specified skill
+     * @param skill skill
+     * @return experience
+     */
     public static int getExperience(Skill skill) {
         return Context.get().getClient().getSkillExperiences()[skill.index];
     }
 
+    /**
+     * Retrieves the level for specified skill
+     * @param skill skill
+     * @return level
+     */
     public static int getLevel(Skill skill) {
         return Context.get().getClient().getSkillLevels()[skill.index];
     }
 
+    /**
+     * Retrieves the total XP required for specified level
+     * @param level level
+     * @return xp required
+     */
     public static int getXpForLevel(int level) {
         double total = 0;
         for (int i = 1; i < level; i++) {
@@ -56,6 +72,12 @@ public class Skills {
         return (int) Math.floor(total / 4);
     }
 
+    /**
+     * Retrieves the remaining XP required to reach a level, based on the current level
+     * @param skill Skill to calculate for
+     * @param level Level to reach
+     * @return remaining xp to level
+     */
     public static int getExperienceToLevel(Skill skill, int level) {
         int xpForLevel = getXpForLevel(level > 99 ? 99 : level);
         return xpForLevel - getExperience(skill);

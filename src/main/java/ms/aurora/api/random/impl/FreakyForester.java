@@ -99,7 +99,7 @@ public class FreakyForester extends Random {
 
         switch (getState()) {
             case 0: // Talk to forester
-                if (Calculations.tileOnScreen(forester.getLocation())
+                if (Viewport.tileOnScreen(forester.getLocation())
                         && (Calculations.distance(Players.getLocal().getLocation(), forester.getLocation()) <= 5)) {
                     forester.applyAction("Talk");
                 } else {
@@ -129,7 +129,7 @@ public class FreakyForester extends Random {
                     tile.applyAction("Take");
                     return Utilities.random(600, 900);
                 } else if (Pheasant != null) {
-                    if (Calculations.tileOnScreen(Pheasant.getLocation())) {
+                    if (Viewport.tileOnScreen(Pheasant.getLocation())) {
                         Pheasant.applyAction("Attack");
                         return Utilities.random(1000, 1500);
                     } else if (Calculations.distance(Players.getLocal().getLocation(), Pheasant.getLocation()) >= 5) {

@@ -15,6 +15,7 @@ import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * NPC related functions
  * @author tobiewarburton
  * @author rvbiljouw
  */
@@ -67,6 +68,11 @@ public final class Npcs {
         return _getAll().toArray(new RSNPC[0]);
     }
 
+    /**
+     * Gets the closest NPC out of an array of NPCs
+     * @param npcs NPC array
+     * @return closest NPC
+     */
     private static RSNPC getClosest(RSNPC[] npcs) {
         RSNPC closest = null;
         int closestDistance = 9999;
@@ -80,11 +86,18 @@ public final class Npcs {
         return closest;
     }
 
+    /**
+     * Gets a collection of all NPCs in the region
+     * @return collection of NPCs
+     */
     private static Collection<RSNPC> _getAll() {
         return filter(transform(newArrayList(Context.get().getClient()
                 .getAllNpcs()), transform), Predicates.notNull());
     }
 
+    /**
+     * Transforms an unwrapped NPC into a wrapped one.
+     */
     private static final Function<Npc, RSNPC> transform = new Function<Npc, RSNPC>() {
         @Override
         public RSNPC apply(Npc npc) {

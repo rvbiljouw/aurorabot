@@ -3,14 +3,16 @@ package ms.aurora.api.methods;
 import ms.aurora.api.Context;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 31/03/13
- * Time: 14:11
- * To change this template use File | Settings | File Templates.
+ * Setting related functions
+ * @author tobiewarburton
  */
-public class Settings {
+public final class Settings {
 
+    /**
+     * Retrieves a client setting
+     * @param index index of the setting
+     * @return setting value
+     */
     public static int getSetting(int index) {
         return Context.get().getClient().getWidgetSettings()[index];
     }

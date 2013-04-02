@@ -1,4 +1,5 @@
 import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.wrappers.RSPlayer;
 import ms.aurora.event.listeners.PaintListener;
@@ -17,7 +18,7 @@ public class PositionPaint implements PaintListener {
             Point loc = player.getScreenLocation();
             graphics.drawString(player.getLocation().toString(),
                     loc.x, loc.y);
-            Point minimapLoc = Calculations.worldToMinimap(player.getLocalX(), player.getLocalY());
+            Point minimapLoc = Minimap.convert(player.getLocalX(), player.getLocalY());
             graphics.drawOval(minimapLoc.x - 1, minimapLoc.y - 1, 3, 3);
         }
     }

@@ -2,6 +2,7 @@ package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Viewport;
 import ms.aurora.rt3.GameObject;
 import ms.aurora.rt3.GroundDecoration;
 import ms.aurora.rt3.Model;
@@ -45,7 +46,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final Point getScreenLocation() {
-        return Calculations.worldToScreen(getRegionalLocation());
+        return Viewport.convert(getRegionalLocation());
     }
 
     public final RSTile getLocation() {
@@ -67,7 +68,7 @@ public final class RSObject implements Locatable, Interactable {
      * @return
      */
     public final boolean applyAction(String actionName) {
-        if (!Calculations.tileOnScreen(getRegionalLocation()))
+        if (!Viewport.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -81,7 +82,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final boolean hover() {
-        if (!Calculations.tileOnScreen(getRegionalLocation()))
+        if (!Viewport.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getScreenLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -96,7 +97,7 @@ public final class RSObject implements Locatable, Interactable {
 
     @Override
     public final boolean click(boolean left) {
-        if (!Calculations.tileOnScreen(getRegionalLocation()))
+        if (!Viewport.tileOnScreen(getRegionalLocation()))
             return false;
         Point screen = getClickLocation();
         ctx.input.getMouse().clickMouse(screen.x, screen.y, left);

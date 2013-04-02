@@ -2,6 +2,7 @@ package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Viewport;
 import ms.aurora.rt3.Item;
 
 import java.awt.*;
@@ -37,7 +38,7 @@ public final class RSGroundItem implements Locatable, Interactable {
     }
 
     public Point getScreenLocation() {
-        return Calculations.worldToScreen(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
+        return Viewport.convert(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
     }
 
     public RSTile getLocation() {

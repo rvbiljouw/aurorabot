@@ -35,7 +35,7 @@ public class Walking {
 
     public static boolean clickTile(RSTile tile, int offsetX, int offsetY) {
         VirtualMouse mouse = Context.get().input.getMouse();
-        Point point = Calculations.worldToScreen(tile, offsetX, offsetY, tile.getZ());
+        Point point = Viewport.convert(tile, offsetX, offsetY, tile.getZ());
         mouse.moveMouse(point.x, point.y);
         mouse.clickMouse(true);
         return true;
@@ -47,14 +47,14 @@ public class Walking {
 
     public static boolean applyAction(RSTile tile, String action, int offsetX, int offsetY) {
         VirtualMouse mouse = Context.get().input.getMouse();
-        Point point  = Calculations.worldToScreen(tile, offsetX, offsetY, tile.getZ());
+        Point point  = Viewport.convert(tile, offsetX, offsetY, tile.getZ());
         mouse.moveMouse(point.x, point.y);
         return Menu.click(action);
     }
 
     public static boolean clickMap(RSTile tile) {
         VirtualMouse mouse = Context.get().input.getMouse();
-        Point point  = Calculations.worldToMinimap(tile);
+        Point point  = Minimap.convert(tile);
         mouse.moveMouse(point.x, point.y);
         mouse.clickMouse(true);
         return true;
