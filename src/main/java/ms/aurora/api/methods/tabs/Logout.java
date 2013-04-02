@@ -6,23 +6,25 @@ import ms.aurora.api.wrappers.RSWidgetGroup;
 import org.apache.log4j.Logger;
 
 /**
+ * Logout tab functions
+ *
  * @author rvbiljouw
  * @author tobiewarburton
  */
-public class Logout {
-    private final static Logger logger = Logger.getLogger(Logout.class);
+public final class Logout {
 
-    private static RSWidgetGroup getLogoutGroup() {
-        return Widgets.getWidgets(182);
+    /**
+     * Logs out the player
+     */
+    public static void logout() {
+        if (!Tabs.isOpen(Tabs.Tab.LOGOUT)) {
+            Tabs.openTab(Tabs.Tab.LOGOUT);
+        }
+        Widgets.getWidget(Constants.LOGOUT_TAB, Constants.LOGOUT_BTN).click(true);
     }
 
-    public static void logout() {
-        Tabs.openTab(Tabs.Tab.LOGOUT);
-        for (RSWidget child : getLogoutGroup().getWidgets()) {
-            if (child.getText().equals("Click here to logout")) {
-                child.click(true);
-                return;
-            }
-        }
+    public static class Constants {
+        public static final int LOGOUT_TAB = 182;
+        public static final int LOGOUT_BTN = 8;
     }
 }
