@@ -4,7 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.rt3.Widget;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class RSWidgetGroup {
     private final Context ctx;

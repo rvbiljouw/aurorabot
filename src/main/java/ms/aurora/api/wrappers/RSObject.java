@@ -10,7 +10,7 @@ import ms.aurora.rt3.Model;
 import java.awt.*;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSObject implements Locatable, Interactable {
     private final Context ctx;

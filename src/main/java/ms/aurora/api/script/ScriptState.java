@@ -1,7 +1,7 @@
 package ms.aurora.api.script;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public enum ScriptState {
 

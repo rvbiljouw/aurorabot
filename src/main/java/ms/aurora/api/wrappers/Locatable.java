@@ -3,7 +3,7 @@ package ms.aurora.api.wrappers;
 import java.awt.*;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public interface Locatable {
 

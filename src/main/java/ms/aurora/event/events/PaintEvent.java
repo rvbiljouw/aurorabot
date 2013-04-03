@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.EventListener;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class PaintEvent extends GameEvent<Graphics> {
 

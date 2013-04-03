@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import java.io.InputStream;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class ClientDefinitionJSON implements ResponseHandler {
     private static Logger logger = Logger.getLogger(ClientDefinitionJSON.class);

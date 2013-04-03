@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class AbstractModel {
     private static final EntityManagerFactory factory =

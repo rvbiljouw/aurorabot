@@ -7,7 +7,7 @@ import org.apache.bcel.generic.*;
 import org.apache.log4j.Logger;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class AccessorDefinition {
     private static final Logger logger = Logger.getLogger(AccessorDefinition.class);

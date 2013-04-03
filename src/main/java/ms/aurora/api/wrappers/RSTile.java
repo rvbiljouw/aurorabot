@@ -1,7 +1,7 @@
 package ms.aurora.api.wrappers;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSTile {
     private int x;

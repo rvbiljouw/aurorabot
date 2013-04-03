@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class GlobalEventQueue extends EventQueue {
     public static volatile boolean blocking = false;

@@ -5,7 +5,7 @@ import ms.aurora.api.wrappers.RSWidget;
 
 /**
  * @author Matty Cov / A_C
- * @author rvbiljouw
+ * @author Rick
  */
 public class Prayers {
 

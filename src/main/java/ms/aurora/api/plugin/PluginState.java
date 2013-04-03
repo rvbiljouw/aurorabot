@@ -1,7 +1,7 @@
 package ms.aurora.api.plugin;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public enum PluginState {
 

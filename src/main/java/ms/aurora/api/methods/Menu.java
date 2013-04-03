@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * Menu related functions
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Menu {
 

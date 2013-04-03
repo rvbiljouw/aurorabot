@@ -8,9 +8,9 @@ import java.awt.*;
 
 /**
  * Viewport related functions
- * @author rvbiljouw
+ * @author Rick
  */
-public class Viewport {
+public final class Viewport {
     private static final Rectangle BOUNDS = new Rectangle(4, 4, 512, 334);
     private static final int[] CURVE_SIN = new int[2048];
     private static final int[] CURVE_COS = new int[2048];

@@ -4,7 +4,7 @@ import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  * @author tobiewarburton
  */
 public final class NpcFilters {

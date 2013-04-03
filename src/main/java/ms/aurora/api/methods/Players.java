@@ -5,7 +5,7 @@ import ms.aurora.api.wrappers.RSPlayer;
 
 /**
  * Player related functions
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Players {
 

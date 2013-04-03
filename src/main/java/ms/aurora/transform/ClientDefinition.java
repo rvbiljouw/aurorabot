@@ -11,7 +11,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class ClientDefinition {
     private final Logger logger = Logger.getLogger(ClientDefinition.class);

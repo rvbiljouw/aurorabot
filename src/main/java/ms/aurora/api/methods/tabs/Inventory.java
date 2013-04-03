@@ -17,7 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Inventory {
     private static final int INVENTORY_ID = 149;

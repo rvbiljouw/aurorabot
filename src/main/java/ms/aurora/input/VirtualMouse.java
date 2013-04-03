@@ -12,7 +12,7 @@ import java.awt.event.MouseMotionListener;
 /**
  * this class will act like mouse
  *
- * @author rvbiljouw
+ * @author Rick
  * @author tobiewarburton
  */
 public final class VirtualMouse implements MouseMotionListener {

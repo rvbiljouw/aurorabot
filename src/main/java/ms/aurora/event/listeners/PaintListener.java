@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.EventListener;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public interface PaintListener extends EventListener {
 

@@ -3,7 +3,7 @@ package ms.aurora.transform;
 import java.util.List;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class ClassDefinition {
     private List<AccessorDefinition> accessors;

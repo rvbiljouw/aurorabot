@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class ClientCanvas extends Canvas implements MouseMotionListener,
         MouseListener {

@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class EditAccount extends AnchorPane {
 

@@ -12,7 +12,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class RSCharacter extends RSRenderable implements Locatable, Interactable {
     private final ms.aurora.rt3.Character wrapped;

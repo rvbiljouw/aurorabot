@@ -1,7 +1,7 @@
 package ms.aurora.loader.exception;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class AppletInitialisationException extends RuntimeException {
 

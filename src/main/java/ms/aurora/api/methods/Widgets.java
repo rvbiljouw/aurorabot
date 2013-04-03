@@ -19,7 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * Widget related functions
  *
  * @author tobiewarburton
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Widgets {
 

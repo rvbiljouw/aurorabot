@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 import static ms.aurora.gui.ApplicationGUI.getSelectedApplet;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class ScriptOverview extends AnchorPane {
     @FXML

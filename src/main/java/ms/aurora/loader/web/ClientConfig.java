@@ -13,7 +13,7 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class ClientConfig implements ResponseHandler {
     private static Logger logger = Logger.getLogger(ClientConfig.class);

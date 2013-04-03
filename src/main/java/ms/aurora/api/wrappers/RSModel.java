@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static ms.aurora.api.util.Utilities.random;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSModel {
     private final Context ctx;

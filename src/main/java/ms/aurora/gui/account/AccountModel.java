@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 import ms.aurora.core.model.Account;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class AccountModel {
     private final Account account;

@@ -3,7 +3,7 @@ package ms.aurora.rt3;
 import java.io.RandomAccessFile;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public interface FileWrapper {
 

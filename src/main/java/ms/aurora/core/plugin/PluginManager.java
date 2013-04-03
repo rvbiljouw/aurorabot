@@ -11,7 +11,7 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class PluginManager {
     private static final Logger logger = Logger.getLogger(PluginManager.class);
