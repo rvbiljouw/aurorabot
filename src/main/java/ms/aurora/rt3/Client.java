@@ -3,7 +3,7 @@ package ms.aurora.rt3;
 import java.awt.*;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public interface Client {
 
@@ -87,4 +87,5 @@ public interface Client {
 
     int[] getWidgetSettings();
 
+    Region[] getRegions();
 }

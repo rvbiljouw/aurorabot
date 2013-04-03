@@ -1,7 +1,7 @@
 package ms.aurora.api.util;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public interface Predicate<T> {
 

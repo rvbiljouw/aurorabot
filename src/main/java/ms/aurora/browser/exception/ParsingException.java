@@ -3,7 +3,7 @@ package ms.aurora.browser.exception;
 import java.io.IOException;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class ParsingException extends IOException {
 

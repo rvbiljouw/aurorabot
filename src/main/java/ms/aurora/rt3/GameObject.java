@@ -1,7 +1,7 @@
 package ms.aurora.rt3;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public interface GameObject {
 

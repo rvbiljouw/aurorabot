@@ -6,7 +6,7 @@ import ms.aurora.rt3.Node;
 import java.util.Iterator;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSBag implements Iterator<Node> {
     private final Bag bag;

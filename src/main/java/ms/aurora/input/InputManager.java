@@ -7,7 +7,7 @@ import java.awt.*;
 
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class InputManager {
     private final Context context;

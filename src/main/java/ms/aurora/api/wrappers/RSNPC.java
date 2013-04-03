@@ -4,7 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.rt3.Npc;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSNPC extends RSCharacter {
     private final Npc wrapped;

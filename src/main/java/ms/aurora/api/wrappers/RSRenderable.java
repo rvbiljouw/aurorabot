@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class RSRenderable {
     public final Context ctx;

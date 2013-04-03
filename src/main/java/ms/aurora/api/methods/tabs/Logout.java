@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 /**
  * Logout tab functions
  *
- * @author rvbiljouw
+ * @author Rick
  * @author tobiewarburton
  */
 public final class Logout {

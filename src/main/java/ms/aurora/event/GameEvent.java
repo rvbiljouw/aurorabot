@@ -6,7 +6,7 @@ import ms.aurora.core.Session;
 import java.util.EventListener;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public abstract class GameEvent<T> {
 

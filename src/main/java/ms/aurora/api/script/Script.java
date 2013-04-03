@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());

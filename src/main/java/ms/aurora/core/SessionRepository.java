@@ -7,7 +7,7 @@ import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.Thread.currentThread;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class SessionRepository {
     private static final Map<Integer, Session> sessionMap = newHashMap();

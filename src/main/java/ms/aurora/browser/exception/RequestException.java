@@ -1,7 +1,7 @@
 package ms.aurora.browser.exception;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class RequestException extends RuntimeException {
 

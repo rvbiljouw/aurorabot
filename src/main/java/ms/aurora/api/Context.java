@@ -10,7 +10,7 @@ import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.Thread.currentThread;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class Context {
     private static final Map<ThreadGroup, Context> contextMap = newHashMap();

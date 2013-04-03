@@ -26,7 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static ms.aurora.core.SessionRepository.get;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> {
     private final Tab tab = new Tab();

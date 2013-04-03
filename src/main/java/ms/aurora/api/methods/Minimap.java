@@ -10,9 +10,9 @@ import static ms.aurora.api.Context.get;
 
 /**
  * A class for minimap related functions
- * @author rvbiljouw
+ * @author Rick
  */
-public class Minimap {
+public final class Minimap {
     private static final int MINIMAP_INTERFACE_GROUP = 548;
     private static final int MINIMAP_INTERFACE_CHILD = 85;
     private static final int[] CURVESIN = new int[2048];

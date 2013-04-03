@@ -4,7 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.rt3.Player;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSPlayer extends RSCharacter {
     private final Player wrapped;

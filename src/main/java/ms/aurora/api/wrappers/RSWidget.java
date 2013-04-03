@@ -11,7 +11,7 @@ import ms.aurora.rt3.WidgetNode;
 import java.awt.*;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class RSWidget implements Interactable {
     private Context ctx;

@@ -16,7 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * Object related methods
  *
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Objects {
 

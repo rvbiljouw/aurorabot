@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ScriptManifest {

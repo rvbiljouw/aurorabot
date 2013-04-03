@@ -10,7 +10,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class PaintManager implements PaintListener {
     private static final Logger logger = Logger.getLogger(PaintManager.class);

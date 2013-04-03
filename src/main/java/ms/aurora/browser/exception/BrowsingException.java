@@ -1,7 +1,7 @@
 package ms.aurora.browser.exception;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public class BrowsingException extends RuntimeException {
 	private static final long serialVersionUID = 6606777982233074671L;

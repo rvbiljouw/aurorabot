@@ -20,7 +20,7 @@ import java.util.jar.JarFile;
 import static com.google.common.collect.Maps.newHashMap;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class TransformingClassLoader extends ClassLoader {
     private final Logger logger = Logger.getLogger(TransformingClassLoader.class);

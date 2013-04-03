@@ -7,7 +7,7 @@ import ms.aurora.api.wrappers.RSWidgetGroup;
 import org.apache.log4j.Logger;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  * @author tobiewarburton
  */
 public class Options {

@@ -17,7 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * NPC related functions
  * @author tobiewarburton
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Npcs {
 

@@ -19,7 +19,7 @@ import static java.lang.Thread.currentThread;
 import static ms.aurora.core.SessionRepository.set;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class Session implements Runnable {
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();

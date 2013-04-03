@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 @Entity
 @NamedQueries({

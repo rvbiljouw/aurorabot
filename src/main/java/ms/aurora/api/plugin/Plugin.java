@@ -6,7 +6,7 @@ import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public abstract class Plugin extends Context {
     private final Logger logger = Logger.getLogger(getClass());

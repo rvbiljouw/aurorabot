@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class ScriptLoader {
     private static final Logger logger = Logger.getLogger(ScriptLoader.class);

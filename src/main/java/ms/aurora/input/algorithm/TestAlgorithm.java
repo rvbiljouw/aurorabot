@@ -5,7 +5,7 @@ import ms.aurora.input.VirtualMouse;
 import java.awt.*;
 
 /**
- * @author rvbiljouw
+ * @author Rick
  */
 public final class TestAlgorithm implements VirtualMouse.MousePathAlgorithm {
     @Override
