@@ -1,91 +1,97 @@
 package ms.aurora.gui.dialog;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ms.aurora.core.model.Account;
-import ms.aurora.gui.account.AccountModel;
-import ms.aurora.gui.plugin.PluginOverview;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 /**
- * Created with IntelliJ IDEA.
- *
- * User: tobiewarburton
- * Date: 04/04/2013
- * Time: 01:14
- * To change this template use File | Settings | File Templates.
+ * @author tobiewarburton
  */
 public class AccountSelectDialog extends AnchorPane {
 
-    private final ObservableList<Account> accounts = FXCollections.observableArrayList();
-    private Account selected;
+    @FXML
+    private ResourceBundle resources;
 
     @FXML
-    private ComboBox<Account> accountsCombo;
+    private URL location;
 
     @FXML
-    private Button btnOk;
+    private Button btnSelect;
+
+    @FXML
+    private ComboBox<Account> cbxAccounts;
+
+    private Callback callback;
 
     public AccountSelectDialog() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AccountSelectDialog.fxml"));
 
-        fxmlLoader.setRoot(this);
+        //fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
         try {
-            fxmlLoader.load();
+            this.getChildren().add((Parent) fxmlLoader.load());
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
     }
 
     @FXML
-    void ok(ActionEvent event) {
-        selected = accountsCombo.getValue();
+    void selectAction(ActionEvent event) {
         getScene().getWindow().hide();
-    }
-
-    public Account getSelected() {
-        return selected;
     }
 
     @FXML
     void initialize() {
-        assert accountsCombo != null : "fx:id=\"accountsCombo\" was not injected: check your FXML file 'AccountSelectDialog.fxml'.";
-        initializeAccounts();
+        assert btnSelect != null : "fx:id=\"btnSelect\" was not injected: check your FXML file 'AccountSelectDialog.fxml'.";
+        assert cbxAccounts != null : "fx:id=\"cbxAccounts\" was not injected: check your FXML file 'AccountSelectDialog.fxml'.";
+        cbxAccounts.setItems(FXCollections.observableArrayList(Account.getAll()));
     }
 
-    private void initializeAccounts() {
-        accounts.clear();
-        for (Account account : Account.getAll()) {
-            accounts.add(account);
-        }
-        accountsCombo.setItems(accounts);
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 
-    public static AccountSelectDialog showDialog() {
+    public Callback getCallback() {
+        return callback;
+    }
+
+    public Account get() {
+        return cbxAccounts.getSelectionModel().getSelectedItem();
+    }
+
+    public void show() {
         Stage stage = new Stage();
         stage.setTitle("Select Account");
-        stage.setWidth(400);
-        stage.setHeight(86);
+        stage.setWidth(250);
+        stage.setHeight(100);
         stage.initModality(Modality.APPLICATION_MODAL);
-        AccountSelectDialog accountSelectDialog = new AccountSelectDialog();
-        Scene scene = new Scene(accountSelectDialog);
+        Scene scene = new Scene(this);
         scene.getStylesheets().add("blue.css");
         stage.setScene(scene);
+        stage.setOnHidden(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                getCallback().call();
+            }
+        });
         stage.show();
-        return accountSelectDialog;
     }
 }
+
