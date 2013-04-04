@@ -1,12 +1,12 @@
 package ms.aurora.core.model;
 
+import ms.aurora.gui.dialog.MasterPasswordDialog;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.*;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import javax.swing.*;
 import java.util.List;
 
 
@@ -15,6 +15,8 @@ import java.util.List;
         @NamedQuery(name = "account.getAll", query = "select a from Account a")
 })
 public class Account extends AbstractModel {
+    private static String masterPassword;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -45,11 +47,13 @@ public class Account extends AbstractModel {
 
 
     public String getPassword() {
+        if (password == null) return null;
         return decrypt(password);
     }
 
 
     public void setPassword(String password) {
+        if (password == null) this.password = null;
         this.password = encrypt(password);
     }
 
@@ -75,6 +79,7 @@ public class Account extends AbstractModel {
             cipher.init(Cipher.ENCRYPT_MODE, skey);
             crypted = cipher.doFinal(input.getBytes());
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
         return new String(Base64.encodeBase64(crypted));
     }
@@ -87,18 +92,15 @@ public class Account extends AbstractModel {
             cipher.init(Cipher.DECRYPT_MODE, skey);
             output = cipher.doFinal(Base64.decodeBase64(input.getBytes()));
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
         return new String(output);
     }
 
     private static String getKey() {
-        String hwid = null;
-        try {
-            NetworkInterface ni = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-            hwid = new String(Base64.encodeBase64(ni.getHardwareAddress()));
-        } catch (Exception e) {
-            hwid = new String(Base64.encodeBase64(System.getProperty("user.home").getBytes()));
+        if(masterPassword == null) {
+            masterPassword = MasterPasswordDialog.showDialog().get();
         }
-        return hwid;
+        return masterPassword;
     }
 }
