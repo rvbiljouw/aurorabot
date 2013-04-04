@@ -1,11 +1,14 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.pathfinding.Path;
+import ms.aurora.api.pathfinding.impl.RSPathFinder;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
-import ms.aurora.api.wrappers.RSTilePath;
-import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
+
+import static ms.aurora.api.methods.Calculations.distance;
 
 /**
  * Date: 25/03/13
@@ -15,7 +18,12 @@ import java.awt.*;
  */
 public class Walking {
 
-    public static RSTile[] reversePath(RSTile... path) {
+    /**
+     * Reverses an array of tiles
+     * @param path Path to reverse
+     * @return reversed path
+     */
+    public static RSTile[] reversePath(RSTile[] path) {
         RSTile temp;
         for(int start = 0, end = path.length -1; start < end; start++, end--){
             temp = path[start];
@@ -25,39 +33,51 @@ public class Walking {
         return path;
     }
 
-    public static RSTilePath createPath(RSTile[] path) {
-        return new RSTilePath(Context.get(), path);
+    /**
+     * Clicks a tile
+     * @param tile tile
+     */
+    public static void clickTile(RSTile tile) {
+        Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
+        if (minimapPoint.x != -1 && minimapPoint.y != -1) {
+            Context.get().input.getMouse().moveMouse(minimapPoint.x, minimapPoint.y);
+            Context.get().input.getMouse().clickMouse(true);
+            Utilities.sleepNoException(700);
+            while(Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
+                    && !Thread.currentThread().isInterrupted()) {
+                Utilities.sleepNoException(400);
+            }
+        }
     }
 
-    public static boolean clickTile(RSTile tile) {
-        return clickTile(tile, 0, 0);
+    /**
+     * Walks the specified path.
+     * @param path Path to walk.
+     */
+    public static void walkPath(RSTile[] path) {
+        for (RSTile p : path) {
+            if (distance(Players.getLocal().getLocation(), p) > 8) {
+                if (distance(p, path[path.length - 1]) < distance(Players.getLocal()
+                        .getLocation(), path[path.length - 1])) {
+                    clickTile(p);
+                }
+            }
+        }
+        clickTile(path[path.length - 1]);
     }
 
-    public static boolean clickTile(RSTile tile, int offsetX, int offsetY) {
-        VirtualMouse mouse = Context.get().input.getMouse();
-        Point point = Viewport.convert(tile, offsetX, offsetY, tile.getZ());
-        mouse.moveMouse(point.x, point.y);
-        mouse.clickMouse(true);
-        return true;
+    public static void walkTo(int x, int y) {
+        RSPathFinder pf = new RSPathFinder();
+        Path path = pf.getPath(x, y, RSPathFinder.FULL);
+        if(path != null && path.getLength() != 0) {
+            walkPath(path.toTiles(7));
+        } else {
+            System.out.println("Path not found to " + x + ", "  + y);
+        }
     }
 
-    public static boolean applyAction(RSTile tile, String action) {
-       return applyAction(tile, action, 0, 0);
-    }
-
-    public static boolean applyAction(RSTile tile, String action, int offsetX, int offsetY) {
-        VirtualMouse mouse = Context.get().input.getMouse();
-        Point point  = Viewport.convert(tile, offsetX, offsetY, tile.getZ());
-        mouse.moveMouse(point.x, point.y);
-        return Menu.click(action);
-    }
-
-    public static boolean clickMap(RSTile tile) {
-        VirtualMouse mouse = Context.get().input.getMouse();
-        Point point  = Minimap.convert(tile);
-        mouse.moveMouse(point.x, point.y);
-        mouse.clickMouse(true);
-        return true;
+    public static void walkTo(RSTile tile) {
+        walkTo(tile.getX(), tile.getY());
     }
 
 }

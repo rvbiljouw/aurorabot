@@ -55,7 +55,7 @@ public class Certer extends Random {
                     portal.applyAction("Enter");
                     return Utilities.random(3000, 4000);
                 } else {
-                    Walking.clickMap(new RSTile(portalLocation.getX() - 1, portalLocation.getY()));
+                    Walking.clickTile(new RSTile(portalLocation.getX() - 1, portalLocation.getY()));
                     return Utilities.random(6000, 8000);
                 }
             }
@@ -95,7 +95,7 @@ public class Certer extends Random {
                 return Utilities.random(4000, 5000);
             } else {
                 RSTile certerLocation = certer.getLocation();
-                Walking.clickMap(new RSTile(certerLocation.getX() + 2, certerLocation.getY()));
+                Walking.clickTile(new RSTile(certerLocation.getX() + 2, certerLocation.getY()));
                 return Utilities.random(6000, 8000);
             }
         }

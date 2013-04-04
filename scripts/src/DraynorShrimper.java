@@ -25,17 +25,13 @@ import static ms.aurora.api.methods.filters.NpcFilters.ID;
 public class DraynorShrimper extends Script implements PaintListener {
 
     private static final RSTile FISHING_RSTILE = new RSTile(3087, 3229), BANK_RSTILE = new RSTile(3094, 3243);
-    private static final RSTile[] FISHING_SPOT_PATH = new RSTile[] { new RSTile(3094,3243), new RSTile(3091,3247),
-            new RSTile(3087,3244), new RSTile(3087,3239), new RSTile(3087,3234), new RSTile(3087,3229) };
-    private static final RSTile[] BANK_SPOT_PATH = new RSTile[] { new RSTile(3087,3229), new RSTile(3090,3233),
-            new RSTile(3088,3238), new RSTile(3087,3243), new RSTile(3090,3247), new RSTile(3094,3243) };
 
     @Override
     public int tick() {
 
         if (nearTile(FISHING_RSTILE)) {
             if (Inventory.isFull()) {
-                walkToTile(BANK_RSTILE, BANK_SPOT_PATH);
+                Walking.walkTo(BANK_RSTILE);
                 return Utilities.random(500, 1000);
             } else {
                 if (Players.getLocal().getAnimation() == -1 && !Players.getLocal().isMoving()) {
@@ -49,7 +45,7 @@ public class DraynorShrimper extends Script implements PaintListener {
             }
         } else if (nearTile(BANK_RSTILE)) {
             if (!Inventory.containsAny(317, 321)) {
-                walkToTile(FISHING_RSTILE, FISHING_SPOT_PATH);
+                Walking.walkTo(FISHING_RSTILE);
                 return Utilities.random(500, 1000);
             } else {
                 if (!Bank.isOpen()) {
@@ -72,22 +68,14 @@ public class DraynorShrimper extends Script implements PaintListener {
                     }
                 }
             }
+        } else {
+            Walking.walkTo(BANK_RSTILE);
         }
-        return 0;
+        return Utilities.random(400, 600);
     }
 
     private boolean nearTile(RSTile tile) {
         return Calculations.distance(Players.getLocal().getLocation(), tile) < 5;
-    }
-
-    private void walkToTile(RSTile target, RSTile[] path) {
-        while (!nearTile(target)) {
-            if (!Players.getLocal().isMoving()) {
-                if (!Walking.createPath(path).step()) {
-                    Utilities.sleepNoException(500, 1000);
-                }
-            }
-        }
     }
 
     @Override

@@ -199,7 +199,7 @@ public class DrillDemon extends Random {
         if (Widgets.getWidget(148, 1).getText().contains("jumps")) {
             if (sign1 == 1) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3160, 4820));
+                    Walking.clickTile(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -213,7 +213,7 @@ public class DrillDemon extends Random {
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 1) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3166, 4820));
+                    Walking.clickTile(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
@@ -223,7 +223,7 @@ public class DrillDemon extends Random {
         } else if (Widgets.getWidget(148, 1).getText().contains("push ups")) {
             if (sign1 == 2) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3160, 4820));
+                    Walking.clickTile(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -237,7 +237,7 @@ public class DrillDemon extends Random {
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 2) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3166, 4820));
+                    Walking.clickTile(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
@@ -247,7 +247,7 @@ public class DrillDemon extends Random {
         } else if (Widgets.getWidget(148, 1).getText().contains("sit ups")) {
             if (sign1 == 3) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3160, 4820));
+                    Walking.clickTile(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -261,7 +261,7 @@ public class DrillDemon extends Random {
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 3) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3166, 4820));
+                    Walking.clickTile(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
@@ -271,7 +271,7 @@ public class DrillDemon extends Random {
         } else if (Widgets.getWidget(148, 1).getText().contains("jog on")) {
             if (sign1 == 4) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3167, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3160, 4820));
+                    Walking.clickTile(new RSTile(3160, 4820));
                     mat1.applyAction("Use");
                 } else {
                     mat1.applyAction("Use");
@@ -285,7 +285,7 @@ public class DrillDemon extends Random {
                 return Utilities.random(1000, 1500);
             } else if (sign4 == 4) {
                 if (Calculations.distance(Players.getLocal().getLocation(), new RSTile(3159, 4820)) < 2) {
-                    Walking.clickMap(new RSTile(3166, 4820));
+                    Walking.clickTile(new RSTile(3166, 4820));
                     mat4.applyAction("Use");
                 } else {
                     mat4.applyAction("Use");
