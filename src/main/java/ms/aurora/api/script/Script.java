@@ -90,6 +90,7 @@ public abstract class Script extends Context implements Runnable {
                 cleanup();
                 onFinish();
                 logger.error("Script has thrown exception and has exited.", e);
+                e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
         }
@@ -109,10 +110,8 @@ public abstract class Script extends Context implements Runnable {
         if(this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener)this);
         }
-        info("derp!");
         randomsThread = new Thread(new Randoms());
         randomsThread.start();
-        info("derpz!!");
     }
 
     private void cleanup() {

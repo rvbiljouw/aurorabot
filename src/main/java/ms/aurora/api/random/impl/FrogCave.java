@@ -55,7 +55,7 @@ public class FrogCave extends Random {
                     herald.applyAction("Talk-to");
                     return random(500, 1000);
                 } else {
-                    Walking.clickMap(herald.getLocation());
+                    Walking.clickTile(herald.getLocation());
                     return random(500, 700);
                 }
             }
@@ -67,7 +67,7 @@ public class FrogCave extends Random {
                     frog.applyAction("Talk-to Frog");
                     return random(900, 1000);
                 } else {
-                    Walking.clickMap(frog.getLocation());
+                    Walking.clickTile(frog.getLocation());
                     return random(500, 700);
                 }
             } else {

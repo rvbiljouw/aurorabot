@@ -103,7 +103,7 @@ public class FreakyForester extends Random {
                         && (Calculations.distance(Players.getLocal().getLocation(), forester.getLocation()) <= 5)) {
                     forester.applyAction("Talk");
                 } else {
-                    Walking.clickMap(forester.getLocation());
+                    Walking.clickTile(forester.getLocation());
                 }
                 return Utilities.random(500, 800);
             case 1: // Talking
@@ -133,7 +133,7 @@ public class FreakyForester extends Random {
                         Pheasant.applyAction("Attack");
                         return Utilities.random(1000, 1500);
                     } else if (Calculations.distance(Players.getLocal().getLocation(), Pheasant.getLocation()) >= 5) {
-                        Walking.clickMap(Pheasant.getLocation());
+                        Walking.clickTile(Pheasant.getLocation());
                     }
                 } else
                     return Utilities.random(2000, 5000);

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import ms.aurora.api.plugin.Plugin;
+import ms.aurora.core.model.Account;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
@@ -28,6 +29,7 @@ public final class Session implements Runnable {
     private PluginManager pluginManager;
     private AppletWidget container;
     private Applet applet;
+    private Account account;
 
     public Session(AppletWidget container) {
         this.container = container;
@@ -38,7 +40,7 @@ public final class Session implements Runnable {
         AppletLoader loader = new AppletLoader();
         loader.run();
 
-        if(loader.getApplet() != null) {
+        if (loader.getApplet() != null) {
             applet = loader.getApplet();
             container.setApplet(applet);
             set(applet.hashCode(), this);
@@ -105,4 +107,12 @@ public final class Session implements Runnable {
         return applet;
     }
 
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

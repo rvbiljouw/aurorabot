@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
+import ms.aurora.core.model.Account;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
@@ -201,6 +202,8 @@ public class ApplicationGUI extends AnchorPane {
                 }
             }
         });
+
+        Account.init();
     }
 
     public static Applet getSelectedApplet() {

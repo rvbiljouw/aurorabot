@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
+import ms.aurora.gui.dialog.AccountSelectDialog;
+import ms.aurora.gui.dialog.Callback;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +22,22 @@ public final class ScriptManager {
         this.session = session;
     }
 
-    public void start(Script script) {
+    public void start(final Script script) {
+        if (session.getAccount() == null) {
+            final AccountSelectDialog dialog = new AccountSelectDialog();
+            dialog.setCallback(new Callback() {
+                public void call() {
+                    session.setAccount(dialog.get());
+                    startScript(script);
+                }
+            });
+            dialog.show();
+        } else {
+            startScript(script);
+        }
+    }
+
+    private void startScript(Script script) {
         script.setSession(session);
         Future<?> future = executorService.submit(script);
         futures.put(script, future);
@@ -28,21 +45,21 @@ public final class ScriptManager {
     }
 
     public void pause() {
-        for(Script script : futures.keySet()) {
+        for (Script script : futures.keySet()) {
             script.setState(ScriptState.PAUSED);
         }
         state = State.PAUSED;
     }
 
     public void resume() {
-        for(Script script : futures.keySet()) {
+        for (Script script : futures.keySet()) {
             script.setState(ScriptState.RUNNING);
         }
         state = State.RUNNING;
     }
 
     public void stop() {
-        for(Script script : futures.keySet()) {
+        for (Script script : futures.keySet()) {
             script.setState(ScriptState.STOP);
             futures.remove(script);
         }
