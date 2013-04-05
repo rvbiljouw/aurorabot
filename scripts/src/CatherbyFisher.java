@@ -1,17 +1,16 @@
-import ms.aurora.api.methods.Npcs;
-import ms.aurora.api.methods.Players;
-import ms.aurora.api.methods.Skills;
-import ms.aurora.api.methods.Walking;
+import ms.aurora.api.methods.*;
+import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.tabs.Bank;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
+import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
-import java.util.*;
+import java.util.LinkedList;
 
 import static ms.aurora.api.util.Utilities.random;
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -22,8 +21,13 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 @ScriptManifest(name = "Catherby Fisher",
         author = "warb0",
         version = 0.1,
-        shortDescription = "fishes fishes")
+        shortDescription = "fishes lobsters")
 public class CatherbyFisher extends Script implements PaintListener {
+    private RSNPC spot;
+
+    private RSTile FISH_SPOT = new RSTile(2847, 3431);
+    private RSTile BANK_SPOT = new RSTile(2809, 3440);
+
     private enum Action {
         BANK,
         WALK,
@@ -31,24 +35,19 @@ public class CatherbyFisher extends Script implements PaintListener {
         WAIT
     }
 
-    private Predicate<RSNPC> BANK_PREDICATE = new Predicate<RSNPC>() {
-        @Override
-        public boolean apply(RSNPC object) {
-            return object.getName().equals("Banker");
-        }
-    };
-
     private Predicate<RSNPC> SPOT_PREDICATE = new Predicate<RSNPC>() {
         @Override
         public boolean apply(RSNPC object) {
-            return object.getId() == 327;
+            return object.getId() == 321;
         }
     };
+
+    private Predicate<RSNPC> BANK_PREDICATE = NpcFilters.NAMED("Banker");
 
     private Predicate<Inventory.InventoryItem> INV_PREDICATE = new Predicate<Inventory.InventoryItem>() {
         @Override
         public boolean apply(Inventory.InventoryItem object) {
-            return object.getId() != 303;
+            return object.getId() != 301;
         }
     };
 
@@ -63,43 +62,48 @@ public class CatherbyFisher extends Script implements PaintListener {
 
     @Override
     public int tick() {
-        if(Inventory.getAll(303).length == 0) {
+        if (Inventory.getAll(301).length == 0) {
             System.out.println("No net found. exiting...");
             return -1;
         }
-        RSNPC banker = Npcs.get(BANK_PREDICATE);
-        RSNPC spot = Npcs.get(SPOT_PREDICATE);
+        if (spot == null) {
+            spot = Npcs.get(SPOT_PREDICATE);
+        }
         switch (getAction()) {
             case WALK:
                 if (Inventory.isFull()) {
-                    Walking.walkTo(banker.getLocation());
+                    Walking.walkTo(BANK_SPOT);
                 } else {
-                    if (spot != null) {
-                        Walking.walkTo(spot.getLocation());
-                    } // will fall to wait...
+                    Walking.walkTo(FISH_SPOT);
                 }
                 break;
             case BANK:
-                if (!Bank.isOpen()) {
+                while (!Bank.isOpen()) {
                     Bank.open();
+                    sleepNoException(300, 600);
                 }
                 while (Inventory.getCount() > 1) {
                     Inventory.InventoryItem item = Inventory.get(INV_PREDICATE);
                     if (item != null) {
                         item.applyAction("Store All");
+                        sleepNoException(300, 600);
                     }
                 }
                 break;
             case FISH:
                 if (spot != null) {
-                    spot.applyAction("Net");
-                    sleepNoException(400, 600);
+                    if (spot != null) {
+                        spot.applyAction("Cage");
+                        while (Players.getLocal().isMoving()) {
+                            sleepNoException(300, 600);
+                        }
+                    }
                 }
                 break;
             case WAIT:
                 break;
         }
-        return random(100, 200);
+        return random(200, 400);
     }
 
     private Action getAction() {
@@ -107,22 +111,16 @@ public class CatherbyFisher extends Script implements PaintListener {
             return Action.WAIT;
         } else {
             if (Inventory.isFull()) {
-                RSNPC banker = Npcs.get(BANK_PREDICATE);
-                if (Players.getLocal().distance(banker) > 5) {
+                if (Calculations.distance(Players.getLocal().getLocation(), BANK_SPOT) > 5) {
                     return Action.WALK;
                 } else {
                     return Action.BANK;
                 }
             } else {
-                RSNPC spot = Npcs.get(SPOT_PREDICATE);
-                if (spot == null) {
-                    return Action.WAIT;
+                if (Calculations.distance(Players.getLocal().getLocation(), FISH_SPOT) > 15) {
+                    return Action.WALK;
                 } else {
-                    if (Players.getLocal().distance(spot) > 5) {
-                        return Action.WALK;
-                    } else {
-                        return Action.FISH;
-                    }
+                    return Action.FISH;
                 }
             }
         }
@@ -147,11 +145,13 @@ public class CatherbyFisher extends Script implements PaintListener {
         itemList.add(String.format("Runtime: %02d:%02d:%02d", hours, mins, secs));
         itemList.add(String.format("XP Gain: %d", gained));
         itemList.add(String.format("XP Hour: %d", xpHour));
-        graphics.setColor(Color.CYAN);
-        graphics.fillRect(x - 10, y - 10, 200, itemList.size() * 20 + 10);
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(new Color(61, 61, 61, 100));
+        graphics.fillRoundRect(x - 10, y - 10, 200, itemList.size() * 20 + 10, 10, 10);
+        graphics.setColor(Color.WHITE);
+        y += 10;
         for (String item : itemList) {
-            graphics.drawString(item, x, y += 20);
+            graphics.drawString(item, x, y);
+            y += 20;
         }
     }
 }

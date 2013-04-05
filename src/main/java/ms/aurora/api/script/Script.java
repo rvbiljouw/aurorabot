@@ -3,6 +3,7 @@ package ms.aurora.api.script;
 import ms.aurora.api.Context;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
+import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
@@ -107,16 +108,16 @@ public abstract class Script extends Context implements Runnable {
     private void init() {
         input.initialize();
 
-        if(this instanceof PaintListener) {
-            getSession().getPaintManager().register((PaintListener)this);
+        if (this instanceof PaintListener) {
+            getSession().getPaintManager().register((PaintListener) this);
         }
         randomsThread = new Thread(new Randoms());
         randomsThread.start();
     }
 
     private void cleanup() {
-        if(this instanceof PaintListener) {
-            getSession().getPaintManager().deregister((PaintListener)this);
+        if (this instanceof PaintListener) {
+            getSession().getPaintManager().deregister((PaintListener) this);
         }
     }
 
@@ -132,14 +133,15 @@ public abstract class Script extends Context implements Runnable {
 
         @Override
         public void run() {
-            while(getState() != ScriptState.STOP) {
-                for(Random random : randoms) {
+            while (getState() != ScriptState.STOP) {
+                for (Random random : randoms) {
                     random.setSession(getSession());
 
-                    while(random.activate()) {
+                    while (random.activate()) {
+                        state = ScriptState.PAUSED;
                         info("Random event " + random.getClass().getSimpleName() + " was triggered.");
                         int time = random.loop();
-                        if(time == -1) continue;
+                        if (time == -1) continue;
 
                         sleepNoException(time);
                     }
@@ -151,7 +153,7 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private final Random[] randoms = {
-        new AutoLogin(),
+            new AutoLogin(),
             new AxeHandler(),
             new BeehiveSolver(),
             new CapnArnav(),
@@ -159,6 +161,7 @@ public abstract class Script extends Context implements Runnable {
             new StrangePlant(),
             new Talker(),
             new Teleother(),
-            new WelcomeScreen()
+            new WelcomeScreen(),
+            new StrangeBox()
     };
 }
