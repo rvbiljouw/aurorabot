@@ -58,7 +58,7 @@ public final class RSWidget implements Interactable {
         } else {
             int[] posX = ctx.getClient().getBoundsX();
             if (getBoundsIndex() != -1 && posX[getBoundsIndex()] > 0) {
-                return (posX[getBoundsIndex()] + (getType() > 0 ? widget.getX() : 0));
+                return (posX[getBoundsIndex()] + widget.getX());
             }
         }
         return (widget.getX() + x);
@@ -75,7 +75,7 @@ public final class RSWidget implements Interactable {
         } else {
             int[] posY = ctx.getClient().getBoundsY();
             if (getBoundsIndex() != -1 && posY[getBoundsIndex()] > 0) {
-                return (posY[getBoundsIndex()] + (getType() > 0 ? widget.getY() : 0));
+                return (posY[getBoundsIndex()] + widget.getY());
             }
         }
         return (widget.getY() + y);
