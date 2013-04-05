@@ -80,6 +80,11 @@ public class Walking {
     }
 
     public static void walkTo(RSTile tile) {
+        if(distance(Players.getLocal().getLocation(), tile) <= 14) {
+            clickTile(tile);
+            return;
+        }
+
         walkTo(tile.getX(), tile.getY());
     }
 
