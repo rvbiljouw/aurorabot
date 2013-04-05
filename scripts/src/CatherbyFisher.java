@@ -1,5 +1,4 @@
 import ms.aurora.api.methods.*;
-import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.tabs.Bank;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.script.Script;
@@ -42,8 +41,6 @@ public class CatherbyFisher extends Script implements PaintListener {
         }
     };
 
-    private Predicate<RSNPC> BANK_PREDICATE = NpcFilters.NAMED("Banker");
-
     private Predicate<Inventory.InventoryItem> INV_PREDICATE = new Predicate<Inventory.InventoryItem>() {
         @Override
         public boolean apply(Inventory.InventoryItem object) {
@@ -62,10 +59,6 @@ public class CatherbyFisher extends Script implements PaintListener {
 
     @Override
     public int tick() {
-        if (Inventory.getAll(301).length == 0) {
-            System.out.println("No net found. exiting...");
-            return -1;
-        }
         if (spot == null) {
             spot = Npcs.get(SPOT_PREDICATE);
         }
@@ -92,12 +85,7 @@ public class CatherbyFisher extends Script implements PaintListener {
                 break;
             case FISH:
                 if (spot != null) {
-                    if (spot != null) {
-                        spot.applyAction("Cage");
-                        while (Players.getLocal().isMoving()) {
-                            sleepNoException(300, 600);
-                        }
-                    }
+                    spot.applyAction("Cage");
                 }
                 break;
             case WAIT:

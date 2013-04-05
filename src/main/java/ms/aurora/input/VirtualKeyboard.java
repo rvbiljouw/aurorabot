@@ -12,19 +12,21 @@ public final class VirtualKeyboard {
     private Random random = new Random();
     private Component component;
 
-    public void type(String text) {
+    public void type(String text, boolean enter) {
         for (char key : text.toCharArray()) {
             press(key);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {
+            }
+        }
+        if (enter) {
+            press((char) KeyEvent.VK_ENTER);
         }
     }
 
     public void press(char key) {
-        holdKey(key, 0);
-    }
-
-    public void holdKey(char key, int duration) {
         _press(key, System.currentTimeMillis());
-        _release(key, System.currentTimeMillis() + duration + random(20, 50));
     }
 
     public void holdKey(char key) {

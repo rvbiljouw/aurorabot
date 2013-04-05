@@ -138,7 +138,8 @@ public abstract class Script extends Context implements Runnable {
                     random.setSession(getSession());
 
                     while (random.activate()) {
-                        state = ScriptState.PAUSED;
+                        setState(ScriptState.PAUSED);
+
                         info("Random event " + random.getClass().getSimpleName() + " was triggered.");
                         int time = random.loop();
                         if (time == -1) continue;
