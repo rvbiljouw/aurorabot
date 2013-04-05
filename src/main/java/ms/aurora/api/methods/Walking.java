@@ -63,7 +63,10 @@ public class Walking {
                 }
             }
         }
-        clickTile(path[path.length - 1]);
+
+        if(distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
+            clickTile(path[path.length - 1]);
+        }
     }
 
     public static void walkTo(int x, int y) {
