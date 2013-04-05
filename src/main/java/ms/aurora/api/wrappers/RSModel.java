@@ -115,13 +115,10 @@ public final class RSModel {
      */
     public Point getRandomPoint() {
         ArrayList<Point> points = new ArrayList<Point>();
-        for (int i = 0; i < verticesX.length; i++) {
-            if (i >= verticesY.length && i >= verticesZ.length) return null;
-            Point point = Viewport.convert(new RSTile(localX, localY), verticesX[i], verticesZ[i], -verticesY[i]);
-            if (point.x != -1 && point.y != -1) {
-                points.add(point);
-            }
+        for(Polygon poly : getPolygons()) {
+            points.add(new Point(poly.xpoints[0], poly.ypoints[0]));
         }
+
         if (points.size() != 0)
             return points.get(Utilities.random(0, points.size()));
         else return new Point(-1, -1);
