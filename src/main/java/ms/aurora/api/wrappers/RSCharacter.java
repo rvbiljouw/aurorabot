@@ -5,6 +5,7 @@ import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.rt3.Model;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 
@@ -15,6 +16,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  * @author Rick
  */
 public class RSCharacter extends RSRenderable implements Locatable, Interactable {
+    private static Logger logger = Logger.getLogger(RSCharacter.class);
     private final ms.aurora.rt3.Character wrapped;
 
     public RSCharacter(Context context,
@@ -28,7 +30,12 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     private Point getClickLocation() {
-        return this.getModel().getRandomPoint();
+        if (getModel() != null) {
+            return getModel().getRandomPoint();
+        } else {
+            logger.debug("Couldn't find model, using screen location.");
+            return getScreenLocation();
+        }
     }
 
     public final RSTile getLocation() {
@@ -97,7 +104,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         ms.aurora.api.methods.Menu.click(actionName);
         sleepNoException(700);
 
-        while(Players.getLocal().isMoving()) {
+        while (Players.getLocal().isMoving()) {
             sleepNoException(600);
         }
         return true;
@@ -159,8 +166,8 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
 
     public final RSModel getModel() {
         Model model = _getModel();
-        if(model != null) {
-            return new RSModel(ctx, model, getLocalX(),  getLocalY(),  getTurnDirection());
+        if (model != null) {
+            return new RSModel(ctx, model, getLocalX(), getLocalY(), getTurnDirection());
         }
         return null;
     }

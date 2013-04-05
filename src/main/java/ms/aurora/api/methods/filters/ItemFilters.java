@@ -4,11 +4,8 @@ import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSGroundItem;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 01/04/13
- * Time: 11:17
- * To change this template use File | Settings | File Templates.
+ * A class containing several filters for RSGroundItem
+ * @author rvbiljouw
  */
 public final class ItemFilters {
 
@@ -16,6 +13,11 @@ public final class ItemFilters {
 
     }
 
+    /**
+     * Filters a ground item out by it's ID.
+     * @param id ID to filter
+     * @return predicate
+     */
     public static Predicate<RSGroundItem> ID(final int id) {
         return new Predicate<RSGroundItem>() {
             @Override

@@ -4,6 +4,7 @@ import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
 
 /**
+ * Several NPC related filters
  * @author Rick
  * @author tobiewarburton
  */
