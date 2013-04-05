@@ -50,7 +50,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final RSTile getLocation() {
-        return new RSTile(getX(), getY());
+        return new RSTile(getX(), getY(), 0);
     }
 
     public final RSTile getRegionalLocation() {

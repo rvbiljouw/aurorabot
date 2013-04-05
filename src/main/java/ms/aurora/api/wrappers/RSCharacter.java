@@ -39,7 +39,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final RSTile getLocation() {
-        return new RSTile(getX(), getY());
+        return new RSTile(getX(), getY(), -(wrapped.getHeight() / 2));
     }
 
     public final RSTile getRegionalLocation() {

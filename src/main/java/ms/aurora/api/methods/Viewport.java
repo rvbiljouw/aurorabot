@@ -41,7 +41,8 @@ public final class Viewport {
      * that regional tile into a Point representing the position within the viewport.
      */
     public static Point convert(RSTile tile) {
-        return convertLocal(new RSTile(tile.getX() - getClient().getBaseX(), tile.getY() - getClient().getBaseY(), tile.getZ()));
+        return convertLocal(new RSTile((tile.getX() - getClient().getBaseX()) * 128,
+                (tile.getY() - getClient().getBaseY()) * 128, tile.getZ()));
     }
 
     /**
