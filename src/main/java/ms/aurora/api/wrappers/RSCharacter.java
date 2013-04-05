@@ -1,9 +1,9 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
+import ms.aurora.api.methods.Walking;
 import ms.aurora.rt3.Model;
 import org.apache.log4j.Logger;
 
@@ -26,7 +26,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final Point getScreenLocation() {
-        return Viewport.convert(getRegionalLocation());
+        return Viewport.convertLocal(getRegionalLocation());
     }
 
     private Point getClickLocation() {
@@ -99,6 +99,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return
      */
     public final boolean applyAction(final String actionName) {
+        if(!Viewport.tileOnScreen(getLocation())) {
+            Walking.walkTo(getLocation());
+            return false;
+        }
+
         Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
         ms.aurora.api.methods.Menu.click(actionName);
@@ -112,7 +117,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
 
     @Override
     public final boolean hover() {
-        if (!Viewport.tileOnScreen(getRegionalLocation())) {
+        if (!Viewport.tileOnScreen(getLocation())) {
             return false;
         }
         Point screen = getClickLocation();

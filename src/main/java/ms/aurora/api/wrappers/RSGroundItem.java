@@ -1,8 +1,8 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Viewport;
+import ms.aurora.api.methods.Walking;
 import ms.aurora.rt3.Item;
 
 import java.awt.*;
@@ -38,7 +38,7 @@ public final class RSGroundItem implements Locatable, Interactable {
     }
 
     public Point getScreenLocation() {
-        return Viewport.convert(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
+        return Viewport.convertLocal(new RSTile(getLocalX() * 128 + 64, getLocalY() * 128 + 64, z));
     }
 
     public RSTile getLocation() {
@@ -75,6 +75,10 @@ public final class RSGroundItem implements Locatable, Interactable {
      */
     @Override
     public boolean applyAction(String actionName) {
+        if(!Viewport.tileOnScreen(getLocation())) {
+            Walking.walkTo(getLocation());
+            return false;
+        }
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -88,6 +92,10 @@ public final class RSGroundItem implements Locatable, Interactable {
 
     @Override
     public boolean hover() {
+        if(!Viewport.tileOnScreen(getLocation())) {
+            Walking.walkTo(getLocation());
+            return false;
+        }
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
@@ -101,6 +109,10 @@ public final class RSGroundItem implements Locatable, Interactable {
 
     @Override
     public boolean click(boolean left) {
+        if(!Viewport.tileOnScreen(getLocation())) {
+            Walking.walkTo(getLocation());
+            return false;
+        }
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
         ctx.input.getMouse().clickMouse(screen.x, screen.y, left);

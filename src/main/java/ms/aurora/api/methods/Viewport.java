@@ -28,12 +28,20 @@ public final class Viewport {
     }
 
     /**
-     * Converts a tile to a screen position
+     * Converts a regional tile to a screen position
      * @param tile tile
      * @return A point representing the screen coordinate, of which the x/y may be -1.
      */
-    public static Point convert(RSTile tile) {
+    public static Point convertLocal(RSTile tile) {
         return convert(tile.getX(), tile.getY(), tile.getZ());
+    }
+
+    /*
+     * Converts a world-wide tile to a regional tile and converts
+     * that regional tile into a Point representing the position within the viewport.
+     */
+    public static Point convert(RSTile tile) {
+        return convertLocal(new RSTile(tile.getX() - getClient().getBaseX(), tile.getY() - getClient().getBaseY(), tile.getZ()));
     }
 
     /**
@@ -104,15 +112,6 @@ public final class Viewport {
     }
 
     /**
-     * Checks if a tile is visible on the screen.
-     * @param tile tile to check
-     * @return true if visible
-     */
-    public static boolean tileOnScreen(RSTile tile) {
-        return !convert(tile).equals(new Point(-1, -1));
-    }
-
-    /**
      * INTERNAL: Retrieves a client from the current context.
      * @return client
      */
@@ -128,5 +127,13 @@ public final class Viewport {
             CURVE_SIN[i] = (int) (65536.0 * Math.sin(i * 0.0030679615));
             CURVE_COS[i] = (int) (65536.0 * Math.cos(i * 0.0030679615));
         }
+    }
+
+    public static boolean tileOnScreen(RSTile location) {
+        return BOUNDS.contains(convert(location));
+    }
+
+    public static boolean localTileOnScreen(RSTile location) {
+        return BOUNDS.contains(convertLocal(location));
     }
 }
