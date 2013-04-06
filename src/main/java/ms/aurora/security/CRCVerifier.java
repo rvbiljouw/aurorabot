@@ -1,6 +1,5 @@
 package ms.aurora.security;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -36,7 +35,7 @@ public class CRCVerifier {
         try {
             String decodedPath = URLDecoder.decode(path, "UTF-8");
             // The file should ALWAYS be in a jar when we verify it.
-            if(!decodedPath.endsWith(".jar")) {
+            if (!decodedPath.endsWith(".jar")) {
                 // TODO: Send error code to server.
                 System.exit(255);
                 return;
@@ -44,7 +43,7 @@ public class CRCVerifier {
 
             JarFile file = new JarFile(decodedPath, true);
             Enumeration<JarEntry> entries = file.entries();
-            while(entries.hasMoreElements()) {
+            while (entries.hasMoreElements()) {
                 JarEntry current = entries.nextElement();
                 files.add(current.getName());
                 lastEdited.put(current.getName(), current.getTime());

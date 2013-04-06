@@ -1,7 +1,6 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.util.GrahamScan;
 import ms.aurora.api.util.Utilities;
@@ -115,7 +114,7 @@ public final class RSModel {
      */
     public Point getRandomPoint() {
         ArrayList<Point> points = new ArrayList<Point>();
-        for(Polygon poly : getPolygons()) {
+        for (Polygon poly : getPolygons()) {
             points.add(new Point(poly.xpoints[0], poly.ypoints[0]));
         }
 

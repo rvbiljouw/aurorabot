@@ -58,7 +58,7 @@ public class BeehiveSolver extends Random {
                 int id = returnIdAtSlot(i);
                 dragInterfaces(getBeehiveInterface().getWidgets()[START_INTERFACE_IDS[i - 1]], getBeehiveInterface().getWidgets()[returnDragTo(id)]);
             }
-            Utilities.random(1000,2000);
+            Utilities.random(1000, 2000);
             //Wait is necessary for delay in the change of a setting.
             if (Settings.getSetting(805) == 109907968) {
                 solved = true;
@@ -77,7 +77,7 @@ public class BeehiveSolver extends Random {
             }
         }
 
-        return Utilities.random(500,1000);
+        return Utilities.random(500, 1000);
     }
 
     public boolean dragInterfaces(RSWidget child1, RSWidget child2) {

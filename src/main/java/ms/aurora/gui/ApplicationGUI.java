@@ -86,9 +86,9 @@ public class ApplicationGUI extends AnchorPane {
     void onStartScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             final Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            final Button source = (Button)evt.getSource();
+            final Button source = (Button) evt.getSource();
 
-            switch(session.getScriptManager().getState()) {
+            switch (session.getScriptManager().getState()) {
                 case RUNNING:
                 case PAUSED:
                     session.getScriptManager().stop();
@@ -126,8 +126,8 @@ public class ApplicationGUI extends AnchorPane {
     void onPauseScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            Button source = (Button)evt.getSource();
-            switch(session.getScriptManager().getState()) {
+            Button source = (Button) evt.getSource();
+            switch (session.getScriptManager().getState()) {
                 case RUNNING:
                     session.getScriptManager().pause();
                     source.setText("Resume");
@@ -189,13 +189,13 @@ public class ApplicationGUI extends AnchorPane {
             @Override
             public void handle(Event event) {
                 Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
-                if(selectedTab == null) {
+                if (selectedTab == null) {
                     return;
                 }
 
                 Node component = selectedTab.getContent();
-                if(component instanceof AppletWidget) {
-                    ((AppletWidget)component).onMenuOpening();
+                if (component instanceof AppletWidget) {
+                    ((AppletWidget) component).onMenuOpening();
                 } else {
                     mnPlugins.getItems().clear();
                     mnPlugins.getItems().add(pluginOverview);

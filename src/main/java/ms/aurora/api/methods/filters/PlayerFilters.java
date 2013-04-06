@@ -8,7 +8,8 @@ import ms.aurora.api.wrappers.RSPlayer;
  */
 public final class PlayerFilters {
 
-    private PlayerFilters() { }
+    private PlayerFilters() {
+    }
 
     /**
      * tests of the current {@link ms.aurora.api.wrappers.RSPlayer} is not in combat

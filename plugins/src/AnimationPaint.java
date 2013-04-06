@@ -12,7 +12,7 @@ public class AnimationPaint implements PaintListener {
     @Override
     public void onRepaint(Graphics graphics) {
         RSPlayer player = Players.getLocal();
-        if(player != null) {
+        if (player != null) {
             Point loc = player.getScreenLocation();
             graphics.drawString(String.valueOf(player.getAnimation()),
                     loc.x, loc.y);

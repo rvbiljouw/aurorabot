@@ -7,7 +7,6 @@ import ms.aurora.input.VirtualKeyboard;
 import java.awt.event.KeyEvent;
 
 /**
- *
  * @author A_C/Cov
  * @author Rick
  */
@@ -15,9 +14,10 @@ public final class Camera {
 
     /**
      * Retrieves the current camera angle.
+     *
      * @return camera angle
      */
-    public static int getAngle(){
+    public static int getAngle() {
         double mapAngle = Context.get().getClient().getCameraPitch();
         mapAngle /= 2048;
         mapAngle *= 360;
@@ -26,6 +26,7 @@ public final class Camera {
 
     /**
      * Sets the compass to specified face direction
+     *
      * @param dir Direction
      *            'n' for North,
      *            'e' for East,
@@ -51,6 +52,7 @@ public final class Camera {
 
     /**
      * Sets the camera to the specified angle
+     *
      * @param degrees degrees of the turn
      */
     public static void setAngle(int degrees) {
@@ -58,7 +60,7 @@ public final class Camera {
         char left = KeyEvent.VK_LEFT, right = KeyEvent.VK_RIGHT, dir = left;
         int start = getAngle();
         start = start < 180 ? start + 360 : start;
-        degrees = degrees < 180 ? degrees+360 : degrees;
+        degrees = degrees < 180 ? degrees + 360 : degrees;
         if (degrees > start) {
             if (degrees - 180 < start) {
                 dir = right;

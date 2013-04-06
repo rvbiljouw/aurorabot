@@ -82,7 +82,7 @@ public final class VirtualMouse implements MouseMotionListener {
                 System.currentTimeMillis(), 0, x, y, 1, false,
                 left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
         context.getClient().getMouse().mouseClicked(event);
-        ((MouseListener)context.getClient().getCanvas()).mouseClicked(event);
+        ((MouseListener) context.getClient().getCanvas()).mouseClicked(event);
     }
 
     public void pressMouse(int x, int y, boolean left) {
@@ -90,7 +90,7 @@ public final class VirtualMouse implements MouseMotionListener {
                 System.currentTimeMillis(), 0, x, y, 1, false,
                 left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
         context.getClient().getMouse().mousePressed(event);
-        ((MouseListener)context.getClient().getCanvas()).mousePressed(event);
+        ((MouseListener) context.getClient().getCanvas()).mousePressed(event);
     }
 
     public void releaseMouse(int x, int y, boolean left) {
@@ -98,7 +98,7 @@ public final class VirtualMouse implements MouseMotionListener {
                 System.currentTimeMillis(), 0, x, y, 1, false,
                 left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
         context.getClient().getMouse().mouseReleased(event);
-        ((MouseListener)context.getClient().getCanvas()).mouseReleased(event);
+        ((MouseListener) context.getClient().getCanvas()).mouseReleased(event);
     }
 
     public void hopMouse(int x, int y) {
@@ -106,7 +106,7 @@ public final class VirtualMouse implements MouseMotionListener {
                 System.currentTimeMillis(), 0, x, y, 0, false);
         mouseMoved(event);
         context.getClient().getMouse().mouseMoved(event);
-        ((MouseMotionListener)context.getClient().getCanvas()).mouseMoved(event);
+        ((MouseMotionListener) context.getClient().getCanvas()).mouseMoved(event);
     }
 
     public void setComponent(Component component) {

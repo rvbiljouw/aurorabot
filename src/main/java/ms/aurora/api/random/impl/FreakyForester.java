@@ -11,9 +11,9 @@ import ms.aurora.api.wrappers.*;
 
 /**
  * @author tobiewarburton
- * note i have commented out the deposit box bit because we didn't have
- * the method implemented inside the Bank class and im not sure if it's the same
- * in rs07. I can implement it later
+ *         note i have commented out the deposit box bit because we didn't have
+ *         the method implemented inside the Bank class and im not sure if it's the same
+ *         in rs07. I can implement it later
  */
 public class FreakyForester extends Random {
     private RSNPC forester;

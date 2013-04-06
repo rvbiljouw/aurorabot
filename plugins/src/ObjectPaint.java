@@ -14,7 +14,7 @@ public class ObjectPaint implements PaintListener {
     @Override
     public void onRepaint(Graphics graphics) {
         RSObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);
-        for(RSObject object : objects) {
+        for (RSObject object : objects) {
             Point loc = object.getScreenLocation();
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
         }

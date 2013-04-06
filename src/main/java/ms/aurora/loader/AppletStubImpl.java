@@ -41,7 +41,7 @@ public final class AppletStubImpl implements AppletStub {
 
     @Override
     public String getParameter(String name) {
-        if(!appletParams.containsKey(name)) {
+        if (!appletParams.containsKey(name)) {
             throw new MalformedStubException("Missing stub element " + name);
         }
         System.out.println(name + " " + appletParams.get(name));

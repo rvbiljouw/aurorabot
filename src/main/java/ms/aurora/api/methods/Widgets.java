@@ -1,7 +1,6 @@
 package ms.aurora.api.methods;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicates;
 import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
@@ -11,8 +10,6 @@ import ms.aurora.rt3.Widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -78,9 +75,9 @@ public final class Widgets {
      */
     public static RSWidget[] getWidgetsWithText(String predicate) {
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
-        for(RSWidgetGroup groups : getAll()) {
-            for(RSWidget child : groups.getWidgets()) {
-                if(child != null && child.getText().contains(predicate)) {
+        for (RSWidgetGroup groups : getAll()) {
+            for (RSWidget child : groups.getWidgets()) {
+                if (child != null && child.getText().contains(predicate)) {
                     satisfied.add(child);
                 }
             }

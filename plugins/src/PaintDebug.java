@@ -1,13 +1,8 @@
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author rvbiljouw
@@ -40,7 +35,7 @@ public class PaintDebug extends Plugin {
         npcs.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
-                if(!npcPaintActive) {
+                if (!npcPaintActive) {
                     getSession().getPaintManager().register(npcPaint);
                 } else {
                     getSession().getPaintManager().deregister(npcPaint);
@@ -54,7 +49,7 @@ public class PaintDebug extends Plugin {
         objects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
-                if(!objectPaintActive) {
+                if (!objectPaintActive) {
                     getSession().getPaintManager().register(objectPaint);
                 } else {
                     getSession().getPaintManager().deregister(objectPaint);
@@ -144,7 +139,6 @@ public class PaintDebug extends Plugin {
     public void cleanup() {
         getSession().deregisterMenu(paint);
     }
-
 
 
 }

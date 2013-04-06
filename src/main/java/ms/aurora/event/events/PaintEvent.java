@@ -17,6 +17,6 @@ public final class PaintEvent extends GameEvent<Graphics> {
 
     @Override
     public void dispatch(EventListener e) {
-        ((PaintListener)e).onRepaint(getObject());
+        ((PaintListener) e).onRepaint(getObject());
     }
 }

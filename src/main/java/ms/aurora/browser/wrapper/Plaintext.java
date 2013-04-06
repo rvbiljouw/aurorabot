@@ -25,7 +25,7 @@ public final class Plaintext {
 
     public Matcher regex(String expression) {
         Pattern pattern = Pattern.compile(expression);
-        return  pattern.matcher(text);
+        return pattern.matcher(text);
     }
 
     public static Plaintext fromStream(InputStream stream) throws ParsingException {

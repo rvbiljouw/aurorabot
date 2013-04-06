@@ -77,7 +77,7 @@ public class ScriptOverview extends AnchorPane {
     void onOk(ActionEvent event) {
         ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
         Session session = SessionRepository.get(getSelectedApplet().hashCode());
-        if(session != null && model != null) {
+        if (session != null && model != null) {
             session.getScriptManager().start(model.script);
         }
         getScene().getWindow().hide();
@@ -90,9 +90,9 @@ public class ScriptOverview extends AnchorPane {
         String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
         String filterName = txtName.getText().toLowerCase();
 
-        for(Script script : scripts) {
-            if(selectedCategory.equals("All") || selectedCategory.equals(script.getManifest().category())) {
-                if(filterName.length() == 0 || script.getManifest().name().toLowerCase().contains(filterName)) {
+        for (Script script : scripts) {
+            if (selectedCategory.equals("All") || selectedCategory.equals(script.getManifest().category())) {
+                if (filterName.length() == 0 || script.getManifest().name().toLowerCase().contains(filterName)) {
                     scriptModelList.add(new ScriptModel(script));
                 }
             }
@@ -116,8 +116,8 @@ public class ScriptOverview extends AnchorPane {
 
         List<Script> scripts = ScriptLoader.getScripts();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
-        for(Script script : scripts) {
-            if(!categoryList.contains(script.getManifest().category())) {
+        for (Script script : scripts) {
+            if (!categoryList.contains(script.getManifest().category())) {
                 categoryList.add(script.getManifest().category());
             }
             scriptModelList.add(new ScriptModel(script));

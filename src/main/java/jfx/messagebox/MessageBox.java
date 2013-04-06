@@ -58,12 +58,12 @@ import javafx.stage.Window;
 
 /**
  * JfxMessageBox is free MessageBox API for JavaFX 2.
- *
+ * <p/>
  * Using JfxMessageBox, you can use MessageBox in JavaFX 2 easily.
- *
+ * <p/>
  * <h3>
  * Usage 1</h3>
- *
+ * <p/>
  * <code>
  * <pre>
  * import jfx.messagebox.MessageBox;
@@ -74,10 +74,10 @@ import javafx.stage.Window;
  *         MessageBox.ICON_ERROR);
  * </pre>
  * </code>
- *
+ * <p/>
  * <h3>
  * Usage 2</h3>
- *
+ * <p/>
  * <code>
  * <pre>
  * import jfx.messagebox.MessageBox;
@@ -88,7 +88,7 @@ import javafx.stage.Window;
  *         MessageBox.ICON_INFORMATION | MessageBox.OK | MessageBox.CANCEL);
  * </pre>
  * </code>
- *
+ * <p/>
  * <h3>
  * System Require</h3>
  * <ul>
@@ -182,24 +182,20 @@ public class MessageBox {
 
     /**
      * Display MessageBox.
-     *
+     * <p/>
      * <h3>Requirement</h3>
      * <ul>
      * <li>Program should run as JavaFX Application.</li>
      * </ul>
      *
-     * @param parent
-     *            Parent window object. If null was set, dialog may be modeless.
-     * @param message
-     *            Message string for dialog.
-     * @param title
-     *            Title string for dialog.
-     * @param option
-     *            Display option. The option value is either one of the option
-     *            constants OR'ing together (using the int "|" operator) two or
-     *            more of those MessageBox option constants. ex.
-     *            MessageBox.ICON_INFORMATION | MessageBox.OK |
-     *            MessageBox.CANCEL
+     * @param parent  Parent window object. If null was set, dialog may be modeless.
+     * @param message Message string for dialog.
+     * @param title   Title string for dialog.
+     * @param option  Display option. The option value is either one of the option
+     *                constants OR'ing together (using the int "|" operator) two or
+     *                more of those MessageBox option constants. ex.
+     *                MessageBox.ICON_INFORMATION | MessageBox.OK |
+     *                MessageBox.CANCEL
      * @return Selected button value. Default value is MessageBox.CANCEL.
      *         Selected button value is one of MessageBox.OK, MessageBox.CANCEL,
      *         MessageBox.YES, MessageBox.NO, MessageBox.ABORT,
@@ -207,7 +203,7 @@ public class MessageBox {
      */
     public static int show(final Window parent, final String message, final String title, final int option) {
         // Default return value is CANCEL.
-        final int[] result = new int[] { CANCEL };
+        final int[] result = new int[]{CANCEL};
 
         // Create stage without iconized button.
         final Stage dialog = new Stage(StageStyle.UTILITY);
@@ -272,9 +268,9 @@ public class MessageBox {
 
             boolean isButtonExists = false;
 
-            final int[] BUTTON_LIST = new int[] { OK, YES, NO, ABORT, RETRY, IGNORE, CANCEL };
-            final String[] BUTTON_STRING_LIST = new String[] {
-                    Messages.getString("MessageBox.OK"), Messages.getString("MessageBox.YES"), Messages.getString("MessageBox.NO"), Messages.getString("MessageBox.ABORT"), Messages.getString("MessageBox.RETRY"), Messages.getString("MessageBox.IGNORE"), Messages.getString("MessageBox.CANCEL") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            final int[] BUTTON_LIST = new int[]{OK, YES, NO, ABORT, RETRY, IGNORE, CANCEL};
+            final String[] BUTTON_STRING_LIST = new String[]{
+                    Messages.getString("MessageBox.OK"), Messages.getString("MessageBox.YES"), Messages.getString("MessageBox.NO"), Messages.getString("MessageBox.ABORT"), Messages.getString("MessageBox.RETRY"), Messages.getString("MessageBox.IGNORE"), Messages.getString("MessageBox.CANCEL")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
             final HBox hboxButtons = new HBox();
             totalPane.getChildren().add(hboxButtons);

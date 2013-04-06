@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;

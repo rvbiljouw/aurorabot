@@ -283,7 +283,7 @@ public class CapnArnav extends Random {
                 || (Widgets.getWidget(241, 5) != null && Widgets.getWidget(241, 5).getY() < 5)
                 || (Widgets.getWidget(242, 6) != null && Widgets.getWidget(242, 6).getY() < 5)
                 || (Widgets.getWidget(244, 8) != null && Widgets.getWidget(244, 8).getY() < 5)
-                || (Widgets.getWidget( 64, 5) != null && Widgets.getWidget(64 , 5).getY() < 5)
+                || (Widgets.getWidget(64, 5) != null && Widgets.getWidget(64, 5).getY() < 5)
                 || (Widgets.getWidget(236, 1) != null && Widgets.getWidget(236, 1).getY() < 5)
                 || (Widgets.getWidget(230, 4) != null && Widgets.getWidget(230, 4).getY() < 5)
                 || (Widgets.getWidget(228, 3) != null && Widgets.getWidget(228, 3).getY() < 5))
@@ -292,7 +292,7 @@ public class CapnArnav extends Random {
                 || Widgets.getWidget(241, 5).click(true)
                 || Widgets.getWidget(242, 6).click(true)
                 || Widgets.getWidget(244, 8).click(true)
-                || Widgets.getWidget( 64, 5).click(true)
+                || Widgets.getWidget(64, 5).click(true)
                 || Widgets.getWidget(236, 1).click(true)
                 || Widgets.getWidget(230, 4).click(true)
                 || Widgets.getWidget(228, 3).click(true);

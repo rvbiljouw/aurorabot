@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
@@ -8,6 +7,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Combat setting functions
+ *
  * @author Rick
  * @author tobiewarburton
  */
@@ -20,6 +20,7 @@ public final class Combat {
 
     /**
      * Gets the name of the currently wielded weapon.
+     *
      * @return weapon name
      */
     public static String getWeaponName() {
@@ -58,6 +59,7 @@ public final class Combat {
 
     /**
      * Selects a combat style.
+     *
      * @param style the style to select for example Aggressive
      */
     public static void selectCombatStyle(String style) {

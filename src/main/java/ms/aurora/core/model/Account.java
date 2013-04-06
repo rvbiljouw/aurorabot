@@ -98,7 +98,7 @@ public class Account extends AbstractModel {
     }
 
     private static byte[] pad(String value) {
-        if(value == null) return null;
+        if (value == null) return null;
 
         if (value.length() > 16) {
             return value.substring(0, 16).getBytes();

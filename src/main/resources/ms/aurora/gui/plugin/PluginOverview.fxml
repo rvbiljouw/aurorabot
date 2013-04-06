@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.collections.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?scenebuilder-stylesheet ../../../../blue.css?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 <fx:root type="javafx.scene.layout.AnchorPane" minHeight="554.0" prefHeight="624.999977929685"
          prefWidth="825.0001220703125" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane id="AnchorPane" layoutX="-2.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity"

@@ -25,7 +25,7 @@ public final class PluginManager {
     public void start(Class<? extends Plugin> pluginClass) {
         try {
             if (!pluginMap.containsKey(pluginClass.getName())) {
-               final Plugin plugin = pluginClass.newInstance();
+                final Plugin plugin = pluginClass.newInstance();
                 plugin.setSession(session);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override

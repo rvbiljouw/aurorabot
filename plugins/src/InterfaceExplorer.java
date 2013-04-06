@@ -80,7 +80,7 @@ public class InterfaceExplorer implements PaintListener {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
                     if (node == null) return;
                     if (!(node.getUserObject() instanceof RSWidget)) return;
-                    ctx.invokeLater(displayDelegate((RSWidget)node.getUserObject()));
+                    ctx.invokeLater(displayDelegate((RSWidget) node.getUserObject()));
                 }
             });
             tree.setMinimumSize(new Dimension(640, 738));
@@ -141,7 +141,10 @@ public class InterfaceExplorer implements PaintListener {
                     {"items", widget.getInventoryItems()},
                     {"item id", widget.getItemId()},
                     {"item stack size", widget.getItemStackSize()},
-                    {"text", widget.getText()}
+                    {"text", widget.getText()},
+                    {"model id", widget.getModelId()},
+                    {"type", widget.getType()},
+                    {"texture", widget.getTextureId()}
             };
             table.setModel(new DefaultTableModel(model, new String[]{"key", "value"}));
         }

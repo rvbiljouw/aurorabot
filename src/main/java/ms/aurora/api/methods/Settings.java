@@ -4,12 +4,14 @@ import ms.aurora.api.Context;
 
 /**
  * Setting related functions
+ *
  * @author tobiewarburton
  */
 public final class Settings {
 
     /**
      * Retrieves a client setting
+     *
      * @param index index of the setting
      * @return setting value
      */

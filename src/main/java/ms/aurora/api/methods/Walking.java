@@ -20,12 +20,13 @@ public class Walking {
 
     /**
      * Reverses an array of tiles
+     *
      * @param path Path to reverse
      * @return reversed path
      */
     public static RSTile[] reversePath(RSTile[] path) {
         RSTile temp;
-        for(int start = 0, end = path.length -1; start < end; start++, end--){
+        for (int start = 0, end = path.length - 1; start < end; start++, end--) {
             temp = path[start];
             path[start] = path[end];
             path[end] = temp;
@@ -35,6 +36,7 @@ public class Walking {
 
     /**
      * Clicks a tile
+     *
      * @param tile tile
      */
     public static void clickTile(RSTile tile) {
@@ -43,7 +45,7 @@ public class Walking {
             Context.get().input.getMouse().moveMouse(minimapPoint.x, minimapPoint.y);
             Context.get().input.getMouse().clickMouse(true);
             Utilities.sleepNoException(700);
-            while(Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
+            while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
                     && !Thread.currentThread().isInterrupted()) {
                 Utilities.sleepNoException(400);
             }
@@ -52,6 +54,7 @@ public class Walking {
 
     /**
      * Walks the specified path.
+     *
      * @param path Path to walk.
      */
     public static void walkPath(RSTile[] path) {
@@ -64,7 +67,7 @@ public class Walking {
             }
         }
 
-        if(distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
+        if (distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
             clickTile(path[path.length - 1]);
         }
     }
@@ -72,15 +75,15 @@ public class Walking {
     public static void walkTo(int x, int y) {
         RSPathFinder pf = new RSPathFinder();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
-        if(path != null && path.getLength() != 0) {
+        if (path != null && path.getLength() != 0) {
             walkPath(path.toTiles(7));
         } else {
-            System.out.println("Path not found to " + x + ", "  + y);
+            System.out.println("Path not found to " + x + ", " + y);
         }
     }
 
     public static void walkTo(RSTile tile) {
-        if(distance(Players.getLocal().getLocation(), tile) <= 14) {
+        if (distance(Players.getLocal().getLocation(), tile) <= 14) {
             clickTile(tile);
             return;
         }

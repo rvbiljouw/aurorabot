@@ -14,7 +14,7 @@ import java.util.List;
         @NamedQuery(name = "grid.findAll", query = "select g from Grid g")
 })
 @Entity
-public class Grid extends AbstractModel{
+public class Grid extends AbstractModel {
 
     @Id
     @GeneratedValue
@@ -67,10 +67,10 @@ public class Grid extends AbstractModel{
         return getEm().createNamedQuery("grid.findAll", Grid.class).getResultList();
     }
 
-    public static Grid getByBase(int x, int y){
+    public static Grid getByBase(int x, int y) {
         List<Grid> grids = getEm().createNamedQuery("grid.findByBase", Grid.class).setParameter("baseX", x).
                 setParameter("baseY", y).getResultList();
-        if(grids.size() != 1) {
+        if (grids.size() != 1) {
             return null;
         }
         return grids.get(0);

@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 
 /**
  * Skill related functions
+ *
  * @author A_C/Cov
  */
 public final class Skills {
@@ -36,13 +37,14 @@ public final class Skills {
 
         public final int index;
 
-        private Skill(int index){
+        private Skill(int index) {
             this.index = index;
         }
     }
 
     /**
      * Retrieves the experience for specified skill
+     *
      * @param skill skill
      * @return experience
      */
@@ -52,6 +54,7 @@ public final class Skills {
 
     /**
      * Retrieves the level for specified skill
+     *
      * @param skill skill
      * @return level
      */
@@ -61,6 +64,7 @@ public final class Skills {
 
     /**
      * Retrieves the total XP required for specified level
+     *
      * @param level level
      * @return xp required
      */
@@ -74,6 +78,7 @@ public final class Skills {
 
     /**
      * Retrieves the remaining XP required to reach a level, based on the current level
+     *
      * @param skill Skill to calculate for
      * @param level Level to reach
      * @return remaining xp to level

@@ -59,7 +59,7 @@ public abstract class Plugin extends Context {
     private void shutdown() {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().
-                   deregister((PaintListener) this);
+                    deregister((PaintListener) this);
         }
     }
 

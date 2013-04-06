@@ -3,7 +3,6 @@ package ms.aurora.api.script;
 import ms.aurora.api.Context;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
-import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 

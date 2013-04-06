@@ -12,7 +12,7 @@ public class GlobalEventQueue extends EventQueue {
     @Override
     public final void dispatchEvent(AWTEvent event) {
         if (event.getSource() instanceof Canvas) {
-            if(event instanceof MouseEvent && blocking) {
+            if (event instanceof MouseEvent && blocking) {
                 return;
             }
         }

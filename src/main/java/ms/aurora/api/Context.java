@@ -33,7 +33,7 @@ public class Context {
     }
 
     public final Client getClient() {
-        if(session == null) {
+        if (session == null) {
             System.out.println(currentThread().getThreadGroup().getName());
         }
         return (Client) session.getApplet();
@@ -41,7 +41,7 @@ public class Context {
 
     public static Context get() {
         ThreadGroup tg = currentThread().getThreadGroup();
-        if(contextMap.containsKey(tg)) {
+        if (contextMap.containsKey(tg)) {
             return contextMap.get(tg);
         }
         return null;

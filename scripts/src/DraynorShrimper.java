@@ -61,7 +61,7 @@ public class DraynorShrimper extends Script implements PaintListener {
                         }
                     }
 
-                    if(item2 != null) {
+                    if (item2 != null) {
                         if (item2.applyAction("Store All")) {
                             return Utilities.random(500, 1000);
                         }

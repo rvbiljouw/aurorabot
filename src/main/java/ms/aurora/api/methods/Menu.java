@@ -11,12 +11,14 @@ import java.util.regex.Pattern;
 
 /**
  * Menu related functions
+ *
  * @author Rick
  */
 public final class Menu {
 
     /**
      * Gets the index of a menu item in the list of menu items
+     *
      * @param item The item to look for
      * @return The index of the item if it was found, otherwise -1.
      */
@@ -33,6 +35,7 @@ public final class Menu {
 
     /**
      * Checks if the menu is open
+     *
      * @return true if the menu is open
      */
     public static boolean isMenuOpen() {
@@ -42,6 +45,7 @@ public final class Menu {
     /**
      * Clicks an item in the menu
      * Note: This method opens the menu if it's not already open.
+     *
      * @param action Action to click
      * @return true if success, false if failed.
      */
@@ -74,6 +78,7 @@ public final class Menu {
 
     /**
      * Retrieves a list of all menu content.
+     *
      * @return menu content.
      */
     private static List<String> getMenuContent() {

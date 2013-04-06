@@ -1,6 +1,5 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.api.wrappers.RSWidget;
 
@@ -10,6 +9,7 @@ import static ms.aurora.api.Context.get;
 
 /**
  * A class for minimap related functions
+ *
  * @author Rick
  */
 public final class Minimap {
@@ -20,6 +20,7 @@ public final class Minimap {
 
     /**
      * Converts a world coordinate to a minimap coordinate
+     *
      * @param tile The tile to convert to minimap coordinate.
      * @return Point representing the position on the minimap. This point may have an x/y of -1.
      */
@@ -29,6 +30,7 @@ public final class Minimap {
 
     /**
      * Converts a world coordinate to a minimap coordinate.
+     *
      * @param x world X coordinate
      * @param y world Y coordinate
      * @return Point representing the position on the minimap. This point may have an x/y of -1.
@@ -50,7 +52,7 @@ public final class Minimap {
             int cc = CURVECOS[angle];
             cc = 256 * cc / fact;
             int i_25_ = -(calculatedX * cs) + calculatedY * cc >> 16;
-            int i_26_ =   calculatedX * cc  + calculatedY * cs >> 16;
+            int i_26_ = calculatedX * cc + calculatedY * cs >> 16;
             int screenX = minimap.x + (minimap.width / 2) + i_26_;
             int screenY = -i_25_ + minimap.y + (minimap.height / 2);
             return new Point(screenX, screenY);

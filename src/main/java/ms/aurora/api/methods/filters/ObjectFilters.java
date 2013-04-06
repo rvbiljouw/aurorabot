@@ -8,7 +8,8 @@ import ms.aurora.api.wrappers.RSObject;
  */
 public final class ObjectFilters {
 
-    private ObjectFilters() { }
+    private ObjectFilters() {
+    }
 
     /**
      * a predicate which tests if the ID of the {@link ms.aurora.api.wrappers.RSObject} matches the specified.
@@ -37,7 +38,7 @@ public final class ObjectFilters {
         return new Predicate<RSObject>() {
             @Override
             public boolean apply(RSObject object) {
-                for (int id: ids) {
+                for (int id : ids) {
                     if (object.getId() == id) {
                         return true;
                     }

@@ -2,7 +2,6 @@ package ms.aurora.api.methods;
 
 import com.google.common.collect.Collections2;
 import ms.aurora.api.Context;
-
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSDeque;
 import ms.aurora.api.wrappers.RSGroundItem;
@@ -16,6 +15,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Ground item related functions
+ *
  * @author tobiewarburton
  */
 public final class GroundItems {
@@ -68,6 +68,7 @@ public final class GroundItems {
 
     /**
      * Gets the closest ground item out of an array of ground items
+     *
      * @param objects array of ground items
      * @return closest ground item
      */
@@ -86,6 +87,7 @@ public final class GroundItems {
 
     /**
      * Fetches a list of all ground items in the currently loaded region.
+     *
      * @return list of ground items
      */
     private static List<RSGroundItem> _getAll() {
@@ -100,6 +102,7 @@ public final class GroundItems {
 
     /**
      * Gets a list of all the ground items on a specific tile
+     *
      * @param x shifted local X of the tile
      * @param y shifted local Y of the tile
      * @return list of items on tile

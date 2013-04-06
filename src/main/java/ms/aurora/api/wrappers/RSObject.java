@@ -68,7 +68,7 @@ public final class RSObject implements Locatable, Interactable {
      * @return
      */
     public final boolean applyAction(String actionName) {
-        if(!Viewport.tileOnScreen(getLocation())) {
+        if (!Viewport.tileOnScreen(getLocation())) {
             Walking.walkTo(getLocation());
             return false;
         }
@@ -84,7 +84,7 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final boolean hover() {
-        if(!Viewport.tileOnScreen(getLocation())) {
+        if (!Viewport.tileOnScreen(getLocation())) {
             Walking.walkTo(getLocation());
             return false;
         }
@@ -101,7 +101,7 @@ public final class RSObject implements Locatable, Interactable {
 
     @Override
     public final boolean click(boolean left) {
-        if(!Viewport.tileOnScreen(getLocation())) {
+        if (!Viewport.tileOnScreen(getLocation())) {
             Walking.walkTo(getLocation());
             return false;
         }

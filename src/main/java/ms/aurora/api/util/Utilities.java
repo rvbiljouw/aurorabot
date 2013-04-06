@@ -5,7 +5,8 @@ package ms.aurora.api.util;
  */
 public final class Utilities {
 
-    private Utilities() { }
+    private Utilities() {
+    }
 
     public static int random(int min, int max) {
         return (int) (min + (Math.random() * max));

@@ -32,7 +32,7 @@ public class AccountModel {
 
     public String getPassword() {
         String maskedPassword = "";
-        for(int i = 0; i < password.get().length(); i++) {
+        for (int i = 0; i < password.get().length(); i++) {
             maskedPassword += "*";
         }
         return maskedPassword;

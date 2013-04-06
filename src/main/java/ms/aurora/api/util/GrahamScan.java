@@ -1,7 +1,8 @@
 package ms.aurora.api.util;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Date: 19/03/13
@@ -12,27 +13,30 @@ import java.util.*;
  */
 public final class GrahamScan {
 
-    private GrahamScan() { }
+    private GrahamScan() {
+    }
 
     /**
      * An enum denoting a directional-turn between 3 points (vectors).
      */
-    private static enum Turn { CLOCKWISE, COUNTER_CLOCKWISE, COLLINEAR }
+    private static enum Turn {
+        CLOCKWISE, COUNTER_CLOCKWISE, COLLINEAR
+    }
 
     /**
      * Returns true if all points in <code>points</code> are collinear.
      *
      * @param points the list of points.
-     * @return       true if all points in <code>points</code> are collinear.
+     * @return true if all points in <code>points</code> are collinear.
      */
     private static boolean areAllCollinear(List<Point> points) {
-        if(points.size() < 2) return true;
+        if (points.size() < 2) return true;
 
         Point a = points.get(0);
         Point b = points.get(1);
         for (int i = 2; i < points.size(); i++) {
             Point c = points.get(i);
-            if(getTurn(a, b, c) != Turn.COLLINEAR) {
+            if (getTurn(a, b, c) != Turn.COLLINEAR) {
                 return false;
             }
         }
@@ -46,8 +50,8 @@ public final class GrahamScan {
      *
      * @param xs the x coordinates.
      * @param ys the y coordinates.
-     * @return   the convex hull of the points created from <code>xs</code>
-     *           and <code>ys</code>.
+     * @return the convex hull of the points created from <code>xs</code>
+     *         and <code>ys</code>.
      * @throws IllegalArgumentException if <code>xs</code> and <code>ys</code>
      *                                  don't have the same size, if all points
      *                                  are collinear or if there are less than
@@ -71,15 +75,15 @@ public final class GrahamScan {
      * point.
      *
      * @param points the list of points.
-     * @return       the convex hull of the points created from the list
-     *               <code>points</code>.
+     * @return the convex hull of the points created from the list
+     *         <code>points</code>.
      * @throws IllegalArgumentException if all points are collinear or if there
      *                                  are less than 3 unique points present.
      */
     public static List<Point> getConvexHull(List<Point> points) throws IllegalArgumentException {
         List<Point> sorted = new ArrayList<Point>(getSortedPointSet(points));
 
-        if(sorted.size() < 3 || areAllCollinear(sorted)) return null;
+        if (sorted.size() < 3 || areAllCollinear(sorted)) return null;
 
         Stack<Point> stack = new Stack<Point>();
         stack.push(sorted.get(0));
@@ -113,9 +117,9 @@ public final class GrahamScan {
      * point exists, the one with the lowest x coordinate is returned.
      *
      * @param points the list of points to return the lowest point from.
-     * @return       the points with the lowest y coordinate. In case more than
-     *               1 such point exists, the one with the lowest x coordinate
-     *               is returned.
+     * @return the points with the lowest y coordinate. In case more than
+     *         1 such point exists, the one with the lowest x coordinate
+     *         is returned.
      */
     private static Point getLowestPoint(List<Point> points) {
         if (points.size() == 0) {
@@ -125,7 +129,7 @@ public final class GrahamScan {
         Point lowest = points.get(0);
         for (int i = 1; i < points.size(); i++) {
             Point temp = points.get(i);
-            if(temp.y < lowest.y || (temp.y == lowest.y && temp.x < lowest.x)) {
+            if (temp.y < lowest.y || (temp.y == lowest.y && temp.x < lowest.x)) {
                 lowest = temp;
             }
         }
@@ -140,7 +144,7 @@ public final class GrahamScan {
      * comes first.
      *
      * @param points the list of points to sort.
-     * @return       a sorted set of points from the list <code>points</code>.
+     * @return a sorted set of points from the list <code>points</code>.
      * @see GrahamScan#getLowestPoint(java.util.List)
      */
     private static Set<Point> getSortedPointSet(List<Point> points) {
@@ -153,23 +157,23 @@ public final class GrahamScan {
             @Override
             public int compare(Point a, Point b) {
 
-                if(a == b || a.equals(b)) return 0;
+                if (a == b || a.equals(b)) return 0;
 
                 // use longs to guard against int-underflow
-                double thetaA = Math.atan2((long)a.y - lowest.y, (long)a.x - lowest.x);
-                double thetaB = Math.atan2((long)b.y - lowest.y, (long)b.x - lowest.x);
+                double thetaA = Math.atan2((long) a.y - lowest.y, (long) a.x - lowest.x);
+                double thetaB = Math.atan2((long) b.y - lowest.y, (long) b.x - lowest.x);
 
-                if(thetaA < thetaB) {
+                if (thetaA < thetaB) {
                     return -1;
-                } else if(thetaA > thetaB) {
+                } else if (thetaA > thetaB) {
                     return 1;
                 } else {
                     // collinear with the 'lowest' point, let the point closest to it come first
                     // use longs to guard against int-over/underflow
-                    double distanceA = Math.sqrt((((long)lowest.x - a.x) * ((long)lowest.x - a.x)) +
-                            (((long)lowest.y - a.y) * ((long)lowest.y - a.y)));
-                    double distanceB = Math.sqrt((((long)lowest.x - b.x) * ((long)lowest.x - b.x)) +
-                            (((long)lowest.y - b.y) * ((long)lowest.y - b.y)));
+                    double distanceA = Math.sqrt((((long) lowest.x - a.x) * ((long) lowest.x - a.x)) +
+                            (((long) lowest.y - a.y) * ((long) lowest.y - a.y)));
+                    double distanceB = Math.sqrt((((long) lowest.x - b.x) * ((long) lowest.x - b.x)) +
+                            (((long) lowest.y - b.y) * ((long) lowest.y - b.y)));
 
                     return distanceA < distanceB ? -1 : 1;
                 }
@@ -184,9 +188,9 @@ public final class GrahamScan {
      * ordered points <code>a</code>, <code>b</code> and <code>c</code>.
      * More specifically, the cross product <tt>C</tt> between the
      * 3 points (vectors) is calculated:
-     *
+     * <p/>
      * <tt>(b.x-a.x * c.y-a.y) - (b.y-a.y * c.x-a.x)</tt>
-     *
+     * <p/>
      * and if <tt>C</tt> is less than 0, the turn is CLOCKWISE, if
      * <tt>C</tt> is more than 0, the turn is COUNTER_CLOCKWISE, else
      * the three points are COLLINEAR.
@@ -200,12 +204,12 @@ public final class GrahamScan {
      */
     private static Turn getTurn(Point a, Point b, Point c) {
         // use longs to guard against int-over/underflow
-        long crossProduct = (((long)b.x - a.x) * ((long)c.y - a.y)) -
-                (((long)b.y - a.y) * ((long)c.x - a.x));
+        long crossProduct = (((long) b.x - a.x) * ((long) c.y - a.y)) -
+                (((long) b.y - a.y) * ((long) c.x - a.x));
 
-        if(crossProduct > 0) {
+        if (crossProduct > 0) {
             return Turn.COUNTER_CLOCKWISE;
-        } else if(crossProduct < 0) {
+        } else if (crossProduct < 0) {
             return Turn.CLOCKWISE;
         } else {
             return Turn.COLLINEAR;

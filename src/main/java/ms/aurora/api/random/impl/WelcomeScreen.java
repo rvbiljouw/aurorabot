@@ -4,20 +4,23 @@ import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSWidget;
 
+import static ms.aurora.api.util.Utilities.sleepNoException;
+
 /**
  * @author tobiewarburton
  */
 public class WelcomeScreen extends Random {
     @Override
     public boolean activate() {
-        return Widgets.getWidget(378, 45) != null;
+        return Widgets.getWidget(378, 6) != null;
     }
 
     @Override
     public int loop() {
-        RSWidget play = Widgets.getWidget(378, 45);
+        RSWidget play = Widgets.getWidget(378, 6);
         if (play != null) {
             play.click(true);
+            sleepNoException(400, 600);
         }
         return -1;
     }

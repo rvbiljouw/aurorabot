@@ -1,9 +1,6 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSTile;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.rt3.Client;
 
 import java.awt.*;
 
@@ -15,6 +12,7 @@ public final class Calculations {
 
     /**
      * Calculates the distance between two tiles.
+     *
      * @param t1 tile A
      * @param t2 tile B
      * @return distance between A B
@@ -25,6 +23,7 @@ public final class Calculations {
 
     /**
      * Calculates the distance between two points
+     *
      * @param p1 Point A
      * @param p2 Point B
      * @return distance between A B
@@ -35,13 +34,14 @@ public final class Calculations {
 
     /**
      * Calculates the distance between two sets of coordinates
+     *
      * @param x1 X-coordinate A
      * @param y1 Y-coordinate A
      * @param x2 X-coordinate B
      * @param y2 Y-coordinate B
      * @return distance between A B
      */
-    public static double distance(int x1, int y1, int x2, int y2){
+    public static double distance(int x1, int y1, int x2, int y2) {
         return Math.hypot(x1 - x2, y1 - y2);
     }
 

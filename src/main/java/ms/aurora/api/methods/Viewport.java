@@ -8,6 +8,7 @@ import java.awt.*;
 
 /**
  * Viewport related functions
+ *
  * @author Rick
  */
 public final class Viewport {
@@ -17,10 +18,11 @@ public final class Viewport {
 
     /**
      * Converts a set of coordinates to a screen position
+     *
      * @param location base tile
-     * @param x offset X
-     * @param z offset Y
-     * @param height height
+     * @param x        offset X
+     * @param z        offset Y
+     * @param height   height
      * @return A point representing the screen coordinate, of which the x/y may be -1.
      */
     public static Point convert(RSTile location, int x, int z, int height) {
@@ -29,6 +31,7 @@ public final class Viewport {
 
     /**
      * Converts a regional tile to a screen position
+     *
      * @param tile tile
      * @return A point representing the screen coordinate, of which the x/y may be -1.
      */
@@ -47,8 +50,9 @@ public final class Viewport {
 
     /**
      * Converts a set of local coordinates into their screen positions
-     * @param aX local X coordinate
-     * @param aY local Y coordinate
+     *
+     * @param aX      local X coordinate
+     * @param aY      local Y coordinate
      * @param aHeight Height of the content on the tile.
      * @return A point representing the screen coordinate, of which the x/y may be -1.
      */
@@ -86,8 +90,9 @@ public final class Viewport {
 
     /**
      * Calculates the tile height for a specified tile
-     * @param x raw local X of the tile
-     * @param y raw local Y of the tile
+     *
+     * @param x     raw local X of the tile
+     * @param y     raw local Y of the tile
      * @param plane current client plane
      * @return tile height
      */
@@ -114,6 +119,7 @@ public final class Viewport {
 
     /**
      * INTERNAL: Retrieves a client from the current context.
+     *
      * @return client
      */
     private static Client getClient() {

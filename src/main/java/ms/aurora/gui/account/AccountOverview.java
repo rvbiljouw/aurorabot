@@ -93,7 +93,7 @@ public class AccountOverview extends AnchorPane {
     @FXML
     void onRemoveSelected(ActionEvent event) {
         AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
-        if(selectedAccount != null) {
+        if (selectedAccount != null) {
             selectedAccount.getAccount().remove();
             accounts.remove(selectedAccount);
         }

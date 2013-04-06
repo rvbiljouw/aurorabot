@@ -1,9 +1,6 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetGroup;
-import org.apache.log4j.Logger;
 
 /**
  * Logout tab functions

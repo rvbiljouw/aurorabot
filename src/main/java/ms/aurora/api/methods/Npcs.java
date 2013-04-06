@@ -4,9 +4,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import ms.aurora.api.Context;
-import ms.aurora.rt3.Npc;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
+import ms.aurora.rt3.Npc;
 
 import java.util.Collection;
 
@@ -16,6 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * NPC related functions
+ *
  * @author tobiewarburton
  * @author Rick
  */
@@ -70,6 +71,7 @@ public final class Npcs {
 
     /**
      * Gets the closest NPC out of an array of NPCs
+     *
      * @param npcs NPC array
      * @return closest NPC
      */
@@ -88,6 +90,7 @@ public final class Npcs {
 
     /**
      * Gets a collection of all NPCs in the region
+     *
      * @return collection of NPCs
      */
     private static Collection<RSNPC> _getAll() {

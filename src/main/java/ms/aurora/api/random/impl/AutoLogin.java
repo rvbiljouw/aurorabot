@@ -24,9 +24,9 @@ public class AutoLogin extends Random {
         get().input.getMouse().clickMouse((int) userRect.getCenterX(),
                 (int) userRect.getCenterY(), true);
         sleepNoException(700, 1000);
-        get().input.getKeyboard().type(username,true);
+        get().input.getKeyboard().type(username, true);
         sleepNoException(500, 1200);
-        get().input.getKeyboard().type(password,true);
+        get().input.getKeyboard().type(password, true);
         sleepNoException(500, 1200);
         return -1;
     }

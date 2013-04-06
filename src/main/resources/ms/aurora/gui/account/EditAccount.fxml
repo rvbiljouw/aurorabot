@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?scenebuilder-stylesheet ../../../../blue.css?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
 <fx:root type="javafx.scene.layout.AnchorPane" minHeight="254.0" prefHeight="254.0" prefWidth="330" styleClass="pane"
          xmlns:fx="http://javafx.com/fxml">
 
