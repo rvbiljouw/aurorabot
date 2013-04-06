@@ -79,7 +79,7 @@ public class Account extends AbstractModel {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             crypted = cipher.doFinal(input.getBytes());
         } catch (Exception ignored) {
-            ignored.printStackTrace();
+            // problem
         }
         return new String(Base64.encodeBase64(crypted));
     }
@@ -92,9 +92,13 @@ public class Account extends AbstractModel {
             cipher.init(Cipher.DECRYPT_MODE, key);
             output = cipher.doFinal(Base64.decodeBase64(input.getBytes()));
         } catch (Exception ignored) {
-            ignored.printStackTrace();
+            // password is wrong...
         }
-        return new String(output);
+        if (output != null) {
+            return new String(output);
+        } else {
+            return "";
+        }
     }
 
     private static byte[] pad(String value) {
@@ -103,7 +107,12 @@ public class Account extends AbstractModel {
         if (value.length() > 16) {
             return value.substring(0, 16).getBytes();
         } else {
-            return String.format("%1$16s", value).getBytes();
+            StringBuffer buff = new StringBuffer();
+            while (buff.length() + value.length() < 16) {
+                buff.append("0");
+            }
+            buff.append(value);
+            return buff.toString().getBytes();
         }
     }
 
@@ -118,7 +127,6 @@ public class Account extends AbstractModel {
                 @Override
                 public void call() {
                     masterPassword = dialog.get();
-                    System.out.println(masterPassword);
                 }
             });
             dialog.show();
