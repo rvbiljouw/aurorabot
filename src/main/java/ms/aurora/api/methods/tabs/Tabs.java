@@ -3,22 +3,30 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+
 /**
  * @author tobiewarburton
  */
 public class Tabs {
-    private static ThreadLocal<Tab> current = new ThreadLocal<Tab>();
 
     public static boolean openTab(Tab tab) {
-        if (getCurrent() != null && getCurrent().equals(tab)) return true;
-        RSWidget[] widgets = Widgets.getWidgets(548).getWidgets();
-        for (RSWidget widget : widgets) {
-            if (widget.getActions() != null) {
-                String[] actions = widget.getActions();
-                for (String action : actions) {
-                    if (action.equals(tab.getName())) {
-                        widget.click(true);
-                        current.set(tab);
+        if (isOpen(tab)) return true;
+        for (RSWidget widget : getTabWidgets()) {
+            if (widget.getId() == tab.getId()) {
+                return widget.click(true);
+            }
+        }
+        return false;
+    }
+
+    public static boolean isOpen(Tab tab) {
+        for (RSWidget widget : getTabWidgets()) {
+            if (widget.getTextureId() > 0) {
+                for (Tab t : Tab.values()) {
+                    if (t == tab && widget.getId() == tab.getId()) {
                         return true;
                     }
                 }
@@ -27,39 +35,47 @@ public class Tabs {
         return false;
     }
 
-    public static boolean isOpen(Tab tab) {
-        return getCurrent() == tab;
-    }
-
-    public static Tab getCurrent() {
-        return current.get();
+    private static RSWidget[] getTabWidgets() {
+        List<RSWidget> tabs = newArrayList();
+        for (Tab tab : Tab.values()) {
+            tabs.add(Widgets.getWidget(548, tab.getId()));
+        }
+        return tabs.toArray(new RSWidget[]{});
     }
 
     public static enum Tab {
+        /**
+         * 47 - 53 - Top Bar
+         * COMBAT, STATS, QUESTS, INVENTORY, EQUIPMEN, PRAYER, MAGIC
+         * 30 - 36 - Bottom Bar
+         * CLAN_CHAT, FRIENDS_LISTm IGNORE_LIST, LOGOUT, OPTIONS, EMOTES, MUSIC
+         * texture | 861580522 ( OPEN )
+         * texture | -1347704871 ( CLOSED )
+         */
 
-        COMBAT("COMBAT", 0, "Combat Options"),
-        STATS("STATS", 1, "Stats"),
-        QUESTS("QUESTS", 2, "Quest List"),
-        INVENTORY("INVENTORY", 3, "Inventory"),
-        EQUIPMENT("EQUIPMENT", 4, "Worn Equipment"),
-        PRAYER("PRAYER", 5, "Prayer"),
-        MAGIC("MAGIC", 6, "Magic"),
-        CLAN_CHAT("CLAN_CHAT", 7, "Clan Chat"),
-        FRIENDS_LIST("FRIENDS_LIST", 8, "Friends List"),
-        IGNORE_LIST("IGNORE_LIST", 9, "Ignore List"),
-        LOGOUT("LOGOUT", 10, "Logout"),
-        OPTIONS("OPTIONS", 11, "Options"),
-        EMOTES("EMOTES", 12, "Emotes"),
-        MUSIC("MUSIC", 13, "Music Player");
+        COMBAT(47),
+        STATS(48),
+        QUESTS(49),
+        INVENTORY(50),
+        EQUIPMENT(51),
+        PRAYER(52),
+        MAGIC(53),
+        CLAN_CHAT(30),
+        FRIENDS_LIST(31),
+        IGNORE_LIST(32),
+        LOGOUT(33),
+        OPTIONS(34),
+        EMOTES(35),
+        MUSIC(36);
 
-        String name;
+        int id;
 
-        private Tab(String var1, int var2, String name) {
-            this.name = name;
+        private Tab(int id) {
+            this.id = id;
         }
 
-        public String getName() {
-            return this.name;
+        public int getId() {
+            return id;
         }
     }
 }
