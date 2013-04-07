@@ -3,15 +3,14 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Npcs;
-import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.filters.NpcFilters;
-import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.List;
@@ -23,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author tobiewarburton
  */
 public final class Bank {
+    private static final Logger logger = Logger.getLogger(Bank.class);
     private static final int BANK_ID = 12;
     private static final int BANK_PANE_ID = 89;
     private static final int BANK_CLOSE_ID = 102;
@@ -45,17 +45,22 @@ public final class Bank {
 
     public static boolean open() {
         if (isOpen()) {
+            logger.debug("Bank is already open..");
             return true;
         }
-        Interactable bank = Npcs.get(NpcFilters.ID(BANK_NPCS));
+        logger.debug("Finding banker..");
+        Interactable bank = Npcs.get(NpcFilters.NAMED("Banker"));
         if (bank == null) {
-            bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
+            logger.debug("Finding bank booth..");
+            /*bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
             if (bank == null) {
+                logger.debug("Couldn't find an object or NPC to bank at.");
                 return false;
-            }
+            } */
+            return false;
         }
         bank.applyAction("Bank(.*)Bank");
-        // TODO - Conditional wait for bank to open
+        logger.debug("Applied action Bank.");
         return isOpen();
     }
 
@@ -298,7 +303,7 @@ public final class Bank {
             Rectangle area = getArea();
             virtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             Mouse clientMouse = Context.get().getClient().getMouse();
-            return area.contains(clientMouse.getMouseX(), clientMouse.getMouseX());
+            return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
         }
 
         @Override

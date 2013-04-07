@@ -3,6 +3,7 @@ package ms.aurora.api.methods;
 import com.google.common.collect.Lists;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
+import org.jboss.logging.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
  * @author Rick
  */
 public final class Menu {
+    private static final Logger logger = Logger.getLogger(Menu.class);
 
     /**
      * Gets the index of a menu item in the list of menu items
@@ -53,6 +55,7 @@ public final class Menu {
         int itemIndex = getIndex(action);
         if (itemIndex != -1) {
             if (itemIndex == 0) {
+                logger.info("Found menu item at " + itemIndex + ", left clicking.");
                 Context.get().input.getMouse().clickMouse(true);
                 return true;
             } else {
@@ -61,12 +64,14 @@ public final class Menu {
                     Context.get().input.getMouse().clickMouse(false);
                     tries++;
                     Utilities.sleepNoException(100);
+                    logger.info("Found menu item at " + itemIndex + " and attempting to open the menu.");
                 }
 
                 if (isMenuOpen()) {
                     int menuOptionX = Context.get().getClient().getMenuX() + 10;
                     int menuOptionY = Context.get().getClient().getMenuY() + 21
                             + (15 * itemIndex - 1);
+                    logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
                     Context.get().input.getMouse().clickMouse(menuOptionX, menuOptionY,
                             true);
                     return true;

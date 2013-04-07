@@ -8,12 +8,8 @@ import java.awt.event.MouseMotionListener;
  */
 public interface Mouse extends MouseListener, MouseMotionListener {
 
-    int getMouseX();
+    int getRealX();
 
-    int getMouseY();
-
-    int getMousePressX();
-
-    int getMousePressY();
+    int getRealY();
 
 }

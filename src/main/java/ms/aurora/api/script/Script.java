@@ -159,7 +159,6 @@ public abstract class Script extends Context implements Runnable {
             new BeehiveSolver(),
             new CapnArnav(),
             new ScapeRuneIsland(),
-            new StrangePlant(),
             new Talker(),
             new Teleother(),
             new WelcomeScreen(),

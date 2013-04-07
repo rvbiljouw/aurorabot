@@ -89,6 +89,7 @@ public class CatherbyFisher extends Script implements PaintListener {
                 }
                 break;
             case WAIT:
+
                 break;
         }
         return random(200, 400);

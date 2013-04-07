@@ -204,7 +204,7 @@ public final class RSWidget implements Interactable {
         Point randomPoint = this.getRandomPoint();
         virtualMouse.moveMouse(randomPoint.x, randomPoint.y);
         Mouse clientMouse = ctx.getClient().getMouse();
-        return this.getArea().contains(clientMouse.getMouseX(), clientMouse.getMouseY());
+        return this.getArea().contains(clientMouse.getRealX(), clientMouse.getRealY());
     }
 
     @Override

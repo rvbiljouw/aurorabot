@@ -30,12 +30,15 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     private Point getClickLocation() {
-        if (getModel() != null) {
-            return getModel().getRandomPoint();
-        } else {
-            logger.debug("Couldn't find model, using screen location.");
-            return getScreenLocation();
+        try {
+            if (getModel() != null) {
+                return getModel().getRandomPoint();
+            }
+        } catch (Exception e) {
+           //  e.printStackTrace();
         }
+        logger.debug("Couldn't find model, using screen location.");
+        return getScreenLocation();
     }
 
     public final RSTile getLocation() {
@@ -101,11 +104,14 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final boolean applyAction(final String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
             Walking.walkTo(getLocation());
+            logger.error("Not on screen, walking to " + getLocation());
             return false;
         }
+        logger.info("Clicking " + actionName);
 
         Point screen = getClickLocation();
         ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        sleepNoException(200);
         ms.aurora.api.methods.Menu.click(actionName);
         sleepNoException(700);
 
