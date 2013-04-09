@@ -21,17 +21,21 @@ import static ms.aurora.api.methods.filters.NpcFilters.ID;
  *
  * @author A_C/Cov
  */
-@ScriptManifest(name = "Draynor Shrimper", author = "A_C", version = 1.0, shortDescription = "Catches and banks shrimps in draynor", category = "Fishing")
+@ScriptManifest(name = "Draynor Shrimper", author = "A_C", version = 1.0, shortDescription = "Catches and banks shrimps in draynor")
 public class DraynorShrimper extends Script implements PaintListener {
 
     private static final RSTile FISHING_RSTILE = new RSTile(3087, 3229), BANK_RSTILE = new RSTile(3094, 3243);
+    private static final RSTile[] FISHING_SPOT_PATH = new RSTile[] { new RSTile(3094,3243), new RSTile(3091,3247),
+            new RSTile(3087,3244), new RSTile(3087,3239), new RSTile(3087,3234), new RSTile(3087,3229) };
+    private static final RSTile[] BANK_SPOT_PATH = new RSTile[] { new RSTile(3087,3229), new RSTile(3090,3233),
+            new RSTile(3088,3238), new RSTile(3087,3243), new RSTile(3090,3247), new RSTile(3094,3243) };
 
     @Override
     public int tick() {
 
-        if (nearTile(FISHING_RSTILE)) {
+        if (this.nearTile(FISHING_RSTILE)) {
             if (Inventory.isFull()) {
-                Walking.walkTo(BANK_RSTILE);
+                Walking.walkPath(BANK_SPOT_PATH);
                 return Utilities.random(500, 1000);
             } else {
                 if (Players.getLocal().getAnimation() == -1 && !Players.getLocal().isMoving()) {
@@ -43,9 +47,9 @@ public class DraynorShrimper extends Script implements PaintListener {
                     }
                 }
             }
-        } else if (nearTile(BANK_RSTILE)) {
-            if (!Inventory.containsAny(317, 321)) {
-                Walking.walkTo(FISHING_RSTILE);
+        } else if (this.nearTile(BANK_RSTILE)) {
+            if (!Inventory.contains(317)) {
+                Walking.walkPath(FISHING_SPOT_PATH);
                 return Utilities.random(500, 1000);
             } else {
                 if (!Bank.isOpen()) {
@@ -54,24 +58,15 @@ public class DraynorShrimper extends Script implements PaintListener {
                     }
                 } else {
                     Inventory.InventoryItem item = Inventory.get(317);
-                    Inventory.InventoryItem item2 = Inventory.get(321);
                     if (item != null) {
                         if (item.applyAction("Store All")) {
                             return Utilities.random(500, 1000);
                         }
                     }
-
-                    if (item2 != null) {
-                        if (item2.applyAction("Store All")) {
-                            return Utilities.random(500, 1000);
-                        }
-                    }
                 }
             }
-        } else {
-            Walking.walkTo(BANK_RSTILE);
         }
-        return Utilities.random(400, 600);
+        return 0;
     }
 
     private boolean nearTile(RSTile tile) {
@@ -81,6 +76,6 @@ public class DraynorShrimper extends Script implements PaintListener {
     @Override
     public void onRepaint(Graphics graphics) {
         graphics.drawString("Bank Open: " + Bank.isOpen(), 10, 40);
-        //graphics.drawString("Bank Pane Length: " + widgets.getWidgets(12).getWidgets().length, 10, 52);
+        //graphics.drawString("Bank Pane Length: " + this.widgets.getWidgets(12).getWidgets().length, 10, 52);
     }
 }

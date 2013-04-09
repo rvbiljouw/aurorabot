@@ -79,6 +79,23 @@ public final class Inventory {
     }
 
     /**
+     * Retrieves the first item that matches one od the specified Ids.
+     *
+     * @param ids InventoryItem ID to look for
+     * @return item if it was found, otherwise null.
+     */
+    public InventoryItem get(int... ids) {
+        for (InventoryItem inventoryItem : getAll()) {
+            for (int id: ids) {
+                if (inventoryItem.getId() == id) {
+                    return inventoryItem;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Retrieves all items that match the supplied predicate.
      *
      * @param predicate Predicate to match items against.

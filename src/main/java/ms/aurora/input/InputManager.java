@@ -16,7 +16,7 @@ public class InputManager {
 
     public InputManager(Context context) {
         this.context = context;
-        this.mouse = new VirtualMouse(context);
+        this.mouse = new VirtualMouse();
         this.keyboard = new VirtualKeyboard();
     }
 
