@@ -84,7 +84,7 @@ public final class Inventory {
      * @param ids InventoryItem ID to look for
      * @return item if it was found, otherwise null.
      */
-    public InventoryItem get(int... ids) {
+    public static InventoryItem get(int... ids) {
         for (InventoryItem inventoryItem : getAll()) {
             for (int id: ids) {
                 if (inventoryItem.getId() == id) {
@@ -123,6 +123,24 @@ public final class Inventory {
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id) {
                 inventoryItems.add(inventoryItem);
+            }
+        }
+        return inventoryItems.toArray(new InventoryItem[inventoryItems.size()]);
+    }
+
+    /**
+     * Retrieves all items that match the specified IDs.
+     *
+     * @param ids InventoryItem IDs to look for
+     * @return list of items found, which can be empty.
+     */
+    public static InventoryItem[] getAll(int... ids) {
+        List<InventoryItem> inventoryItems = newArrayList();
+        for (InventoryItem inventoryItem : getAll()) {
+            for (int id: ids) {
+                if (inventoryItem.getId() == id) {
+                    inventoryItems.add(inventoryItem);
+                }
             }
         }
         return inventoryItems.toArray(new InventoryItem[inventoryItems.size()]);
