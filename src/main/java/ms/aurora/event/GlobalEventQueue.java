@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
  * @author Rick
  */
 public class GlobalEventQueue extends EventQueue {
-    public static volatile boolean blocking = false;
+    public static boolean blocking = false;
 
     @Override
     public final void dispatchEvent(AWTEvent event) {
