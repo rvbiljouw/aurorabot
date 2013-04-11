@@ -35,14 +35,25 @@ public class Walking {
     }
 
     /**
-     * Clicks a tile
-     *
-     * @param tile tile
+     * Clicks tile on the minimap
      */
-    public static void clickTile(RSTile tile) {
+    public static void clickOnMap(RSTile tile) {
         Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             Context.get().input.getMouse().moveMouse(minimapPoint.x, minimapPoint.y);
+            Context.get().input.getMouse().clickMouse(true);
+            Utilities.sleepNoException(700);
+            while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
+                    && !Thread.currentThread().isInterrupted()) {
+                Utilities.sleepNoException(400);
+            }
+        }
+    }
+
+    public static void clickOnScreen(RSTile tile) {
+        Point screenPoint = Viewport.convert(tile);
+        if (screenPoint.x != -1 && screenPoint.y != -1) {
+            Context.get().input.getMouse().moveMouse(screenPoint.x, screenPoint.y);
             Context.get().input.getMouse().clickMouse(true);
             Utilities.sleepNoException(700);
             while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
@@ -62,13 +73,13 @@ public class Walking {
             if (distance(Players.getLocal().getLocation(), p) > 8) {
                 if (distance(p, path[path.length - 1]) < distance(Players.getLocal()
                         .getLocation(), path[path.length - 1])) {
-                    clickTile(p);
+                    clickOnMap(p);
                 }
             }
         }
 
         if (distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
-            clickTile(path[path.length - 1]);
+            clickOnMap(path[path.length - 1]);
         }
     }
 
@@ -84,7 +95,7 @@ public class Walking {
 
     public static void walkTo(RSTile tile) {
         if (distance(Players.getLocal().getLocation(), tile) <= 14) {
-            clickTile(tile);
+            clickOnMap(tile);
             return;
         }
 

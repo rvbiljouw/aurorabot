@@ -204,6 +204,7 @@ public class ApplicationGUI extends AnchorPane {
         });
 
         Account.init();
+
     }
 
     public static Applet getSelectedApplet() {

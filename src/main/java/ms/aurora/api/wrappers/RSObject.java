@@ -49,6 +49,11 @@ public final class RSObject implements Locatable, Interactable {
         return Viewport.convertLocal(getRegionalLocation());
     }
 
+    public final boolean isOnScreen() {
+        Point screenLocation = this.getScreenLocation();
+        return screenLocation.x != -1 && screenLocation.y != -1;
+    }
+
     public final RSTile getLocation() {
         return new RSTile(getX(), getY(), 0);
     }
@@ -118,7 +123,6 @@ public final class RSObject implements Locatable, Interactable {
     private Point getClickLocation() {
         return getModel().getRandomPoint();
     }
-
 
     public RSModel getModel() {
         if (wrapped.getModel() != null && wrapped.getModel() instanceof Model) {

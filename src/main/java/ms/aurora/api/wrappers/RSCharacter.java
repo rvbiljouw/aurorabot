@@ -175,6 +175,10 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         return wrapped.getPathLength() != 0;
     }
 
+    public final boolean isOnScreen() {
+        return this.getScreenLocation().getX() != -1 && this.getScreenLocation().getY() != -1;
+    }
+
     public final RSModel getModel() {
         Model model = _getModel();
         if (model != null) {

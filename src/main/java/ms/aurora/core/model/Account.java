@@ -121,15 +121,16 @@ public class Account extends AbstractModel {
     }
 
     public static void init() {
-        if (masterPassword == null) {
-            final MasterPasswordDialog dialog = new MasterPasswordDialog();
-            dialog.setCallback(new Callback() {
-                @Override
-                public void call() {
-                    masterPassword = dialog.get();
-                }
-            });
-            dialog.show();
-        }
+        final List<Property> properties = Property.getByName("masterPassword");
+
+
+        final MasterPasswordDialog dialog = new MasterPasswordDialog();
+        dialog.setCallback(new Callback() {
+            @Override
+            public void call() {
+                masterPassword = dialog.get();
+            }
+        });
+        dialog.show();
     }
 }

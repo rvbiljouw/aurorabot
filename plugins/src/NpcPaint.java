@@ -16,10 +16,11 @@ public class NpcPaint implements PaintListener {
         RSNPC[] npcs = Npcs.getAll(RSNPC_PREDICATE);
         for (RSNPC npc : npcs) {
             Point loc = npc.getScreenLocation();
-            String s = String.format("Name: %s | Id: %s | Anim: %s | Rot: %s",
-                    npc.getName(), npc.getId(), npc.getAnimation(), npc.getTurnDirection());
+            String s = String.format("Name: %s | Id: %s | Anim: %s | Rot: %s | Loc: %s",
+                    npc.getName(), npc.getId(), npc.getAnimation(), npc.getTurnDirection(), npc.getLocation());
             int x = loc.x - (graphics.getFontMetrics().stringWidth(s) / 2);
             graphics.drawString(s, x, loc.y);
+
         }
     }
 

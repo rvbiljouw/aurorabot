@@ -3,6 +3,7 @@ package ms.aurora;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import org.apache.log4j.Logger;

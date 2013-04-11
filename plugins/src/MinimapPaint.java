@@ -34,7 +34,7 @@ public class MinimapPaint implements PaintListener {
         graphics.drawString("Widget Type: " + mm.getType(), x, y);
         y += graphics.getFontMetrics().getHeight() * 2;
 
-        graphics.drawRect(mm.getX(), mm.getY(), mm.getWidth(), mm.getHeight());
+        graphics.drawRect(mm.getX(), mm.getY(), mm.getWidth() + 25, mm.getHeight());
 
         Point minimapLoc = Minimap.convert(Players.getLocal().getX(), Players.getLocal().getY());
         graphics.drawOval(minimapLoc.x - 1, minimapLoc.y - 1, 3, 3);

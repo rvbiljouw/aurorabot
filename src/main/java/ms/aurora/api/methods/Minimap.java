@@ -44,7 +44,7 @@ public final class Minimap {
         Rectangle minimap = new Rectangle(mm.getX(), mm.getY(), mm.getWidth() + 25, mm.getHeight());
         int angle = 0x7ff & get().getClient().getMinimapInt3() + get().getClient().getMinimapInt1();
         int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;
-        int mmDist = Math.max(minimap.height / 2, minimap.width / 2);
+        int mmDist = Math.max(minimap.height / 2, minimap.width / 2) + 10;
         if (mmDist * mmDist >= actDistSq) {
             int cs = CURVESIN[angle];
             int fact = 256 + get().getClient().getMinimapInt2();

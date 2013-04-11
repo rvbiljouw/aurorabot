@@ -7,14 +7,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ms.aurora.core.model.Property;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -34,9 +38,17 @@ public class MasterPasswordDialog extends AnchorPane {
     @FXML
     private PasswordField txtPassword;
 
+    @FXML
+    private PasswordField txtVerifyPassword;
+
+    @FXML
+    private Label warning;
+
     private Callback callback;
+    private List<Property> properties;
 
     public MasterPasswordDialog() {
+        properties = Property.getByName("masterPassword");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MasterPasswordDialog.fxml"));
 
         //fxmlLoader.setRoot(this);
@@ -49,16 +61,35 @@ public class MasterPasswordDialog extends AnchorPane {
         }
     }
 
-
     @FXML
     void authenticateAction(ActionEvent event) {
-        getScene().getWindow().hide();
+        if (authenticated()) {
+            if (properties.size() == 0) {
+                Property masterPass = new Property();
+                masterPass.setName("masterPassword");
+                masterPass.setValue(get());
+                masterPass.save();
+                getScene().getWindow().hide();
+            } else {
+                if (get().equalsIgnoreCase(properties.get(0).getValue())) {
+                    getScene().getWindow().hide();
+                }
+            }
+        }
+        showWarning();
     }
 
     @FXML
     void initialize() {
         assert btnAuthenticate != null : "fx:id=\"btnAuthenticate\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
+        assert txtVerifyPassword != null : "fx:id=\"txtVerifyPassword\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
+        assert warning != null : "fx:id=\"warning\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
+    }
+
+    private void showWarning() {
+        warning.setTextFill(Color.web("#CC0000"));
+        warning.setVisible(true);
     }
 
     public void setCallback(Callback callback) {
@@ -69,6 +100,11 @@ public class MasterPasswordDialog extends AnchorPane {
         return callback;
     }
 
+    public boolean authenticated() {
+        return txtPassword.getText().length() != 0
+                && txtVerifyPassword.getText().length() != 0
+                && txtPassword.getText().equalsIgnoreCase(txtVerifyPassword.getText()) ;
+    }
 
     public String get() {
         return txtPassword.getText();
@@ -76,10 +112,16 @@ public class MasterPasswordDialog extends AnchorPane {
 
     public void show() {
         Stage stage = new Stage();
-        stage.setTitle("Authenticate");
-        stage.setWidth(250);
-        stage.setHeight(100);
+        stage.setTitle(properties.size() == 0 ? "Create Password" : "Authenticate");
+        stage.setWidth(320);
+        stage.setHeight(150);
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
         Scene scene = new Scene(this);
         scene.getStylesheets().add("blue.css");
         stage.setScene(scene);
@@ -90,6 +132,6 @@ public class MasterPasswordDialog extends AnchorPane {
                 getCallback().call();
             }
         });
-        stage.show();
+        stage.showAndWait();
     }
 }
