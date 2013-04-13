@@ -65,7 +65,7 @@ public final class Menu {
                 while (!isMenuOpen() && tries < 5) {
                     VirtualMouse.clickMouse(false);
                     tries++;
-                    Utilities.sleepNoException(100);
+                    Utilities.sleepNoException(30);
                     logger.info("Found menu item at " + itemIndex + " and attempting to open the menu.");
                 }
 

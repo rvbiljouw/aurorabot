@@ -10,6 +10,8 @@ import ms.aurora.rt3.WidgetNode;
 
 import java.awt.*;
 
+import static ms.aurora.api.Context.getClient;
+
 /**
  * @author Rick
  */
@@ -56,7 +58,7 @@ public final class RSWidget implements Interactable {
         if (parent != null) {
             x = parent.getX();
         } else {
-            int[] posX = ctx.getClient().getBoundsX();
+            int[] posX = getClient().getBoundsX();
             if (getBoundsIndex() != -1 && posX[getBoundsIndex()] > 0) {
                 return (posX[getBoundsIndex()] + (getType() > 0 ? widget.getX() : 0));
             }
@@ -73,7 +75,7 @@ public final class RSWidget implements Interactable {
         if (parent != null) {
             y = parent.getY();
         } else {
-            int[] posY = ctx.getClient().getBoundsY();
+            int[] posY = getClient().getBoundsY();
             if (getBoundsIndex() != -1 && posY[getBoundsIndex()] > 0) {
                 return (posY[getBoundsIndex()] + (getType() > 0 ? widget.getY() : 0));
             }
@@ -82,7 +84,7 @@ public final class RSWidget implements Interactable {
     }
 
     public int getWidth() {
-        int[] widthBounds = ctx.getClient().getBoundsWidth();
+        int[] widthBounds = getClient().getBoundsWidth();
         int width = widget.getWidth();
         /*if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
             width += widthBounds[getBoundsIndex()];
@@ -91,7 +93,7 @@ public final class RSWidget implements Interactable {
     }
 
     public int getHeight() {
-        int[] heightBounds = ctx.getClient().getBoundsHeight();
+        int[] heightBounds = getClient().getBoundsHeight();
         int height = widget.getHeight();
         /*if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
             height += heightBounds[getBoundsIndex()];
@@ -124,26 +126,27 @@ public final class RSWidget implements Interactable {
         return getChildren()[id];
     }
 
+
     public RSWidget getParent() {
-        if (widget == null) {
-            return null;
+        int parent = getParentId();
+        if (parent != -1) {
+            return Widgets.getWidget(parent >> 16, parent & 0xFFFF);
         }
-        int uid = getParentId();
-        if (uid == -1) {
-            int groupIdx = getUid() >>> 16;
-            RSBag bag = new RSBag(ctx.getClient().getWidgetNodeBag());
-            for (WidgetNode n = (WidgetNode) bag.getFirst(); n != null; n = (WidgetNode) bag.next().getNext()) {
-                if (n.getId() == groupIdx) {
-                    uid = n.getId();
-                }
+        return null;
+    }
+
+
+    public int getParentId() {
+        if (widget.getParentId() != -1) return  widget.getParentId();
+
+        int i = getUid() >>> 16;
+        RSBag<WidgetNode> cache = new RSBag<WidgetNode>(getClient().getWidgetNodeBag());
+        for (WidgetNode node = cache.getFirst(); node != null; node = cache.getNext()) {
+            if (i == node.getId()) {
+                return (int) node.getHash();
             }
         }
-        if (uid == -1) {
-            return null;
-        }
-        int parent = uid >> 16;
-        int child = uid & 0xffff;
-        return Widgets.getWidget(parent, child);
+        return -1;
     }
 
     /**
@@ -151,13 +154,6 @@ public final class RSWidget implements Interactable {
      */
     public int getId() {
         return (widget.getParentId() & 0xFFFF);
-    }
-
-    /**
-     * @return The widget's parent id
-     */
-    public int getParentId() {
-        return widget.getParentId() >> 16;
     }
 
 
@@ -201,7 +197,7 @@ public final class RSWidget implements Interactable {
     public boolean hover() {
         Point randomPoint = this.getRandomPoint();
         VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
-        Mouse clientMouse = ctx.getClient().getMouse();
+        Mouse clientMouse = getClient().getMouse();
         return this.getArea().contains(clientMouse.getRealX(), clientMouse.getRealY());
     }
 

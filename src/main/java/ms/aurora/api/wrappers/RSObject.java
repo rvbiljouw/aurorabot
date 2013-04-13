@@ -1,6 +1,7 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
 import ms.aurora.input.VirtualMouse;
@@ -80,13 +81,7 @@ public final class RSObject implements Locatable, Interactable {
         }
         Point screen = getClickLocation();
         VirtualMouse.moveMouse(screen.x, screen.y);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return ms.aurora.api.methods.Menu.click(actionName);
+        return isValid() && screen.distance(getClickLocation()) < 10 && ms.aurora.api.methods.Menu.click(actionName);
     }
 
     public final boolean hover() {
@@ -96,12 +91,6 @@ public final class RSObject implements Locatable, Interactable {
         }
         Point screen = getScreenLocation();
         VirtualMouse.moveMouse(screen.x, screen.y);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         return true;
     }
 
@@ -113,16 +102,18 @@ public final class RSObject implements Locatable, Interactable {
         }
         Point screen = getClickLocation();
         VirtualMouse.clickMouse(screen.x, screen.y, left);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return true;
     }
 
     private Point getClickLocation() {
-        return getModel().getRandomPoint();
+        try {
+            if (getModel() != null) {
+                return getModel().getRandomPoint();
+            }
+        } catch (Exception e) {
+            //  e.printStackTrace();
+        }
+        return getScreenLocation();
     }
 
     public RSModel getModel() {
@@ -133,4 +124,11 @@ public final class RSObject implements Locatable, Interactable {
         return null;
     }
 
+    private boolean isValid() {
+        RSObject[] objectsAtPos = Objects.getObjectsAt(localX, localY).toArray(new RSObject[0]);
+        for(RSObject object : objectsAtPos) {
+            if(object.getId() == getId()) return true;
+        }
+        return false;
+    }
 }

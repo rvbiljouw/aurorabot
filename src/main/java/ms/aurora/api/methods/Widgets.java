@@ -1,12 +1,12 @@
 package ms.aurora.api.methods;
 
-import com.google.common.base.Function;
 import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 import ms.aurora.rt3.Client;
 import ms.aurora.rt3.Widget;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,10 +74,13 @@ public final class Widgets {
      * @return a list of all the RSWidget that contain the specified text
      */
     public static RSWidget[] getWidgetsWithText(String predicate) {
+        final Rectangle rect = new Rectangle(5, 350, 510, 130);
         List<RSWidget> satisfied = new ArrayList<RSWidget>();
         for (RSWidgetGroup groups : getAll()) {
             for (RSWidget child : groups.getWidgets()) {
-                if (child != null && child.getText().contains(predicate)) {
+                if (child != null && child.getText().contains(predicate) &&
+                        rect.contains(child.getCenterPoint())) {
+                    System.out.println("Valid click here interface: " + child.getParent()+","+ child.getId());
                     satisfied.add(child);
                 }
             }
@@ -110,19 +113,6 @@ public final class Widgets {
      * @return client
      */
     private static Client getClient() {
-        return Context.get().getClient();
+        return Context.getClient();
     }
-
-    /**
-     * Transforms an unwrapped widget into a wrapped one.
-     */
-    private static final Function<Widget, RSWidget> transform = new Function<Widget, RSWidget>() {
-        @Override
-        public RSWidget apply(Widget widget) {
-            if (widget != null) {
-                return new RSWidget(Context.get(), widget, 0, 0);
-            }
-            return null;
-        }
-    };
 }

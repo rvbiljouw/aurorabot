@@ -95,7 +95,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return if the current character is in combat
      */
     public final boolean isInCombat() {
-        return ctx.getClient().getLoopCycle() < getLoopCycleStatus();
+        return Context.getClient().getLoopCycle() < getLoopCycleStatus();
     }
 
     /**
@@ -108,18 +108,15 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
             logger.error("Not on screen, walking to " + getLocation());
             return false;
         }
-        logger.info("Clicking " + actionName);
-
         Point screen = getClickLocation();
         VirtualMouse.moveMouse(screen.x, screen.y);
-        sleepNoException(200);
-        ms.aurora.api.methods.Menu.click(actionName);
+        boolean success = ms.aurora.api.methods.Menu.click(actionName);
         sleepNoException(700);
 
         while (Players.getLocal().isMoving()) {
             sleepNoException(600);
         }
-        return true;
+        return success;
     }
 
     @Override

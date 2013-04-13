@@ -161,6 +161,7 @@ public abstract class Script extends Context implements Runnable {
             new Talker(),
             new Teleother(),
             new WelcomeScreen(),
-            new StrangeBox()
+            new StrangeBox(),
+            new Pinball()
     };
 }
