@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import java.io.InputStream;
 
 /**
+ * Response handler for the JSON hook definitions
  * @author Rick
  */
 public final class ClientDefinitionJSON implements ResponseHandler {

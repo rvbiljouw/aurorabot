@@ -192,26 +192,23 @@ public final class RSWidget implements Interactable {
 
     @Override
     public boolean applyAction(String action) {
-        VirtualMouse mouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
-        mouse.moveMouse(randomPoint.x, randomPoint.y);
+        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
         return ms.aurora.api.methods.Menu.click(action);
     }
 
     @Override
     public boolean hover() {
-        VirtualMouse virtualMouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
-        virtualMouse.moveMouse(randomPoint.x, randomPoint.y);
+        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
         Mouse clientMouse = ctx.getClient().getMouse();
         return this.getArea().contains(clientMouse.getRealX(), clientMouse.getRealY());
     }
 
     @Override
     public boolean click(boolean left) {
-        VirtualMouse mouse = ctx.input.getMouse();
         Point randomPoint = this.getRandomPoint();
-        mouse.clickMouse(randomPoint.x, randomPoint.y, left);
+        VirtualMouse.clickMouse(randomPoint.x, randomPoint.y, left);
         return true;
     }
 

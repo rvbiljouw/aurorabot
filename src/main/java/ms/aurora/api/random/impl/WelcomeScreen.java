@@ -1,5 +1,7 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.Camera;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSWidget;
@@ -20,8 +22,11 @@ public class WelcomeScreen extends Random {
         RSWidget play = Widgets.getWidget(378, 6);
         if (play != null) {
             play.click(true);
-            sleepNoException(400, 600);
+            sleepNoException(1000, 3000);
+            if(Context.isLoggedIn()) {
+                Camera.setUp();
+            }
         }
-        return -1;
+        return 5000;
     }
 }

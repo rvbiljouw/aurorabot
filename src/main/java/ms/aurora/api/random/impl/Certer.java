@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
@@ -27,6 +28,7 @@ public class Certer extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
         return Objects.get(ObjectFilters.ID(bookPiles)) != null;
     }
 

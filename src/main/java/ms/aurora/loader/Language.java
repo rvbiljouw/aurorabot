@@ -1,6 +1,11 @@
 package ms.aurora.loader;
 
+/**
+ * Language enum for the various languages supported by RuneScape.
+ * @author Rick
+ */
 public enum Language {
+
     ENGLISH(0), GERMAN(1), FRENCH(2), PORTUGUESE(3);
 
     private final int code;
@@ -17,4 +22,5 @@ public enum Language {
     public String toString() {
         return (getCode() >= 1 ? "/l=" + getCode() : "");
     }
+
 }

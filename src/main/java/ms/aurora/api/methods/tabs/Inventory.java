@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
@@ -400,28 +399,25 @@ public final class Inventory {
         @Override
         public boolean applyAction(String action) {
             Tabs.openTab(Tabs.Tab.INVENTORY);
-            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
-            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             return Menu.click(action);
         }
 
         @Override
         public boolean hover() {
             Tabs.openTab(Tabs.Tab.INVENTORY);
-            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
-            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             return true;
         }
 
         @Override
         public boolean click(boolean left) {
             Tabs.openTab(Tabs.Tab.INVENTORY);
-            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
-            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            mouse.clickMouse(left);
+            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            VirtualMouse.clickMouse(left);
             return true;
         }
     }

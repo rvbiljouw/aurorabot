@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.Npcs;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
@@ -27,6 +28,8 @@ public class Talker extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
+
         talker = Npcs.get(TALKERS_PREDICATE);
         return talker != null && talker.getMessage().contains(Players.getLocal().getName());
     }

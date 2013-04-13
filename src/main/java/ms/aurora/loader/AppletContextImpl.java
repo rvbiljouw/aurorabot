@@ -10,9 +10,14 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+/**
+ * Implementation of RuneScape's applet context.
+ * @author Rick
+ * TODO: Finish this up
+ */
 public final class AppletContextImpl implements AppletContext {
 
-    public AppletContextImpl(AppletStubImpl appletStubImpl) {
+    public AppletContextImpl(AppletStubImpl stub) {
     }
 
     @Override

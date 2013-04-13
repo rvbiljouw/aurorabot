@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
+import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Model;
 import org.apache.log4j.Logger;
 
@@ -110,7 +111,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         logger.info("Clicking " + actionName);
 
         Point screen = getClickLocation();
-        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        VirtualMouse.moveMouse(screen.x, screen.y);
         sleepNoException(200);
         ms.aurora.api.methods.Menu.click(actionName);
         sleepNoException(700);
@@ -128,14 +129,14 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         }
         Point screen = getClickLocation();
         if (screen == null) return false;
-        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        VirtualMouse.moveMouse(screen.x, screen.y);
         return true;
     }
 
     @Override
     public final boolean click(boolean left) {
         Point screen = getClickLocation();
-        ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
+        VirtualMouse.clickMouse(screen.x, screen.y, left);
         return false;
     }
 

@@ -1,38 +1,31 @@
 package ms.aurora.input;
 
-import ms.aurora.api.Context;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
+import static ms.aurora.api.Context.get;
+
 /**
+ * A canvas that will be extended by the RuneScape client.
+ * This implementation allows us to intervene in the drawing process of the
+ * client so that we may draw our own information on the client context.
+ * The canvas is double-buffered, solving any flickering problems.
+ *
  * @author Rick
  */
-public class ClientCanvas extends Canvas implements MouseMotionListener,
-        MouseListener {
+public class ClientCanvas extends Canvas {
     private static final long serialVersionUID = 4392449009242794406L;
     private final BufferedImage backBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
-    private final Context context = new Context();
     private Session session;
-    private int mouseX;
-    private int mouseY;
-    private int lastClickX;
-    private int lastClickY;
-    private long lastPressTime;
-
 
     public ClientCanvas() {
         super();
-        addMouseListener(this);
-        addMouseMotionListener(this);
     }
 
     @Override
@@ -53,7 +46,6 @@ public class ClientCanvas extends Canvas implements MouseMotionListener,
     private void dispatchEvent(Graphics g) {
         if (session == null) {
             session = SessionRepository.get(getParent().hashCode());
-            context.setSession(session);
         } else {
             session.getPaintManager().onRepaint(g);
         }
@@ -70,50 +62,13 @@ public class ClientCanvas extends Canvas implements MouseMotionListener,
     }
 
     private void drawMouse(Graphics2D g) {
-        g.setColor(Color.YELLOW);
-        g.drawLine(mouseX - 7, mouseY - 7, mouseX + 7, mouseY + 7);
-        g.drawLine(mouseX + 7, mouseY - 7, mouseX - 7, mouseY + 7);
-        if (System.currentTimeMillis() - lastPressTime < 1000) {
-            g.setColor(Color.RED);
-            g.drawLine(lastClickX - 7, lastClickY - 7, lastClickX + 7,
-                    lastClickY + 7);
-            g.drawLine(lastClickX + 7, lastClickY - 7, lastClickX - 7,
-                    lastClickY + 7);
+        if (get() != null) {
+            int mouseX = get().getClient().getMouse().getRealX();
+            int mouseY = get().getClient().getMouse().getRealY();
+            g.setColor(Color.YELLOW);
+            g.drawLine(mouseX - 7, mouseY - 7, mouseX + 7, mouseY + 7);
+            g.drawLine(mouseX + 7, mouseY - 7, mouseX - 7, mouseY + 7);
+
         }
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        this.mouseX = e.getX();
-        this.mouseY = e.getY();
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        this.mouseX = e.getX();
-        this.mouseY = e.getY();
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        this.lastClickX = e.getX();
-        this.lastClickY = e.getY();
-        this.lastPressTime = System.currentTimeMillis();
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 }

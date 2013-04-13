@@ -78,9 +78,10 @@ public class AccountSelectDialog extends AnchorPane {
     public void show() {
         Stage stage = new Stage();
         stage.setTitle("Select Account");
-        stage.setWidth(250);
-        stage.setHeight(100);
+        stage.setWidth(415);
+        stage.setHeight(215);
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(null);
         Scene scene = new Scene(this);
         scene.getStylesheets().add("blue.css");
         stage.setScene(scene);
@@ -91,6 +92,7 @@ public class AccountSelectDialog extends AnchorPane {
             }
         });
         stage.show();
+        stage.requestFocus();
     }
 }
 

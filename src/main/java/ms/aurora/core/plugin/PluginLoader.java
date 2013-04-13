@@ -1,5 +1,6 @@
 package ms.aurora.core.plugin;
 
+import ms.aurora.Application;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.model.PluginSource;
 import org.apache.log4j.Logger;
@@ -33,7 +34,7 @@ public final class PluginLoader {
 
                 try {
                     URLClassLoader jarClassLoader = new URLClassLoader(new URL[]{
-                            new URL("file:" + file.getAbsolutePath())});
+                            new URL("file:" + file.getAbsolutePath()), new URL("file:" + Application.JAVA_HOME + File.separator + "lib" + File.separator + "jfxrt.jar")});
                     JarFile jarFile = new JarFile(file);
 
                     Enumeration<JarEntry> entries = jarFile.entries();
@@ -68,7 +69,7 @@ public final class PluginLoader {
             }
         } catch (ReflectiveOperationException e) {
             logger.debug("Malformed class: " + className, e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.debug("Failed to load plugin", e);
         }
         return null;

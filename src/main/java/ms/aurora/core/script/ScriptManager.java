@@ -4,8 +4,6 @@ import com.google.common.collect.Maps;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
-import ms.aurora.gui.dialog.AccountSelectDialog;
-import ms.aurora.gui.dialog.Callback;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -23,18 +21,7 @@ public final class ScriptManager {
     }
 
     public void start(final Script script) {
-        if (session.getAccount() == null) {
-            final AccountSelectDialog dialog = new AccountSelectDialog();
-            dialog.setCallback(new Callback() {
-                public void call() {
-                    session.setAccount(dialog.get());
-                    startScript(script);
-                }
-            });
-            dialog.show();
-        } else {
-            startScript(script);
-        }
+        startScript(script);
     }
 
     private void startScript(Script script) {

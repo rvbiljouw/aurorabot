@@ -1,10 +1,11 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualKeyboard;
 
 import java.awt.event.KeyEvent;
+
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author A_C/Cov
@@ -56,7 +57,6 @@ public final class Camera {
      * @param degrees degrees of the turn
      */
     public static void setAngle(int degrees) {
-        VirtualKeyboard keyboard = Context.get().input.getKeyboard();
         char left = KeyEvent.VK_LEFT, right = KeyEvent.VK_RIGHT, dir = left;
         int start = getAngle();
         start = start < 180 ? start + 360 : start;
@@ -71,21 +71,26 @@ public final class Camera {
             }
         }
         degrees %= 360;
-        keyboard.holdKey(dir);
+        VirtualKeyboard.holdKey(dir);
         int timeWaited = 0;
         int turnTime = 0;
         while ((getAngle() > degrees + 5 || getAngle() < degrees - 5) && turnTime < 6000) {
-            Utilities.sleepNoException(10);
+            sleepNoException(10);
             turnTime += 10;
             timeWaited += 10;
             if (timeWaited > 500) {
                 int time = timeWaited - 500;
                 if (time == 0 || time % 40 == 0) {
-                    keyboard.holdKey(dir);
+                    VirtualKeyboard.holdKey(dir);
                 }
             }
         }
-        keyboard.releaseKey(dir);
+        VirtualKeyboard.releaseKey(dir);
     }
 
+    public static void setUp() {
+        VirtualKeyboard.holdKey((char)KeyEvent.VK_UP);
+        sleepNoException(1200);
+        VirtualKeyboard.releaseKey((char)KeyEvent.VK_UP);
+    }
 }

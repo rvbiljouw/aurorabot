@@ -9,6 +9,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+/**
+ * Applet stub for the RuneScape applet
+ * @author Rick
+ */
 public final class AppletStubImpl implements AppletStub {
     private final AppletContextImpl appletContextImpl = new AppletContextImpl(
             this);
@@ -44,7 +48,6 @@ public final class AppletStubImpl implements AppletStub {
         if (!appletParams.containsKey(name)) {
             throw new MalformedStubException("Missing stub element " + name);
         }
-        System.out.println(name + " " + appletParams.get(name));
         return appletParams.get(name);
     }
 

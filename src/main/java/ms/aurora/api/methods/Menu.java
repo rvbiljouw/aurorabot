@@ -3,6 +3,7 @@ package ms.aurora.api.methods;
 import com.google.common.collect.Lists;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.input.VirtualMouse;
 import org.jboss.logging.Logger;
 
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
  */
 public final class Menu {
     private static final Logger logger = Logger.getLogger(Menu.class);
+    private static final Pattern pattern = Pattern.compile("<.+?>");
 
     /**
      * Gets the index of a menu item in the list of menu items
@@ -56,12 +58,12 @@ public final class Menu {
         if (itemIndex != -1) {
             if (itemIndex == 0) {
                 logger.info("Found menu item at " + itemIndex + ", left clicking.");
-                Context.get().input.getMouse().clickMouse(true);
+                VirtualMouse.clickMouse(true);
                 return true;
             } else {
                 int tries = 0;
                 while (!isMenuOpen() && tries < 5) {
-                    Context.get().input.getMouse().clickMouse(false);
+                    VirtualMouse.clickMouse(false);
                     tries++;
                     Utilities.sleepNoException(100);
                     logger.info("Found menu item at " + itemIndex + " and attempting to open the menu.");
@@ -72,7 +74,7 @@ public final class Menu {
                     int menuOptionY = Context.get().getClient().getMenuY() + 21
                             + (15 * itemIndex - 1);
                     logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
-                    Context.get().input.getMouse().clickMouse(menuOptionX, menuOptionY,
+                    VirtualMouse.clickMouse(menuOptionX, menuOptionY,
                             true);
                     return true;
                 }
@@ -82,21 +84,45 @@ public final class Menu {
     }
 
     /**
+     * Checks if the current menu content includes a specific action.
+     * @param action Action text (may be a regular expression, too!)
+     * @return true if present
+     */
+    public boolean contains(String action) {
+        return getIndex(action) != -1;
+    }
+
+    /**
+     * Gets the menu item that is in the current "up text" / will be invoked
+     * when the user clicks with the current game state and current mouse position.
+     * @return hover action
+     */
+    public String getHoverAction() {
+        return getMenuContent().get(0);
+    }
+
+    /**
      * Retrieves a list of all menu content.
      *
      * @return menu content.
      */
     private static List<String> getMenuContent() {
-        String[] actions = Context.get().getClient().getMenuActions();
-        String[] targets = Context.get().getClient().getMenuTargets();
+        String[] actions = Context.getClient().getMenuActions();
+        String[] targets = Context.getClient().getMenuTargets();
         List<String> menuContent = Lists.newArrayList();
 
-        for (int index = 0; index < Context.get().getClient().getMenuCount(); index++) {
+        for (int index = 0; index < Context.getClient().getMenuCount(); index++) {
             if (actions[index] != null && targets[index] != null) {
-                menuContent.add(actions[index] + " " + targets[index]);
+                menuContent.add(removeFormatting(targets[index] + " " + actions[index]));
             }
         }
         Collections.reverse(menuContent);
         return menuContent;
+    }
+
+    private static String removeFormatting(String in) {
+        if(in == null)
+            return "null";
+        return pattern.matcher(in).replaceAll("");
     }
 }

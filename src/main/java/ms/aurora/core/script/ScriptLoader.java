@@ -1,5 +1,6 @@
 package ms.aurora.core.script;
 
+import ms.aurora.Application;
 import ms.aurora.api.script.Script;
 import ms.aurora.core.model.ScriptSource;
 import org.apache.log4j.Logger;
@@ -34,7 +35,7 @@ public final class ScriptLoader {
 
                 try {
                     URLClassLoader jarClassLoader = new URLClassLoader(new URL[]{
-                            new URL("file:" + file.getAbsolutePath())});
+                            new URL("file:" + file.getAbsolutePath()), new URL("file:" + Application.JAVA_HOME + File.separator + "lib" + File.separator + "jfxrt.jar")});
                     JarFile jarFile = new JarFile(file);
 
                     Enumeration<JarEntry> entries = jarFile.entries();

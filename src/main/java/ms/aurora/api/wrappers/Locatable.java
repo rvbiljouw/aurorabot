@@ -17,4 +17,6 @@ public interface Locatable {
 
     int getY();
 
+    boolean isOnScreen();
+
 }

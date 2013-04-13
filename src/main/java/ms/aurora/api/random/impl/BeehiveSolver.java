@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
@@ -8,6 +9,7 @@ import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
 
@@ -33,6 +35,7 @@ public class BeehiveSolver extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
         return (Npcs.get(NpcFilters.ID(BEEHIVE_KEEPER_ID)) != null
                 && Objects.get(ObjectFilters.ID(16168)) != null);
     }
@@ -83,8 +86,8 @@ public class BeehiveSolver extends Random {
     public boolean dragInterfaces(RSWidget child1, RSWidget child2) {
         Point start = returnMidInterface(child1);
         Point finish = returnMidInterface(child2);
-        input.getMouse().releaseMouse(start.x, start.y, true);
-        input.getMouse().releaseMouse(finish.x, finish.y, true);
+        VirtualMouse.releaseMouse(start.x, start.y, true);
+        VirtualMouse.releaseMouse(finish.x, finish.y, true);
         return true;
     }
 

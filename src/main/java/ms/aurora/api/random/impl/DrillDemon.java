@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
@@ -25,6 +26,7 @@ public class DrillDemon extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
         return playerInArea(3167, 4822, 3159, 4818);
     }
 

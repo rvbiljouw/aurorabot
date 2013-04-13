@@ -1,10 +1,10 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
 
@@ -40,8 +40,8 @@ public class Walking {
     public static void clickOnMap(RSTile tile) {
         Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
-            Context.get().input.getMouse().moveMouse(minimapPoint.x, minimapPoint.y);
-            Context.get().input.getMouse().clickMouse(true);
+            VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
+            VirtualMouse.clickMouse(true);
             Utilities.sleepNoException(700);
             while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
                     && !Thread.currentThread().isInterrupted()) {
@@ -53,8 +53,8 @@ public class Walking {
     public static void clickOnScreen(RSTile tile) {
         Point screenPoint = Viewport.convert(tile);
         if (screenPoint.x != -1 && screenPoint.y != -1) {
-            Context.get().input.getMouse().moveMouse(screenPoint.x, screenPoint.y);
-            Context.get().input.getMouse().clickMouse(true);
+            VirtualMouse.moveMouse(screenPoint.x, screenPoint.y);
+            VirtualMouse.clickMouse(true);
             Utilities.sleepNoException(700);
             while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
                     && !Thread.currentThread().isInterrupted()) {

@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.random.Random;
@@ -13,6 +14,8 @@ public class ScapeRuneIsland extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
+
         return Calculations.distance(Players.getLocal().getLocation(), CENTER_TILE) < 50;
     }
 

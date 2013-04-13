@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.GroundItems;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.tabs.Inventory;
@@ -45,6 +46,7 @@ public class AxeHandler extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
         RSGroundItem axe = GroundItems.get(AXE_HEAD_PREDICATE);
         Inventory.InventoryItem handle = Inventory.get(HANDLE);
         return handle != null && axe != null;

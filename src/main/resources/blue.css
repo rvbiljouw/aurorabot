@@ -2,18 +2,6 @@
     -fx-base: #99E6FF;
 }
 
-.tab {
-    -fx-base: #dedede;
-}
-
-.menu-bar {
-    -fx-base: #00A4DB;
-}
-
-.menu-bar .menu .label {
-    -fx-text-fill: #ffffff;
-}
-
 .pane {
     -fx-background-color: linear-gradient(#E6E6E6 0%, #FFFFFF 50%, #E6E6E6 100%);
 }
@@ -34,4 +22,17 @@
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";
     -fx-opacity: 1;
+}
+
+.tab {
+    -fx-base: #dedede;
+}
+
+.menu-bar {
+    -fx-base: #00A4DB;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 1.0;
 }

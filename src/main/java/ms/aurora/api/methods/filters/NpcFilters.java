@@ -88,7 +88,7 @@ public final class NpcFilters {
             @Override
             public boolean apply(RSNPC object) {
                 for (String name : names) {
-                    if (object.getName().equals(name)) {
+                    if (object.getName().equalsIgnoreCase(name)) {
                         return true;
                     }
                 }

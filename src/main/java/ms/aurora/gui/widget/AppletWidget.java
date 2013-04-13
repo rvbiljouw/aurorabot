@@ -130,7 +130,9 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    tab().setText("Session " + applet.hashCode());
+                    if (get(applet.hashCode()) != null) {
+                        tab().setText(get(applet.hashCode()).getName());
+                    }
                 }
             });
         } else {
@@ -141,10 +143,16 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    tab().setText("[ Session " + applet.hashCode() + " ]");
+                    if (get(applet.hashCode()) != null) {
+                        tab().setText("[ " + get(applet.hashCode()).getName() + " ]");
+                    }
                 }
             });
         }
+    }
+
+    public void refresh() {
+        toggleVisibility(visibleProperty().getValue(), applet);
     }
 
     public void onMenuOpening() {

@@ -13,6 +13,8 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 /**
+ * ResponseHandler for the client configuration page.
+ * Our loader utilizes the same page as Jagex's RuneScape loader does.
  * @author Rick
  */
 public final class ClientConfig implements ResponseHandler {

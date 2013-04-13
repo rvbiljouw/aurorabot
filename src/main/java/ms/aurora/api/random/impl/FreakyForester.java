@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.ItemFilters;
 import ms.aurora.api.methods.filters.NpcFilters;
@@ -28,6 +29,8 @@ public class FreakyForester extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
+
         forester = Npcs.get(NpcFilters.ID(FORESTER_ID));
         if (forester != null) {
             Utilities.sleepNoException(2000, 3000);

@@ -16,6 +16,8 @@ import ms.aurora.api.script.Script;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.core.script.ScriptLoader;
+import ms.aurora.gui.dialog.AccountSelectDialog;
+import ms.aurora.gui.dialog.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -75,12 +77,22 @@ public class ScriptOverview extends AnchorPane {
 
     @FXML
     void onOk(ActionEvent event) {
-        ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
-        Session session = SessionRepository.get(getSelectedApplet().hashCode());
+        final ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
+        final Session session = SessionRepository.get(getSelectedApplet().hashCode());
         if (session != null && model != null) {
-            session.getScriptManager().start(model.script);
+            final AccountSelectDialog selector = new AccountSelectDialog();
+            selector.setCallback(new Callback() {
+                @Override
+                public void call() {
+                    session.setAccount(selector.get());
+                    session.getScriptManager().start(model.script);
+                    getScene().getWindow().hide();
+                }
+            });
+            selector.show();
+        } else {
+            getScene().getWindow().hide();
         }
-        getScene().getWindow().hide();
     }
 
     @FXML

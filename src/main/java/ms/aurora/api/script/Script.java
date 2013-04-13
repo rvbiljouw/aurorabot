@@ -59,13 +59,17 @@ public abstract class Script extends Context implements Runnable {
 
 
                     case RUNNING:
-                        int loopResult = tick();
-                        if (loopResult != -1) {
-                            Thread.sleep(loopResult + 600);
+                        if (Context.isLoggedIn()) {
+                            int loopResult = tick();
+                            if (loopResult != -1) {
+                                Thread.sleep(loopResult + 600);
+                            } else {
+                                // Returning -1 means exit.
+                                info("Exited by -1");
+                                return;
+                            }
                         } else {
-                            // Returning -1 means exit.
-                            info("Exited by -1");
-                            return;
+                            info("Not logged in.");
                         }
                         break;
 
@@ -105,8 +109,6 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private void init() {
-        input.initialize();
-
         if (this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener) this);
         }
@@ -135,16 +137,13 @@ public abstract class Script extends Context implements Runnable {
             while (getState() != ScriptState.STOP) {
                 for (Random random : randoms) {
                     random.setSession(getSession());
-
                     while (random.activate()) {
-
                         get().getSession().getScriptManager().pause();
                         info("Random event " + random.getClass().getSimpleName() + " was triggered.");
                         int time = random.loop();
-                        get().getSession().getScriptManager().resume();
                         if (time == -1) continue;
-
                         sleepNoException(time);
+                        get().getSession().getScriptManager().resume();
                     }
                 }
                 sleepNoException(100);

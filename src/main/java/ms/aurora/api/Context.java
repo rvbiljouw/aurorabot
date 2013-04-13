@@ -1,26 +1,21 @@
 package ms.aurora.api;
 
 import ms.aurora.core.Session;
-import ms.aurora.input.InputManager;
 import ms.aurora.rt3.Client;
 
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.Thread.currentThread;
+import static ms.aurora.api.methods.Widgets.getWidget;
 
 /**
  * @author Rick
  */
 public class Context {
     private static final Map<ThreadGroup, Context> contextMap = newHashMap();
-    public final InputManager input;
     private ThreadGroup threadGroup;
     private Session session;
-
-    public Context() {
-        this.input = new InputManager(this);
-    }
 
     public final Session getSession() {
         return session;
@@ -32,11 +27,19 @@ public class Context {
         this.session = session;
     }
 
-    public final Client getClient() {
-        if (session == null) {
-            System.out.println(currentThread().getThreadGroup().getName());
+    public static Client getClient() {
+        if (get() != null && get().session.getApplet() != null) {
+            return (Client) get().session.getApplet();
         }
-        return (Client) session.getApplet();
+        return null;
+    }
+
+    public static boolean isLoggedIn() {
+        return get() != null && get().isLoggedInInternal();
+    }
+
+    private boolean isLoggedInInternal() {
+        return getClient().getLoginIndex() == 30 && getWidget(378, 6) == null;
     }
 
     public static Context get() {

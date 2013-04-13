@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A generator that creates curved paths based on bezier splines.
+ * Much of the original implementation was written by Beland100 for (if i recall correctly) SCAR.
+ * It has then been ported to Java numerous times and we still seem to use it.
  * @author Benland100
- * @author rvb
+ * @author Rick
  */
 public final class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
     private java.util.Random random = new java.util.Random();

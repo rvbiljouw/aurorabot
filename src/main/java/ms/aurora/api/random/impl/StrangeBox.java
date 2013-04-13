@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.methods.tabs.Options;
@@ -15,6 +16,8 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 public class StrangeBox extends Random {
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
+
         return Inventory.contains(3062);
     }
 

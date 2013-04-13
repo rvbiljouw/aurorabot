@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
@@ -50,6 +51,7 @@ public class CapnArnav extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
         return Npcs.get(NpcFilters.ID(CAPTAIN_ID)) != null && Objects.get(ObjectFilters.ID(PORTAL_ID)) != null;
     }
 

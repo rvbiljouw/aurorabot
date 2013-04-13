@@ -100,7 +100,9 @@ public final class AccessorDefinition {
 
     @Override
     public String toString() {
-        return name + " -> " + owner + "." + field + (multiplier != 0 ? " * " + multiplier : "") + " [ " + signature + "] => " + returnSignature;
+        return new StringBuilder().append(name).append(" -> ").append(owner).
+                append(".").append(field).append(multiplier != 0 ? " * " + multiplier : "").
+                append(" [ ").append(signature).append("] => ").append(returnSignature).toString();
     }
 
 }

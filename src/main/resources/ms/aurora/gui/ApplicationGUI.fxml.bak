@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?scenebuilder-stylesheet ../../../blue.css?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" minHeight="554.0" prefHeight="600.0" prefWidth="768.0" xmlns:fx="http://javafx.com/fxml">
-  <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="768.0">
-    <children>
-      <TabPane fx:id="tabPane" layoutX="0.0" layoutY="60.0" prefHeight="540.0" prefWidth="768.0" tabClosingPolicy="SELECTED_TAB">
-        <tabs>
-          <Tab text="Welcome">
-            <content>
-              <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="768.0" />
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-      <MenuBar fx:id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="768.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File" fx:id="mnFile">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#onNewSession" text="New session" />
-              <MenuItem mnemonicParsing="false" onAction="#onCloseClicked" text="Close" fx:id="mntmClose" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit" fx:id="mnEdit">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Accounts" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Script" fx:id="mnHelp">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Start script" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Plug-ins" fx:id="mnPlugins">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="Plugin Overview" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
-        <items>
-          <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
-          <Button mnemonicParsing="false" onAction="#onStartScript" text="Play" />
-          <Button mnemonicParsing="false" onAction="#onPauseScript" text="Pause" />
-          <ToggleButton mnemonicParsing="false" onAction="#onToggleInput" text="Disable input" />
-        </items>
-      </ToolBar>
-    </children>
-  </AnchorPane>
-  <stylesheets>
-    <URL value="@../../../blue.css" />
-  </stylesheets>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import java.net.URL?>
+<fx:root type="javafx.scene.layout.AnchorPane" minHeight="554.0" prefHeight="600.0" prefWidth="768.0"
+         xmlns:fx="http://javafx.com/fxml">
+    <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="768.0">
+        <children>
+            <TabPane fx:id="tabPane" layoutX="0.0" layoutY="60.0" prefHeight="540.0" prefWidth="768.0"
+                     tabClosingPolicy="SELECTED_TAB">
+                <tabs>
+                    <Tab text="Welcome">
+                        <content>
+                            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="539.0"
+                                        prefWidth="768.0"/>
+                        </content>
+                    </Tab>
+                </tabs>
+            </TabPane>
+            <MenuBar fx:id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="768.0">
+                <menus>
+                    <Menu mnemonicParsing="false" text="File" fx:id="mnFile">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onNewSession" text="New session"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onCloseClicked" text="Close"
+                                      fx:id="mntmClose"/>
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Edit" fx:id="mnEdit">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Accounts"/>
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Script" fx:id="mnHelp">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Start script"/>
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Plug-ins" fx:id="mnPlugins">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="Plugin Overview"
+                                      fx:id="pluginOverview"/>
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+            <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
+                <items>
+                    <Button mnemonicParsing="false" onAction="#onNewSession" text="New session"/>
+                    <Button mnemonicParsing="false" onAction="#onStartScript" text="Play"/>
+                    <Button mnemonicParsing="false" onAction="#onPauseScript" text="Pause"/>
+                    <ToggleButton mnemonicParsing="false" onAction="#onToggleInput" text="Disable input"/>
+                </items>
+            </ToolBar>
+        </children>
+    </AnchorPane>
+    <stylesheets>
+        <URL value="@../../../blue.css"/>
+    </stylesheets>
 </fx:root>

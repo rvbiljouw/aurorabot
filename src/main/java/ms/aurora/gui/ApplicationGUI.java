@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -51,6 +53,9 @@ public class ApplicationGUI extends AnchorPane {
 
     @FXML
     private MenuItem pluginOverview;
+
+    @FXML
+    private ToggleButton btnToggleInput;
 
     public ApplicationGUI() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ApplicationGUI.fxml"));
@@ -100,7 +105,7 @@ public class ApplicationGUI extends AnchorPane {
                     stage.setTitle("Select a script");
                     stage.setWidth(810);
                     stage.setHeight(640);
-                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initModality(Modality.WINDOW_MODAL);
                     ScriptOverview overview = new ScriptOverview();
                     Scene scene = new Scene(overview);
                     scene.getStylesheets().add("blue.css");
@@ -175,9 +180,11 @@ public class ApplicationGUI extends AnchorPane {
         if (!button.isSelected()) {
             GlobalEventQueue.blocking = false;
             button.setText("Disable input");
+            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("enabled.png"))));
         } else {
             GlobalEventQueue.blocking = true;
             button.setText("Enable input");
+            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("disabled.png"))));
         }
     }
 
@@ -202,9 +209,8 @@ public class ApplicationGUI extends AnchorPane {
                 }
             }
         });
-
+        btnToggleInput.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("enabled.png"))));
         Account.init();
-
     }
 
     public static Applet getSelectedApplet() {
@@ -221,5 +227,9 @@ public class ApplicationGUI extends AnchorPane {
 
     public MenuItem getPluginOverview() {
         return pluginOverview;
+    }
+
+    public static synchronized ApplicationGUI getInstance() {
+        return self;
     }
 }

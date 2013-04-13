@@ -3,16 +3,14 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
+import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Item;
 
 import java.awt.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 16/03/2013
- * Time: 01:11
- * To change this template use File | Settings | File Templates.
+ * Wrapper for ground items.
+ * @author tobiewarburton
  */
 public final class RSGroundItem implements Locatable, Interactable {
     private Context ctx;
@@ -61,6 +59,11 @@ public final class RSGroundItem implements Locatable, Interactable {
         return getLocalY() + ctx.getClient().getBaseY();
     }
 
+    @Override
+    public boolean isOnScreen() {
+        return Viewport.tileOnScreen(getLocation());
+    }
+
     public int getLocalX() {
         return localX;
     }
@@ -81,7 +84,7 @@ public final class RSGroundItem implements Locatable, Interactable {
         }
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
-        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        VirtualMouse.moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -98,7 +101,7 @@ public final class RSGroundItem implements Locatable, Interactable {
         }
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
-        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        VirtualMouse.moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -115,7 +118,7 @@ public final class RSGroundItem implements Locatable, Interactable {
         }
         Point screen = getScreenLocation();
         if (screen.x == -1 && screen.y == -1) return false;
-        ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
+        VirtualMouse.clickMouse(screen.x, screen.y, left);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

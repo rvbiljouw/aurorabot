@@ -42,6 +42,9 @@ public class MasterPasswordDialog extends AnchorPane {
     private PasswordField txtVerifyPassword;
 
     @FXML
+    private Label caption;
+
+    @FXML
     private Label warning;
 
     private Callback callback;
@@ -80,11 +83,18 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     @FXML
+    void onCancel(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
     void initialize() {
         assert btnAuthenticate != null : "fx:id=\"btnAuthenticate\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert txtVerifyPassword != null : "fx:id=\"txtVerifyPassword\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert warning != null : "fx:id=\"warning\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
+        assert caption != null : "fx:id=\"caption\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
+        caption.setText(properties.size() == 0 ? "Create password" : "Unlock database");
     }
 
     private void showWarning() {
@@ -112,10 +122,11 @@ public class MasterPasswordDialog extends AnchorPane {
 
     public void show() {
         Stage stage = new Stage();
-        stage.setTitle(properties.size() == 0 ? "Create Password" : "Authenticate");
-        stage.setWidth(320);
-        stage.setHeight(150);
+        stage.setTitle(properties.size() == 0 ? "Create Password" : "Unlock database");
+        stage.setWidth(433);
+        stage.setHeight(291);
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(null);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
@@ -125,13 +136,14 @@ public class MasterPasswordDialog extends AnchorPane {
         Scene scene = new Scene(this);
         scene.getStylesheets().add("blue.css");
         stage.setScene(scene);
-        stage.setScene(scene);
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
                 getCallback().call();
             }
         });
+        stage.centerOnScreen();
         stage.showAndWait();
+        stage.requestFocus();
     }
 }

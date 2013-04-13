@@ -1,5 +1,6 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
@@ -24,6 +25,8 @@ public class FrogCave extends Random {
 
     @Override
     public boolean activate() {
+        if(!Context.isLoggedIn()) return false;
+
         if (Npcs.get(NpcFilters.NAMED("Frog Herald")) != null
                 && Objects.get(ObjectFilters.ID(5917)) != null) {
             sleepNoException(2000, 3000);

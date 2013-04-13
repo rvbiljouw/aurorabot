@@ -3,6 +3,7 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
+import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.GameObject;
 import ms.aurora.rt3.GroundDecoration;
 import ms.aurora.rt3.Model;
@@ -78,7 +79,7 @@ public final class RSObject implements Locatable, Interactable {
             return false;
         }
         Point screen = getClickLocation();
-        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        VirtualMouse.moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -94,7 +95,7 @@ public final class RSObject implements Locatable, Interactable {
             return false;
         }
         Point screen = getScreenLocation();
-        ctx.input.getMouse().moveMouse(screen.x, screen.y);
+        VirtualMouse.moveMouse(screen.x, screen.y);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -111,7 +112,7 @@ public final class RSObject implements Locatable, Interactable {
             return false;
         }
         Point screen = getClickLocation();
-        ctx.input.getMouse().clickMouse(screen.x, screen.y, left);
+        VirtualMouse.clickMouse(screen.x, screen.y, left);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

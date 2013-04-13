@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?scenebuilder-stylesheet ../../../../blue.css?>
-
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
-<?import java.net.URL?>
+
 <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
-    <AnchorPane id="AnchorPane" fx:id="appletPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                minWidth="-Infinity" prefHeight="503.0" prefWidth="765.0">
-        <children>
-            <ProgressBar layoutX="14.0" layoutY="431.0" prefHeight="35.0" prefWidth="737.0" progress="-0.44"/>
-            <Label layoutX="222.0" layoutY="368.0" text="Loading, please wait">
-                <font>
-                    <Font size="36.0"/>
-                </font>
-            </Label>
-        </children>
-        <stylesheets>
-            <URL value="@../../../../blue.css"/>
-        </stylesheets>
-    </AnchorPane>
+  <AnchorPane id="AnchorPane" fx:id="appletPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="765.0">
+    <children>
+      <ProgressBar layoutX="14.0" layoutY="431.0" prefHeight="35.0" prefWidth="737.0" progress="-0.44" />
+      <Label layoutX="222.0" layoutY="368.0" styleClass="big-label" text="Loading, please wait">
+        <font>
+          <Font size="36.0" />
+        </font>
+      </Label>
+    </children>
     <stylesheets>
-        <URL value="@../../../../blue.css"/>
+      <URL value="@../../../../blue.css" />
     </stylesheets>
+  </AnchorPane>
+  <stylesheets>
+    <URL value="@../../../../blue.css" />
+  </stylesheets>
 </fx:root>

@@ -8,6 +8,18 @@
     <artifactId>untitled</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>repository.jboss.org-public</id>
+            <name>JBoss.org Maven repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <organization>
+        <name>Aurora</name>
+    </organization>
+
     <dependencies>
         <dependency>
             <groupId>bcel</groupId>
@@ -47,17 +59,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-all</artifactId>
-            <version>4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.insubstantial</groupId>
-            <artifactId>substance</artifactId>
-            <version>7.2.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <version>10.9.1.0</version>
@@ -81,17 +82,17 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.0</version>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>1.5</version>
                 <configuration>
-                    <!-- put your configurations here -->
+                    <mainClass>ms.aurora.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>build-jar</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -41,10 +41,6 @@ public final class AppletLoader implements Runnable {
         definitionJSON.visit();
 
         AppletStubImpl appletStub = new AppletStubImpl(clientConfig);
-
-		/*
-         * Temporary
-		 */
         try {
             URL jarURL = new URL("jar:" + clientConfig.getDocumentBase()
                     + clientConfig.getArchiveName() + "!/");

@@ -67,6 +67,11 @@ public class Account extends AbstractModel {
         this.bankPin = bankPin;
     }
 
+    @Override
+    public String toString() {
+        return username;
+    }
+
     public static List<Account> getAll() {
         return getEm().createNamedQuery("account.getAll", Account.class).getResultList();
     }
@@ -121,9 +126,6 @@ public class Account extends AbstractModel {
     }
 
     public static void init() {
-        final List<Property> properties = Property.getByName("masterPassword");
-
-
         final MasterPasswordDialog dialog = new MasterPasswordDialog();
         dialog.setCallback(new Callback() {
             @Override

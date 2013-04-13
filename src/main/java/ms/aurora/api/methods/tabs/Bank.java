@@ -3,8 +3,10 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Npcs;
+import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.filters.NpcFilters;
+import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
@@ -52,11 +54,11 @@ public final class Bank {
         Interactable bank = Npcs.get(NpcFilters.NAMED("Banker"));
         if (bank == null) {
             logger.debug("Finding bank booth..");
-            /*bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
+            bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
             if (bank == null) {
                 logger.debug("Couldn't find an object or NPC to bank at.");
                 return false;
-            } */
+            }
             return false;
         }
         bank.applyAction("Bank(.*)Bank");
@@ -291,26 +293,23 @@ public final class Bank {
 
         @Override
         public boolean applyAction(String action) {
-            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
-            mouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             return Menu.click(action);
         }
 
         @Override
         public boolean hover() {
-            VirtualMouse virtualMouse = Context.get().input.getMouse();
             Rectangle area = getArea();
-            virtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
+            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
             Mouse clientMouse = Context.get().getClient().getMouse();
             return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
         }
 
         @Override
         public boolean click(boolean left) {
-            VirtualMouse mouse = Context.get().input.getMouse();
             Rectangle area = getArea();
-            mouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
+            VirtualMouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
             return true;
 
         }
