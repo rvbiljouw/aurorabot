@@ -80,7 +80,6 @@ public final class Widgets {
             for (RSWidget child : groups.getWidgets()) {
                 if (child != null && child.getText().contains(predicate) &&
                         rect.contains(child.getCenterPoint())) {
-                    System.out.println("Valid click here interface: " + child.getParent()+","+ child.getId());
                     satisfied.add(child);
                 }
             }

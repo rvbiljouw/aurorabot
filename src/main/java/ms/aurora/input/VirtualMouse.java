@@ -2,6 +2,7 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.input.algorithm.BezierAlgorithm;
+import ms.aurora.input.algorithm.StraightLineAlgorithm;
 import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
 
@@ -16,14 +17,19 @@ import java.awt.event.MouseEvent;
  */
 public final class VirtualMouse {
     private static final Logger logger = Logger.getLogger(VirtualMouse.class);
+    private static final MousePathAlgorithm alternate = new StraightLineAlgorithm();
     private static final MousePathAlgorithm algorithm = new BezierAlgorithm();
+
+    public static void moveMouse(final Point target) {
+        moveMouse(target.x, target.y);
+    }
 
     public static void moveMouse(final int x, final int y) {
         Point currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY());
         Point[] path = algorithm.generatePath(currentPosition, new Point(x, y));
         for (Point p : path) {
             hopMouse(p.x, p.y);
-            sleepNoException(random(1, 3));
+            sleepNoExceptionNano(random(1000000, 500000));
         }
     }
 
@@ -63,11 +69,11 @@ public final class VirtualMouse {
     }
 
     public static Mouse getMouse() {
-        return Context.get().getClient().getMouse();
+        return Context.getClient().getMouse();
     }
 
     public static Component getComponent() {
-        return Context.get().getClient().getCanvas();
+        return Context.getClient().getCanvas();
     }
 
     private static int random(int min, int max) {
@@ -83,6 +89,13 @@ public final class VirtualMouse {
         }
     }
 
+    private static void sleepNoExceptionNano(long ns) {
+        long curNs = System.nanoTime();
+        while ((System.nanoTime() - curNs) < ns && !Thread.interrupted()) {
+
+        }
+    }
+
     public interface MousePathAlgorithm {
 
         Point[] generatePath(Point origin, Point destination);
@@ -90,12 +103,11 @@ public final class VirtualMouse {
     }
 
     public interface DynamicTarget {
-        int getX();
 
-        int getY();
+        Point getTarget();
 
         boolean isValid();
 
-        void onComplete();
+        Point getReference();
     }
 }

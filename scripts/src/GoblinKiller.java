@@ -10,6 +10,7 @@ import java.awt.*;
 import static ms.aurora.api.methods.filters.NpcFilters.NAMED;
 import static ms.aurora.api.methods.filters.NpcFilters.NOT_IN_COMBAT;
 import static ms.aurora.api.util.Utilities.random;
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author rvbiljouw
@@ -24,41 +25,25 @@ public class GoblinKiller extends Script implements PaintListener {
     public int tick() {
         if (Players.getLocal().isMoving() || Players.getLocal().isInCombat() ||
                 Players.getLocal().getInteracting() != null) {
-            return random(700, 800);
+            return random(200, 300);
         } else {
             doAttack();
             //this.hoverGoblin();
-            return random(600, 800);
+            return random(200, 300);
         }
     }
 
     private void doAttack() {
         RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
         if (goblin != null) {
+            sleepNoException(100);
             goblin.applyAction("Attack");
-        }
-    }
-
-    private void hoverGoblin() {
-        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
-        if (goblin != null) {
-            goblin.hover();
+            sleepNoException(200);
         }
     }
 
     @Override
     public void onRepaint(Graphics graphics) {
-        RSNPC goblin = Npcs.get(NAMED("Goblin"), NOT_IN_COMBAT);
-        if (goblin != null && goblin.getModel() != null) {
-            /*Polygon[] polys = goblin.getModel().getPolygons();
-            for(Polygon poly : polys) {
-                graphics.drawPolygon(poly);
-            }*/
-            Polygon p = goblin.getModel().getHull();
-            graphics.setColor(this.fill);
-            graphics.fillPolygon(p);
-            graphics.setColor(this.border);
-            graphics.drawPolygon(p);
-        }
+
     }
 }

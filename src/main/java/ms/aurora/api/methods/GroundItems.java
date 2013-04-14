@@ -28,12 +28,15 @@ public final class GroundItems {
      * @see RSGroundItem#distance(ms.aurora.api.wrappers.Locatable)
      * @see Predicate
      */
-    public static RSGroundItem get(final Predicate<RSGroundItem> predicate) {
+    public static RSGroundItem get(final Predicate<RSGroundItem>... predicate) {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
                     @Override
                     public boolean apply(RSGroundItem item) {
-                        return predicate.apply(item);
+                        for(Predicate p : predicate) {
+                            if(!p.apply(item)) return false;
+                        }
+                        return true;
                     }
                 }
         ).toArray(new RSGroundItem[]{}));
@@ -46,12 +49,15 @@ public final class GroundItems {
      * @return the array containing all {@link RSGroundItem} which satisfy the predicate
      * @see Predicate
      */
-    public static RSGroundItem[] getAll(final Predicate<RSGroundItem> predicate) {
+    public static RSGroundItem[] getAll(final Predicate<RSGroundItem>... predicate) {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSGroundItem>() {
                     @Override
                     public boolean apply(RSGroundItem item) {
-                        return predicate.apply(item);
+                        for(Predicate p : predicate) {
+                            if(!p.apply(item)) return false;
+                        }
+                        return true;
                     }
                 }
         ).toArray(new RSGroundItem[]{});

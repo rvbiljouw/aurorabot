@@ -3,6 +3,7 @@ package ms.aurora.api.methods;
 import com.google.common.collect.Lists;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import org.jboss.logging.Logger;
 
@@ -43,7 +44,7 @@ public final class Menu {
      * @return true if the menu is open
      */
     public static boolean isMenuOpen() {
-        return Context.get().getClient().isMenuOpen();
+        return Context.getClient().isMenuOpen();
     }
 
     /**
@@ -54,6 +55,7 @@ public final class Menu {
      * @return true if success, false if failed.
      */
     public static boolean click(String action) {
+        VirtualKeyboard.holdControl();
         int itemIndex = getIndex(action);
         if (itemIndex != -1) {
             if (itemIndex == 0) {
@@ -76,10 +78,12 @@ public final class Menu {
                     logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
                     VirtualMouse.clickMouse(menuOptionX, menuOptionY,
                             true);
+                    VirtualKeyboard.releaseControl();
                     return true;
                 }
             }
         }
+        VirtualKeyboard.releaseControl();
         return false;
     }
 

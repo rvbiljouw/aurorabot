@@ -1,6 +1,7 @@
 package ms.aurora.input;
 
 import ms.aurora.api.Context;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -15,6 +16,7 @@ import java.util.Random;
  * @author tobiewarburton
  */
 public final class VirtualKeyboard {
+    private static final Logger logger = Logger.getLogger(VirtualKeyboard.class);
     private static Random random = new Random();
 
     /**
@@ -149,7 +151,17 @@ public final class VirtualKeyboard {
         return (max - min) * random.nextInt() + min;
     }
 
+    public static void holdControl() {
+        holdKey((char)KeyEvent.VK_CONTROL);
+        logger.info("Holding CTRL");
+    }
+
+    public static void releaseControl() {
+        releaseKey((char) KeyEvent.VK_CONTROL);
+        logger.info("Released CTRL");
+    }
+
     public static Component getComponent() {
-        return Context.get().getClient().getCanvas();
+        return Context.getClient().getCanvas();
     }
 }

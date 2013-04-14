@@ -4,6 +4,7 @@ import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
@@ -38,6 +39,7 @@ public class Walking {
      * Clicks tile on the minimap
      */
     public static void clickOnMap(RSTile tile) {
+        VirtualKeyboard.holdControl();
         Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
@@ -48,6 +50,7 @@ public class Walking {
                 Utilities.sleepNoException(400);
             }
         }
+        VirtualKeyboard.releaseControl();
     }
 
     public static void clickOnScreen(RSTile tile) {

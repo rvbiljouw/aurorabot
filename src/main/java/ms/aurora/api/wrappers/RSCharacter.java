@@ -1,7 +1,6 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
 import ms.aurora.input.VirtualMouse;
@@ -11,6 +10,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 
 import static ms.aurora.api.util.Utilities.sleepNoException;
+import static ms.aurora.input.VirtualMouse.moveMouse;
 
 
 /**
@@ -36,7 +36,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
                 return getModel().getRandomPoint();
             }
         } catch (Exception e) {
-           //  e.printStackTrace();
+            //  e.printStackTrace();
         }
         logger.debug("Couldn't find model, using screen location.");
         return getScreenLocation();
@@ -108,15 +108,9 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
             logger.error("Not on screen, walking to " + getLocation());
             return false;
         }
-        Point screen = getClickLocation();
-        VirtualMouse.moveMouse(screen.x, screen.y);
-        boolean success = ms.aurora.api.methods.Menu.click(actionName);
-        sleepNoException(700);
-
-        while (Players.getLocal().isMoving()) {
-            sleepNoException(600);
-        }
-        return success;
+        moveMouse(getClickLocation());
+        sleepNoException(200);  // Wait for the menu to pop up...
+        return ms.aurora.api.methods.Menu.click(actionName);
     }
 
     @Override
@@ -126,7 +120,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         }
         Point screen = getClickLocation();
         if (screen == null) return false;
-        VirtualMouse.moveMouse(screen.x, screen.y);
+        moveMouse(screen.x, screen.y);
         return true;
     }
 
