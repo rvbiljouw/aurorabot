@@ -153,7 +153,7 @@ public final class RSWidget implements Interactable {
      * @return The widget's id
      */
     public int getId() {
-        return (widget.getParentId() & 0xFFFF);
+        return index;
     }
 
 
