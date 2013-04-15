@@ -117,12 +117,9 @@ public class Path {
     public RSTile[] toTiles(int step) {
         ArrayList<RSTile> points = new ArrayList<RSTile>();
         for (int i = 0; i < steps.size(); i += step) {
-            if (i >= steps.size()) {
-                points.add(new RSTile(steps.get(steps.size() - 1).getX() + Context.get().getClient().getBaseX(), steps.get(steps.size() - 1).getY() + Context.get().getClient().getBaseY()));
-                break;
-            }
             points.add(new RSTile(steps.get(i).getX() + Context.get().getClient().getBaseX(), steps.get(i).getY() + Context.get().getClient().getBaseY()));
         }
+        points.add(new RSTile(steps.get(steps.size() - 1).getX() + Context.get().getClient().getBaseX(), steps.get(steps.size() - 1).getY() + Context.get().getClient().getBaseY()));
         return points.toArray(new RSTile[points.size()]);
     }
 

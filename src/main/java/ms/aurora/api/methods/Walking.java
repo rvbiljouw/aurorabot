@@ -99,11 +99,9 @@ public class Walking {
 
     public static void walkTo(int x, int y) {
         RSPathFinder pf = new RSPathFinder();
-        int baseX = Context.getClient().getBaseX();
-        int baseY = Context.getClient().getBaseY();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
         if (path != null && path.getLength() != 0) {
-            walkPath(path.toTiles(7));
+            walkPath(path.toTiles(3));
         } else {
             System.out.println("Path not found to " + x + ", " + y);
         }

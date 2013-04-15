@@ -31,12 +31,12 @@ public class RSPathFinder implements Runnable {
     private void reload() {
         int plane = Context.getClient().getPlane();
         RSRegion region = new RSRegion(Context.getClient().getRegions()[plane].getClippingMasks());
-        pathFinder = new AStarPathFinder(region, 90, true, new ClosestHeuristic());
+        pathFinder = new AStarPathFinder(region, 100, true, new ClosestHeuristic());
     }
 
     public Path getPath(int destX, int destY, int full) {
         reload();
-        Point destPoint = getBest(new Point(destX - Context.getClient().getBaseX(),
+        Point destPoint = getFixed(new Point(destX - Context.getClient().getBaseX(),
                 destY - Context.getClient().getBaseY()));
         return getPath(Players.getLocal().getLocalX() >> 7,
                 Players.getLocal().getLocalY() >> 7,
@@ -66,42 +66,6 @@ public class RSPathFinder implements Runnable {
             point.y = 1;
         }
         return point;
-    }
-
-    private Point getBest(Point point) {
-        RSRegion region = new RSRegion(Context.getClient().getRegions()[
-                Context.getClient().getPlane()].getClippingMasks());
-        if (point.x < 0 || point.x > 103 || point.y < 0 || point.y > 103) {
-            java.util.List<Point> available = new ArrayList<Point>();
-            for (int i = 0; i < 104; i++) {
-                for (int j = 0; j < 104; j++) {
-                    if(!region.solid(i, j)) {
-                        available.add(new Point(i, j));
-                    }
-                }
-            }
-
-            if (available.size() > 0) {
-                Point closest = available.get(0);
-                int closestDistance = getDistance(closest, point);
-                for (Point a : available) {
-                    int aDistance = getDistance(a, point);
-                    if (aDistance <= closestDistance) {
-                        closest = a;
-                        closestDistance = aDistance;
-                    }
-                }
-                System.out.println("Changed destination from " + point + " to " + closest);
-                return closest;
-            }
-        }
-        return point;
-    }
-
-    public int getDistance(Point point, Point target) {
-        int playerX = Players.getLocal().getLocalX() >> 7;
-        int playerY = Players.getLocal().getLocalY() >> 7;
-        return (int)(Calculations.getRealDistanceTo(playerX,  playerY, point.x, point.y, false) + (point.distance(target) * 1.4));
     }
 
     public int getZoneCount() {
