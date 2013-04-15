@@ -26,9 +26,9 @@ public class AutoLogin extends Random {
         clickMouse((int) userRect.getCenterX(),
                 (int) userRect.getCenterY(), true);
         sleepNoException(700, 1000);
-        VirtualKeyboard.type(username, true);
+        VirtualKeyboard.sendKeys(username, true);
         sleepNoException(500, 1200);
-        VirtualKeyboard.type(password, true);
+        VirtualKeyboard.sendKeys(password, true);
         sleepNoException(500, 1200);
         return 3000;
     }
