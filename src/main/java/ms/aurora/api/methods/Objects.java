@@ -28,12 +28,15 @@ public final class Objects {
      * @see RSObject#distance(ms.aurora.api.wrappers.Locatable)
      * @see Predicate
      */
-    public static RSObject get(final Predicate<RSObject> predicate) {
+    public static RSObject get(final Predicate<RSObject>... predicates) {
         return getClosest(Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSObject>() {
                     @Override
                     public boolean apply(RSObject rsObject) {
-                        return predicate.apply(rsObject);
+                        for (Predicate p : predicates) {
+                            if (!p.apply(rsObject)) return false;
+                        }
+                        return true;
                     }
                 }
         ).toArray(new RSObject[0]));
@@ -42,19 +45,22 @@ public final class Objects {
     /**
      * a method which gets all the {@link RSObject} in the current region which satisfy the given {@link Predicate}
      *
-     * @param predicate the {@link Predicate} which needs to be satisfied
+     * @param predicates the {@link Predicate} which needs to be satisfied
      * @return an array containing all of the {@link RSObject} which satisfy the predicate
      * @see Predicate
      */
-    public static RSObject[] getAll(final Predicate<RSObject> predicate) {
+    public static RSObject[] getAll(final Predicate<RSObject>... predicates) {
         return Collections2.filter(_getAll(),
                 new com.google.common.base.Predicate<RSObject>() {
                     @Override
                     public boolean apply(RSObject rsObject) {
-                        return predicate.apply(rsObject);
+                        for (Predicate p : predicates) {
+                            if (!p.apply(rsObject)) return false;
+                        }
+                        return true;
                     }
                 }
-        ).toArray(new RSObject[]{});
+        ).toArray(new RSObject[0]);
     }
 
     /**

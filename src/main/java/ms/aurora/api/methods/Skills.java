@@ -13,7 +13,7 @@ public final class Skills {
      * An enum representing all skills
      */
     public enum Skill {
-        ATACK(0),
+        ATTACK(0),
         STRENGTH(2),
         DEFENCE(1),
         RANGED(4),

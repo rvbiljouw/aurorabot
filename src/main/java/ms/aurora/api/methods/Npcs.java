@@ -44,23 +44,6 @@ public final class Npcs {
     }
 
     /**
-     * return an array of all the {@link RSNPC} which match the given predicate
-     *
-     * @param predicate the {@link Predicate} in which is required to be satisfied
-     * @return an array of the {@link RSNPC} which satisfy the given predicate
-     * @see Predicate
-     */
-    public static RSNPC[] getAll(final Predicate<RSNPC> predicate) {
-        return Collections2.filter(_getAll(),
-                new com.google.common.base.Predicate<RSNPC>() {
-                    @Override
-                    public boolean apply(RSNPC object) {
-                        return predicate.apply(object);
-                    }
-                }).toArray(new RSNPC[0]);
-    }
-
-    /**
      * return an array of all the {@link RSNPC} which match any of the given predicates
      *
      * @param predicates a var-args array of {@link Predicate} in which is required to be satisfied
@@ -72,8 +55,8 @@ public final class Npcs {
                 new com.google.common.base.Predicate<RSNPC>() {
                     @Override
                     public boolean apply(RSNPC object) {
-                        for(Predicate<RSNPC> pred : predicates) {
-                            if(!pred.apply(object)) return false;
+                        for (Predicate<RSNPC> pred : predicates) {
+                            if (!pred.apply(object)) return false;
                         }
                         return true;
                     }
