@@ -1,5 +1,7 @@
 package ms.aurora.api.util;
 
+import static java.lang.Thread.currentThread;
+
 /**
  * @author tobiewarburton
  */
@@ -27,4 +29,25 @@ public final class Utilities {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Sleeps until the passed predicate returns true.
+     * @param predicate predicate
+     */
+    public static void sleepUntil(StatePredicate predicate) {
+        while(!predicate.apply() && !currentThread().isInterrupted()) {
+            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        }
+    }
+
+    /**
+     * Sleeps until the passed predicate returns false.
+     * @param predicate predicate
+     */
+    public static void sleepWhile(StatePredicate predicate) {
+        while(!predicate.apply() && !currentThread().isInterrupted()) {
+            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        }
+    }
+
 }

@@ -50,11 +50,10 @@ public final class Bank {
             logger.debug("Bank is already open..");
             return true;
         }
-        logger.debug("Finding banker..");
-        Interactable bank = Npcs.get(NpcFilters.NAMED("Banker"));
+        Interactable bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
         if (bank == null) {
-            logger.debug("Finding bank booth..");
-            bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
+            logger.debug("Couldn't find bank booth");
+            bank = Npcs.get(NpcFilters.NAMED("Banker"));
             if (bank == null) {
                 logger.debug("Couldn't find an object or NPC to bank at.");
                 return false;
@@ -62,7 +61,6 @@ public final class Bank {
             return false;
         }
         bank.applyAction("Bank(.*)Bank");
-        logger.debug("Applied action Bank.");
         return isOpen();
     }
 
@@ -255,6 +253,52 @@ public final class Bank {
     }
 
     /**
+     * Deposits all items of which the id matches any of the IDs specified.
+     *
+     * @param ids set of IDs to deposit.
+     */
+    public static void depositAll(int... ids) {
+        for (Inventory.InventoryItem item : Inventory.getAll(ids)) {
+            item.applyAction("Store All");
+            depositAll(ids);
+        }
+    }
+
+    /**
+     * Deposits all items of which the id matches any of the IDs specified.
+     *
+     * @param ids set of IDs to deposit.
+     */
+    public static void depositAllExcept(final int... ids) {
+        Predicate<Inventory.InventoryItem> not = new Predicate<Inventory.InventoryItem>() {
+            @Override
+            public boolean apply(Inventory.InventoryItem object) {
+                boolean match = false;
+                for (int id : ids) {
+                    if (object.getId() == id) match = true;
+                }
+                return !match;
+            }
+        };
+
+        for (Inventory.InventoryItem item : Inventory.getAll(not)) {
+            item.applyAction("Store All");
+            depositAllExcept(ids);
+        }
+    }
+
+    /**
+     * Deposits a single item
+     * @param id ID of the item to deposit.
+     */
+    public static void deposit(int id) {
+        Inventory.InventoryItem item = Inventory.get(id);
+        if(item != null) {
+            item.click(true);
+        }
+    }
+
+    /**
      * A class encapsulating Bank items.
      */
     public static final class BankItem implements Interactable {
@@ -287,7 +331,6 @@ public final class Bank {
             int row = (slot / 8);
             int x = container.getX() + (col * 47) + 50;
             int y = container.getY() + (row * 37) + 50;
-
             return new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
         }
 
@@ -302,7 +345,7 @@ public final class Bank {
         public boolean hover() {
             Rectangle area = getArea();
             VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            Mouse clientMouse = Context.get().getClient().getMouse();
+            Mouse clientMouse = Context.getClient().getMouse();
             return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
         }
 
