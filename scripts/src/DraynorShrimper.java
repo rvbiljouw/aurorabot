@@ -80,18 +80,14 @@ public class DraynorShrimper extends Script implements PaintListener {
                             return random(500, 1000);
                         }
                     } else {
-                        Inventory.InventoryItem item = Inventory.get(FISH_IDS);
-                        do {
-                            if (item != null && item.applyAction("Store All")) {
-                                sleepNoException(500, 1000);
-                            }
-                        } while ((item = Inventory.get(FISH_IDS)) != null);
+                        Bank.depositAll(FISH_IDS);
 
                     }
                     break;
 
                 case WALK_TO_FISH:
-                    Walking.walkPath(FISH_PATH);
+                    //Walking.walkPath(FISH_PATH);
+                    Walking.walkTo(FISHING_TILE);
                     break;
 
                 case FISH:
@@ -106,7 +102,8 @@ public class DraynorShrimper extends Script implements PaintListener {
                     break;
 
                 case WALK_TO_BANK:
-                    Walking.walkPath(BANK_PATH);
+                    //Walking.walkPath(BANK_PATH);
+                    Walking.walkTo(BANK_TILE);
                     break;
 
             }
