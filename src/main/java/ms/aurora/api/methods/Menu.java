@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static ms.aurora.api.util.Utilities.random;
+
 /**
  * Menu related functions
  *
@@ -72,9 +74,8 @@ public final class Menu {
                 }
 
                 if (isMenuOpen()) {
-                    int menuOptionX = Context.get().getClient().getMenuX() + 10;
-                    int menuOptionY = Context.get().getClient().getMenuY() + 21
-                            + (15 * itemIndex - 1);
+                    int menuOptionX = Context.getClient().getMenuX() + (random(4, action.length() * 4));
+                    int menuOptionY = Context.getClient().getMenuY() + (random(21, 20) + 15 * itemIndex);
                     logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
                     VirtualMouse.clickMouse(menuOptionX, menuOptionY,
                             true);
