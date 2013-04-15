@@ -1,6 +1,7 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.wrappers.RSWidget;
 
 /**
  * Logout tab functions
@@ -17,11 +18,14 @@ public final class Logout {
         if (!Tabs.isOpen(Tabs.Tab.LOGOUT)) {
             Tabs.openTab(Tabs.Tab.LOGOUT);
         }
-        Widgets.getWidget(Constants.LOGOUT_TAB, Constants.LOGOUT_BTN).click(true);
+        RSWidget logout = Widgets.getWidget(Constants.LOGOUT_TAB, Constants.LOGOUT_BTN);
+        if (logout != null) {
+            logout.click(true);
+        }
     }
 
     public static class Constants {
         public static final int LOGOUT_TAB = 182;
-        public static final int LOGOUT_BTN = 8;
+        public static final int LOGOUT_BTN = 6;
     }
 }
