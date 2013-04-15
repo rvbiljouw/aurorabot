@@ -5,6 +5,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
+import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -30,6 +31,7 @@ public final class Application {
         if (args.length == 0) {
             delegate();
         } else {
+            System.setSecurityManager(new DefaultSecurityManager());
             getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
             final JFXPanel panel = new JFXPanel();
             appWindow = new JFrame("Aurora - Automation Toolkit");
