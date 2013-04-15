@@ -19,6 +19,7 @@ import java.util.List;
 
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Lists.newArrayList;
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author tobiewarburton
@@ -258,10 +259,12 @@ public final class Bank {
      * @param ids set of IDs to deposit.
      */
     public static void depositAll(int... ids) {
-        for (Inventory.InventoryItem item : Inventory.getAll(ids)) {
-            item.applyAction("Store All");
-            depositAll(ids);
-        }
+        Inventory.InventoryItem item = Inventory.get(ids);
+        do {
+            if (item != null && item.applyAction("Store All")) {
+                sleepNoException(500, 1000);
+            }
+        } while ((item = Inventory.get(ids)) != null);
     }
 
     /**
@@ -281,10 +284,12 @@ public final class Bank {
             }
         };
 
-        for (Inventory.InventoryItem item : Inventory.getAll(not)) {
-            item.applyAction("Store All");
-            depositAllExcept(ids);
-        }
+        Inventory.InventoryItem item = Inventory.get(not);
+        do {
+            if (item != null && item.applyAction("Store All")) {
+                sleepNoException(500, 1000);
+            }
+        } while ((item = Inventory.get(not)) != null);
     }
 
     /**

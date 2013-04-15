@@ -80,12 +80,7 @@ public class DraynorShrimper extends Script implements PaintListener {
                             return random(500, 1000);
                         }
                     } else {
-                        Inventory.InventoryItem item = Inventory.get(FISH_IDS);
-                        do {
-                            if (item != null && item.applyAction("Store All")) {
-                                sleepNoException(500, 1000);
-                            }
-                        } while ((item = Inventory.get(FISH_IDS)) != null);
+                        Bank.depositAll(FISH_IDS);
 
                     }
                     break;
