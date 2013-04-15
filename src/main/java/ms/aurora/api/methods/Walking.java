@@ -1,11 +1,13 @@
 package ms.aurora.api.methods;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 
@@ -38,8 +40,10 @@ public class Walking {
     /**
      * Clicks tile on the minimap
      */
-    public static void clickOnMap(RSTile tile) {
+    public static boolean clickOnMap(RSTile tile) {
+        boolean success = false;
         VirtualKeyboard.holdControl();
+        Logger.getLogger(Walking.class).info("Clicking tile " + tile);
         Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
@@ -49,8 +53,10 @@ public class Walking {
                     && !Thread.currentThread().isInterrupted()) {
                 Utilities.sleepNoException(400);
             }
+            success = true;
         }
         VirtualKeyboard.releaseControl();
+        return success;
     }
 
     public static void clickOnScreen(RSTile tile) {
@@ -77,6 +83,11 @@ public class Walking {
                 if (distance(p, path[path.length - 1]) < distance(Players.getLocal()
                         .getLocation(), path[path.length - 1])) {
                     clickOnMap(p);
+
+                    if(!p.isInRegion()) {
+                        Logger.getLogger(Walking.class).info("Exiting path early, recalculate required.");
+                        return;
+                    }
                 }
             }
         }
@@ -88,6 +99,8 @@ public class Walking {
 
     public static void walkTo(int x, int y) {
         RSPathFinder pf = new RSPathFinder();
+        int baseX = Context.getClient().getBaseX();
+        int baseY = Context.getClient().getBaseY();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
         if (path != null && path.getLength() != 0) {
             walkPath(path.toTiles(7));
@@ -97,7 +110,7 @@ public class Walking {
     }
 
     public static void walkTo(RSTile tile) {
-        if (distance(Players.getLocal().getLocation(), tile) <= 14) {
+        if (distance(Players.getLocal().getLocation(), tile) <= 9) {
             clickOnMap(tile);
             return;
         }

@@ -85,7 +85,7 @@ public final class Inventory {
      */
     public static InventoryItem get(int... ids) {
         for (InventoryItem inventoryItem : getAll()) {
-            for (int id: ids) {
+            for (int id : ids) {
                 if (inventoryItem.getId() == id) {
                     return inventoryItem;
                 }
@@ -136,7 +136,7 @@ public final class Inventory {
     public static InventoryItem[] getAll(int... ids) {
         List<InventoryItem> inventoryItems = newArrayList();
         for (InventoryItem inventoryItem : getAll()) {
-            for (int id: ids) {
+            for (int id : ids) {
                 if (inventoryItem.getId() == id) {
                     inventoryItems.add(inventoryItem);
                 }
@@ -401,7 +401,9 @@ public final class Inventory {
             Tabs.openTab(Tabs.Tab.INVENTORY);
             Rectangle area = getArea();
             VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            return Menu.click(action);
+            boolean result = Menu.click(action);
+            sleepNoException(200, 300);
+            return result;
         }
 
         @Override

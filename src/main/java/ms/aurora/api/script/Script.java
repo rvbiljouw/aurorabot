@@ -65,11 +65,15 @@ public abstract class Script extends Context implements Runnable {
                                 Thread.sleep(loopResult + 600);
                             } else {
                                 // Returning -1 means exit.
+                                state = ScriptState.STOP;
                                 info("Exited by -1");
+                                cleanup();
+                                onFinish();
                                 return;
                             }
                         } else {
                             info("Not logged in.");
+                            Thread.sleep(5000);
                         }
                         break;
 
@@ -89,6 +93,7 @@ public abstract class Script extends Context implements Runnable {
                 onFinish();
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
+                return;
             } catch (Exception e) {
                 state = ScriptState.STOP;
                 cleanup();
@@ -96,6 +101,7 @@ public abstract class Script extends Context implements Runnable {
                 logger.error("Script has thrown exception and has exited.", e);
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
+                return;
             }
         }
     }
@@ -120,6 +126,7 @@ public abstract class Script extends Context implements Runnable {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().deregister((PaintListener) this);
         }
+        randomsThread.interrupt();
     }
 
     public final boolean validate() {
@@ -134,20 +141,26 @@ public abstract class Script extends Context implements Runnable {
 
         @Override
         public void run() {
-            while (getState() != ScriptState.STOP) {
+            info("Random event handlers started.");
+            while (getState() != ScriptState.STOP && !Thread.currentThread().isInterrupted()) {
                 for (Random random : randoms) {
                     random.setSession(getSession());
-                    while (random.activate()) {
-                        get().getSession().getScriptManager().pause();
-                        info("Random event " + random.getClass().getSimpleName() + " was triggered.");
-                        int time = random.loop();
-                        if (time == -1) continue;
-                        sleepNoException(time);
-                        get().getSession().getScriptManager().resume();
+                    try {
+                        while (random.activate()) {
+                            get().getSession().getScriptManager().pause();
+                            info("Random event " + random.getClass().getSimpleName() + " was triggered.");
+                            int time = random.loop();
+                            if (time == -1) continue;
+                            sleepNoException(time);
+                            get().getSession().getScriptManager().resume();
+                        }
+                    } catch (Exception e) {
+                        logger.error("Random has failed.", e);
                     }
                 }
                 sleepNoException(100);
             }
+            info("Random event handlers stopped.");
         }
 
     }

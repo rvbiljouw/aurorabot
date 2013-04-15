@@ -153,12 +153,10 @@ public final class VirtualKeyboard {
 
     public static void holdControl() {
         holdKey((char)KeyEvent.VK_CONTROL);
-        logger.info("Holding CTRL");
     }
 
     public static void releaseControl() {
         releaseKey((char) KeyEvent.VK_CONTROL);
-        logger.info("Released CTRL");
     }
 
     public static Component getComponent() {

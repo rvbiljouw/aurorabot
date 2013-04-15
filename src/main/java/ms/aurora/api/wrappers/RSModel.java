@@ -120,7 +120,10 @@ public final class RSModel {
         Rectangle bounds = hull.getBounds();
         Point p = new Point(-1, -1);
         do {
-            Point temp = new Point(random(bounds.x, bounds.x + bounds.width), random(bounds.y, bounds.y + bounds.height));
+            Point temp = new Point(random((int)bounds.getCenterX() - (bounds.width / 4),
+                    (int)bounds.getCenterX() + (bounds.width / 4)),
+                    random((int)bounds.getCenterY() - (bounds.height/ 4),
+                            (int)bounds.getCenterY() + (bounds.height / 4)));
             if (hull.contains(temp)) {
                 p = temp;
             }

@@ -108,7 +108,7 @@ public final class Objects {
      * @return collection of objects at the specified tile
      */
     public static Collection<RSObject> getObjectsAt(int x, int y) {
-        Client client = Context.get().getClient();
+        Client client = Context.getClient();
         Ground ground = client.getWorld().getGroundArray()[client.getPlane()][x][y];
 
         List<RSObject> objects = newArrayList();

@@ -1,5 +1,7 @@
 package ms.aurora.api.wrappers;
 
+import ms.aurora.api.Context;
+
 /**
  * @author Rick
  */
@@ -41,6 +43,12 @@ public final class RSTile {
 
     public void setZ(int z) {
         this.z = z;
+    }
+
+    public boolean isInRegion() {
+        int minX = getX() - Context.getClient().getBaseX();
+        int minY = getY() - Context.getClient().getBaseY();
+        return minX >= 0 && minX < 104 && minY >= 0 && minY < 104;
     }
 
     @Override
