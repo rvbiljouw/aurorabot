@@ -8,9 +8,9 @@ import ms.aurora.api.wrappers.RSGroundItem;
  *
  * @author rvbiljouw
  */
-public final class ItemFilters {
+public final class GroundItemFilters {
 
-    private ItemFilters() {
+    private GroundItemFilters() {
 
     }
 
