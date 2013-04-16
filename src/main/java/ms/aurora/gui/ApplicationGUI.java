@@ -1,5 +1,8 @@
 package ms.aurora.gui;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -46,10 +49,10 @@ public class ApplicationGUI extends AnchorPane {
     private volatile Menu mnPlugins;
 
     @FXML
-    private Button btnRunScript;
+    private Button btnPlay;
 
     @FXML
-    private Button btnStopScript;
+    private Button btnPause;
 
     @FXML
     private MenuItem pluginOverview;
@@ -149,7 +152,7 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onPluginOverview(ActionEvent evt) {
         Stage stage = new Stage();
-        stage.setTitle("Plugin Overview");
+        stage.setTitle("Plugin overview");
         stage.setWidth(810);
         stage.setHeight(640);
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -163,7 +166,7 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onAccounts(ActionEvent evt) {
         Stage stage = new Stage();
-        stage.setTitle("Select a script");
+        stage.setTitle("Account overview");
         stage.setWidth(825);
         stage.setHeight(530);
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -191,7 +194,6 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void initialize() {
         assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'Application.fxml'.";
-
         mnPlugins.setOnShowing(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
@@ -209,6 +211,12 @@ public class ApplicationGUI extends AnchorPane {
                 }
             }
         });
+        tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> observableValue, Tab tab, Tab tab2) {
+                update();
+            }
+        });
         btnToggleInput.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("enabled.png"))));
         Account.init();
     }
@@ -217,6 +225,44 @@ public class ApplicationGUI extends AnchorPane {
         Tab tab = self.tabPane.getSelectionModel().getSelectedItem();
         if (tab != null && tab.getContent() instanceof AppletWidget) {
             return ((AppletWidget) tab.getContent()).getApplet();
+        }
+        return null;
+    }
+
+    public static void update() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Session session = getSelectedSession();
+                if (session != null) {
+                    switch (session.getScriptManager().getState()) {
+
+                        case STOPPED:
+                            self.btnPause.setText("Pause");
+                            self.btnPlay.setText("Play");
+                            break;
+
+                        case RUNNING:
+                            self.btnPause.setText("Pause");
+                            self.btnPlay.setText("Stop");
+                            break;
+
+                        case PAUSED:
+                            self.btnPause.setText("Resume");
+                            self.btnPlay.setText("Stop");
+                            break;
+
+                    }
+                }
+            }
+        });
+    }
+
+    public static Session getSelectedSession() {
+        Tab tab = self.tabPane.getSelectionModel().getSelectedItem();
+        if (tab != null && tab.getContent() instanceof AppletWidget) {
+            if (((AppletWidget) tab.getContent()).getApplet() != null)
+                return SessionRepository.get(((AppletWidget) tab.getContent()).getApplet().hashCode());
         }
         return null;
     }

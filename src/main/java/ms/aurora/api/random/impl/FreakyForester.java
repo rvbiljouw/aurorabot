@@ -2,7 +2,7 @@ package ms.aurora.api.random.impl;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
-import ms.aurora.api.methods.filters.ItemFilters;
+import ms.aurora.api.methods.filters.GroundItemFilters;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.methods.tabs.Inventory;
@@ -127,7 +127,7 @@ public class FreakyForester extends Random {
                 if (phe == -1)
                     return Utilities.random(200, 500);
                 final RSNPC Pheasant = Npcs.get(NpcFilters.ID(phe));
-                final RSGroundItem tile = GroundItems.get(ItemFilters.ID(6178));
+                final RSGroundItem tile = GroundItems.get(GroundItemFilters.ID(6178));
                 if (tile != null) {
                     tile.applyAction("Take");
                     return Utilities.random(600, 900);

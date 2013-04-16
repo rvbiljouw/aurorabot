@@ -2,7 +2,6 @@ package ms.aurora.api.methods;
 
 import com.google.common.collect.Lists;
 import ms.aurora.api.Context;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import org.jboss.logging.Logger;
@@ -13,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static ms.aurora.api.util.Utilities.random;
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * Menu related functions
@@ -58,24 +58,29 @@ public final class Menu {
      */
     public static boolean click(String action) {
         VirtualKeyboard.holdControl();
-        int itemIndex = getIndex(action);
+        int tries = 0;
+        int itemIndex = -1;
+        while((itemIndex = getIndex(action)) == -1 && tries < 6) {
+            tries++;
+            sleepNoException(100);
+        }
+
         if (itemIndex != -1) {
+
             if (itemIndex == 0) {
                 logger.info("Found menu item at " + itemIndex + ", left clicking.");
                 VirtualMouse.clickMouse(true);
                 return true;
             } else {
-                int tries = 0;
-                while (!isMenuOpen() && tries < 5) {
+                if (!isMenuOpen()) {
                     VirtualMouse.clickMouse(false);
-                    tries++;
-                    Utilities.sleepNoException(30);
-                    logger.info("Found menu item at " + itemIndex + " and attempting to open the menu.");
+                    sleepNoException(300);
                 }
 
+
                 if (isMenuOpen()) {
-                    int menuOptionX = Context.getClient().getMenuX() + (random(4, action.length() * 4));
-                    int menuOptionY = Context.getClient().getMenuY() + (random(15, 16) + (15 * itemIndex));
+                    int menuOptionX = Context.getClient().getMenuX() + (random(10, action.length() * 4));
+                    int menuOptionY = Context.getClient().getMenuY() + (17 + (15 * itemIndex));
                     logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
                     VirtualMouse.clickMouse(menuOptionX, menuOptionY,
                             true);
@@ -83,6 +88,7 @@ public final class Menu {
                     return true;
                 }
             }
+
         }
         VirtualKeyboard.releaseControl();
         return false;
@@ -90,6 +96,7 @@ public final class Menu {
 
     /**
      * Checks if the current menu content includes a specific action.
+     *
      * @param action Action text (may be a regular expression, too!)
      * @return true if present
      */
@@ -100,6 +107,7 @@ public final class Menu {
     /**
      * Gets the menu item that is in the current "up text" / will be invoked
      * when the user clicks with the current game state and current mouse position.
+     *
      * @return hover action
      */
     public String getHoverAction() {
@@ -126,7 +134,7 @@ public final class Menu {
     }
 
     private static String removeFormatting(String in) {
-        if(in == null)
+        if (in == null)
             return "null";
         return pattern.matcher(in).replaceAll("");
     }

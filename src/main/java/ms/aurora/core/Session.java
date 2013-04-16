@@ -17,6 +17,7 @@ import java.applet.Applet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static ms.aurora.core.SessionRepository.set;
+import static ms.aurora.gui.ApplicationGUI.update;
 
 /**
  * @author Rick
@@ -45,6 +46,7 @@ public final class Session implements Runnable {
             set(applet.hashCode(), this);
             initComponents();
             refreshPlugins();
+            update();
         }
     }
 
@@ -57,7 +59,6 @@ public final class Session implements Runnable {
         for (Plugin plugin : PluginLoader.getPlugins()) {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
-
             pluginManager.stop(plugin.getClass());
             if (config.isEnabled()) {
                 pluginManager.start(plugin.getClass());

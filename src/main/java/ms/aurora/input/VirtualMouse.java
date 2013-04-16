@@ -40,6 +40,7 @@ public final class VirtualMouse {
 
     public static void clickMouse(int x, int y, boolean left) {
         moveMouse(x, y);
+        sleepNoException(random(150, 250));
         pressMouse(x, y, left);
         releaseMouse(x, y, left);
         MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_CLICKED,

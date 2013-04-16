@@ -33,11 +33,6 @@
               <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Accounts" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Script" fx:id="mnHelp">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Start script" />
-            </items>
-          </Menu>
           <Menu mnemonicParsing="false" text="Plug-ins" fx:id="mnPlugins">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="Plugin Overview" fx:id="pluginOverview" />
@@ -48,8 +43,8 @@
       <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
         <items>
           <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
-          <Button mnemonicParsing="false" onAction="#onStartScript" text="Play" />
-          <Button mnemonicParsing="false" onAction="#onPauseScript" text="Pause" />
+          <Button mnemonicParsing="false" onAction="#onStartScript" text="Play" fx:id="btnPlay" />
+          <Button mnemonicParsing="false" onAction="#onPauseScript" text="Pause" fx:id="btnPause" />
           <ToggleButton fx:id="btnToggleInput" mnemonicParsing="false" onAction="#onToggleInput" text="Disable input" />
         </items>
       </ToolBar>
