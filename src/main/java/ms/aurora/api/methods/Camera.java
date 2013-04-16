@@ -57,7 +57,7 @@ public final class Camera {
      * @param degrees degrees of the turn
      */
     public static void setAngle(int degrees) {
-        char left = KeyEvent.VK_LEFT, right = KeyEvent.VK_RIGHT, dir = left;
+        int left = KeyEvent.VK_LEFT, right = KeyEvent.VK_RIGHT, dir = left;
         int start = getAngle();
         start = start < 180 ? start + 360 : start;
         degrees = degrees < 180 ? degrees + 360 : degrees;
@@ -89,8 +89,8 @@ public final class Camera {
     }
 
     public static void setUp() {
-        VirtualKeyboard.holdKey((char)KeyEvent.VK_UP);
+        VirtualKeyboard.holdKey(KeyEvent.VK_UP);
         sleepNoException(1200);
-        VirtualKeyboard.releaseKey((char)KeyEvent.VK_UP);
+        VirtualKeyboard.releaseKey(KeyEvent.VK_UP);
     }
 }

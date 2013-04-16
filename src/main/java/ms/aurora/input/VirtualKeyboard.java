@@ -23,19 +23,12 @@ public final class VirtualKeyboard {
      * @param s The string to send.
      */
     public static void sendKeys(String s, boolean enter) {
-         for (char c : s.toCharArray()) {
-
-            for (KeyEvent ke : createKeyClick(getComponent(), c)) {
-                getComponent().dispatchEvent(ke);
-                sleep(getRandom());
-            }
+        for (char c : s.toCharArray()) {
+            clickKey(c);
         }
 
         if (enter) {
-            for (KeyEvent ke : createKeyClick(getComponent(), KeyEvent.VK_ENTER)) {
-                getComponent().dispatchEvent(ke);
-                sleep(getRandom());
-            }
+            clickKey('\n');
         }
     }
 
@@ -68,16 +61,13 @@ public final class VirtualKeyboard {
     }
 
     public static void holdKey(int keyCode) {
-        Character newChar = specialChars.get((char) keyCode);
-        keyCode = Character.toUpperCase((newChar == null) ? keyCode : newChar);
-        getComponent().dispatchEvent(new KeyEvent(getComponent(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, keyCode, (char) keyCode));
+        KeyEvent event = getSpecialKeyEvent(getComponent(), KeyEvent.KEY_PRESSED, keyCode, System.currentTimeMillis());
+        getComponent().dispatchEvent(event);
     }
 
     public static void releaseKey(int keyCode) {
-        Character newChar = specialChars.get((char) keyCode);
-        keyCode = Character.toUpperCase((newChar == null) ? keyCode : newChar);
-        getComponent().dispatchEvent(new KeyEvent(getComponent(), KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, keyCode, (char) keyCode));
-        getComponent().dispatchEvent(new KeyEvent(getComponent(), KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, 0, (char) keyCode));
+        KeyEvent event = getSpecialKeyEvent(getComponent(), KeyEvent.KEY_RELEASED, keyCode, System.currentTimeMillis());
+        getComponent().dispatchEvent(event);
     }
 
     /* Internal event construction  */
@@ -118,9 +108,9 @@ public final class VirtualKeyboard {
         int keyCode = (int) Character.toUpperCase((newChar == null) ? c : newChar);
 
         if (Character.isLowerCase(c) || (!Character.isLetter(c) && (newChar == null))) {
-            KeyEvent pressed = new KeyEvent(target, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, keyCode, c);
+            KeyEvent pressed = new KeyEvent(target, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, keyCode, c, KeyEvent.KEY_LOCATION_STANDARD);
             KeyEvent typed = new KeyEvent(target, KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, 0, c);
-            KeyEvent released = new KeyEvent(target, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, keyCode, c);
+            KeyEvent released = new KeyEvent(target, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, keyCode, c, KeyEvent.KEY_LOCATION_STANDARD);
 
             return new KeyEvent[]{pressed, typed, released};
         } else {
@@ -143,6 +133,21 @@ public final class VirtualKeyboard {
      * @return A KeyEvent array for you to dispatch to the component.
      */
     private static KeyEvent[] createKeyClick(Component target, int keyCode) {
+        KeyEvent pressed = getSpecialKeyEvent(target, KeyEvent.KEY_PRESSED, keyCode, System.currentTimeMillis());
+        KeyEvent released = getSpecialKeyEvent(target, KeyEvent.KEY_RELEASED, keyCode, System.currentTimeMillis() + getRandom());
+        return new KeyEvent[]{pressed, released};
+    }
+
+    /**
+     * generates a key event with the right modifiers
+     *
+     * @param target
+     * @param type
+     * @param keyCode
+     * @param time
+     * @return
+     */
+    private static KeyEvent getSpecialKeyEvent(Component target, int type, int keyCode, long time) {
         int modifier = 0;
         switch (keyCode) {
             case KeyEvent.VK_SHIFT:
@@ -155,10 +160,7 @@ public final class VirtualKeyboard {
                 modifier = KeyEvent.CTRL_MASK;
                 break;
         }
-        KeyEvent pressed = new KeyEvent(target, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), modifier, keyCode, KeyEvent.CHAR_UNDEFINED);
-        KeyEvent released = new KeyEvent(target, KeyEvent.KEY_RELEASED, System.currentTimeMillis() + getRandom(), 0, keyCode, KeyEvent.CHAR_UNDEFINED);
-
-        return new KeyEvent[]{pressed, released};
+        return new KeyEvent(target, type, time, type == KeyEvent.KEY_PRESSED ? modifier : 0, keyCode, KeyEvent.CHAR_UNDEFINED);
     }
 
     private static void sleep(long time) {
