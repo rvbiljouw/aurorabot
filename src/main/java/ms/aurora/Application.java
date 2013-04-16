@@ -82,14 +82,38 @@ public final class Application {
 
             String command = "java -cp " + classpath + seperator + decodedPath + seperator + jfxRt + " ms.aurora.Application start";
             Process p = Runtime.getRuntime().exec(command);
-            System.out.println("Executing " + command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedReader reader2 = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            String buf = "";
-            while ((buf = reader.readLine()) != null || (buf = reader2.readLine()) != null) {
-                System.out.println(buf);
-            }
-            System.exit(0);
+            Thread input = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(p.getInputStream()));
+                        String buf = "";
+                        while((buf = reader.readLine()) != null) {
+                            System.out.println(buf);
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+            });
+            Thread output = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(p.getErrorStream()));
+                        String buf = "";
+                        while((buf = reader.readLine()) != null) {
+                            System.out.println(buf);
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            input.start();
+            output.start();
+            p.waitFor();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -100,6 +124,8 @@ public final class Application {
     /**
      * Adds an applet to our application frame.
      * This is a bit of a hack, the reason we have to do this
+     :q
+
      * is because applets don't play nice with JavaFX and when we don't add them
      * to anything they wont even render, so yeah!
      *
