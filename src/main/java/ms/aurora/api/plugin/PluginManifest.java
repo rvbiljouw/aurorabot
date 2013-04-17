@@ -4,6 +4,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
+ * The PluginManifest contains several bits of information
+ * which are presented to the end user in a selector / other way.
  * @author Rick
  */
 @Retention(RetentionPolicy.RUNTIME)

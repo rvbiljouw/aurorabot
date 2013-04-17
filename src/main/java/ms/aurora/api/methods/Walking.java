@@ -19,7 +19,7 @@ import static ms.aurora.api.methods.Calculations.distance;
  *
  * @author A_C/Cov
  */
-public class Walking {
+public final class Walking {
 
     /**
      * Reverses an array of tiles
@@ -59,6 +59,10 @@ public class Walking {
         return success;
     }
 
+    /**
+     * Clicks a tile on the screen
+     * @param tile tile to click
+     */
     public static void clickOnScreen(RSTile tile) {
         Point screenPoint = Viewport.convert(tile);
         if (screenPoint.x != -1 && screenPoint.y != -1) {
@@ -83,20 +87,21 @@ public class Walking {
                 if (distance(p, path[path.length - 1]) < distance(Players.getLocal()
                         .getLocation(), path[path.length - 1])) {
                     clickOnMap(p);
-
-                    if(!p.isInRegion()) {
-                        Logger.getLogger(Walking.class).info("Exiting path early, recalculate required.");
-                        return;
-                    }
                 }
             }
         }
-
         if (distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
             clickOnMap(path[path.length - 1]);
         }
     }
 
+    /**
+     * UNSTABLE: Walks to a specific coordinate
+     * It is required  that this coordinate lies in the same
+     * region as the current position of the player, or it will not work.
+     * @param x Destination X
+     * @param y Destination Y
+     */
     public static void walkTo(int x, int y) {
         RSPathFinder pf = new RSPathFinder();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
@@ -107,12 +112,15 @@ public class Walking {
         }
     }
 
+    /**
+     * @see Walking.walkTo(int, int)
+     * @param tile destination tile
+     */
     public static void walkTo(RSTile tile) {
         if (distance(Players.getLocal().getLocation(), tile) <= 9) {
             clickOnMap(tile);
             return;
         }
-
         walkTo(tile.getX(), tile.getY());
     }
 
