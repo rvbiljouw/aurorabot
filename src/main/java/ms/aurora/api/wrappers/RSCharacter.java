@@ -171,6 +171,10 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         return this.getScreenLocation().getX() != -1 && this.getScreenLocation().getY() != -1;
     }
 
+    public final boolean isIdle() {
+        return getAnimation() == -1 && !isMoving() && !isInCombat();
+    }
+
     public final RSModel getModel() {
         Model model = _getModel();
         if (model != null) {
