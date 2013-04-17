@@ -39,7 +39,6 @@ public final class Application {
     }
 
     public static void init() {
-        System.out.println("Slightly different lolol");
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
         final JFXPanel panel = new JFXPanel();

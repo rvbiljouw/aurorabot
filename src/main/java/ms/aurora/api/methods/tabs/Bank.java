@@ -51,6 +51,8 @@ public final class Bank {
             logger.debug("Bank is already open..");
             return true;
         }
+
+        logger.info("Finding bank booth");
         Interactable bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
         if (bank == null) {
             logger.debug("Couldn't find bank booth");
@@ -59,8 +61,8 @@ public final class Bank {
                 logger.debug("Couldn't find an object or NPC to bank at.");
                 return false;
             }
-            return false;
         }
+        logger.info("Clicking bank");
         bank.applyAction("Bank(.*)Bank");
         return isOpen();
     }
