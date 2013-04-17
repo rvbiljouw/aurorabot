@@ -83,7 +83,7 @@ public class AccountSelectDialog extends AnchorPane {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(null);
         Scene scene = new Scene(this);
-        scene.getStylesheets().add("blue.css");
+        scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override

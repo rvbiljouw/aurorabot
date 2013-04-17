@@ -3,7 +3,7 @@
 }
 
 .pane {
-    -fx-background-color: linear-gradient(#E6E6E6 0%, #FFFFFF 50%, #E6E6E6 100%);
+    -fx-background-color: linear-gradient(#EFEFEF 0%, #FFFFFF 50%, #E6E6E6 100%);
 }
 
 .text-field {

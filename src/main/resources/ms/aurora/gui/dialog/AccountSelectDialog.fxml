@@ -24,7 +24,7 @@
     <Label layoutX="47.0" layoutY="156.0" text="Account:" />
     <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="Select account">
       <stylesheets>
-        <URL value="@../../../../blue.css" />
+        <URL value="@../../../../soft-responsive.css" />
       </stylesheets>
     </Label>
     <Label layoutX="47.0" layoutY="60.0" text="The selected account will be used for automatically &#10;logging in. You are not required to select an account." />

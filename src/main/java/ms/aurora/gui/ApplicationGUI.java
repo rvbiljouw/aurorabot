@@ -111,7 +111,7 @@ public class ApplicationGUI extends AnchorPane {
                     stage.initModality(Modality.WINDOW_MODAL);
                     ScriptOverview overview = new ScriptOverview();
                     Scene scene = new Scene(overview);
-                    scene.getStylesheets().add("blue.css");
+                    scene.getStylesheets().add("soft-responsive.css");
                     stage.setScene(scene);
                     stage.show();
 
@@ -158,7 +158,7 @@ public class ApplicationGUI extends AnchorPane {
         stage.initModality(Modality.APPLICATION_MODAL);
         PluginOverview overview = new PluginOverview();
         Scene scene = new Scene(overview);
-        scene.getStylesheets().add("blue.css");
+        scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.show();
     }
@@ -172,7 +172,7 @@ public class ApplicationGUI extends AnchorPane {
         stage.initModality(Modality.APPLICATION_MODAL);
         AccountOverview overview = new AccountOverview();
         Scene scene = new Scene(overview);
-        scene.getStylesheets().add("blue.css");
+        scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.show();
     }

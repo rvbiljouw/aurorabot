@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?scenebuilder-stylesheet ../../../../blue.css?>
+<?scenebuilder-stylesheet ../../../../soft-responsive.css?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.net.URL?>
@@ -23,10 +23,10 @@
       </Label>
     </children>
     <stylesheets>
-      <URL value="@../../../../blue.css" />
+      <URL value="@../../../../soft-responsive.css" />
     </stylesheets>
   </AnchorPane>
   <stylesheets>
-    <URL value="@../../../../blue.css" />
+    <URL value="@../../../../soft-responsive.css" />
   </stylesheets>
 </fx:root>

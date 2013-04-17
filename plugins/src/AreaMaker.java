@@ -1,6 +1,5 @@
 import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
-import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.event.listeners.PaintListener;
@@ -12,27 +11,25 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Cov
- * Date: 15/04/13
- * Time: 23:52
- * To change this template use File | Settings | File Templates.
+ * Date: 16/04/13
+ * Time: 11:43
+ *
+ * @author A_C/Cov
  */
-public class PathMaker extends JFrame implements PaintListener {
+public class AreaMaker extends JFrame implements PaintListener {
 
-    private final ArrayList<RSTile> tileList;
     private final JTextArea tileTextArea;
     private Plugin ctx;
+    private RSTile neTile, swTile;
 
-    public PathMaker(Plugin ctx) {
-        this.tileList = new ArrayList<RSTile>();
+    public AreaMaker(Plugin ctx) {
         this.tileTextArea = new JTextArea();
         this.ctx = ctx;
         this.initComponents();
     }
 
     private void initComponents() {
-        this.setTitle("Cov's Path Maker");
+        this.setTitle("Cov's Area Maker");
         this.setResizable(false);
         this.setLayout(new GridBagLayout());
 
@@ -50,11 +47,11 @@ public class PathMaker extends JFrame implements PaintListener {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
 
-        JButton button = new JButton("Add Tile");
+        JButton button = new JButton("Add NE Tile");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tileList.add(Players.getLocal().getLocation());
+                neTile = Players.getLocal().getLocation();
                 updateTextArea();
             }
         });
@@ -62,23 +59,23 @@ public class PathMaker extends JFrame implements PaintListener {
 
         gbc.gridx++;
 
-        button = new JButton("Remove Last");
+        button = new JButton("Add SW Tile");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tileList.remove(tileList.size() - 1);
+                swTile = Players.getLocal().getLocation();
                 updateTextArea();
             }
         });
         this.add(button, gbc);
-
         gbc.gridx++;
 
         button = new JButton("Clear");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tileList.clear();
+                neTile = null;
+                swTile = null;
                 updateTextArea();
             }
         });
@@ -90,17 +87,10 @@ public class PathMaker extends JFrame implements PaintListener {
 
     private void updateTextArea() {
         final StringBuilder builder = new StringBuilder();
-
-        builder.append("new RSTile[] {\n\t");
-        int i = 0;
-        for (RSTile tile: this.tileList) {
-            if ((i++ % 3) == 0) {
-                builder.append("\n\t");
-            }
-            builder.append(String.format("new RSTile(%s, %s), ", tile.getX(), tile.getY()));
-        }
-        builder.append("\n}");
-
+        builder.append("new RSArea( ");
+        builder.append(neTile == null ? "" : String.format("new RSTile( %s, %s)", neTile.getX(), neTile.getY()));
+        builder.append(", " + (swTile == null ? "" : String.format("new RSTile( %s, %s)", swTile.getX(), swTile.getY())));
+        builder.append(");");
         this.ctx.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -111,19 +101,10 @@ public class PathMaker extends JFrame implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        /*synchronized (this) {
-            Point last = null;
-            for (RSTile tile: this.tileList) {
-                Point current = Minimap.convert(tile);
-                if (current.x != -1) {
-                    graphics.drawRect(current.x - 1, current.y - 1, 3, 3);
-                    if (last != null) {
-                        graphics.drawLine(last.x, last.y, current.x, current.y);
-                    }
-                    last = current;
-                }
-            }
+        /*if (neTile != null && swTile != null) {
+            Point ne = Minimap.convert(neTile);
+            Point sw = Minimap.convert(swTile);
+            graphics.drawRect(sw.x, sw.y, (ne.x - sw.x), (sw.y - ne.y));
         } */
     }
-
 }

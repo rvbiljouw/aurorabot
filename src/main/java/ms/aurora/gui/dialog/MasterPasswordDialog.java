@@ -134,7 +134,7 @@ public class MasterPasswordDialog extends AnchorPane {
             }
         });
         Scene scene = new Scene(this);
-        scene.getStylesheets().add("blue.css");
+        scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override

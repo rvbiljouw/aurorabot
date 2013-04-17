@@ -1,0 +1,91 @@
+.root {
+    -fx-base: #F4F4F4;
+}
+
+.pane {
+    -fx-background-color: linear-gradient(#EFEFEF 0%, #F0F0F0 50%, #F4F4F4 100%);
+}
+
+.text-field {
+    -fx-base: #316EA3;
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-text-fill: #EFEFEF;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}
+
+.label {
+    -fx-font-size: 14pt;
+    -fx-opacity: 0.6;
+}
+
+.big-label {
+    -fx-font-size: 32pt;
+    -fx-opacity: 1;
+}
+
+.tab {
+    -fx-color: #316EA3;
+    -fx-text-fill: #EFEFEF;
+    -fx-background-color: -fx-tab-border-color, -fx-inner-border, -fx-color;
+}
+
+.tab-content-area {
+    -fx-background-color: #F4F4F4;
+}
+
+.button {
+    -fx-text-fill: #EFEFEF;
+    -fx-base: #316EA3;
+}
+
+.button:hover {
+    -fx-color: #AB3737;
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+}
+
+.toggle-button {
+    -fx-text-fill: #EFEFEF;
+    -fx-base: #316EA3;
+}
+
+.toggle-button:hover {
+    -fx-color: #AB3737;
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+}
+
+.toggle-button:selected {
+    -fx-color: #AB3737;
+    -fx-text-fill: #EFEFEF;
+    -fx-background-color: -fx-body-color, -fx-inner-border, -fx-outer-border -fx-shadow-highlight-color;
+}
+
+.menu-bar {
+    -fx-background-color: linear-gradient(#EFEFEF 0%, #F0F0F0 50%, #F4F4F4 100%);
+}
+
+.menu .label:hover, .menu .label:selected {
+    -fx-text-fill: #EFEFEF;
+    -fx-color: #AB3737;
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+}
+
+.menu .label {
+    -fx-text-fill: #316EA3;
+    -fx-background-color: linear-gradient(#EFEFEF 0%, #F0F0F0 50%, #F4F4F4 100%);
+    -fx-opacity: 1.0;
+}
+
+.menu-item {
+    -fx-text-fill: #EFEFEF;
+}
+
+.menu-item:hover {
+    -fx-background-color: #AB3737;
+}
+
+.context-menu {
+    -fx-color: #AB3737;
+    -fx-background-color: -fx-shadow-highlight-color, -fx-body-color;
+    -fx-text-fill: #EFEFEF;
+}

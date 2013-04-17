@@ -72,7 +72,7 @@ public class AccountOverview extends AnchorPane {
         stage.initModality(Modality.APPLICATION_MODAL);
         NewAccount newDialog = new NewAccount();
         Scene scene = new Scene(newDialog);
-        scene.getStylesheets().add("blue.css");
+        scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.show();
         stage.centerOnScreen();
@@ -111,7 +111,7 @@ public class AccountOverview extends AnchorPane {
             stage.initModality(Modality.APPLICATION_MODAL);
             EditAccount editDialog = new EditAccount(selectedAccount);
             Scene scene = new Scene(editDialog);
-            scene.getStylesheets().add("blue.css");
+            scene.getStylesheets().add("soft-responsive.css");
             stage.setScene(scene);
             stage.show();
             stage.centerOnScreen();

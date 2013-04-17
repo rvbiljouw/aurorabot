@@ -1,6 +1,7 @@
 package ms.aurora.input;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.input.algorithm.BezierAlgorithm;
 import ms.aurora.input.algorithm.StraightLineAlgorithm;
 import ms.aurora.rt3.Mouse;
@@ -67,6 +68,12 @@ public final class VirtualMouse {
         MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_MOVED,
                 System.currentTimeMillis(), 0, x, y, 0, false);
         getMouse().mouseMoved(event);
+    }
+
+    public static void moveRandomly(int distance) {
+        int x = getMouse().getRealX() + Utilities.random(-distance, distance);
+        int y = getMouse().getRealY() + Utilities.random(-distance, distance);
+        moveMouse(x, y);
     }
 
     public static Mouse getMouse() {
