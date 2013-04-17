@@ -1,6 +1,7 @@
 package ms.aurora.api.script;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.script.task.TaskQueue;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
@@ -11,6 +12,8 @@ import static java.lang.Thread.currentThread;
  */
 public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
+    private final TaskQueue taskQueue = new TaskQueue(this);
+    private final Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
 
     public Script() {
@@ -50,18 +53,6 @@ public abstract class Script extends Context implements Runnable {
 
     }
 
-    private void init() {
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().register((PaintListener) this);
-        }
-    }
-
-    private void cleanup() {
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().deregister((PaintListener) this);
-        }
-    }
-
     public final boolean validate() {
         return getManifest() != null;
     }
@@ -90,10 +81,6 @@ public abstract class Script extends Context implements Runnable {
                             } else {
                                 // Returning -1 means exit.
                                 state = ScriptState.STOP;
-                                info("Exited by -1");
-                                cleanup();
-                                onFinish();
-                                return;
                             }
                         } else {
                             info("Not logged in.");
@@ -107,6 +94,7 @@ public abstract class Script extends Context implements Runnable {
 
                     case STOP:
                         cleanup();
+                        destroy();
                         onFinish();
                         return;
 
@@ -121,6 +109,20 @@ public abstract class Script extends Context implements Runnable {
                 return;
             }
         }
+    }
+
+    private void init() {
+        if (this instanceof PaintListener) {
+            getSession().getPaintManager().register((PaintListener) this);
+        }
+        taskQueueThread.start();
+    }
+
+    private void cleanup() {
+        if (this instanceof PaintListener) {
+            getSession().getPaintManager().deregister((PaintListener) this);
+        }
+        taskQueueThread.interrupt();
     }
 
     public void destroy() {
