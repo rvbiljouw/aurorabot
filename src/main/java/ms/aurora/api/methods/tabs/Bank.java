@@ -149,7 +149,6 @@ public final class Bank {
         int[] items = bank.getInventoryItems();
         int[] stacks = bank.getInventoryStackSizes();
         List<BankItem> wrappers = newArrayList();
-
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
                 BankItem item = new BankItem(bank, items[i] - 1, stacks[i]);
@@ -361,7 +360,6 @@ public final class Bank {
             Rectangle area = getArea();
             VirtualMouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
             return true;
-
         }
     }
 }

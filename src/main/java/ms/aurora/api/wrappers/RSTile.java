@@ -51,6 +51,10 @@ public final class RSTile {
         return minX >= 0 && minX < 104 && minY >= 0 && minY < 104;
     }
 
+    public int hashCode() {
+        return (this.x * this.y) >> 7;
+    }
+
     @Override
     public String toString() {
         return "[x=" + x + ",y=" + y + ",z=" + z + ']';

@@ -19,4 +19,6 @@ public interface Locatable {
 
     boolean isOnScreen();
 
+    boolean canReach();
+
 }

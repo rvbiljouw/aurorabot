@@ -4,6 +4,8 @@ import ms.aurora.api.Context;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
+import ms.aurora.api.pathfinding.Path;
+import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.GameObject;
 import ms.aurora.rt3.GroundDecoration;
@@ -56,6 +58,12 @@ public final class RSObject implements Locatable, Interactable {
     public final boolean isOnScreen() {
         Point screenLocation = this.getScreenLocation();
         return screenLocation.x != -1 && screenLocation.y != -1;
+    }
+
+    public boolean canReach() {
+        RSPathFinder pf = new RSPathFinder();
+        Path path = pf.getPath(getX(), getY(), RSPathFinder.FULL);
+        return path != null && path.getLength() > 0;
     }
 
     public final RSTile getLocation() {
