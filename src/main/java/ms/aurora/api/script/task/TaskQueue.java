@@ -84,7 +84,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
                     continue;
                 }
 
-                Task currentTask = passive_internal.poll();
+                Task currentTask = passive_internal.peek(); // Peek, don't remove.
                 if(currentTask != null) {
                     currentTask.run();
                 }

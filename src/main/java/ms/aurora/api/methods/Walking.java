@@ -1,12 +1,12 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.rt3.Player;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -82,14 +82,14 @@ public final class Walking {
      * @param path Path to walk.
      */
     public static void walkPath(RSTile[] path) {
-        for (RSTile p : path) {
-            if (distance(Players.getLocal().getLocation(), p) > 8) {
-                if (distance(p, path[path.length - 1]) < distance(Players.getLocal()
-                        .getLocation(), path[path.length - 1])) {
-                    clickOnMap(p);
-                }
+        for(RSTile p : path) {
+            int currentDist = (int)distance(p, path[path.length - 1]);
+            int maxDist = (int)distance(Players.getLocal().getLocation(),  path[path.length - 1]);
+            if(currentDist <= maxDist) {
+                clickOnMap(p);
             }
         }
+
         if (distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
             clickOnMap(path[path.length - 1]);
         }

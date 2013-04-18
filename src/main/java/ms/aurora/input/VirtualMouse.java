@@ -2,7 +2,6 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
-import ms.aurora.input.algorithm.BezierAlgorithm;
 import ms.aurora.input.algorithm.StraightLineAlgorithm;
 import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
@@ -18,8 +17,7 @@ import java.awt.event.MouseEvent;
  */
 public final class VirtualMouse {
     private static final Logger logger = Logger.getLogger(VirtualMouse.class);
-    private static final MousePathAlgorithm alternate = new StraightLineAlgorithm();
-    private static final MousePathAlgorithm algorithm = new BezierAlgorithm();
+    private static final MousePathAlgorithm algorithm = new StraightLineAlgorithm();
 
     public static void moveMouse(final Point target) {
         moveMouse(target.x, target.y);
