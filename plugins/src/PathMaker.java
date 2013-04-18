@@ -1,3 +1,4 @@
+import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,12 +22,13 @@ import java.util.ArrayList;
  */
 public class PathMaker extends JFrame implements PaintListener {
 
-    private final ArrayList<RSTile> tileList;
+    private final HashSet<RSTile> tileList;
     private final JTextArea tileTextArea;
     private Plugin ctx;
+    private boolean record = false;
 
     public PathMaker(Plugin ctx) {
-        this.tileList = new ArrayList<RSTile>();
+        this.tileList = new HashSet<RSTile>();
         this.tileTextArea = new JTextArea();
         this.ctx = ctx;
         this.initComponents();
@@ -50,10 +53,26 @@ public class PathMaker extends JFrame implements PaintListener {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
 
-        JButton button = new JButton("Add Tile");
+        JButton button = new JButton("Start");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                record = true;
+                new Thread(ctx.getThreadGroup(), new Runnable() {
+                    @Override
+                    public void run() {
+                        RSTile last = Players.getLocal().getLocation();
+                        tileList.add(last);
+                        while (record) {
+                            RSTile current = Players.getLocal().getLocation();
+                            if (Calculations.distance(current, last) > 3) {
+                                tileList.add(current);
+                                last = current;
+                                updateTextArea();
+                            }
+                        }
+                    }
+                }).start();
                 tileList.add(Players.getLocal().getLocation());
                 updateTextArea();
             }
@@ -62,12 +81,13 @@ public class PathMaker extends JFrame implements PaintListener {
 
         gbc.gridx++;
 
-        button = new JButton("Remove Last");
+        button = new JButton("Stop");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tileList.remove(tileList.size() - 1);
+                record = false;
                 updateTextArea();
+
             }
         });
         this.add(button, gbc);
@@ -86,12 +106,13 @@ public class PathMaker extends JFrame implements PaintListener {
 
         this.setPreferredSize(new Dimension(550, 355));
         this.pack();
+
     }
 
     private void updateTextArea() {
         final StringBuilder builder = new StringBuilder();
 
-        builder.append("new RSTile[] {\n\t");
+        builder.append("new RSTile[] {\n");
         int i = 0;
         for (RSTile tile: this.tileList) {
             if ((i++ % 3) == 0) {
@@ -111,7 +132,7 @@ public class PathMaker extends JFrame implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        /*synchronized (this) {
+        synchronized (this) {
             Point last = null;
             for (RSTile tile: this.tileList) {
                 Point current = Minimap.convert(tile);
@@ -123,7 +144,7 @@ public class PathMaker extends JFrame implements PaintListener {
                     last = current;
                 }
             }
-        } */
+        }
     }
 
 }

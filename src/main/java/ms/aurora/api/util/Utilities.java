@@ -41,6 +41,18 @@ public final class Utilities {
     }
 
     /**
+     * Sleeps until the passed predicate returns true or sleeping for longer than the timeout.
+     * @param predicate predicate
+     * @param timeOut millis time out
+     */
+    public static void sleepUntil(StatePredicate predicate, long timeOut) {
+        Timer timer = new Timer(timeOut);
+        while(!predicate.apply() && !currentThread().isInterrupted() && !timer.finished()) {
+            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        }
+    }
+
+    /**
      * Sleeps until the passed predicate returns false.
      * @param predicate predicate
      */
@@ -49,5 +61,7 @@ public final class Utilities {
             sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
         }
     }
+
+
 
 }

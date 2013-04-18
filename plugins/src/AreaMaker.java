@@ -75,6 +75,7 @@ public class AreaMaker extends JFrame implements PaintListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 neTile = null;
+
                 swTile = null;
                 updateTextArea();
             }
@@ -101,10 +102,12 @@ public class AreaMaker extends JFrame implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        /*if (neTile != null && swTile != null) {
-            Point ne = Minimap.convert(neTile);
-            Point sw = Minimap.convert(swTile);
-            graphics.drawRect(sw.x, sw.y, (ne.x - sw.x), (sw.y - ne.y));
-        } */
+        synchronized (this) {
+            if (neTile != null && swTile != null) {
+                Point ne = Minimap.convert(neTile);
+                Point sw = Minimap.convert(swTile);
+                graphics.drawRect(sw.x, sw.y, (ne.x - sw.x), (sw.y - ne.y));
+            }
+        }
     }
 }

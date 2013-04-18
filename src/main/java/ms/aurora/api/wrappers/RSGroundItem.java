@@ -3,6 +3,8 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
+import ms.aurora.api.pathfinding.Path;
+import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Item;
 
@@ -62,6 +64,14 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean isOnScreen() {
         return Viewport.tileOnScreen(getLocation());
+    }
+
+
+    @Override
+    public boolean canReach() {
+        RSPathFinder pf = new RSPathFinder();
+        Path path = pf.getPath(getX(), getY(), RSPathFinder.FULL);
+        return path != null && path.getLength() > 0;
     }
 
     public int getLocalX() {

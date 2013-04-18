@@ -16,6 +16,7 @@ public class PaintDebug extends Plugin {
     private AnimationPaint animationPaint = new AnimationPaint();
     private InventoryPaint inventoryPaint = new InventoryPaint();
     private MinimapPaint minimapPaint = new MinimapPaint();
+    private ShopPaint shopPaint = new ShopPaint();
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;
@@ -24,6 +25,7 @@ public class PaintDebug extends Plugin {
     private boolean animationPaintActive = false;
     private boolean inventoryPaintActive = false;
     private boolean minimapPaintActive = false;
+    private boolean shopPaintActive = false;
 
 
     private Menu paint;
@@ -128,6 +130,20 @@ public class PaintDebug extends Plugin {
             }
         });
         paint.getItems().add(minimap);
+
+        CheckMenuItem shop = new CheckMenuItem("Draw Shop");
+        shop.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if (!shopPaintActive) {
+                    getSession().getPaintManager().register(shopPaint);
+                } else {
+                    getSession().getPaintManager().deregister(shopPaint);
+                }
+                shopPaintActive = !shopPaintActive;
+            }
+        });
+        paint.getItems().add(shop);
         getSession().registerMenu(paint);
     }
 

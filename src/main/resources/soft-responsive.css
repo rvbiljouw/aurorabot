@@ -89,3 +89,12 @@
     -fx-background-color: -fx-shadow-highlight-color, -fx-body-color;
     -fx-text-fill: #EFEFEF;
 }
+
+.combo-box {
+    -fx-text-fill: #EFEFEF;
+    -fx-base: #316EA3;
+}
+
+.combo-box:hover {
+    -fx-background-color: #AB3737;
+}
