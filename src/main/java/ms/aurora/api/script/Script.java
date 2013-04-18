@@ -131,4 +131,8 @@ public abstract class Script extends Context implements Runnable {
         onFinish();
         currentThread().interrupt();
     }
+
+    public TaskQueue getQueue() {
+        return taskQueue;
+    }
 }
