@@ -141,14 +141,6 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         return wrapped.getAnimation();
     }
 
-    public final int getCurrentHealth() {
-        return wrapped.getCurrentHealth();
-    }
-
-    public final int getMaxHealth() {
-        return wrapped.getMaxHealth();
-    }
-
     public final int getLoopCycleStatus() {
         return wrapped.getLoopCycleStatus();
     }

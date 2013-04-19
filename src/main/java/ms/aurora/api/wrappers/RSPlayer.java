@@ -1,6 +1,7 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.methods.Skills;
 import ms.aurora.rt3.Player;
 
 /**
@@ -14,7 +15,15 @@ public final class RSPlayer extends RSCharacter {
         this.wrapped = wrapped;
     }
 
-    public String getName() {
+    public final String getName() {
         return wrapped.getName();
+    }
+
+    public final int getCurrentHealth() {
+        return Skills.getLevel(Skills.Skill.HITPOINTS);
+    }
+
+    public final int getMaxHealth() {
+        return Skills.getBaseLevel(Skills.Skill.HITPOINTS);
     }
 }

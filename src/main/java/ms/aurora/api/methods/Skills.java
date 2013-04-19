@@ -44,7 +44,7 @@ public final class Skills {
 
     // Table of levels. Index is the level and the value is the experience required
     private static final int[] expTable = {
-            0 , 0, 83, 174, 276, 388, 512, 650, 801,
+            0, 0, 83, 174, 276, 388, 512, 650, 801,
             969, 1154, 1358, 1584, 1833, 2107, 2411, 2746, 3115, 3523, 3973,
             4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031,
             13363, 14833, 16456, 18247, 20224, 22406, 24815, 27473, 30408,
@@ -69,13 +69,17 @@ public final class Skills {
     }
 
     /**
-     * Retrieves the level for specified skill
+     * Retrieves the current level for specified skill
      *
      * @param skill skill
      * @return level
      */
     public static int getLevel(Skill skill) {
         return Context.get().getClient().getSkillLevels()[skill.index];
+    }
+
+    public static int getBaseLevel(Skill skill) {
+        return Context.get().getClient().getSkillLevelBases()[skill.index];
     }
 
     /**
@@ -86,10 +90,10 @@ public final class Skills {
      * @return remaining xp to level
      */
     public static int getExperienceToLevel(Skill skill, int level) {
-        if(level < 0 || level > 99)
+        if (level < 0 || level > 99)
             return -1;
         int experience = getExperience(skill);
-        if(experience == -1)
+        if (experience == -1)
             return -1;
         return expTable[level] - experience;
     }
