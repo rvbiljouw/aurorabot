@@ -4,7 +4,7 @@ package ms.aurora.warb0.script.util;
  * @author tobiewarburton
  */
 public class Stopwatch {
-    private long start;
+    private long start = -1;
 
     private Stopwatch() {
     }
