@@ -22,13 +22,14 @@ import java.util.HashSet;
  */
 public class PathMaker extends JFrame implements PaintListener {
 
-    private final HashSet<RSTile> tileList;
+    private final ArrayList<RSTile> tileList;
     private final JTextArea tileTextArea;
     private Plugin ctx;
     private boolean record = false;
+    private Thread tileThread;
 
     public PathMaker(Plugin ctx) {
-        this.tileList = new HashSet<RSTile>();
+        this.tileList = new ArrayList<RSTile>();
         this.tileTextArea = new JTextArea();
         this.ctx = ctx;
         this.initComponents();
@@ -58,21 +59,26 @@ public class PathMaker extends JFrame implements PaintListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 record = true;
-                new Thread(ctx.getThreadGroup(), new Runnable() {
+                if (tileThread != null && tileThread.isAlive()){
+                    tileThread.interrupt();
+                }
+                tileThread = new Thread(ctx.getThreadGroup(), new Runnable() {
                     @Override
                     public void run() {
                         RSTile last = Players.getLocal().getLocation();
                         tileList.add(last);
+                        updateTextArea();
                         while (record) {
                             RSTile current = Players.getLocal().getLocation();
-                            if (Calculations.distance(current, last) > 3) {
+                            if (Calculations.distance(current, last) > 6) {
                                 tileList.add(current);
                                 last = current;
                                 updateTextArea();
                             }
                         }
                     }
-                }).start();
+                });
+                tileThread.start();
                 tileList.add(Players.getLocal().getLocation());
                 updateTextArea();
             }
@@ -86,6 +92,10 @@ public class PathMaker extends JFrame implements PaintListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 record = false;
+                tileList.add(Players.getLocal().getLocation());
+                if (tileThread != null && tileThread.isAlive()){
+                    tileThread.interrupt();
+                }
                 updateTextArea();
 
             }

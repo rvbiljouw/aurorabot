@@ -2,6 +2,7 @@ package ms.aurora.api.script;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.script.task.TaskQueue;
+import ms.aurora.api.script.task.impl.Randoms;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
@@ -115,6 +116,7 @@ public abstract class Script extends Context implements Runnable {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener) this);
         }
+        taskQueue.add(new Randoms(getQueue()));
         taskQueueThread.start();
     }
 
@@ -122,6 +124,7 @@ public abstract class Script extends Context implements Runnable {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().deregister((PaintListener) this);
         }
+        taskQueue.remove(new Randoms(getQueue()));
         taskQueueThread.interrupt();
     }
 
@@ -130,5 +133,9 @@ public abstract class Script extends Context implements Runnable {
         cleanup();
         onFinish();
         currentThread().interrupt();
+    }
+
+    public TaskQueue getQueue() {
+        return taskQueue;
     }
 }

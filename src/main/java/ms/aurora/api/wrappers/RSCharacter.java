@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 
-import static ms.aurora.api.util.Utilities.sleepNoException;
 import static ms.aurora.input.VirtualMouse.moveMouse;
 
 
@@ -107,12 +106,17 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final boolean applyAction(final String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
             Walking.walkTo(getLocation());
-            logger.error("Not on screen, walking to " + getLocation());
             return false;
         }
-        moveMouse(getClickLocation());
-        sleepNoException(200);  // Wait for the menu to pop up...
-        return ms.aurora.api.methods.Menu.click(actionName);
+
+        for (int attempt = 0; attempt < 10; attempt++) {
+            Point click = getClickLocation();
+            VirtualMouse.moveMouse(click.x, click.y);
+            if (ms.aurora.api.methods.Menu.getIndex(actionName) != -1) {
+                return ms.aurora.api.methods.Menu.click(actionName);
+            }
+        }
+        return false;
     }
 
     @Override

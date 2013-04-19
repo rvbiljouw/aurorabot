@@ -13,8 +13,6 @@ import ms.aurora.rt3.Model;
 
 import java.awt.*;
 
-import static ms.aurora.api.util.Utilities.sleepNoException;
-
 /**
  * @author Rick
  */
@@ -89,21 +87,24 @@ public final class RSObject implements Locatable, Interactable {
             Walking.walkTo(getLocation());
             return false;
         }
-        Point click = getClickLocation();
-        Point screen = getScreenLocation();
-        VirtualMouse.moveMouse(click.x, click.y);
-        sleepNoException(200, 300);
-        return isValid() && screen.distance(getScreenLocation()) < 10 && ms.aurora.api.methods.Menu.click(actionName);
+
+        for (int attempt = 0; attempt < 10; attempt++) {
+            Point click = getClickLocation();
+            VirtualMouse.moveMouse(click.x, click.y);
+            if (ms.aurora.api.methods.Menu.getIndex(actionName) != -1) {
+                return ms.aurora.api.methods.Menu.click(actionName);
+            }
+        }
+        return false;
     }
 
     public final boolean hover() {
-        if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
-            return false;
-        }
         Point screen = getScreenLocation();
-        VirtualMouse.moveMouse(screen.x, screen.y);
-        return true;
+        if (screen.x != -1 && screen.y != -1) {
+            VirtualMouse.moveMouse(screen.x, screen.y);
+            return true;
+        }
+        return false;
     }
 
     @Override

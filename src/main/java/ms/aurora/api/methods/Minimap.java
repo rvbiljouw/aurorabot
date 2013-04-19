@@ -36,7 +36,7 @@ public final class Minimap {
      * @return Point representing the position on the minimap. This point may have an x/y of -1.
      */
     public static Point convert(int x, int y) {
-        x -= get().getClient().getBaseX();
+        /*x -= get().getClient().getBaseX();
         y -= get().getClient().getBaseY();
         int calculatedX = x * 4 + 2 - Players.getLocal().getLocalX() / 32;
         int calculatedY = y * 4 + 2 - Players.getLocal().getLocalY() / 32;
@@ -56,6 +56,40 @@ public final class Minimap {
             int screenX = minimap.x + (minimap.width / 2) + i_26_;
             int screenY = -i_25_ + minimap.y + (minimap.height / 2);
             return new Point(screenX, screenY);
+        }*/
+
+        RSWidget mm = Widgets.getWidget(MINIMAP_INTERFACE_GROUP, MINIMAP_INTERFACE_CHILD);
+
+        x -= get().getClient().getBaseX();
+        y -= get().getClient().getBaseY();
+
+        final int xx = x * 4 + 2 - Players.getLocal().getLocalX() / 32;
+        final int yy = y * 4 + 2 - Players.getLocal().getLocalY() / 32;
+
+        int degree = get().getClient().getMinimapInt3() + get().getClient().getMinimapInt1() & 0x7FF;
+        int dist = (int) (Math.pow(xx, 2) + Math.pow(yy, 2));
+
+        if (dist <= 6400) {
+            int sin = CURVESIN[degree];
+            int cos = CURVECOS[degree];
+
+            cos = cos * 256 / (get().getClient().getMinimapInt2() + 256);
+            sin = sin * 256 / (get().getClient().getMinimapInt2() + 256);
+
+            int mx = yy * sin + cos * xx >> 16;
+            int my = sin * xx - yy * cos >> 16;
+            if (dist < 2500) {
+
+                final int sx = 18 + ((mm.getX() + mm.getHeight() / 2) + mx);
+                final int sy = (mm.getY() + mm.getHeight() / 2 - 1) + my;
+
+                return new Point(sx, sy);
+            }
+
+            final int screenx = 18 + ((mm.getX() + mm.getWidth() / 2) + mx);
+            final int screeny = (mm.getY() + mm.getWidth() / 2 - 1) + my;
+
+            return new Point(screenx, screeny);
         }
         return new Point(-1, -1);
     }

@@ -1,7 +1,6 @@
 package ms.aurora.api.script.task.impl;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
@@ -33,12 +32,11 @@ public class Randoms extends PassiveTask {
 
     @Override
     public boolean canRun() {
-        return Context.isLoggedIn();
+        return true; // Can always run
     }
 
     @Override
     public int execute() {
-        logger.info("Checking for randoms...");
         for (Random random : RANDOMS) {
             random.setSession(Context.get().getSession());
             try {
@@ -57,7 +55,6 @@ public class Randoms extends PassiveTask {
                 logger.error("Random has failed.", e);
             }
         }
-        logger.info("Done..");
-        return 100;
+        return 5000;
     }
 }
