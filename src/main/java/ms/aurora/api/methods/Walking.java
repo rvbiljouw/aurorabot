@@ -2,6 +2,7 @@ package ms.aurora.api.methods;
 
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
+import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 
 import static ms.aurora.api.methods.Calculations.distance;
+import static ms.aurora.api.util.Utilities.sleepUntil;
 
 /**
  * Date: 25/03/13
@@ -20,6 +22,9 @@ import static ms.aurora.api.methods.Calculations.distance;
  * @author A_C/Cov
  */
 public final class Walking {
+
+    public static final int FORWARDS = 0;
+    public static final int BACKWARDS = 1;
 
     /**
      * Reverses an array of tiles
@@ -81,6 +86,7 @@ public final class Walking {
      *
      * @param path Path to walk.
      */
+    @Deprecated
     public static void walkPath(RSTile[] path) {
         for(RSTile p : path) {
             int currentDist = (int)distance(p, path[path.length - 1]);
@@ -92,6 +98,85 @@ public final class Walking {
 
         if (distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
             clickOnMap(path[path.length - 1]);
+        }
+    }
+
+    /**
+     * Gets the next tile along the path that is over 14 away.
+     * @return next tile along the path else null.
+     */
+    public static RSTile getNext(RSTile[] path) {
+        for (int i = (path.length - 1); i  > -1; i--) {
+            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
+                return path[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the previous tile along the path that is over 14 away.
+     * @return previous tile along the path else null.
+     */
+    public static RSTile getPrevious(RSTile[] path) {
+        for (int i = 0; i < path.length; i++) {
+            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
+                return path[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Walks to the next tile along the path.
+     * @param direction direction in which to walk.
+     */
+    public static void step(RSTile[] path, int direction) {
+        RSTile tile = null;
+        switch (direction) {
+            case Walking.FORWARDS:
+                tile = getNext(path);
+                break;
+            case BACKWARDS:
+                tile = getPrevious(path);
+                break;
+        }
+        if (tile == null || Calculations.distance(tile, Players.getLocal().getLocation()) < 3) {
+            return;
+        }
+        Walking.clickOnMap(tile);
+    }
+
+    /**
+     * Walks the path from one end to the other.
+     * @param direction direction in which to walk.
+     */
+    public static void traverse(RSTile[] path, int direction) {
+        final RSTile target = direction == FORWARDS ? path[path.length - 1] : path[0];
+        traverse(path, new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return Calculations.distance(Players.getLocal().getLocation(), target) > 3;
+            }
+        }, direction);
+    }
+
+    /**
+     * Walks the path until the a certain condition
+     * @param walkUntil condition to stop walking.
+     * @param direction direction in which to walk.
+     */
+    public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
+        while (!walkUntil.apply()) {
+            if (!Players.getLocal().isMoving()) {
+                step(path, direction);
+                sleepUntil(new StatePredicate() {
+                    @Override
+                    public boolean apply() {
+                        return Players.getLocal().isMoving();
+                    }
+                }, 2000);
+            }
         }
     }
 
@@ -113,7 +198,7 @@ public final class Walking {
     }
 
     /**
-     * @see Walking.walkTo(int, int)
+     * @see Walking.walkTo(int x, int y);
      * @param tile destination tile
      */
     public static void walkTo(RSTile tile) {

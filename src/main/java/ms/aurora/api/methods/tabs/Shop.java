@@ -3,6 +3,7 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.util.Predicate;
+import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
@@ -16,6 +17,7 @@ import java.util.List;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.util.Utilities.sleepNoException;
+import static ms.aurora.api.util.Utilities.sleepUntil;
 
 /**
  * Date: 18/04/13
@@ -126,23 +128,30 @@ public class Shop {
         if (item == null || !isOpen()) {
             return;
         }
+        final int invSize = Inventory.getCount();
+        StatePredicate invChange = new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return invSize < Inventory.getCount();
+            }
+        };
         switch (amount) {
             case ONE:
-                item.click(true);
-                sleepNoException(500, 750);
+                item.applyAction("Buy 1");
+                sleepUntil(invChange, 2000);
                 break;
             case FIVE:
                 item.applyAction("Buy 5");
-                sleepNoException(500, 750);
+                sleepUntil(invChange, 2000);
                 break;
             case TEN:
                 item.applyAction("Buy 10");
-                sleepNoException(500, 750);
+                sleepUntil(invChange, 2000);
                 break;
             case ALL:
                 do {
                     item.applyAction("Buy 10");
-                    sleepNoException(200);
+                    sleepUntil(invChange, 2000);
                 } while (!Inventory.isFull());
                 break;
         }
