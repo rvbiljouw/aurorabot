@@ -16,6 +16,10 @@ public class Magic {
         return Widgets.getWidgets(192);
     }
 
+    /**
+     * Casts the spell specified.
+     * @param spell spell to be cast.
+     */
     public static void castSpell(Spell spell) {
         Tabs.openTab(Tabs.Tab.MAGIC);
         RSWidget spellButton = getSpellGroup().getWidgets()[spell.id];

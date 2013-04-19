@@ -18,12 +18,16 @@ public class Options {
         return Widgets.getWidgets(261);
     }
 
+    // TODO - whats this?
     public static int get(int index) {
         int[] settings = Context.get().getClient().getWidgetSettings();
         return settings != null && index < settings.length ? settings[index] : -1;
     }
 
-
+    /**
+     * Sets running state to match the boolean.
+     * @param on true to set running on, false to turn it off.
+     */
     public static void setRunning(boolean on) {
         Tabs.openTab(Tabs.Tab.OPTIONS);
         if (on == isRunning()) {
@@ -33,6 +37,9 @@ public class Options {
         }
     }
 
+    /**
+     * Toggles accept aid button on and off.
+     */
     public static void toggleAcceptAid() {
         Tabs.openTab(Tabs.Tab.OPTIONS);
         getSettingsGroup().getWidgets()[4].click(true);

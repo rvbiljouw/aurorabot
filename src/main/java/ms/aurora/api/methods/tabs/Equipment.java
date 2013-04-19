@@ -27,6 +27,10 @@ public class Equipment {
         return Widgets.getWidget(387, 28);
     }
 
+    /**
+     * Gets all equipped items.
+     * @return array of equipped items.
+     */
     public static Item[] getItems() {
         List<Item> items = newArrayList();
         RSWidget widget = getEquipmentWidget();
@@ -39,6 +43,11 @@ public class Equipment {
         return items.toArray(new Item[items.size()]);
     }
 
+    /**
+     * Checks whether an item matching the supplied ids is equipped.
+     * @param ids array of ids to check.
+     * @return true if there is a match else false.
+     */
     public static boolean isEquipped(int... ids) {
         for (Item item : getItems()) {
             for (int id : ids)
@@ -47,6 +56,13 @@ public class Equipment {
         return false;
     }
 
+    /**
+     * Checks whether the item with the corresponding id is equipped.
+     * and that there is the specified amount equipped.
+     * @param id id of item to check.
+     * @param amount amount of item equipped.
+     * @return true if item is equipped else false.
+     */
     public static boolean isEquipped(int id, int amount) {
         for (Item item : getItems()) {
             if (item.getId() == id && item.getStackSize() >= amount) {

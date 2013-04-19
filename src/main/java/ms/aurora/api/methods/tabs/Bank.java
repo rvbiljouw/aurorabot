@@ -42,10 +42,18 @@ public final class Bank {
         return Widgets.getWidget(BANK_ID, BANK_PANE_ID);
     }
 
+    /**
+     * Checks whether the bank is open or not.
+     * @return return true if bank interface is up else false.
+     */
     public static boolean isOpen() {
         return Widgets.getWidget(BANK_ID, BANK_CLOSE_ID) != null;
     }
 
+    /**
+     * Opens the nearest on screen bank, with priority for objects over npcs.
+     * @return true if bank interface is showing.
+     */
     public static boolean open() {
         if (isOpen()) {
             logger.debug("Bank is already open..");
@@ -67,6 +75,10 @@ public final class Bank {
         return isOpen();
     }
 
+    /**
+     * Closes the bank interface using the close widget.
+     * @return true if bank interface isn't showing.
+     */
     public static boolean close() {
         if (!isOpen())
             return true;
