@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 /**
  * This class controls virtual mouse movement.
@@ -26,9 +27,10 @@ public final class VirtualMouse {
     public static void moveMouse(final int x, final int y) {
         Point currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY());
         Point[] path = algorithm.generatePath(currentPosition, new Point(x, y));
-        for (Point p : path) {
+        for (int i = 0; i < path.length; i++) {
+            Point p = path[i];
+            speed = getSpeed((i / path.length) * 100);
             hopMouse(p.x, p.y);
-            sleepNoExceptionNano(random(1000000, 500000));
         }
     }
 
@@ -39,7 +41,6 @@ public final class VirtualMouse {
 
     public static void clickMouse(int x, int y, boolean left) {
         moveMouse(x, y);
-        sleepNoException(random(150, 250));
         pressMouse(x, y, left);
         releaseMouse(x, y, left);
         MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_CLICKED,
@@ -66,6 +67,13 @@ public final class VirtualMouse {
         MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_MOVED,
                 System.currentTimeMillis(), 0, x, y, 0, false);
         getMouse().mouseMoved(event);
+        int secs = (int) speed;
+        double nanos = speed - secs;
+        int nanosReal = (int) (nanos * 1000);
+        try {
+            Thread.sleep(secs, nanosReal);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     public static void moveRandomly(int distance) {
@@ -82,25 +90,18 @@ public final class VirtualMouse {
         return Context.getClient().getCanvas();
     }
 
-    private static int random(int min, int max) {
-        return (int) (min + (Math.random() * max));
+    private static double random(double min, double max) {
+        return (min + (Math.random() * max));
     }
 
-
-    private static void sleepNoException(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private static double getSpeed(int percentage) {
+        double a = random.nextDouble() * 0.01 + 0.0001;
+        double b = random.nextDouble() * 0.03 + 0.005;
+        double speedFactor = a * Math.pow(percentage, 2) + b * percentage;
+        return random(0.05, 1.0) + speedFactor;
     }
 
-    private static void sleepNoExceptionNano(long ns) {
-        long curNs = System.nanoTime();
-        while ((System.nanoTime() - curNs) < ns && !Thread.interrupted()) {
-
-        }
-    }
+    private static double speed = 7;
 
     public interface MousePathAlgorithm {
 
@@ -108,12 +109,6 @@ public final class VirtualMouse {
 
     }
 
-    public interface DynamicTarget {
+    private static final Random random = new Random();
 
-        Point getTarget();
-
-        boolean isValid();
-
-        Point getReference();
-    }
 }

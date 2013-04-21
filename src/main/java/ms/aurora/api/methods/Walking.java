@@ -66,6 +66,7 @@ public final class Walking {
 
     /**
      * Clicks a tile on the screen
+     *
      * @param tile tile to click
      */
     public static void clickOnScreen(RSTile tile) {
@@ -88,10 +89,10 @@ public final class Walking {
      */
     @Deprecated
     public static void walkPath(RSTile[] path) {
-        for(RSTile p : path) {
-            int currentDist = (int)distance(p, path[path.length - 1]);
-            int maxDist = (int)distance(Players.getLocal().getLocation(),  path[path.length - 1]);
-            if(currentDist <= maxDist) {
+        for (RSTile p : path) {
+            int currentDist = (int) distance(p, path[path.length - 1]);
+            int maxDist = (int) distance(Players.getLocal().getLocation(), path[path.length - 1]);
+            if (currentDist <= maxDist) {
                 clickOnMap(p);
             }
         }
@@ -103,10 +104,11 @@ public final class Walking {
 
     /**
      * Gets the next tile along the path that is over 14 away.
+     *
      * @return next tile along the path else null.
      */
     public static RSTile getNext(RSTile[] path) {
-        for (int i = (path.length - 1); i  > -1; i--) {
+        for (int i = (path.length - 1); i > -1; i--) {
             if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
                 return path[i];
             }
@@ -116,6 +118,7 @@ public final class Walking {
 
     /**
      * Gets the previous tile along the path that is over 14 away.
+     *
      * @return previous tile along the path else null.
      */
     public static RSTile getPrevious(RSTile[] path) {
@@ -129,6 +132,7 @@ public final class Walking {
 
     /**
      * Walks to the next tile along the path.
+     *
      * @param direction direction in which to walk.
      */
     public static void step(RSTile[] path, int direction) {
@@ -149,6 +153,7 @@ public final class Walking {
 
     /**
      * Walks the path from one end to the other.
+     *
      * @param direction direction in which to walk.
      */
     public static void traverse(RSTile[] path, int direction) {
@@ -163,20 +168,19 @@ public final class Walking {
 
     /**
      * Walks the path until the a certain condition
+     *
      * @param walkUntil condition to stop walking.
      * @param direction direction in which to walk.
      */
     public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
         while (!walkUntil.apply()) {
-            if (!Players.getLocal().isMoving()) {
-                step(path, direction);
-                sleepUntil(new StatePredicate() {
-                    @Override
-                    public boolean apply() {
-                        return !Players.getLocal().isMoving();
-                    }
-                }, 2000);
-            }
+            step(path, direction);
+            sleepUntil(new StatePredicate() {
+                @Override
+                public boolean apply() {
+                    return Players.getLocal().isMoving();
+                }
+            }, 2000);
         }
     }
 
@@ -184,6 +188,7 @@ public final class Walking {
      * UNSTABLE: Walks to a specific coordinate
      * It is required  that this coordinate lies in the same
      * region as the current position of the player, or it will not work.
+     *
      * @param x Destination X
      * @param y Destination Y
      */
@@ -198,8 +203,8 @@ public final class Walking {
     }
 
     /**
-     * @see Walking.walkTo(int x, int y);
      * @param tile destination tile
+     * @see Walking.walkTo(int x, int y);
      */
     public static void walkTo(RSTile tile) {
         if (distance(Players.getLocal().getLocation(), tile) <= 9) {
