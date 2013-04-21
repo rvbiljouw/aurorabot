@@ -22,9 +22,7 @@ public class FightAction extends Action {
 
     @Override
     public boolean activate() {
-        boolean idle = me().isIdle();
-        sleep(100);
-        return me().isIdle() && idle;
+        return idle();
     }
 
     @Override
@@ -33,11 +31,14 @@ public class FightAction extends Action {
         if (monster != null) {
             boolean success = monster.applyAction("Attack");
             if (!success) {
-                while (!me().isIdle()) {
+                while (!idle()) {
                     sleep(50);
                 }
                 monster.applyAction("Attack"); // last attempt
-                sleep(random(100, 200));
+                while (me().isMoving()) {
+                    sleep(random(100, 200));
+                }
+                sleep(500);
             }
         }
     }

@@ -18,6 +18,10 @@ public abstract class ActionScript extends Script {
 
     public abstract Action[] actions();
 
+    public void refresh() {
+
+    }
+
     @Override
     public int tick() {
         for (Action action : actions()) {
@@ -25,6 +29,7 @@ public abstract class ActionScript extends Script {
                 action.execute();
             }
         }
+        refresh();
         return tickDelay;
     }
 }

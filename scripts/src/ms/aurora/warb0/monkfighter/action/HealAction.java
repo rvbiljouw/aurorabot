@@ -21,7 +21,7 @@ public class HealAction extends Action {
 
     @Override
     public boolean activate() {
-        return (me().getCurrentHealth() < 15 && me().isIdle()) || me().getCurrentHealth() < 10;
+        return (me().getCurrentHealth() < 15 && idle()) || me().getCurrentHealth() < 10;
     }
 
     @Override

@@ -29,6 +29,10 @@ public abstract class Action {
         return Players.getLocal();
     }
 
+    public static boolean idle() {
+        return me().getInteracting() == null && me().isIdle();
+    }
+
     public static void sleep(int time) {
         sleepNoException(time);
     }

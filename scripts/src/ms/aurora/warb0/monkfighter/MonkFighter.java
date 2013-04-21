@@ -26,10 +26,14 @@ import java.util.Map;
 )
 public class MonkFighter extends ActionScript implements PaintListener {
     private Map<Skills.Skill, Integer> startXpMap = new HashMap<Skills.Skill, Integer>();
+
     private Skills.Skill[] skills = new Skills.Skill[]{
             Skills.Skill.ATTACK, Skills.Skill.DEFENCE, Skills.Skill.STRENGTH, Skills.Skill.RANGED,
             Skills.Skill.MAGIC, Skills.Skill.HITPOINTS
     };
+
+    private Map<Skills.Skill, Integer> gained = new HashMap<Skills.Skill, Integer>();
+
     private Stopwatch stopwatch = Stopwatch.create();
 
 
@@ -38,7 +42,7 @@ public class MonkFighter extends ActionScript implements PaintListener {
         return new Action[]{ // order is important here
                 new HealAction(), // better not die!!!!
                 new PickupAction(), // gotta make money
-                new FightAction() // gotta kill monsters
+                new FightAction() // gotta kil0l monsters
         };
     }
 
@@ -49,6 +53,11 @@ public class MonkFighter extends ActionScript implements PaintListener {
             startXpMap.put(skill, Skills.getExperience(skill));
         }
         stopwatch.start();
+    }
+
+    @Override
+    public void refresh() {
+        gained = getGainedXp();
     }
 
     private Map<Skills.Skill, Integer> getGainedXp() {
@@ -72,7 +81,6 @@ public class MonkFighter extends ActionScript implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        Map<Skills.Skill, Integer> gained = getGainedXp();
         int totalGained = sum(gained.values());
         int x = 20, y = 20;
 
