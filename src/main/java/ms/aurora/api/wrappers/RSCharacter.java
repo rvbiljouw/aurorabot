@@ -105,7 +105,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      */
     public final boolean applyAction(final String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
+            Walking.clickOnMap(getLocation());
             return false;
         }
 

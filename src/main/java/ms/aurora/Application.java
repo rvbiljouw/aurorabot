@@ -43,14 +43,11 @@ public final class Application {
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
         final JFXPanel panel = new JFXPanel();
         appWindow = new JFrame("Aurora - Automation Toolkit");
-        panel.setSize(768, 620);
         appWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        appWindow.setContentPane(panel);
-        appWindow.setSize(768, 620);
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        appWindow.setLocation((int) (dimension.getWidth() / 2 - (768 / 2)),
-                (int) (dimension.getHeight() / 2 - (620 / 2)));
+        appWindow.add(panel, BorderLayout.CENTER);
         appWindow.setVisible(true);
+        panel.setPreferredSize(new Dimension(765, 590));
+        appWindow.pack();
         logger.info("Welcome to Aurora!");
         Platform.runLater(new Runnable() {
             @Override

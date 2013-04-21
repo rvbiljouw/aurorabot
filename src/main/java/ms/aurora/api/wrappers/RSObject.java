@@ -84,7 +84,7 @@ public final class RSObject implements Locatable, Interactable {
      */
     public final boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
+            Walking.clickOnMap(getLocation());
             return false;
         }
 

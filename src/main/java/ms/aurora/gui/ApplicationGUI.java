@@ -52,6 +52,9 @@ public class ApplicationGUI extends AnchorPane {
     private Button btnPlay;
 
     @FXML
+    private Button btnNew;
+
+    @FXML
     private Button btnPause;
 
     @FXML
@@ -83,8 +86,8 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onNewSession(ActionEvent event) {
         AppletWidget widget = new AppletWidget(this);
-        Session session = new Session(widget);
         ThreadGroup threadGroup = new ThreadGroup(String.valueOf(tabPane.getTabs().size() + 1));
+        Session session = new Session(threadGroup, widget);
         Thread thread = new Thread(threadGroup, session);
         thread.start();
         tabPane.getTabs().add(widget.tab());
@@ -182,12 +185,10 @@ public class ApplicationGUI extends AnchorPane {
         ToggleButton button = (ToggleButton) evt.getSource();
         if (!button.isSelected()) {
             GlobalEventQueue.blocking = false;
-            button.setText("Disable input");
-            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("enabled.png"))));
+            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/enabled.png"))));
         } else {
             GlobalEventQueue.blocking = true;
-            button.setText("Enable input");
-            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("disabled.png"))));
+            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/disabled.png"))));
         }
     }
 
@@ -217,7 +218,10 @@ public class ApplicationGUI extends AnchorPane {
                 update();
             }
         });
-        btnToggleInput.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("enabled.png"))));
+        btnToggleInput.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/enabled.png"))));
+        btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
+        btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
+        btnNew.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/add.png"))));
         Account.init();
     }
 
@@ -239,17 +243,23 @@ public class ApplicationGUI extends AnchorPane {
 
                         case STOPPED:
                             self.btnPause.setText("Pause");
+                            self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
                             self.btnPlay.setText("Play");
+                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
                             break;
 
                         case RUNNING:
                             self.btnPause.setText("Pause");
+                            self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
                             self.btnPlay.setText("Stop");
+                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;
 
                         case PAUSED:
                             self.btnPause.setText("Resume");
+                            self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/resume.png"))));
                             self.btnPlay.setText("Stop");
+                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;
 
                     }

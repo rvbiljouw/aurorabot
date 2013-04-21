@@ -23,7 +23,7 @@ public abstract class PassiveTask implements Task {
 
     public void run() {
         if(lastExecution == null || !lastExecution.isAlive()) {
-            lastExecution = new Thread(body);
+            lastExecution = new Thread(queue.getOwner().getSession().getThreadGroup(), body);
             lastExecution.start();
         }
     }

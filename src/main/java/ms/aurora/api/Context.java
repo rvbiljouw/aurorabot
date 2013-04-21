@@ -2,6 +2,7 @@ package ms.aurora.api;
 
 import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
+import org.jboss.logging.Logger;
 
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import static ms.aurora.api.methods.Widgets.getWidget;
  */
 public class Context {
     private static final Map<ThreadGroup, Context> contextMap = newHashMap();
+    private static final Logger logger = Logger.getLogger(Context.class);
     private ThreadGroup threadGroup;
     private Session session;
 
@@ -22,8 +24,8 @@ public class Context {
     }
 
     public final void setSession(Session session) {
-        threadGroup = currentThread().getThreadGroup();
-        contextMap.put(threadGroup, this);
+        threadGroup = session.getThreadGroup();
+        contextMap.put(session.getThreadGroup(), this);
         this.session = session;
     }
 
@@ -35,10 +37,20 @@ public class Context {
     }
 
     public static boolean isLoggedIn() {
+        if(get() == null) {
+            logger.error("Context not set, cannot check logged in state!");
+        }
         return get() != null && get().isLoggedInInternal();
     }
 
     private boolean isLoggedInInternal() {
+        if(getClient().getLoginIndex() != 30) {
+            logger.debug("Login index: " + getClient().getLoginIndex());
+        }
+
+        if(getWidget(378, 6) != null) {
+            logger.debug("Welcome screen is set.");
+        }
         return getClient().getLoginIndex() == 30 && getWidget(378, 6) == null;
     }
 

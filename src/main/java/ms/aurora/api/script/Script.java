@@ -64,6 +64,7 @@ public abstract class Script extends Context implements Runnable {
 
     @Override
     public final void run() {
+        logger.info("Thread " + currentThread().getThreadGroup().getName());
         while (!currentThread().isInterrupted()) {
             try {
                 switch (getState()) {

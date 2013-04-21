@@ -25,13 +25,15 @@ import static ms.aurora.gui.ApplicationGUI.update;
 public final class Session implements Runnable {
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
     private final PaintManager paintManager = new PaintManager(this);
+    private final ThreadGroup threadGroup;
     private ScriptManager scriptManager;
     private PluginManager pluginManager;
     private AppletWidget container;
     private Applet applet;
     private Account account;
 
-    public Session(AppletWidget container) {
+    public Session(ThreadGroup threadGroup, AppletWidget container) {
+        this.threadGroup = threadGroup;
         this.container = container;
     }
 
@@ -121,5 +123,9 @@ public final class Session implements Runnable {
             return account.getUsername();
         }
         return String.valueOf(applet.hashCode());
+    }
+
+    public ThreadGroup getThreadGroup() {
+        return threadGroup;
     }
 }

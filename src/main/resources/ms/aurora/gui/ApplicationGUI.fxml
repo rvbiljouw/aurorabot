@@ -8,19 +8,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" minHeight="554.0" prefHeight="600.0" prefWidth="768.0" xmlns:fx="http://javafx.com/fxml">
-  <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="768.0">
+<fx:root type="javafx.scene.layout.AnchorPane" minHeight="554.0" prefHeight="590.0" prefWidth="765.0" xmlns:fx="http://javafx.com/fxml">
+  <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="765.0">
     <children>
-      <TabPane fx:id="tabPane" layoutX="0.0" layoutY="60.0" prefHeight="540.0" prefWidth="768.0" tabClosingPolicy="SELECTED_TAB">
+      <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" prefHeight="530.0" prefWidth="765.0" tabClosingPolicy="SELECTED_TAB" tabMaxHeight="20.0" tabMinHeight="20.0">
         <tabs>
           <Tab text="Welcome">
             <content>
-              <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="768.0" />
+              <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="765.0" />
             </content>
           </Tab>
         </tabs>
       </TabPane>
-      <MenuBar fx:id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="768.0">
+      <MenuBar fx:id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="765.0">
         <menus>
           <Menu mnemonicParsing="false" text="File" fx:id="mnFile">
             <items>
@@ -33,19 +33,24 @@
               <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Accounts" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Plug-ins" fx:id="mnPlugins">
+          <Menu mnemonicParsing="false" text="Plug-ins" visible="false" fx:id="mnPlugins">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="Plugin Overview" fx:id="pluginOverview" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <ToolBar layoutX="0.0" layoutY="29.0" prefWidth="768.0">
+      <ToolBar layoutX="0.0" layoutY="561.0" minHeight="30.0" prefHeight="30.0" prefWidth="765.0">
         <items>
-          <Button mnemonicParsing="false" onAction="#onNewSession" text="New session" />
-          <Button mnemonicParsing="false" onAction="#onStartScript" text="Play" fx:id="btnPlay" />
-          <Button mnemonicParsing="false" onAction="#onPauseScript" text="Pause" fx:id="btnPause" />
-          <ToggleButton fx:id="btnToggleInput" mnemonicParsing="false" onAction="#onToggleInput" text="Disable input" />
+          <HBox prefHeight="21.0" prefWidth="741.0" spacing="5.0">
+            <children>
+              <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewSession" prefWidth="75.0" text="New" />
+              <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="72.0" text="Play" />
+              <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="72.0" text="Pause" />
+              <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="402.0" HBox.hgrow="ALWAYS" />
+              <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="Mouse" />
+            </children>
+          </HBox>
         </items>
       </ToolBar>
     </children>
