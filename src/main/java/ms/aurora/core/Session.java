@@ -119,7 +119,7 @@ public final class Session implements Runnable {
     }
 
     public String getName() {
-        if(account != null) {
+        if (account != null) {
             return account.getUsername();
         }
         return String.valueOf(applet.hashCode());
@@ -127,5 +127,16 @@ public final class Session implements Runnable {
 
     public ThreadGroup getThreadGroup() {
         return threadGroup;
+    }
+
+    public void destroy() {
+        scriptManager.stop();
+        for (Plugin plugin : PluginLoader.getPlugins()) {
+            pluginManager.stop(plugin.getClass());
+        }
+        applet.stop();
+        applet.destroy();
+        threadGroup.destroy();
+        System.gc();
     }
 }

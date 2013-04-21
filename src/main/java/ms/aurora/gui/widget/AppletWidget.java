@@ -5,6 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
+import ms.aurora.core.SessionRepository;
 import ms.aurora.gui.ApplicationGUI;
 
 import javax.swing.*;
@@ -51,6 +54,15 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         tab().setClosable(true);
         tab().setText("Loading...");
         tab().selectedProperty().addListener(this);
+        tab().setOnClosed(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                Session mySession = SessionRepository.get(applet.hashCode());
+                if(mySession != null) {
+                    mySession.destroy();
+                }
+            }
+        });
     }
 
     private void loadFace() {

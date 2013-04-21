@@ -48,6 +48,8 @@ public final class Application {
         appWindow.setVisible(true);
         panel.setPreferredSize(new Dimension(765, 590));
         appWindow.pack();
+        appWindow.setSize(appWindow.getWidth() - 10, appWindow.getHeight() - 10);
+        appWindow.setResizable(false);
         logger.info("Welcome to Aurora!");
         Platform.runLater(new Runnable() {
             @Override

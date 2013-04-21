@@ -97,13 +97,10 @@ public class ApplicationGUI extends AnchorPane {
     void onStartScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             final Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            final Button source = (Button) evt.getSource();
-
             switch (session.getScriptManager().getState()) {
                 case RUNNING:
                 case PAUSED:
                     session.getScriptManager().stop();
-                    source.setText("Play");
                     break;
 
                 case STOPPED:
@@ -117,39 +114,29 @@ public class ApplicationGUI extends AnchorPane {
                     scene.getStylesheets().add("soft-responsive.css");
                     stage.setScene(scene);
                     stage.show();
-
-                    stage.setOnHiding(new EventHandler<WindowEvent>() {
-                        @Override
-                        public void handle(WindowEvent windowEvent) {
-                            if (session.getScriptManager().getState() == ScriptManager.State.RUNNING) {
-                                source.setText("Stop");
-                            }
-                        }
-                    });
                     break;
 
 
             }
         }
+        update();
     }
 
     @FXML
     void onPauseScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            Button source = (Button) evt.getSource();
             switch (session.getScriptManager().getState()) {
                 case RUNNING:
                     session.getScriptManager().pause();
-                    source.setText("Resume");
                     break;
 
                 case PAUSED:
                     session.getScriptManager().resume();
-                    source.setText("Pause");
                     break;
             }
         }
+        update();
     }
 
     @FXML

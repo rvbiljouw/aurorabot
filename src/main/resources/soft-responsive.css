@@ -74,10 +74,16 @@
     -fx-text-fill: #316EA3;
     -fx-background-color: linear-gradient(#EFEFEF 0%, #F0F0F0 50%, #F4F4F4 100%);
     -fx-opacity: 1.0;
+    -fx-font-size: 14pt;
 }
 
 .menu-item {
     -fx-text-fill: #EFEFEF;
+    -fx-font-size: 12pt;
+}
+
+.menu-item .label {
+    -fx-font-size: 12pt;
 }
 
 .menu-item:hover {
