@@ -173,7 +173,7 @@ public final class Walking {
                 sleepUntil(new StatePredicate() {
                     @Override
                     public boolean apply() {
-                        return Players.getLocal().isMoving();
+                        return !Players.getLocal().isMoving();
                     }
                 }, 2000);
             }

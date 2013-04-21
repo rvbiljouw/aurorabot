@@ -30,8 +30,8 @@ public final class Bank {
     private static final int BANK_PANE_ID = 89;
     private static final int BANK_CLOSE_ID = 102;
 
-    private static final int[] BANK_NPCS = {494, 495, 496};
-    private static final int[] BANK_OBJECTS = {2213};
+    private static final int[] BANK_NPCS = {56, 56, 494, 495, 496};
+    private static final int[] BANK_OBJECTS = {2213, 25808};
 
     /**
      * Retrieves the bank widget
@@ -44,6 +44,7 @@ public final class Bank {
 
     /**
      * Checks whether the bank is open or not.
+     *
      * @return return true if bank interface is up else false.
      */
     public static boolean isOpen() {
@@ -52,6 +53,7 @@ public final class Bank {
 
     /**
      * Opens the nearest on screen bank, with priority for objects over npcs.
+     *
      * @return true if bank interface is showing.
      */
     public static boolean open() {
@@ -77,6 +79,7 @@ public final class Bank {
 
     /**
      * Closes the bank interface using the close widget.
+     *
      * @return true if bank interface isn't showing.
      */
     public static boolean close() {
@@ -307,11 +310,12 @@ public final class Bank {
 
     /**
      * Deposits a single item
+     *
      * @param id ID of the item to deposit.
      */
     public static void deposit(int id) {
         Inventory.InventoryItem item = Inventory.get(id);
-        if(item != null) {
+        if (item != null) {
             item.click(true);
         }
     }
