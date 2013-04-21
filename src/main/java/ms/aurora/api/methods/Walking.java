@@ -156,7 +156,7 @@ public final class Walking {
         traverse(path, new StatePredicate() {
             @Override
             public boolean apply() {
-                return Calculations.distance(Players.getLocal().getLocation(), target) > 3;
+                return Calculations.distance(Players.getLocal().getLocation(), target) < 3;
             }
         }, direction);
     }
