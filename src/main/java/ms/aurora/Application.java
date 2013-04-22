@@ -47,7 +47,7 @@ public final class Application {
         appWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
         appWindow.add(panel, BorderLayout.CENTER);
         appWindow.setVisible(true);
-        panel.setPreferredSize(new Dimension(765, 590));
+        panel.setPreferredSize(new Dimension(765, 600));
         appWindow.pack();
         appWindow.setSize(appWindow.getWidth() - 10, appWindow.getHeight() - 10);
         appWindow.setResizable(false);
