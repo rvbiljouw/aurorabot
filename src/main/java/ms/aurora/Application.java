@@ -35,7 +35,7 @@ public final class Application {
             delegate();
         } else {
             new Login().setVisible(true);
-            init();
+            //init();
         }
     }
 
