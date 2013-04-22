@@ -26,10 +26,6 @@ public class Randoms extends PassiveTask {
             new MrMordaut()
     };
 
-    public Randoms(TaskQueue queue) {
-        super(queue);
-    }
-
     @Override
     public boolean canRun() {
         return true; // Can always run

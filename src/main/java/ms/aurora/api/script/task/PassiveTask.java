@@ -4,12 +4,8 @@ package ms.aurora.api.script.task;
  * @author rvbiljouw
  */
 public abstract class PassiveTask implements Task {
-    protected final TaskQueue queue;
+    protected TaskQueue queue;
     private Thread lastExecution;
-
-    public PassiveTask(TaskQueue queue) {
-        this.queue = queue;
-    }
 
     public abstract boolean canRun();
 
@@ -45,4 +41,8 @@ public abstract class PassiveTask implements Task {
             }
         }
     };
+
+    public void setQueue(TaskQueue queue) {
+        this.queue = queue;
+    }
 }
