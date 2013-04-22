@@ -30,6 +30,10 @@ public final class ScriptLoader {
         for (ScriptSource sourceObj : ScriptSource.getAll()) {
             String source = sourceObj.getSource();
             File sourceDirectory = new File(source);
+            if(!sourceDirectory.exists()) {
+                sourceDirectory.mkdirs();
+            }
+
             for (File file : sourceDirectory.listFiles()) {
                 if (!file.getName().endsWith(".jar")) continue;
 

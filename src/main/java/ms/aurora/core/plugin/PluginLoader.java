@@ -29,6 +29,10 @@ public final class PluginLoader {
         List<Plugin> plugins = newArrayList();
         for (PluginSource sourceObj : PluginSource.getAll()) {
             File sourceDirectory = new File(sourceObj.getSource());
+            if(!sourceDirectory.exists()) {
+                sourceDirectory.mkdirs();
+            }
+
             for (File file : sourceDirectory.listFiles()) {
                 if (!file.getName().endsWith(".jar")) continue;
 
