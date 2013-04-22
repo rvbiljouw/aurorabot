@@ -1,7 +1,5 @@
 package ms.aurora.api.script.task;
 
-import rick.poc.passive.NpcSelector;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -41,8 +39,8 @@ public class EventBus {
     }
 
     public void submit(Object object) {
-        for(EventHandlerBridge bridge : bridges) {
-            if(bridge.accept(object.getClass())) {
+        for (EventHandlerBridge bridge : bridges) {
+            if (bridge.accept(object.getClass())) {
                 bridge.handle(object);
             }
         }
