@@ -46,6 +46,7 @@ public class Pinball extends Random {
         }
 
         if (exit != null) {
+            VirtualKeyboard.holdKey((char)KeyEvent.VK_DOWN);
             VirtualKeyboard.holdKey((char)KeyEvent.VK_LEFT);
             long time = System.currentTimeMillis();
             while(!exit.isOnScreen() && (System.currentTimeMillis() - time) < 5000) {

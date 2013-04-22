@@ -8,11 +8,7 @@ package ms.aurora.api.script.task;
  * @author rvbiljouw
  */
 public abstract class ActiveTask implements Task {
-    protected final TaskQueue queue;
-
-    public ActiveTask(TaskQueue queue) {
-        this.queue = queue;
-    }
+    protected TaskQueue queue;
 
     /**
      * Checks if the task is still runnable, or has been invalidated.
@@ -51,6 +47,10 @@ public abstract class ActiveTask implements Task {
      */
     public int getPriority() {
         return 0;
+    }
+
+    public void setQueue(TaskQueue queue) {
+        this.queue = queue;
     }
 
 }

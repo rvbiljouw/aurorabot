@@ -1,4 +1,4 @@
-package ms.aurora.warb0.script.util;
+package ms.aurora.api.util;
 
 /**
  * @author tobiewarburton
