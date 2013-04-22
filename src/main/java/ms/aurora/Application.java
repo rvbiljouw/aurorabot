@@ -35,7 +35,7 @@ public final class Application {
             delegate();
         } else {
             new Login().setVisible(true);
-            //init();
+            init();
         }
     }
 
@@ -88,6 +88,7 @@ public final class Application {
             }
 
             String command = "java -cp " + classpath + seperator + decodedPath + seperator + jfxRt + " ms.aurora.Application start";
+            logger.info("Executing " + command);
             final Process p = Runtime.getRuntime().exec(command);
             Thread input = new Thread(new Runnable() {
                 @Override
