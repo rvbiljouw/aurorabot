@@ -16,6 +16,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
     private final PriorityQueue<PassiveTask> passive_internal =
             new PriorityQueue<PassiveTask>(16, taskComparator);
     private final Script owner;
+    private final EventBus eventBus;
 
     /**
      * Constructor
@@ -24,6 +25,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
     public TaskQueue(Script owner) {
         super(16, taskComparator);
         this.owner = owner;
+        this.eventBus = owner.getEventBus();
     }
 
     /**
@@ -42,6 +44,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
 
             Task currentTask = poll();
             if(currentTask != null) {
+                currentTask.setQueue(this);
                 currentTask.run();
             }
         }
@@ -91,4 +94,8 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
             }
         }
     };
+
+    public EventBus getEventBus() {
+        return eventBus;
+    }
 }

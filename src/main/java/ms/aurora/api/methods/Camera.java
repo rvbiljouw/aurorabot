@@ -88,6 +88,9 @@ public final class Camera {
         VirtualKeyboard.releaseKey(dir);
     }
 
+    /**
+     * Sets the camera all the way up.
+     */
     public static void setUp() {
         VirtualKeyboard.holdKey(KeyEvent.VK_UP);
         sleepNoException(1200);

@@ -1,6 +1,7 @@
 package ms.aurora.api.script;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.script.task.EventBus;
 import ms.aurora.api.script.task.TaskQueue;
 import ms.aurora.api.script.task.impl.Randoms;
 import ms.aurora.event.listeners.PaintListener;
@@ -16,6 +17,8 @@ public abstract class Script extends Context implements Runnable {
     private final TaskQueue taskQueue = new TaskQueue(this);
     private final Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
+    private EventBus eventBus = new EventBus();
+    private Randoms randoms = new Randoms();
 
     public Script() {
     }
@@ -117,7 +120,7 @@ public abstract class Script extends Context implements Runnable {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().register((PaintListener) this);
         }
-        taskQueue.add(new Randoms(getQueue()));
+        taskQueue.add(randoms);
         taskQueueThread.start();
     }
 
@@ -125,7 +128,7 @@ public abstract class Script extends Context implements Runnable {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().deregister((PaintListener) this);
         }
-        taskQueue.remove(new Randoms(getQueue()));
+        taskQueue.remove(randoms);
         taskQueueThread.interrupt();
     }
 
@@ -138,5 +141,9 @@ public abstract class Script extends Context implements Runnable {
 
     public TaskQueue getQueue() {
         return taskQueue;
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
     }
 }
