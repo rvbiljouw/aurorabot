@@ -5,6 +5,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
+import ms.aurora.gui.swing.Login;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
@@ -33,8 +34,8 @@ public final class Application {
         if (args.length == 0) {
             delegate();
         } else {
-            //new Login().setVisible(true);
-            init();
+            new Login().setVisible(true);
+            //init();
         }
     }
 

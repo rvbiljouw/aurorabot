@@ -196,7 +196,7 @@ public final class Walking {
         RSPathFinder pf = new RSPathFinder();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
         if (path != null && path.getLength() != 0) {
-            walkPath(path.toTiles(3));
+            traverse(path.toTiles(3), FORWARDS);
         } else {
             System.out.println("Path not found to " + x + ", " + y);
         }
