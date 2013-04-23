@@ -45,8 +45,6 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             pm.setSwapBufferListener(this);
         }
 
-        addEventFilter(KeyEvent.ANY, keyEventHandler);
-        addEventFilter(MouseEvent.ANY, mouseEventHandler);
         imageView.addEventFilter(KeyEvent.ANY, keyEventHandler);
         imageView.addEventFilter(MouseEvent.ANY, mouseEventHandler);
         setWidth(765);

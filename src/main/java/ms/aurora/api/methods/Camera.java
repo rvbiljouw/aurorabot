@@ -19,7 +19,7 @@ public final class Camera {
      * @return camera angle
      */
     public static int getAngle() {
-        double mapAngle = Context.get().getClient().getCameraPitch();
+        double mapAngle = Context.get().getClient().getCameraYaw();
         mapAngle /= 2048;
         mapAngle *= 360;
         return (int) mapAngle;
