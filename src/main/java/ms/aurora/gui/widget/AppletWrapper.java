@@ -16,6 +16,7 @@ import ms.aurora.input.ClientCanvas;
 import ms.aurora.rt3.Client;
 
 import java.applet.Applet;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
@@ -121,8 +122,23 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             if (getClientCanvas() == null) return;
             System.out.println(keyEvent.getText());
             imageView.requestFocus();
+            applet.requestFocus();
+
+            java.awt.event.KeyEvent event = transform(keyEvent);
+            for (KeyListener listener : getClientCanvas().getKeyListeners()) {
+                if (!event.isConsumed()) {
+                    if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+                        listener.keyPressed(event);
+                    } else if(keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
+                        listener.keyReleased(event);
+                    } else if(keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
+                        listener.keyTyped(event);
+                    }
+                }
+            }
             getClientCanvas().dispatchEvent(transform(keyEvent));
         }
+
     };
 
     /**

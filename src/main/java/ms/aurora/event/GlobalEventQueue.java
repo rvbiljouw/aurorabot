@@ -1,6 +1,7 @@
 package ms.aurora.event;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 /**
@@ -16,6 +17,11 @@ public class GlobalEventQueue extends EventQueue {
                 return;
             }
         }
+
+        if (event instanceof KeyEvent) {
+            System.out.println(event);
+        }
+
         super.dispatchEvent(event);
     }
 
