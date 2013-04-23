@@ -1,5 +1,7 @@
 package ms.aurora.gui.widget;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -15,6 +17,7 @@ import ms.aurora.input.ClientCanvas;
 import ms.aurora.rt3.Client;
 
 import java.applet.Applet;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
@@ -25,7 +28,7 @@ import static ms.aurora.core.SessionRepository.get;
  *
  * @author rvbiljouw
  */
-public class AppletWrapper extends Region implements SwapBufferListener {
+public class AppletWrapper extends Region implements SwapBufferListener, ChangeListener<Boolean> {
     private final WritableImage canvas = new WritableImage(765, 503);
     private final Applet applet;
 
@@ -40,8 +43,6 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         if(session != null) {
             PaintManager pm = session.getPaintManager();
             pm.setSwapBufferListener(this);
-        } else {
-            System.err.println("the fuck?");
         }
 
         setOnKeyPressed(keyEventHandler);
@@ -54,6 +55,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         setOnMouseDragged(mouseEventHandler);
         setOnMouseEntered(mouseEventHandler);
         setOnMouseExited(mouseEventHandler);
+        focusedProperty().addListener(this);
         setMinSize(765, 503);
         setVisible(true);
     }
@@ -158,4 +160,12 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         }
     };
 
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
+        if(aBoolean2) {
+            getClientCanvas().dispatchEvent(new FocusEvent(getClientCanvas(), FocusEvent.FOCUS_GAINED, false));
+        } else {
+            getClientCanvas().dispatchEvent(new FocusEvent(getClientCanvas(), FocusEvent.FOCUS_LOST, false));
+        }
+    }
 }
