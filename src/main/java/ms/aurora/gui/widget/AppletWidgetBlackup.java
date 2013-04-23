@@ -31,7 +31,7 @@ import static ms.aurora.core.SessionRepository.get;
 /**
  * @author Rick
  */
-public class AppletWidget extends AnchorPane {
+public class AppletWidgetBlackup extends AnchorPane implements ChangeListener<Boolean> {
     private final Tab tab = new Tab();
     private final ApplicationGUI parent;
 
@@ -44,14 +44,16 @@ public class AppletWidget extends AnchorPane {
     @FXML
     private AnchorPane appletPane;
 
+
     private Applet applet;
 
-    public AppletWidget(final ApplicationGUI parent) {
+    public AppletWidgetBlackup(final ApplicationGUI parent) {
         this.parent = parent;
         this.loadFace();
         tab().setContent(this);
         tab().setClosable(true);
         tab().setText("Loading...");
+        tab().selectedProperty().addListener(this);
         tab().setOnClosed(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
@@ -82,10 +84,40 @@ public class AppletWidget extends AnchorPane {
     }
 
     public void setApplet(final Applet applet) {
+        Application.registerApplet(applet);
+        toggleVisibility(tab().isSelected(), applet);
         this.applet = applet;
+    }
 
-        getChildren().clear();
-        getChildren().add(new AppletWrapper(applet));
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Utilities.sleepNoException(100);
+                toggleVisibility(tab().isSelected(), applet);
+            }
+        });
+    }
+
+    private int calculateRelX() {
+        int x = 0;
+        Parent obj = this;
+        while (obj != null) {
+            x += obj.getLayoutX();
+            obj = obj.getParent();
+        }
+        return x;
+    }
+
+    private int calculateRelY() {
+        int y = 0;
+        Parent obj = this;
+        while (obj != null) {
+            y += obj.getLayoutY();
+            obj = obj.getParent();
+        }
+        return y;
     }
 
     public Applet getApplet() {
@@ -94,6 +126,45 @@ public class AppletWidget extends AnchorPane {
 
     public Tab tab() {
         return tab;
+    }
+
+    private void toggleVisibility(Boolean observableValue, final Applet applet) {
+        if (applet == null) return;
+
+        int relX = calculateRelX();
+        int relY = calculateRelY();
+        if (observableValue) {
+            applet.setBounds(relX, relY, applet.getWidth(),
+                    applet.getHeight());
+            applet.setSize(765, 503);
+            applet.setVisible(true);
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    if (get(applet.hashCode()) != null) {
+                        tab().setText(get(applet.hashCode()).getName());
+                    }
+                }
+            });
+        } else {
+            applet.setBounds(relX - 1000, relY,
+                    applet.getWidth(), applet.getHeight());
+            applet.setSize(765, 503);
+            applet.setVisible(false);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    if (get(applet.hashCode()) != null) {
+                        tab().setText("[ " + get(applet.hashCode()).getName() + " ]");
+                    }
+                }
+            });
+        }
+    }
+
+    public void refresh() {
+        toggleVisibility(visibleProperty().getValue(), applet);
     }
 
     public void onMenuOpening() {

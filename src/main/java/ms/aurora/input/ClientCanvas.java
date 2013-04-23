@@ -1,11 +1,15 @@
 package ms.aurora.input;
 
+import ms.aurora.api.Context;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
+import ms.aurora.event.listeners.SwapBufferListener;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.Context.get;
 
 /**
@@ -22,6 +26,7 @@ public class ClientCanvas extends Canvas {
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
+    private final ArrayList<SwapBufferListener> listeners = newArrayList();
     private Session session;
 
     public ClientCanvas() {
@@ -52,23 +57,30 @@ public class ClientCanvas extends Canvas {
     }
 
     @Override
-    public void requestFocus() {
-
-    }
-
-    @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(0, 0, width, height);
     }
 
     private void drawMouse(Graphics2D g) {
         if (get() != null) {
-            int mouseX = get().getClient().getMouse().getRealX();
-            int mouseY = get().getClient().getMouse().getRealY();
+            int mouseX = Context.getClient().getMouse().getRealX();
+            int mouseY = Context.getClient().getMouse().getRealY();
             g.setColor(Color.YELLOW);
             g.drawLine(mouseX - 7, mouseY - 7, mouseX + 7, mouseY + 7);
             g.drawLine(mouseX + 7, mouseY - 7, mouseX - 7, mouseY + 7);
 
         }
+    }
+
+    public void addSwapBufferListener(SwapBufferListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeSwapBufferListener(SwapBufferListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void removeAllListeners() {
+        listeners.clear();
     }
 }
