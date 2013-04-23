@@ -49,8 +49,8 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         addEventFilter(MouseEvent.ANY, mouseEventHandler);
         imageView.addEventFilter(KeyEvent.ANY, keyEventHandler);
         imageView.addEventFilter(MouseEvent.ANY, mouseEventHandler);
-        setWidth(applet.getWidth());
-        setHeight(applet.getHeight());
+        setWidth(765);
+        setHeight(503);
         getChildren().add(imageView);
         setVisible(true);
 
@@ -123,7 +123,18 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             imageView.requestFocus();
             applet.requestFocus();
 
-            getClientCanvas().dispatchEvent(transform(keyEvent));
+            java.awt.event.KeyEvent event = transform(keyEvent);
+            for (KeyListener listener : getClientCanvas().getKeyListeners()) {
+                if (!event.isConsumed()) {
+                    if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+                        listener.keyPressed(event);
+                    } else if(keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
+                        listener.keyReleased(event);
+                    } else if(keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
+                        listener.keyTyped(event);
+                    }
+                }
+            }
         }
 
     };
