@@ -26,7 +26,6 @@ public class ClientCanvas extends Canvas {
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
-    private final ArrayList<SwapBufferListener> listeners = newArrayList();
     private Session session;
 
     public ClientCanvas() {
@@ -40,14 +39,10 @@ public class ClientCanvas extends Canvas {
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.drawImage(backBuffer, 0, 0, null);
-        dispatchEvent(graphics2D);
         drawMouse(graphics2D);
+        dispatchEvent(graphics2D);
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
-
-            for(SwapBufferListener listener : listeners) {
-                listener.onSwapBuffer(botBuffer);
-            }
         }
         return backBuffer.getGraphics();
     }
@@ -57,6 +52,8 @@ public class ClientCanvas extends Canvas {
             session = SessionRepository.get(getParent().hashCode());
         } else {
             session.getPaintManager().onRepaint(g);
+            session.getPaintManager().getSwapBufferListener().
+                    onSwapBuffer(botBuffer);
         }
     }
 
@@ -74,17 +71,5 @@ public class ClientCanvas extends Canvas {
             g.drawLine(mouseX + 7, mouseY - 7, mouseX - 7, mouseY + 7);
 
         }
-    }
-
-    public void addSwapBufferListener(SwapBufferListener listener) {
-        listeners.add(listener);
-    }
-
-    public void removeSwapBufferListener(SwapBufferListener listener) {
-        listeners.remove(listener);
-    }
-
-    public void removeAllListeners() {
-        listeners.clear();
     }
 }

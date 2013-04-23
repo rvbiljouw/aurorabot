@@ -7,6 +7,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import ms.aurora.core.Session;
+import ms.aurora.core.SessionRepository;
+import ms.aurora.event.PaintManager;
 import ms.aurora.event.listeners.SwapBufferListener;
 import ms.aurora.input.ClientCanvas;
 import ms.aurora.rt3.Client;
@@ -15,6 +18,7 @@ import java.applet.Applet;
 import java.awt.image.BufferedImage;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import static ms.aurora.core.SessionRepository.get;
 
 /**
  * A widget for wrapping the RuneScape applet
@@ -32,7 +36,13 @@ public class AppletWrapper extends Region implements SwapBufferListener {
 
     private void init() {
         getChildren().add(new ImageView(canvas));
-        getClientCanvas().addSwapBufferListener(this);
+        Session session = get(applet.hashCode());
+        if(session != null) {
+            PaintManager pm = session.getPaintManager();
+            pm.setSwapBufferListener(this);
+        } else {
+            System.err.println("the fuck?");
+        }
 
         setOnKeyPressed(keyEventHandler);
         setOnKeyReleased(keyEventHandler);
@@ -108,6 +118,12 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         }
     };
 
+    /**
+     * Converts JavaFX mouse events into AWT mouse events
+     *
+     * @param event Event to be converted
+     * @return corresponding AWT event
+     */
     private java.awt.event.MouseEvent transform(MouseEvent event) {
         int action = java.awt.event.MouseEvent.MOUSE_MOVED;
         if (event.getEventType() == MouseEvent.MOUSE_MOVED) {

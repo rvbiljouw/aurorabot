@@ -2,6 +2,7 @@ package ms.aurora.event;
 
 import ms.aurora.core.Session;
 import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.listeners.SwapBufferListener;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public final class PaintManager implements PaintListener {
     private static final Logger logger = Logger.getLogger(PaintManager.class);
     private final List<PaintListener> listeners = newArrayList();
+    private SwapBufferListener swapBufferListener;
     private final Session session;
 
     public PaintManager(Session session) {
@@ -38,5 +40,13 @@ public final class PaintManager implements PaintListener {
                 logger.error("PaintListener threw exception", e);
             }
         }
+    }
+
+    public SwapBufferListener getSwapBufferListener() {
+        return swapBufferListener;
+    }
+
+    public void setSwapBufferListener(SwapBufferListener swapBufferListener) {
+        this.swapBufferListener = swapBufferListener;
     }
 }
