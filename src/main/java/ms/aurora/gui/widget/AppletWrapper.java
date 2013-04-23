@@ -10,6 +10,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import ms.aurora.core.Session;
+import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.event.PaintManager;
 import ms.aurora.event.listeners.SwapBufferListener;
 import ms.aurora.input.ClientCanvas;
@@ -93,6 +94,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             eventCode = java.awt.event.KeyEvent.KEY_TYPED;
         }
 
+        if(event.getCharacter().length() == 0) return null;
         char keyChar = event.getCharacter().toCharArray()[0];
         int keyCode = event.getCode().impl_getCode();
         int modifiers = 0;
@@ -122,13 +124,17 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             applet.requestFocus();
 
             java.awt.event.KeyEvent event = transform(keyEvent);
+            if(event == null) {
+                System.out.println("Trying to send null key.");
+                return;
+            }
             for (KeyListener listener : getClientCanvas().getKeyListeners()) {
                 if (!event.isConsumed()) {
-                    if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+                    if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
                         listener.keyPressed(event);
-                    } else if(keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
+                    } else if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
                         listener.keyReleased(event);
-                    } else if(keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
+                    } else if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
                         listener.keyTyped(event);
                     }
                 }
@@ -162,7 +168,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         }
         int button = java.awt.event.MouseEvent.BUTTON1;
         if (event.getButton() == MouseButton.SECONDARY) {
-            button = java.awt.event.MouseEvent.BUTTON2;
+            button = java.awt.event.MouseEvent.BUTTON3;
         }
 
         return new java.awt.event.MouseEvent(getClientCanvas(), action,
@@ -173,7 +179,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
     private final EventHandler<MouseEvent> mouseEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            if (getClientCanvas() == null) return;
+            if (getClientCanvas() == null || GlobalEventQueue.blocking) return;
             imageView.requestFocus();
 
             getClientCanvas().dispatchEvent(transform(mouseEvent));

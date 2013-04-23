@@ -28,8 +28,8 @@ public class LoginPacketHandler implements PacketHandler {
             String returnMessage = incomingPacket.getStream().readUTF();
             String decryptedMessage = new String(decrypt(decode(returnMessage)));
             if (decryptedMessage.equals("ok")) {
-                LOGIN_WINDOW.dispose();
-                Application.init();
+                LOGIN_WINDOW.setVisible(false);
+                Application.boot();
             } else {
                 LOGIN_WINDOW.setMessage(decryptedMessage);
             }

@@ -16,11 +16,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.core.model.Account;
-import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
@@ -90,7 +88,7 @@ public class ApplicationGUI extends AnchorPane {
         Session session = new Session(threadGroup, widget);
         Thread thread = new Thread(threadGroup, session);
         thread.start();
-        tabPane.getTabs().add(widget.tab());
+        tabPane.getTabs().add(widget.getTab());
     }
 
     @FXML

@@ -1,14 +1,15 @@
 package ms.aurora.sdn;
 
-import ms.aurora.Application;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
-import ms.aurora.sdn.net.encode.MD5;
+import ms.aurora.sdn.net.impl.LoginPacketHandler;
+import ms.aurora.sdn.net.impl.UpdatePacketHandler;
 import org.apache.log4j.Logger;
 
-import javax.swing.*;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
@@ -47,16 +48,23 @@ public class SDNConnection implements Runnable {
     @Override
     public void run() {
         try {
+            packetHandlers.add(new LoginPacketHandler());
+            packetHandlers.add(new UpdatePacketHandler());
+
             socket = new Socket("208.94.241.76", 65500);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
             while (socket.isConnected() && !self.isInterrupted()) {
-                IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
-                for (PacketHandler handler : packetHandlers) {
-                    if (handler.getOpcode() == packet.getOpcode()) {
-                        handler.handle(packet);
-                        break;
+                if (dis.available() > 0) {
+                    IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
+                    System.out.println("Received " + packet.getOpcode());
+
+                    for (PacketHandler handler : packetHandlers) {
+                        if (handler.getOpcode() == packet.getOpcode()) {
+                            handler.handle(packet);
+                            break;
+                        }
                     }
                 }
             }
@@ -68,52 +76,11 @@ public class SDNConnection implements Runnable {
 
     public void writePacket(OutgoingPacket packet) {
         try {
+            packet.prepare(); // Prepare zeh meal
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
             dos.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void checkUpdate() {
-        try {
-            String path = Application.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-            if (!path.endsWith(".jar")) {
-                logger.info("Not running inside jar, not checking for updates!");
-                return;
-            }
-            File file = new File(path);
-            String digest = MD5.digest(file);
-            dos.writeInt(1);
-            dos.writeUTF(digest);
-            dos.flush();
-
-            int response = dis.readInt();
-            switch (response) {
-                case 0:
-                    logger.info("Client is up-to-date");
-                    break;
-
-                case 1:
-                    logger.info("Update available.");
-                    FileOutputStream fos = new FileOutputStream(file);
-                    long fileSize = dis.readLong();
-                    long totalRead = 0;
-                    int read = 0;
-                    byte[] buffer = new byte[256];
-                    while (totalRead != fileSize) {
-                        read = dis.read(buffer);
-                        totalRead += read;
-                        fos.write(buffer, 0, read);
-                    }
-                    fos.flush();
-                    fos.close();
-                    JOptionPane.showMessageDialog(null, "The client was updated, please re-start!");
-                    System.exit(0);
-                    break;
-            }
+            System.out.println("Wrote packet " + packet.getOpcode());
         } catch (Exception e) {
             e.printStackTrace();
         }
