@@ -1,7 +1,6 @@
 package ms.aurora.gui.swing;
 
-import ms.aurora.Application;
-import ms.aurora.sdn.SDNConnection;
+import ms.aurora.sdn.net.api.Authentication;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,26 +10,23 @@ import java.awt.event.ActionListener;
 /**
  * @author rvbiljouw
  */
-public class Login extends JFrame implements ActionListener {
+public class LoginWindow extends JFrame implements ActionListener {
     private final JLabel lblPleaseLogin = new JLabel("Please log in to your dashboard account");
-    private final JLabel lblUsername = new JLabel("Username:");
-    private final JLabel lblPassword = new JLabel("Password:");
-
     private final JTextField txtUsername = new JTextField();
     private final JPasswordField txtPassword = new JPasswordField();
-
     private final JButton btnLogin = new JButton("Log in");
-    private final JButton btnCancel = new JButton("Cancel");
 
-    public Login() {
+    public LoginWindow() {
         setTitle("Please log in to your dashboard account");
         setSize(300, 200);
         lblPleaseLogin.setBounds(5, 10, 300, 30);
         add(lblPleaseLogin);
 
+        JLabel lblUsername = new JLabel("Username:");
         lblUsername.setBounds(20, 40, 100, 30);
         add(lblUsername);
 
+        JLabel lblPassword = new JLabel("Password:");
         lblPassword.setBounds(20, 80, 100, 30);
         add(lblPassword);
 
@@ -45,6 +41,7 @@ public class Login extends JFrame implements ActionListener {
         btnLogin.setActionCommand("login");
         add(btnLogin);
 
+        JButton btnCancel = new JButton("Cancel");
         btnCancel.setBounds(90, 140, 60, 20);
         btnCancel.addActionListener(this);
         btnCancel.setActionCommand("cancel");
@@ -54,18 +51,17 @@ public class Login extends JFrame implements ActionListener {
         setVisible(true);
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((int)(size.getWidth() / 2 - (getWidth() / 2)), (int)(size.getHeight() / 2 - (getHeight() / 2)));
+        setLocation((int) (size.getWidth() / 2 - (getWidth() / 2)), (int) (size.getHeight() / 2 - (getHeight() / 2)));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("cancel")) {
+        if (e.getActionCommand().equals("cancel")) {
             System.exit(0);
-        } else if(e.getActionCommand().equals("login")) {
+        } else if (e.getActionCommand().equals("login")) {
             btnLogin.setEnabled(false);
-            Application.connection = new SDNConnection(this);
-            Application.connection.connect();
+            Authentication.login(getUsername(), getPassword());
         }
     }
 

@@ -5,7 +5,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
-import ms.aurora.gui.swing.Login;
+import ms.aurora.gui.swing.LoginWindow;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
@@ -13,8 +13,6 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.applet.Applet;
 import java.awt.*;
-import java.io.*;
-import java.net.URLDecoder;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -25,18 +23,13 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @author Rick
  */
 public final class Application {
-    public static String JAVA_HOME = System.getProperty("java.home");
-    public static Logger logger = Logger.getLogger(Application.class);
-    public static SDNConnection connection;
+    public static final Logger logger = Logger.getLogger(Application.class);
+    public static final LoginWindow LOGIN_WINDOW = new LoginWindow();
     private static JFrame appWindow;
 
-    public static void main(final String[] args) {
-        if (args.length == 0) {
-            delegate();
-        } else {
-            new Login().setVisible(true);
-            //init();
-        }
+    public static void main(String[] args) {
+        SDNConnection.getInstance().start();
+        LOGIN_WINDOW.setVisible(true);
     }
 
     public static void init() {
@@ -60,76 +53,6 @@ public final class Application {
                 panel.setScene(scene);
             }
         });
-    }
-
-    private static void delegate() {
-        String jfxRt = Application.JAVA_HOME + File.separator + "lib" + File.separator + "jfxrt.jar";
-        if (jfxRt.contains(" ")) {
-            jfxRt = "\"" + jfxRt + "\"";
-        }
-
-        String path = Application.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        try {
-            String decodedPath = URLDecoder.decode(path, "UTF-8");
-            if (decodedPath.contains(" ")) {
-                decodedPath = "\"" + decodedPath + "\"";
-            }
-
-            String seperator = System.getProperty("os.name").contains("Win") ? ";" : ":";
-            String classpath = "." + seperator;
-            for (String item : System.getProperty("java.class.path").split(seperator)) {
-                if (item.toLowerCase().contains("idea")) continue;
-
-                if (item.contains(" ")) {
-                    classpath += "\"" + item + "\"" + seperator;
-                } else {
-                    classpath += item + seperator;
-                }
-            }
-
-            String command = "java -cp " + classpath + seperator + decodedPath + seperator + jfxRt + " ms.aurora.Application start";
-            logger.info("Executing " + command);
-            final Process p = Runtime.getRuntime().exec(command);
-            Thread input = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(p.getInputStream()));
-                        String buf = "";
-                        while ((buf = reader.readLine()) != null) {
-                            System.out.println(buf);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            Thread output = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(p.getErrorStream()));
-                        String buf = "";
-                        while ((buf = reader.readLine()) != null) {
-                            System.out.println(buf);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            input.start();
-            output.start();
-            p.waitFor();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
