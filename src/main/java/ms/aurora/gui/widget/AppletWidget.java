@@ -68,6 +68,7 @@ public class AppletWidget extends AnchorPane {
             public void run() {
                 getChildren().clear();
                 getChildren().add(new AppletWrapper(applet));
+                applet.requestFocus();
             }
         });
     }

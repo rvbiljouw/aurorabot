@@ -1,5 +1,6 @@
 package ms.aurora.api.script;
 
+import javafx.application.Platform;
 import ms.aurora.api.Context;
 import ms.aurora.api.script.task.EventBus;
 import ms.aurora.api.script.task.TaskQueue;
@@ -15,7 +16,7 @@ import static java.lang.Thread.currentThread;
 public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
     private final TaskQueue taskQueue = new TaskQueue(this);
-    private final Thread taskQueueThread = new Thread(taskQueue);
+    private Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
     private EventBus eventBus = new EventBus();
     private Randoms randoms = new Randoms();
@@ -73,7 +74,12 @@ public abstract class Script extends Context implements Runnable {
                 switch (getState()) {
                     case START:
                         init();
-                        onStart();
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                onStart();
+                            }
+                        });
                         setState(ScriptState.RUNNING);
                         break;
 
@@ -117,11 +123,13 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private void init() {
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().register((PaintListener) this);
+        if (!taskQueueThread.isAlive()) {
+            if (this instanceof PaintListener) {
+                getSession().getPaintManager().register((PaintListener) this);
+            }
+            taskQueue.add(randoms);
+            taskQueueThread.start();
         }
-        taskQueue.add(randoms);
-        taskQueueThread.start();
     }
 
     private void cleanup() {

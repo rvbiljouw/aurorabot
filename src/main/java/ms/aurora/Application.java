@@ -41,7 +41,7 @@ public final class Application extends javafx.application.Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("Aurora - Automation Toolkit");
         stage.setResizable(false);
-        Scene scene = new Scene(new ApplicationGUI(), 765, 600);
+        Scene scene = new Scene(new ApplicationGUI(), 765, 590);
         scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.centerOnScreen();

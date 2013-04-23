@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -39,8 +40,22 @@ public final class VirtualKeyboard {
      */
     public static void clickKey(char c) {
         for (KeyEvent ke : createKeyClick(getComponent(), c)) {
-            getComponent().dispatchEvent(ke);
+            dispatch(ke);
             sleep(getRandom());
+        }
+    }
+
+    private static void dispatch(KeyEvent ke) {
+        for (KeyListener listener : getComponent().getKeyListeners()) {
+            if (!ke.isConsumed()) {
+                if (ke.getID() == KeyEvent.KEY_PRESSED) {
+                    listener.keyPressed(ke);
+                } else if (ke.getID() == KeyEvent.KEY_RELEASED) {
+                    listener.keyReleased(ke);
+                } else if (ke.getID() == KeyEvent.KEY_TYPED) {
+                    listener.keyTyped(ke);
+                }
+            }
         }
     }
 
@@ -51,7 +66,7 @@ public final class VirtualKeyboard {
      */
     public static void clickKey(int keyCode) {
         for (KeyEvent ke : createKeyClick(getComponent(), keyCode)) {
-            getComponent().dispatchEvent(ke);
+            dispatch(ke);
             try {
                 Thread.sleep(getRandom());
             } catch (InterruptedException e) {
@@ -62,12 +77,12 @@ public final class VirtualKeyboard {
 
     public static void holdKey(int keyCode) {
         KeyEvent event = getSpecialKeyEvent(getComponent(), KeyEvent.KEY_PRESSED, keyCode, System.currentTimeMillis());
-        getComponent().dispatchEvent(event);
+        dispatch(event);
     }
 
     public static void releaseKey(int keyCode) {
         KeyEvent event = getSpecialKeyEvent(getComponent(), KeyEvent.KEY_RELEASED, keyCode, System.currentTimeMillis());
-        getComponent().dispatchEvent(event);
+        dispatch(event);
     }
 
     /* Internal event construction  */
