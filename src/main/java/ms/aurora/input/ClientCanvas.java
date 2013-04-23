@@ -44,6 +44,10 @@ public class ClientCanvas extends Canvas {
         drawMouse(graphics2D);
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
+
+            for(SwapBufferListener listener : listeners) {
+                listener.onSwapBuffer(botBuffer);
+            }
         }
         return backBuffer.getGraphics();
     }
