@@ -84,8 +84,13 @@ public class AppletWidget extends AnchorPane {
     public void setApplet(final Applet applet) {
         this.applet = applet;
 
-        getChildren().clear();
-        getChildren().add(new AppletWrapper(applet));
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                getChildren().clear();
+                getChildren().add(new AppletWrapper(applet));
+            }
+        });
     }
 
     public Applet getApplet() {
