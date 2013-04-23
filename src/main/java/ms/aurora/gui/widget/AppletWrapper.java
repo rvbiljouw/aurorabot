@@ -25,12 +25,14 @@ import static ms.aurora.core.SessionRepository.get;
  *
  * @author rvbiljouw
  */
-public class AppletWrapper extends ImageView implements SwapBufferListener {
+public class AppletWrapper extends Region implements SwapBufferListener {
+    private final ImageView imageView;
     private final WritableImage canvas = new WritableImage(765, 503);
     private final Applet applet;
     private boolean wasFocusSet;
 
     public AppletWrapper(Applet applet) {
+        imageView = new ImageView(canvas);
         this.applet = applet;
         this.init();
     }
@@ -44,9 +46,9 @@ public class AppletWrapper extends ImageView implements SwapBufferListener {
 
         addEventHandler(KeyEvent.ANY, keyEventHandler);
         addEventHandler(MouseEvent.ANY, mouseEventHandler);
-        setImage(canvas);
-        setFitWidth(765);
-        setFitHeight(503);
+        setWidth(765);
+        setHeight(503);
+        getChildren().add(imageView);
         setVisible(true);
     }
 
@@ -108,16 +110,6 @@ public class AppletWrapper extends ImageView implements SwapBufferListener {
         @Override
         public void handle(KeyEvent keyEvent) {
             if (getClientCanvas() == null) return;
-
-            if (!wasFocusSet) {
-                getClientCanvas().requestFocus();
-                getClientCanvas().dispatchEvent(
-                        new FocusEvent(
-                                applet, FocusEvent.FOCUS_GAINED
-                        )
-                );
-                wasFocusSet = true;
-            }
             getClientCanvas().dispatchEvent(transform(keyEvent));
         }
     };
@@ -159,16 +151,6 @@ public class AppletWrapper extends ImageView implements SwapBufferListener {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if (getClientCanvas() == null) return;
-
-            if (!wasFocusSet) {
-                getClientCanvas().requestFocus();
-                getClientCanvas().dispatchEvent(
-                        new FocusEvent(
-                                applet, FocusEvent.FOCUS_GAINED
-                        )
-                );
-                wasFocusSet = true;
-            }
             getClientCanvas().dispatchEvent(transform(mouseEvent));
         }
     };
