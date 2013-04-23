@@ -115,7 +115,6 @@ public final class Session implements Runnable {
 
     public void setAccount(Account account) {
         this.account = account;
-        container.refresh();
     }
 
     public String getName() {
