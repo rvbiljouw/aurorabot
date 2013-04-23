@@ -42,16 +42,8 @@ public class AppletWrapper extends ImageView implements SwapBufferListener {
             pm.setSwapBufferListener(this);
         }
 
-        setOnKeyPressed(keyEventHandler);
-        setOnKeyReleased(keyEventHandler);
-        setOnKeyTyped(keyEventHandler);
-        setOnMouseClicked(mouseEventHandler);
-        setOnMousePressed(mouseEventHandler);
-        setOnMouseReleased(mouseEventHandler);
-        setOnMouseMoved(mouseEventHandler);
-        setOnMouseDragged(mouseEventHandler);
-        setOnMouseEntered(mouseEventHandler);
-        setOnMouseExited(mouseEventHandler);
+        addEventHandler(KeyEvent.ANY, keyEventHandler);
+        addEventHandler(MouseEvent.ANY, mouseEventHandler);
         setImage(canvas);
         setFitWidth(765);
         setFitHeight(503);
