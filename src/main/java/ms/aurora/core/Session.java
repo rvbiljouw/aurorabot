@@ -44,8 +44,9 @@ public final class Session implements Runnable {
 
         if (loader.getApplet() != null) {
             applet = loader.getApplet();
-            initComponents();
             set(applet.hashCode(), this);
+            container.setApplet(applet);
+            initComponents();
             refreshPlugins();
             update();
         }
