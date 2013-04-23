@@ -1,7 +1,5 @@
 package ms.aurora.gui.widget;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -18,7 +16,6 @@ import ms.aurora.input.ClientCanvas;
 import ms.aurora.rt3.Client;
 
 import java.applet.Applet;
-import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
@@ -47,9 +44,9 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             pm.setSwapBufferListener(this);
         }
 
-        addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        addEventFilter(KeyEvent.ANY, keyEventHandler);
         addEventFilter(MouseEvent.ANY, mouseEventHandler);
-        imageView.addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        imageView.addEventFilter(KeyEvent.ANY, keyEventHandler);
         imageView.addEventFilter(MouseEvent.ANY, mouseEventHandler);
         setWidth(765);
         setHeight(503);
@@ -59,9 +56,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> a, Boolean b, Boolean newValue) {
-                if(newValue) {
-                    imageView.requestFocus();
-                }
+                imageView.requestFocus();
             }
         });
     }
@@ -100,7 +95,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         }
 
         char keyChar = event.getCharacter().toCharArray()[0];
-        int keyCode = (int) keyChar;
+        int keyCode = java.awt.event.KeyEvent.getExtendedKeyCodeForChar(keyChar);
         int modifiers = 0;
         if (event.isAltDown()) {
             modifiers = java.awt.event.KeyEvent.ALT_DOWN_MASK;
@@ -117,13 +112,15 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         return new java.awt.event.KeyEvent(
                 getClientCanvas(), eventCode, System.currentTimeMillis(),
                 event.getEventType() == KeyEvent.KEY_PRESSED ? modifiers : 0,
-                keyCode, keyChar);
+                event.getEventType() == KeyEvent.KEY_TYPED ? 0 : keyCode, keyChar);
     }
 
     private final EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>() {
         @Override
         public void handle(KeyEvent keyEvent) {
             if (getClientCanvas() == null) return;
+            System.out.println(keyEvent.getText());
+            imageView.requestFocus();
             getClientCanvas().dispatchEvent(transform(keyEvent));
         }
     };
@@ -165,9 +162,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if (getClientCanvas() == null) return;
-            if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-                imageView.requestFocus();
-            }
+            imageView.requestFocus();
 
             getClientCanvas().dispatchEvent(transform(mouseEvent));
         }
