@@ -17,11 +17,6 @@ public class GlobalEventQueue extends EventQueue {
                 return;
             }
         }
-
-        if (event instanceof KeyEvent) {
-            System.out.println(event);
-        }
-
         super.dispatchEvent(event);
     }
 

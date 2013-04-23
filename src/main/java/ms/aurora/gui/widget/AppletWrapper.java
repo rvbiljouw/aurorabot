@@ -49,8 +49,8 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         addEventFilter(MouseEvent.ANY, mouseEventHandler);
         imageView.addEventFilter(KeyEvent.ANY, keyEventHandler);
         imageView.addEventFilter(MouseEvent.ANY, mouseEventHandler);
-        setWidth(765);
-        setHeight(503);
+        setWidth(applet.getWidth());
+        setHeight(applet.getHeight());
         getChildren().add(imageView);
         setVisible(true);
 
@@ -96,7 +96,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         }
 
         char keyChar = event.getCharacter().toCharArray()[0];
-        int keyCode = java.awt.event.KeyEvent.getExtendedKeyCodeForChar(keyChar);
+        int keyCode = event.getCode().impl_getCode();
         int modifiers = 0;
         if (event.isAltDown()) {
             modifiers = java.awt.event.KeyEvent.ALT_DOWN_MASK;
@@ -120,22 +120,9 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         @Override
         public void handle(KeyEvent keyEvent) {
             if (getClientCanvas() == null) return;
-            System.out.println(keyEvent.getText());
             imageView.requestFocus();
             applet.requestFocus();
 
-            java.awt.event.KeyEvent event = transform(keyEvent);
-            for (KeyListener listener : getClientCanvas().getKeyListeners()) {
-                if (!event.isConsumed()) {
-                    if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
-                        listener.keyPressed(event);
-                    } else if(keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
-                        listener.keyReleased(event);
-                    } else if(keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
-                        listener.keyTyped(event);
-                    }
-                }
-            }
             getClientCanvas().dispatchEvent(transform(keyEvent));
         }
 
