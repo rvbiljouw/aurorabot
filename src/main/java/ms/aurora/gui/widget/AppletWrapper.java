@@ -1,5 +1,9 @@
 package ms.aurora.gui.widget;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -43,14 +47,23 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             pm.setSwapBufferListener(this);
         }
 
-        addEventHandler(KeyEvent.ANY, keyEventHandler);
-        addEventHandler(MouseEvent.ANY, mouseEventHandler);
-        imageView.addEventHandler(KeyEvent.ANY, keyEventHandler);
-        imageView.addEventHandler(MouseEvent.ANY, mouseEventHandler);
+        addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        addEventFilter(MouseEvent.ANY, mouseEventHandler);
+        imageView.addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        imageView.addEventFilter(MouseEvent.ANY, mouseEventHandler);
         setWidth(765);
         setHeight(503);
         getChildren().add(imageView);
         setVisible(true);
+
+        focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> a, Boolean b, Boolean newValue) {
+                if(newValue) {
+                    imageView.requestFocus();
+                }
+            }
+        });
     }
 
     /**
@@ -152,6 +165,10 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if (getClientCanvas() == null) return;
+            if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+                imageView.requestFocus();
+            }
+
             getClientCanvas().dispatchEvent(transform(mouseEvent));
         }
     };
