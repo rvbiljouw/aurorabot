@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
+import ms.aurora.gui.ApplicationGUI;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -29,6 +30,7 @@ public final class ScriptManager {
         Future<?> future = executorService.submit(script);
         futures.put(script, future);
         state = State.RUNNING;
+        ApplicationGUI.update();
     }
 
     public void pause() {
@@ -36,6 +38,7 @@ public final class ScriptManager {
             script.setState(ScriptState.PAUSED);
         }
         state = State.PAUSED;
+        ApplicationGUI.update();
     }
 
     public void resume() {
@@ -43,6 +46,7 @@ public final class ScriptManager {
             script.setState(ScriptState.RUNNING);
         }
         state = State.RUNNING;
+        ApplicationGUI.update();
     }
 
     public void stop() {
@@ -51,16 +55,19 @@ public final class ScriptManager {
             futures.remove(script);
         }
         state = State.STOPPED;
+        ApplicationGUI.update();
     }
 
     public void shutdown() {
         executorService.shutdown();
         state = State.STOPPED;
+        ApplicationGUI.update();
     }
 
     public void shutdownNow() {
         executorService.shutdownNow();
         state = State.STOPPED;
+        ApplicationGUI.update();
     }
 
     public State getState() {
