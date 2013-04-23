@@ -1,6 +1,6 @@
 package ms.aurora.sdn.net.impl;
 
-import ms.aurora.Application;
+import javafx.application.Platform;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.PacketHandler;
 
@@ -28,8 +28,12 @@ public class LoginPacketHandler implements PacketHandler {
             String returnMessage = incomingPacket.getStream().readUTF();
             String decryptedMessage = new String(decrypt(decode(returnMessage)));
             if (decryptedMessage.equals("ok")) {
-                LOGIN_WINDOW.setVisible(false);
-                Application.boot();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        LOGIN_WINDOW.close();
+                    }
+                });
             } else {
                 LOGIN_WINDOW.setMessage(decryptedMessage);
             }

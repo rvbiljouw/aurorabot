@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
-import ms.aurora.gui.swing.LoginWindow;
+import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.security.DefaultSecurityManager;
@@ -22,23 +22,25 @@ import static java.awt.Toolkit.getDefaultToolkit;
  */
 public final class Application extends javafx.application.Application {
     public static final Logger logger = Logger.getLogger(Application.class);
-    public static final LoginWindow LOGIN_WINDOW = new LoginWindow();
+    public static LoginWindow LOGIN_WINDOW;
 
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
         SDNConnection.getInstance().start();
-        LOGIN_WINDOW.setVisible(true);
+        boot();
     }
 
     public static void boot() {
         new JFXPanel();
-        Versioning.checkForUpdates();
         launch("");
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        LOGIN_WINDOW = new LoginWindow();
+        LOGIN_WINDOW.display();
+        Versioning.checkForUpdates();
         stage.setTitle("Aurora - Automation Toolkit");
         stage.setResizable(false);
         Scene scene = new Scene(new ApplicationGUI(), 765, 590);

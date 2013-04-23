@@ -3,10 +3,13 @@ package ms.aurora.gui.sdn;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import ms.aurora.sdn.net.api.Authentication;
 
 import java.io.IOException;
@@ -16,7 +19,8 @@ import java.util.ResourceBundle;
 /**
  * @author tobiewarburton
  */
-public class LoginWindow {
+public class LoginWindow extends AnchorPane {
+    private Stage currentStage;
 
     @FXML
     private ResourceBundle resources;
@@ -68,5 +72,16 @@ public class LoginWindow {
         assert lblInfo != null : "fx:id=\"lblInfo\" was not injected: check your FXML file 'LoginWindow.fxml'.";
         assert pwdPassword != null : "fx:id=\"pwdPassword\" was not injected: check your FXML file 'LoginWindow.fxml'.";
         assert txtUsername != null : "fx:id=\"txtUsername\" was not injected: check your FXML file 'LoginWindow.fxml'.";
+    }
+
+    public void display() {
+        currentStage = new Stage();
+        currentStage.setScene(new Scene(this));
+        currentStage.centerOnScreen();
+        currentStage.showAndWait();
+    }
+
+    public void close() {
+        currentStage.close();
     }
 }
