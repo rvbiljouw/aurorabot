@@ -39,7 +39,7 @@ public final class ScriptLoader {
 
                 try {
                     URLClassLoader jarClassLoader = new URLClassLoader(new URL[]{
-                            new URL("file:" + file.getAbsolutePath()), new URL("file:" + Application.JAVA_HOME + File.separator + "lib" + File.separator + "jfxrt.jar")});
+                            new URL("file:" + file.getAbsolutePath())});
                     JarFile jarFile = new JarFile(file);
 
                     Enumeration<JarEntry> entries = jarFile.entries();

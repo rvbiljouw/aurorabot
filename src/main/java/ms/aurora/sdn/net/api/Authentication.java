@@ -9,6 +9,15 @@ import ms.aurora.sdn.net.packet.LoginRequestPacket;
  */
 public class Authentication {
 
+    /**
+     * Sends an authentication request to the SDN.
+     * Responses are picked up by the LoginPacketHandler.
+     *
+     * {@see ms.aurora.sdn.net.impl.LoginPacketHandler}
+     *
+     * @param username Username
+     * @param password Password
+     */
     public static void login(String username, String password) {
         OutgoingPacket packet = new LoginRequestPacket(username, password);
         SDNConnection.getInstance().writePacket(packet);
