@@ -117,6 +117,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             if (getClientCanvas() == null) return;
 
             if (!wasFocusSet) {
+                getClientCanvas().requestFocus();
                 getClientCanvas().dispatchEvent(
                         new FocusEvent(
                                 applet, FocusEvent.FOCUS_GAINED
@@ -167,6 +168,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             if (getClientCanvas() == null) return;
 
             if (!wasFocusSet) {
+                getClientCanvas().requestFocus();
                 getClientCanvas().dispatchEvent(
                         new FocusEvent(
                                 applet, FocusEvent.FOCUS_GAINED
