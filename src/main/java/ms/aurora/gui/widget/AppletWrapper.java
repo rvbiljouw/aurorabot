@@ -28,9 +28,10 @@ import static ms.aurora.core.SessionRepository.get;
  *
  * @author rvbiljouw
  */
-public class AppletWrapper extends Region implements SwapBufferListener, ChangeListener<Boolean> {
+public class AppletWrapper extends Region implements SwapBufferListener {
     private final WritableImage canvas = new WritableImage(765, 503);
     private final Applet applet;
+    private boolean wasFocusSet;
 
     public AppletWrapper(Applet applet) {
         this.applet = applet;
@@ -55,7 +56,6 @@ public class AppletWrapper extends Region implements SwapBufferListener, ChangeL
         setOnMouseDragged(mouseEventHandler);
         setOnMouseEntered(mouseEventHandler);
         setOnMouseExited(mouseEventHandler);
-        focusedProperty().addListener(this);
         setMinSize(765, 503);
         setVisible(true);
     }
@@ -116,6 +116,12 @@ public class AppletWrapper extends Region implements SwapBufferListener, ChangeL
     private final EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>() {
         @Override
         public void handle(KeyEvent keyEvent) {
+            if(getClientCanvas() == null) return;
+
+            if(!wasFocusSet) {
+                getClientCanvas().dispatchEvent(new FocusEvent(getClientCanvas(), FocusEvent.FOCUS_GAINED, false));
+                wasFocusSet = true;
+            }
             getClientCanvas().dispatchEvent(transform(keyEvent));
         }
     };
@@ -156,16 +162,13 @@ public class AppletWrapper extends Region implements SwapBufferListener, ChangeL
     private final EventHandler<MouseEvent> mouseEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            if(getClientCanvas() == null) return;
+
+            if(!wasFocusSet) {
+                getClientCanvas().dispatchEvent(new FocusEvent(getClientCanvas(), FocusEvent.FOCUS_GAINED, false));
+                wasFocusSet = true;
+            }
             getClientCanvas().dispatchEvent(transform(mouseEvent));
         }
     };
-
-    @Override
-    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
-        if(aBoolean2) {
-            getClientCanvas().dispatchEvent(new FocusEvent(getClientCanvas(), FocusEvent.FOCUS_GAINED, false));
-        } else {
-            getClientCanvas().dispatchEvent(new FocusEvent(getClientCanvas(), FocusEvent.FOCUS_LOST, false));
-        }
-    }
 }
