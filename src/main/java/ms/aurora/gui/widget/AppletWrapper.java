@@ -29,7 +29,6 @@ public class AppletWrapper extends Region implements SwapBufferListener {
     private final ImageView imageView;
     private final WritableImage canvas = new WritableImage(765, 503);
     private final Applet applet;
-    private boolean wasFocusSet;
 
     public AppletWrapper(Applet applet) {
         imageView = new ImageView(canvas);
@@ -46,6 +45,8 @@ public class AppletWrapper extends Region implements SwapBufferListener {
 
         addEventHandler(KeyEvent.ANY, keyEventHandler);
         addEventHandler(MouseEvent.ANY, mouseEventHandler);
+        imageView.addEventHandler(KeyEvent.ANY, keyEventHandler);
+        imageView.addEventHandler(MouseEvent.ANY, mouseEventHandler);
         setWidth(765);
         setHeight(503);
         getChildren().add(imageView);
