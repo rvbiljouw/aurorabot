@@ -25,7 +25,7 @@ import static ms.aurora.core.SessionRepository.get;
  *
  * @author rvbiljouw
  */
-public class AppletWrapper extends Region implements SwapBufferListener {
+public class AppletWrapper extends ImageView implements SwapBufferListener {
     private final WritableImage canvas = new WritableImage(765, 503);
     private final Applet applet;
     private boolean wasFocusSet;
@@ -36,7 +36,6 @@ public class AppletWrapper extends Region implements SwapBufferListener {
     }
 
     private void init() {
-        getChildren().add(new ImageView(canvas));
         Session session = get(applet.hashCode());
         if (session != null) {
             PaintManager pm = session.getPaintManager();
@@ -53,7 +52,9 @@ public class AppletWrapper extends Region implements SwapBufferListener {
         setOnMouseDragged(mouseEventHandler);
         setOnMouseEntered(mouseEventHandler);
         setOnMouseExited(mouseEventHandler);
-        setMinSize(765, 503);
+        setImage(canvas);
+        setFitWidth(765);
+        setFitHeight(503);
         setVisible(true);
     }
 
