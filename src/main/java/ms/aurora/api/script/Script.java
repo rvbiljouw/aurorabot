@@ -7,8 +7,6 @@ import ms.aurora.api.script.task.impl.Randoms;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
-import javax.swing.*;
-
 import static java.lang.Thread.currentThread;
 
 /**
@@ -74,18 +72,9 @@ public abstract class Script extends Context implements Runnable {
             try {
                 switch (getState()) {
                     case START:
-                        System.out.println("derp");
-                        new JFrame("hello").setVisible(true);
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                init();
-                                onStart();
-                                setState(ScriptState.RUNNING);
-                            }
-                        });
-
-                        System.out.println("doo");
+                        init();
+                        onStart();
+                        setState(ScriptState.RUNNING);
                         break;
 
 
@@ -109,14 +98,9 @@ public abstract class Script extends Context implements Runnable {
                         break;
 
                     case STOP:
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                cleanup();
-                                destroy();
-                                onFinish();
-                            }
-                        });
+                        cleanup();
+                        destroy();
+                        onFinish();
                         return;
 
                 }
