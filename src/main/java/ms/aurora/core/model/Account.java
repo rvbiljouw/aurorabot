@@ -79,7 +79,6 @@ public class Account extends AbstractModel {
     private static String encrypt(String input) {
         byte[] crypted = null;
         try {
-            System.out.println(getKey());
             SecretKeySpec key = new SecretKeySpec(pad(getKey()), "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, key);

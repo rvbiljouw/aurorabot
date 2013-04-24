@@ -42,6 +42,7 @@ public class FXUtils {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(Application.mainStage);
         stage.setOnCloseRequest(closeHandler);
+        stage.setOnHidden(closeHandler);
         Scene scene = new Scene(parent);
         scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
