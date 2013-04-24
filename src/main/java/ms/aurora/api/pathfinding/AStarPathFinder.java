@@ -85,7 +85,7 @@ public class AStarPathFinder {
             } else if ((ty + 1) < 104 && (ty + 1) > 0 && !map.solid(tx, ty + 1)) {
                 ty += 1;
             }
-            System.out.println("Our target is solid... wat do");
+            //System.out.println("Our target is solid... wat do");
             return findPath(sx, sy, tx, ty, full);
             //return null;
         }
@@ -102,16 +102,16 @@ public class AStarPathFinder {
         nodes[tx][ty].parent = null;
 
         // while we haven'n't exceeded our max search depth
-        System.out.println("Starting the search.");
+        //System.out.println("Starting the search.");
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
-            System.out.println(maxDepth + " / " + maxSearchDistance + " ( " + open.size() + " open.)");
+            //System.out.println(maxDepth + " / " + maxSearchDistance + " ( " + open.size() + " open.)");
             // pull out the first node in our open list, this is determined to
 
             // be the most likely to be the next step based on our heuristic
 
             Node current = getFirstInOpen();
-            System.out.println(current.x +"," + current.y);
+            //System.out.println(current.x +"," + current.y);
             if (current == nodes[tx][ty]) {
                 break;
             } else if (Point2D.distance(current.x, current.y, tx, ty) < 4) {
