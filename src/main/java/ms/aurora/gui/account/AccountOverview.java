@@ -6,15 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.core.model.Account;
+import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -65,24 +63,7 @@ public class AccountOverview extends AnchorPane {
 
     @FXML
     void onNewAccount(ActionEvent event) {
-        Stage stage = new Stage();
-        stage.setTitle("New account");
-        stage.setWidth(330);
-        stage.setHeight(264);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        NewAccount newDialog = new NewAccount();
-        Scene scene = new Scene(newDialog);
-        scene.getStylesheets().add("soft-responsive.css");
-        stage.setScene(scene);
-        stage.show();
-        stage.centerOnScreen();
-
-        stage.setOnHiding(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                initializeTable();
-            }
-        });
+        FXUtils.showModalDialog("Edit account", new NewAccount(), closeHandler);
     }
 
     @FXML
@@ -104,24 +85,7 @@ public class AccountOverview extends AnchorPane {
     void onEditSelected(ActionEvent event) {
         AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
-            Stage stage = new Stage();
-            stage.setTitle("Edit account");
-            stage.setWidth(330);
-            stage.setHeight(264);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            EditAccount editDialog = new EditAccount(selectedAccount);
-            Scene scene = new Scene(editDialog);
-            scene.getStylesheets().add("soft-responsive.css");
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-
-            stage.setOnHiding(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent windowEvent) {
-                    initializeTable();
-                }
-            });
+            FXUtils.showModalDialog("Edit account", new EditAccount(selectedAccount), closeHandler);
         }
     }
 
@@ -147,4 +111,11 @@ public class AccountOverview extends AnchorPane {
         }
         tblAccounts.setItems(accounts);
     }
+
+    private final EventHandler<WindowEvent> closeHandler = new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent windowEvent) {
+            initializeTable();
+        }
+    };
 }

@@ -5,17 +5,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import ms.aurora.Application;
 import ms.aurora.core.model.Property;
+import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -122,27 +120,15 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     public void show() {
-        stage = new Stage();
-        stage.setTitle(properties.size() == 0 ? "Create Password" : "Unlock database");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(Application.mainStage);
+        String title = properties.size() == 0 ? "Create Password" : "Unlock database";
+        stage = FXUtils.createModalStage(title, this);
+        stage.centerOnScreen();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
                 System.exit(0);
             }
         });
-        Scene scene = new Scene(this, 433, 291);
-        scene.getStylesheets().add("soft-responsive.css");
-        stage.setScene(scene);
-        stage.setOnHidden(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                getCallback().call();
-            }
-        });
-        stage.centerOnScreen();
         stage.show();
-        stage.requestFocus();
     }
 }

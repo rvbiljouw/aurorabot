@@ -9,19 +9,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
+import ms.aurora.gui.util.FXUtils;
 import ms.aurora.gui.widget.AppletWidget;
 
 import java.applet.Applet;
@@ -91,35 +89,6 @@ public class ApplicationGUI extends AnchorPane {
     }
 
     @FXML
-    void onStartScript(ActionEvent evt) {
-        if (getSelectedApplet() != null) {
-            final Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            switch (session.getScriptManager().getState()) {
-                case RUNNING:
-                case PAUSED:
-                    session.getScriptManager().stop();
-                    break;
-
-                case STOPPED:
-                    Stage stage = new Stage();
-                    stage.setTitle("Select a script");
-                    stage.setWidth(810);
-                    stage.setHeight(640);
-                    stage.initModality(Modality.WINDOW_MODAL);
-                    ScriptOverview overview = new ScriptOverview();
-                    Scene scene = new Scene(overview);
-                    scene.getStylesheets().add("soft-responsive.css");
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-
-
-            }
-        }
-        update();
-    }
-
-    @FXML
     void onPauseScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             Session session = SessionRepository.get(getSelectedApplet().hashCode());
@@ -138,30 +107,31 @@ public class ApplicationGUI extends AnchorPane {
 
     @FXML
     void onPluginOverview(ActionEvent evt) {
-        Stage stage = new Stage();
-        stage.setTitle("Plugin overview");
-        stage.setWidth(810);
-        stage.setHeight(640);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        PluginOverview overview = new PluginOverview();
-        Scene scene = new Scene(overview);
-        scene.getStylesheets().add("soft-responsive.css");
-        stage.setScene(scene);
-        stage.show();
+        FXUtils.showModalDialog("Plugin overview", new PluginOverview());
     }
 
     @FXML
     void onAccounts(ActionEvent evt) {
-        Stage stage = new Stage();
-        stage.setTitle("Account overview");
-        stage.setWidth(825);
-        stage.setHeight(530);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        AccountOverview overview = new AccountOverview();
-        Scene scene = new Scene(overview);
-        scene.getStylesheets().add("soft-responsive.css");
-        stage.setScene(scene);
-        stage.show();
+        FXUtils.showModalDialog("Account overview", new AccountOverview());
+    }
+
+    @FXML
+    void onStartScript(ActionEvent evt) {
+        if (getSelectedApplet() != null) {
+            final Session session = SessionRepository.get(getSelectedApplet().hashCode());
+            switch (session.getScriptManager().getState()) {
+                case RUNNING:
+                case PAUSED:
+                    session.getScriptManager().stop();
+                    break;
+
+                case STOPPED:
+                    FXUtils.showModalDialog("Script overview", new ScriptOverview());
+                    break;
+
+
+            }
+        }
     }
 
     @FXML
