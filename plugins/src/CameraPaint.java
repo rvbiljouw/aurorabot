@@ -1,4 +1,3 @@
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Camera;
 import ms.aurora.event.listeners.PaintListener;
 
@@ -16,6 +15,6 @@ public class CameraPaint implements PaintListener {
         int x = 10, y = 40;
         graphics.drawString("Camera Angle: " + Camera.getAngle(), x, y);
         y += graphics.getFontMetrics().getHeight();
-        graphics.drawString("Camera Pitch: " + Context.getClient().getCameraPitch(), x, y);
+        graphics.drawString("Camera Pitch: " + Camera.getPitch(), x, y);
     }
 }
