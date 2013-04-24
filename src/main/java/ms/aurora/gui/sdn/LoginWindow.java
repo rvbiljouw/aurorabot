@@ -1,5 +1,6 @@
 package ms.aurora.gui.sdn;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -80,7 +81,21 @@ public class LoginWindow extends AnchorPane {
         currentStage = new Stage();
         currentStage.setScene(new Scene(this));
         currentStage.centerOnScreen();
+        currentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
         currentStage.showAndWait();
+        currentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
     public void close() {
