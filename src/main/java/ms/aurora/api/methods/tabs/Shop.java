@@ -82,7 +82,7 @@ public class Shop {
      * @return An array of all matching items (can be empty).
      */
     public static ShopItem[] getAll(final Predicate<ShopItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate);
+        return ArrayUtils.filter(getAll(), predicate).toArray(new ShopItem[0]);
     }
 
     /**

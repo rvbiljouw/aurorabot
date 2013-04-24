@@ -30,7 +30,7 @@ public final class Objects {
      * @see Predicate
      */
     public static RSObject get(final Predicate<RSObject>... predicates) {
-        return getClosest(ArrayUtils.filter(getAll(), predicates));
+        return getClosest(ArrayUtils.filter(getAll(), predicates).toArray(new RSObject[0]));
     }
 
     /**
@@ -41,7 +41,7 @@ public final class Objects {
      * @see Predicate
      */
     public static RSObject[] getAll(final Predicate<RSObject>... predicates) {
-        return ArrayUtils.filter(getAll(), predicates);
+        return ArrayUtils.filter(getAll(), predicates).toArray(new RSObject[0]);
     }
 
     /**

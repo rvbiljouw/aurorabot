@@ -101,7 +101,7 @@ public final class Inventory {
      * @return An array of all matching items (can be empty).
      */
     public static InventoryItem[] getAll(final Predicate<InventoryItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate);
+        return ArrayUtils.filter(getAll(), predicate).toArray(new InventoryItem[0]);
     }
 
     /**

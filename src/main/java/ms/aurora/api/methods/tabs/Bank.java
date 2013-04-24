@@ -129,7 +129,7 @@ public final class Bank {
      * @return An array of all matching items (can be empty).
      */
     public static BankItem[] getAll(final Predicate<BankItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate);
+        return ArrayUtils.filter(getAll(), predicate).toArray(new BankItem[0]);
     }
 
     /**

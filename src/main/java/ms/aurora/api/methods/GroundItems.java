@@ -28,7 +28,7 @@ public final class GroundItems {
      * @see Predicate
      */
     public static RSGroundItem get(final Predicate<RSGroundItem>... predicate) {
-        return getClosest(ArrayUtils.filter(getAll(), predicate));
+        return getClosest(ArrayUtils.filter(getAll(), predicate).toArray(new RSGroundItem[0]));
     }
 
     /**
@@ -39,7 +39,7 @@ public final class GroundItems {
      * @see Predicate
      */
     public static RSGroundItem[] getAll(final Predicate<RSGroundItem>... predicate) {
-        return ArrayUtils.filter(getAll(), predicate);
+        return ArrayUtils.filter(getAll(), predicate).toArray(new RSGroundItem[0]);
     }
 
     /**

@@ -73,9 +73,13 @@ public class MasterPasswordDialog extends AnchorPane {
                 masterPass.setName("masterPassword");
                 masterPass.setValue(get());
                 masterPass.save();
-                getScene().getWindow().hide();
+                stage.close();
             } else if (get().equalsIgnoreCase(properties.get(0).getValue())) {
                 stage.close();
+            }
+
+            if(getCallback() != null) {
+                getCallback().call();
             }
         }
         showWarning();

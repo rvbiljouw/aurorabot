@@ -28,7 +28,7 @@ public final class Npcs {
      * @see Predicate
      */
     public static RSNPC get(final Predicate<RSNPC>... predicates) {
-        return getClosest(ArrayUtils.filter(getAll(), predicates));
+        return getClosest(ArrayUtils.filter(getAll(), predicates).toArray(new RSNPC[0]));
     }
 
     /**
@@ -39,7 +39,7 @@ public final class Npcs {
      * @see Predicate
      */
     public static RSNPC[] getAll(final Predicate<RSNPC>... predicates) {
-        return ArrayUtils.filter(getAll(), predicates);
+        return ArrayUtils.filter(getAll(), predicates).toArray(new RSNPC[0]);
     }
 
 

@@ -2,7 +2,7 @@ package ms.aurora.core.model;
 
 import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.dialog.MasterPasswordDialog;
-import org.apache.commons.codec.binary.Base64;
+import ms.aurora.sdn.net.encode.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -79,14 +79,15 @@ public class Account extends AbstractModel {
     private static String encrypt(String input) {
         byte[] crypted = null;
         try {
+            System.out.println(getKey());
             SecretKeySpec key = new SecretKeySpec(pad(getKey()), "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, key);
             crypted = cipher.doFinal(input.getBytes());
         } catch (Exception ignored) {
-            // problem
+            ignored.printStackTrace();
         }
-        return new String(Base64.encodeBase64(crypted));
+        return new String(Base64.encode(crypted));
     }
 
     private static String decrypt(String input) {
@@ -95,7 +96,9 @@ public class Account extends AbstractModel {
             SecretKeySpec key = new SecretKeySpec(pad(getKey()), "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, key);
-            output = cipher.doFinal(Base64.decodeBase64(input.getBytes()));
+           // output = cipher.doFinal(Base64.decodeBase64(input.getBytes()));
+             output = cipher.doFinal(Base64.decode(input));
+
         } catch (Exception ignored) {
             // password is wrong...
         }
