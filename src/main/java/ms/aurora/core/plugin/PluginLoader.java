@@ -1,7 +1,7 @@
 package ms.aurora.core.plugin;
 
-import ms.aurora.Application;
 import ms.aurora.api.plugin.Plugin;
+import ms.aurora.api.plugin.internal.TileUtilities;
 import ms.aurora.core.model.PluginSource;
 import org.apache.log4j.Logger;
 
@@ -9,12 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Rick
@@ -26,10 +25,11 @@ public final class PluginLoader {
     }
 
     public static List<Plugin> getPlugins() {
-        List<Plugin> plugins = newArrayList();
+        List<Plugin> plugins = new ArrayList<Plugin>();
+        plugins.add(new TileUtilities());
         for (PluginSource sourceObj : PluginSource.getAll()) {
             File sourceDirectory = new File(sourceObj.getSource());
-            if(!sourceDirectory.exists()) {
+            if (!sourceDirectory.exists()) {
                 sourceDirectory.mkdirs();
             }
 
