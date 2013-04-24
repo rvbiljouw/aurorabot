@@ -1,6 +1,7 @@
 package ms.aurora.sdn.net.impl;
 
 import javafx.application.Platform;
+import ms.aurora.Application;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.PacketHandler;
 
@@ -32,8 +33,10 @@ public class LoginPacketHandler implements PacketHandler {
                     @Override
                     public void run() {
                         LOGIN_WINDOW.close();
+                        Application.showStage();
                     }
                 });
+
             } else {
                 LOGIN_WINDOW.setMessage(decryptedMessage);
             }

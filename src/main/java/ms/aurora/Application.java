@@ -26,6 +26,7 @@ import static java.awt.Toolkit.getDefaultToolkit;
 public final class Application extends javafx.application.Application {
     public static final Logger logger = Logger.getLogger(Application.class);
     public static LoginWindow LOGIN_WINDOW;
+    private static Stage mainStage;
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -48,15 +49,19 @@ public final class Application extends javafx.application.Application {
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();
         Versioning.checkForUpdates();
-        stage.setTitle("Aurora - Automation Toolkit");
-        stage.setResizable(false);
+        mainStage = stage;
+    }
+
+    public static void showStage() {
+        mainStage.setTitle("Aurora - Automation Toolkit");
+        mainStage.setResizable(false);
         Scene scene = new Scene(new ApplicationGUI(), 765, 590);
         scene.getStylesheets().add("soft-responsive.css");
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+        mainStage.setScene(scene);
+        mainStage.centerOnScreen();
+        mainStage.show();
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
                 System.exit(0);
