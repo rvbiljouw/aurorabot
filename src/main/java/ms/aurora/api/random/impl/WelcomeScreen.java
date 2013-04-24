@@ -24,7 +24,7 @@ public class WelcomeScreen extends Random {
             play.click(true);
             sleepNoException(1000, 3000);
             if(Context.isLoggedIn()) {
-                Camera.setUp();
+                Camera.setPitch(true);
             }
         }
         return 5000;
