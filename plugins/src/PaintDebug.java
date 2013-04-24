@@ -11,7 +11,10 @@ import ms.aurora.api.plugin.PluginManifest;
 public class PaintDebug extends Plugin {
     private NpcPaint npcPaint = new NpcPaint();
     private MousePaint mousePaint = new MousePaint();
-    private ObjectPaint objectPaint = new ObjectPaint();
+    private GroundObjectPaint groundObjectPaint = new GroundObjectPaint();
+    private AnimableObjectPaint animableObjectPaint = new AnimableObjectPaint();
+    private WallDecorationPaint wallDecorationPaint = new WallDecorationPaint();
+    private WallObjectPaint wallObjectPaint = new WallObjectPaint();
     private PositionPaint positionPaint = new PositionPaint();
     private AnimationPaint animationPaint = new AnimationPaint();
     private InventoryPaint inventoryPaint = new InventoryPaint();
@@ -21,7 +24,10 @@ public class PaintDebug extends Plugin {
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;
-    private boolean objectPaintActive = false;
+    private boolean groundObjectPaintActive = false;
+    private boolean animableObjectPaintActive = false;
+    private boolean wallDecorationPaintActive = false;
+    private boolean wallObjectPaintActive = false;
     private boolean positionPaintActive = false;
     private boolean animationPaintActive = false;
     private boolean inventoryPaintActive = false;
@@ -49,19 +55,61 @@ public class PaintDebug extends Plugin {
         });
         paint.getItems().add(npcs);
 
-        CheckMenuItem objects = new CheckMenuItem("Draw Objects");
-        objects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+        CheckMenuItem groundObjects = new CheckMenuItem("Draw Ground Objects");
+        groundObjects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
-                if (!objectPaintActive) {
-                    getSession().getPaintManager().register(objectPaint);
+                if (!groundObjectPaintActive) {
+                    getSession().getPaintManager().register(groundObjectPaint);
                 } else {
-                    getSession().getPaintManager().deregister(objectPaint);
+                    getSession().getPaintManager().deregister(groundObjectPaint);
                 }
-                objectPaintActive = !objectPaintActive;
+                groundObjectPaintActive = !groundObjectPaintActive;
             }
         });
-        paint.getItems().add(objects);
+        paint.getItems().add(groundObjects);
+
+        CheckMenuItem animableObjects = new CheckMenuItem("Draw Animable Objects");
+        animableObjects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if (!animableObjectPaintActive) {
+                    getSession().getPaintManager().register(animableObjectPaint);
+                } else {
+                    getSession().getPaintManager().deregister(animableObjectPaint);
+                }
+                animableObjectPaintActive = !animableObjectPaintActive;
+            }
+        });
+        paint.getItems().add(animableObjects);
+
+        CheckMenuItem wallDecoration = new CheckMenuItem("Draw Wall Decorations");
+        wallDecoration.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if (!wallDecorationPaintActive) {
+                    getSession().getPaintManager().register(wallDecorationPaint);
+                } else {
+                    getSession().getPaintManager().deregister(wallDecorationPaint);
+                }
+                wallDecorationPaintActive = !wallDecorationPaintActive;
+            }
+        });
+        paint.getItems().add(wallDecoration);
+
+        CheckMenuItem wallObjects = new CheckMenuItem("Draw Wall Objects");
+        wallObjects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if (!wallObjectPaintActive) {
+                    getSession().getPaintManager().register(wallObjectPaint);
+                } else {
+                    getSession().getPaintManager().deregister(wallObjectPaint);
+                }
+                wallObjectPaintActive = !wallObjectPaintActive;
+            }
+        });
+        paint.getItems().add(wallObjects);
 
         CheckMenuItem inventory = new CheckMenuItem("Draw Inventory");
         inventory.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
@@ -148,7 +196,7 @@ public class PaintDebug extends Plugin {
         paint.getItems().add(shop);
 
         CheckMenuItem camera = new CheckMenuItem("Draw Camera");
-        shop.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+        camera.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!cameraPaintActive) {
