@@ -16,7 +16,7 @@ import ms.aurora.api.plugin.PluginManifest;
 public class TileUtilities extends Plugin {
     private Menu menu;
     private PathMaker pathMaker = new PathMaker(this);
-    private PathMakerStage pathMakerStage = new PathMakerStage();
+    private PathMakerStage pathMakerStage;
 
     @Override
     public void startup() {
@@ -27,10 +27,11 @@ public class TileUtilities extends Plugin {
         pathMakerCheckbox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
-                if (pathMakerStage.isShowing()) {
+                if (pathMakerStage != null && pathMakerStage.isShowing()) {
                     pathMakerStage.hide();
                     pathMaker.stop();
                 } else {
+                    pathMakerStage = new PathMakerStage();
                     pathMakerStage.show();
                 }
             }
