@@ -3,9 +3,8 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author rvbiljouw
@@ -32,7 +31,7 @@ public class Equipment {
      * @return array of equipped items.
      */
     public static Item[] getItems() {
-        List<Item> items = newArrayList();
+        List<Item> items = new ArrayList<Item>();
         RSWidget widget = getEquipmentWidget();
         int[] ids = widget.getInventoryItems();
         int[] amounts = widget.getInventoryStackSizes();

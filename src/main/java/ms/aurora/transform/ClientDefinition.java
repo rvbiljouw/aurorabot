@@ -4,18 +4,17 @@ import flexjson.JSONDeserializer;
 import ms.aurora.browser.wrapper.Plaintext;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * @author Rick
  */
 public final class ClientDefinition {
     private final Logger logger = Logger.getLogger(ClientDefinition.class);
-    private final List<ClassDefinition> classes = newArrayList();
+    private final List<ClassDefinition> classes = new ArrayList<ClassDefinition>();
     private final Plaintext source;
 
     public ClientDefinition(Plaintext source) {
@@ -48,7 +47,7 @@ public final class ClientDefinition {
     }
 
     private void repairAccessorReturns() {
-        Map<String, String> interfaceClassMap = newHashMap();
+        Map<String, String> interfaceClassMap = new HashMap<String, String>();
         // Obtain all the names first
         for (ClassDefinition clazz : classes) {
             interfaceClassMap.put(clazz.getName(), clazz.getIface());

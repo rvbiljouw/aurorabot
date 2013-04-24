@@ -3,9 +3,9 @@ package ms.aurora.core;
 import org.jboss.logging.Logger;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.Thread.currentThread;
 
 /**
@@ -13,8 +13,8 @@ import static java.lang.Thread.currentThread;
  */
 public final class SessionRepository {
     private static final Logger logger = Logger.getLogger(SessionRepository.class);
-    private static final Map<Integer, Session> sessionMap = newHashMap();
-    private static final Map<ThreadGroup, Session> groupMap = newHashMap();
+    private static final Map<Integer, Session> sessionMap = new HashMap<Integer, Session>();
+    private static final Map<ThreadGroup, Session> groupMap = new HashMap<ThreadGroup, Session>();
 
     private SessionRepository() {
     }

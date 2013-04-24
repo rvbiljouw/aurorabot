@@ -1,6 +1,5 @@
 package ms.aurora.browser.wrapper;
 
-import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -9,6 +8,7 @@ import org.w3c.tidy.Tidy;
 
 import javax.xml.xpath.*;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class HTML {
@@ -24,7 +24,7 @@ public final class HTML {
     }
 
     public List<Node> searchXPath(String expression) {
-        List<Node> matchingElements = Lists.newArrayList();
+        List<Node> matchingElements = new ArrayList<Node>();
         try {
             XPathExpression expressionObj = getExpression(expression);
             NodeList resultingNodeList = (NodeList) expressionObj.evaluate(dom,

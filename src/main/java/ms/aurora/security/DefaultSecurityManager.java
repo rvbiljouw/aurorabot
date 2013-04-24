@@ -12,15 +12,14 @@ import ms.aurora.gui.script.ScriptOverview;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
+import java.util.HashMap;
 import java.util.Map;
-
-import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * @author rvbiljouw
  */
 public class DefaultSecurityManager extends SecurityManager {
-    public static final Map<String, Class<?>[]> packages = newHashMap();
+    public static final Map<String, Class<?>[]> packages = new HashMap<String, Class<?>[]>();
 
     public void checkConnect(String host, int port, Object context) {
     }

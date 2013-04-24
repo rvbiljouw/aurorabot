@@ -13,18 +13,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * @author Rick
  */
 public final class TransformingClassLoader extends ClassLoader {
     private final Logger logger = Logger.getLogger(TransformingClassLoader.class);
-    private final Map<String, byte[]> classMap = newHashMap();
+    private final Map<String, byte[]> classMap = new HashMap<String, byte[]>();
     private final ClientDefinition clientDef;
 
     public TransformingClassLoader(ClientDefinition clientDef, JarFile file) throws IOException {

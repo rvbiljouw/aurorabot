@@ -1,12 +1,12 @@
 package ms.aurora.browser.impl;
 
-import com.google.common.collect.Maps;
 import ms.aurora.browser.Request;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class GetRequest implements Request {
-    private Map<String, String> requestParams = Maps.newHashMap();
+    private Map<String, String> requestParams = new HashMap<String, String>();
     private boolean overrideContext;
     private String url;
     private String page;

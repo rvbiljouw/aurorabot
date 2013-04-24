@@ -1,11 +1,11 @@
 package ms.aurora.core.script;
 
-import com.google.common.collect.Maps;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
 import ms.aurora.gui.ApplicationGUI;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
 
 public final class ScriptManager {
     private final ExecutorService executorService = Executors.newFixedThreadPool(16);
-    private final Map<Script, Future<?>> futures = Maps.newHashMap();
+    private final Map<Script, Future<?>> futures = new HashMap<Script, Future<?>>();
     private final Session session;
     private State state = State.STOPPED;
 

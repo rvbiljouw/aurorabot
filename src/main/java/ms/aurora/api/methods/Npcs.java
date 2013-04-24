@@ -1,18 +1,15 @@
 package ms.aurora.api.methods;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import ms.aurora.api.Context;
+import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.rt3.Npc;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Collections2.transform;
-import static com.google.common.collect.Lists.newArrayList;
+import static ms.aurora.api.Context.getClient;
 
 /**
  * NPC related functions
@@ -31,16 +28,7 @@ public final class Npcs {
      * @see Predicate
      */
     public static RSNPC get(final Predicate<RSNPC>... predicates) {
-        return getClosest(Collections2.filter(_getAll(),
-                new com.google.common.base.Predicate<RSNPC>() {
-                    @Override
-                    public boolean apply(RSNPC object) {
-                        for (Predicate<RSNPC> predicate : predicates) {
-                            if (!predicate.apply(object)) return false;
-                        }
-                        return true;
-                    }
-                }).toArray(new RSNPC[0]));
+        return getClosest(ArrayUtils.filter(getAll(), predicates));
     }
 
     /**
@@ -51,16 +39,7 @@ public final class Npcs {
      * @see Predicate
      */
     public static RSNPC[] getAll(final Predicate<RSNPC>... predicates) {
-        return Collections2.filter(_getAll(),
-                new com.google.common.base.Predicate<RSNPC>() {
-                    @Override
-                    public boolean apply(RSNPC object) {
-                        for (Predicate<RSNPC> pred : predicates) {
-                            if (!pred.apply(object)) return false;
-                        }
-                        return true;
-                    }
-                }).toArray(new RSNPC[0]);
+        return ArrayUtils.filter(getAll(), predicates);
     }
 
 
@@ -70,7 +49,13 @@ public final class Npcs {
      * @return a list of all the {@link RSNPC} that aren't null which are loaded into the client
      */
     public static RSNPC[] getAll() {
-        return _getAll().toArray(new RSNPC[0]);
+        List<RSNPC> validNPCs = new ArrayList<RSNPC>();
+        for(Npc npc : getClient().getAllNpcs()) {
+            if(npc != null) {
+                validNPCs.add(new RSNPC(Context.get(), npc));
+            }
+        }
+        return validNPCs.toArray(new RSNPC[validNPCs.size()]);
     }
 
     /**
@@ -91,27 +76,4 @@ public final class Npcs {
         }
         return closest;
     }
-
-    /**
-     * Gets a collection of all NPCs in the region
-     *
-     * @return collection of NPCs
-     */
-    private static Collection<RSNPC> _getAll() {
-        return filter(transform(newArrayList(Context.get().getClient()
-                .getAllNpcs()), transform), Predicates.notNull());
-    }
-
-    /**
-     * Transforms an unwrapped NPC into a wrapped one.
-     */
-    private static final Function<Npc, RSNPC> transform = new Function<Npc, RSNPC>() {
-        @Override
-        public RSNPC apply(Npc npc) {
-            if (npc != null) {
-                return new RSNPC(Context.get(), npc);
-            }
-            return null;
-        }
-    };
 }

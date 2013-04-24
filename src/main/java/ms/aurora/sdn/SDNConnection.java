@@ -11,9 +11,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.log4j.Logger.getLogger;
 
 /**
@@ -22,7 +22,7 @@ import static org.apache.log4j.Logger.getLogger;
 public class SDNConnection implements Runnable {
     private static final SDNConnection instance = new SDNConnection();
     private static Logger logger = getLogger(SDNConnection.class);
-    private List<PacketHandler> packetHandlers = newArrayList();
+    private List<PacketHandler> packetHandlers = new ArrayList<PacketHandler>();
     private DataInputStream dis;
     private DataOutputStream dos;
     private Socket socket;
@@ -58,7 +58,7 @@ public class SDNConnection implements Runnable {
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
                     IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
-                    System.out.println("Received " + packet.getOpcode());
+                    logger.info("Received " + packet.getOpcode());
 
                     for (PacketHandler handler : packetHandlers) {
                         if (handler.getOpcode() == packet.getOpcode()) {

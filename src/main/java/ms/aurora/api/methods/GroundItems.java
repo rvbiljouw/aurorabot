@@ -1,7 +1,7 @@
 package ms.aurora.api.methods;
 
-import com.google.common.collect.Collections2;
 import ms.aurora.api.Context;
+import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSDeque;
 import ms.aurora.api.wrappers.RSGroundItem;
@@ -9,9 +9,8 @@ import ms.aurora.rt3.Client;
 import ms.aurora.rt3.Deque;
 import ms.aurora.rt3.Item;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Ground item related functions
@@ -29,17 +28,7 @@ public final class GroundItems {
      * @see Predicate
      */
     public static RSGroundItem get(final Predicate<RSGroundItem>... predicate) {
-        return getClosest(Collections2.filter(_getAll(),
-                new com.google.common.base.Predicate<RSGroundItem>() {
-                    @Override
-                    public boolean apply(RSGroundItem item) {
-                        for(Predicate p : predicate) {
-                            if(!p.apply(item)) return false;
-                        }
-                        return true;
-                    }
-                }
-        ).toArray(new RSGroundItem[]{}));
+        return getClosest(ArrayUtils.filter(getAll(), predicate));
     }
 
     /**
@@ -50,17 +39,7 @@ public final class GroundItems {
      * @see Predicate
      */
     public static RSGroundItem[] getAll(final Predicate<RSGroundItem>... predicate) {
-        return Collections2.filter(_getAll(),
-                new com.google.common.base.Predicate<RSGroundItem>() {
-                    @Override
-                    public boolean apply(RSGroundItem item) {
-                        for(Predicate p : predicate) {
-                            if(!p.apply(item)) return false;
-                        }
-                        return true;
-                    }
-                }
-        ).toArray(new RSGroundItem[]{});
+        return ArrayUtils.filter(getAll(), predicate);
     }
 
     /**
@@ -97,7 +76,7 @@ public final class GroundItems {
      * @return list of ground items
      */
     private static List<RSGroundItem> _getAll() {
-        List<RSGroundItem> items = newArrayList();
+        List<RSGroundItem> items = new ArrayList<RSGroundItem>();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
                 items.addAll(getItemsAt(x, y));
@@ -114,10 +93,10 @@ public final class GroundItems {
      * @return list of items on tile
      */
     private static List<RSGroundItem> getItemsAt(int x, int y) {
-        Client client = Context.get().getClient();
+        Client client = Context.getClient();
         int z = client.getPlane();
         Deque _deque = client.getGroundItems()[z][x][y];
-        List<RSGroundItem> items = newArrayList();
+        List<RSGroundItem> items = new ArrayList<RSGroundItem>();
         if (_deque != null) {
             RSDeque deque = new RSDeque(_deque);
             while (deque.hasNext()) {
