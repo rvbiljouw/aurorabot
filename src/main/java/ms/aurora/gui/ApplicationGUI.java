@@ -18,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
-import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
@@ -207,7 +206,6 @@ public class ApplicationGUI extends AnchorPane {
         btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
         btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
         btnNew.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/add.png"))));
-        Account.init();
     }
 
     public static Applet getSelectedApplet() {
