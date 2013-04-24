@@ -56,6 +56,15 @@ public final class RSTile {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof RSTile) {
+            RSTile other = (RSTile) obj;
+            return other.getX() == getX() && other.getY() == getY();
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "[x=" + x + ",y=" + y + ",z=" + z + ']';
     }
