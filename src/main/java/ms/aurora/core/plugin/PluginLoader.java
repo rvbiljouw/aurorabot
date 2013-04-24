@@ -1,6 +1,7 @@
 package ms.aurora.core.plugin;
 
 import ms.aurora.api.plugin.Plugin;
+import ms.aurora.api.plugin.internal.PaintDebug;
 import ms.aurora.api.plugin.internal.TileUtilities;
 import ms.aurora.core.model.PluginSource;
 import org.apache.log4j.Logger;
@@ -27,6 +28,7 @@ public final class PluginLoader {
     public static List<Plugin> getPlugins() {
         List<Plugin> plugins = new ArrayList<Plugin>();
         plugins.add(new TileUtilities());
+        plugins.add(new PaintDebug());
         for (PluginSource sourceObj : PluginSource.getAll()) {
             File sourceDirectory = new File(sourceObj.getSource());
             if (!sourceDirectory.exists()) {
