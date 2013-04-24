@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ms.aurora.Application;
 import ms.aurora.core.model.Property;
 
 import java.io.IOException;
@@ -25,6 +26,8 @@ import java.util.ResourceBundle;
  * @author tobiewarburton
  */
 public class MasterPasswordDialog extends AnchorPane {
+
+    private Stage stage;
 
     @FXML
     private ResourceBundle resources;
@@ -73,10 +76,8 @@ public class MasterPasswordDialog extends AnchorPane {
                 masterPass.setValue(get());
                 masterPass.save();
                 getScene().getWindow().hide();
-            } else {
-                if (get().equalsIgnoreCase(properties.get(0).getValue())) {
-                    getScene().getWindow().hide();
-                }
+            } else if (get().equalsIgnoreCase(properties.get(0).getValue())) {
+                stage.close();
             }
         }
         showWarning();
@@ -113,7 +114,7 @@ public class MasterPasswordDialog extends AnchorPane {
     public boolean authenticated() {
         return txtPassword.getText().length() != 0
                 && txtVerifyPassword.getText().length() != 0
-                && txtPassword.getText().equalsIgnoreCase(txtVerifyPassword.getText()) ;
+                && txtPassword.getText().equalsIgnoreCase(txtVerifyPassword.getText());
     }
 
     public String get() {
@@ -121,19 +122,17 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     public void show() {
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setTitle(properties.size() == 0 ? "Create Password" : "Unlock database");
-        stage.setWidth(433);
-        stage.setHeight(291);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(null);
+        stage.initOwner(Application.mainStage);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
                 System.exit(0);
             }
         });
-        Scene scene = new Scene(this);
+        Scene scene = new Scene(this, 433, 291);
         scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
         stage.setOnHidden(new EventHandler<WindowEvent>() {
@@ -143,7 +142,7 @@ public class MasterPasswordDialog extends AnchorPane {
             }
         });
         stage.centerOnScreen();
-        stage.showAndWait();
+        stage.show();
         stage.requestFocus();
     }
 }

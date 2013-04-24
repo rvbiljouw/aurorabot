@@ -24,7 +24,7 @@ import static java.awt.Toolkit.getDefaultToolkit;
 public final class Application extends javafx.application.Application {
     public static final Logger logger = Logger.getLogger(Application.class);
     public static LoginWindow LOGIN_WINDOW;
-    private static Stage mainStage;
+    public static Stage mainStage;
 
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
@@ -47,8 +47,6 @@ public final class Application extends javafx.application.Application {
     }
 
     public static void showStage() {
-        Account.init();
-
         mainStage.setTitle("Aurora - Automation Toolkit");
         mainStage.setResizable(false);
         Scene scene = new Scene(new ApplicationGUI(), 765, 590);
@@ -56,6 +54,7 @@ public final class Application extends javafx.application.Application {
         mainStage.setScene(scene);
         mainStage.centerOnScreen();
         mainStage.show();
+        Account.init();
 
         mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
