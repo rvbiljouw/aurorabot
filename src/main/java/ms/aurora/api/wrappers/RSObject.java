@@ -7,9 +7,7 @@ import ms.aurora.api.methods.Walking;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.input.VirtualMouse;
-import ms.aurora.rt3.GameObject;
-import ms.aurora.rt3.GroundDecoration;
-import ms.aurora.rt3.Model;
+import ms.aurora.rt3.*;
 
 import java.awt.*;
 
@@ -19,14 +17,27 @@ import java.awt.*;
 public final class RSObject implements Locatable, Interactable {
     private final Context ctx;
     private final GameObject wrapped;
+
+    private ObjectType objectType = ObjectType.NULL;
     private int localX;
     private int localY;
+
+    public static enum ObjectType { GROUND_DECORATION, WALL_DECORATION, WALL_OBJECT, ANIMABLE, NULL }
 
     public RSObject(Context ctx, GameObject wrapped, int localX, int localY) {
         this.ctx = ctx;
         this.wrapped = wrapped;
         this.localX = localX;
         this.localY = localY;
+        if (wrapped instanceof GroundDecoration) {
+            objectType = ObjectType.GROUND_DECORATION;
+        } else if (wrapped instanceof WallDecoration) {
+            objectType = ObjectType.WALL_DECORATION;
+        } else if (wrapped instanceof WallObject) {
+            objectType = ObjectType.WALL_OBJECT;
+        } else if (wrapped instanceof AnimableObject) {
+            objectType = ObjectType.ANIMABLE;
+        }
     }
 
     public final int getId() {
@@ -47,6 +58,10 @@ public final class RSObject implements Locatable, Interactable {
 
     public final int getY() {
         return (getLocalY() >> 7) + ctx.getClient().getBaseY();
+    }
+
+    public ObjectType getObjectType() {
+        return objectType;
     }
 
     public final Point getScreenLocation() {
@@ -131,8 +146,7 @@ public final class RSObject implements Locatable, Interactable {
 
     public RSModel getModel() {
         if (wrapped.getModel() != null && wrapped.getModel() instanceof Model) {
-            return new RSModel(ctx, (Model) wrapped.getModel(), getLocalX(), getLocalY(),
-                    wrapped instanceof GroundDecoration ? 0 : wrapped.getOrientation());
+            return new RSModel(ctx, (Model) wrapped.getModel(), getLocalX(), getLocalY(), 0);
         }
         return null;
     }
@@ -143,5 +157,10 @@ public final class RSObject implements Locatable, Interactable {
             if (object.getId() == getId()) return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " | " + (wrapped instanceof GroundDecoration ? 0 : wrapped.getOrientation());
     }
 }

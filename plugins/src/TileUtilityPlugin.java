@@ -13,7 +13,7 @@ import javafx.scene.control.Menu;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 
-@PluginManifest(name = "Tile Utilities", author = "Cov", version = 1.0)
+@PluginManifest(name = "Tile Utilities", author = "Steam", version = 1.0)
 public class TileUtilityPlugin extends Plugin {
 
     private PathMaker pathMakerUI = new PathMaker(this);

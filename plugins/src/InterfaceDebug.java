@@ -7,7 +7,7 @@ import ms.aurora.api.plugin.PluginManifest;
 /**
  * @author tobiewarburton
  */
-@PluginManifest(name = "Interface Debug", author = "tobiewarburton", version = 1.0)
+@PluginManifest(name = "Interface Debug", author = "vim", version = 1.0)
 public class InterfaceDebug extends Plugin {
     private InterfaceExplorer explorer = new InterfaceExplorer(this);
     private boolean interfacePaintActive = false;

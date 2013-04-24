@@ -7,7 +7,7 @@ import ms.aurora.api.plugin.PluginManifest;
 /**
  * @author rvbiljouw
  */
-@PluginManifest(name = "Paint Debug", author = "rvbiljouw", version = 1.0)
+@PluginManifest(name = "Paint Debug", author = "_override", version = 1.0)
 public class PaintDebug extends Plugin {
     private NpcPaint npcPaint = new NpcPaint();
     private MousePaint mousePaint = new MousePaint();
@@ -17,6 +17,7 @@ public class PaintDebug extends Plugin {
     private InventoryPaint inventoryPaint = new InventoryPaint();
     private MinimapPaint minimapPaint = new MinimapPaint();
     private ShopPaint shopPaint = new ShopPaint();
+    private CameraPaint cameraPaint = new CameraPaint();
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;
@@ -26,6 +27,7 @@ public class PaintDebug extends Plugin {
     private boolean inventoryPaintActive = false;
     private boolean minimapPaintActive = false;
     private boolean shopPaintActive = false;
+    private boolean cameraPaintActive = false;
 
 
     private Menu paint;
@@ -144,6 +146,21 @@ public class PaintDebug extends Plugin {
             }
         });
         paint.getItems().add(shop);
+
+        CheckMenuItem camera = new CheckMenuItem("Draw Camera");
+        shop.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if (!cameraPaintActive) {
+                    getSession().getPaintManager().register(cameraPaint);
+                } else {
+                    getSession().getPaintManager().deregister(cameraPaint);
+                }
+                cameraPaintActive = !cameraPaintActive;
+            }
+        });
+        paint.getItems().add(camera);
+
         getSession().registerMenu(paint);
     }
 

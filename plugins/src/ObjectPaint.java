@@ -16,7 +16,27 @@ public class ObjectPaint implements PaintListener {
         RSObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);
         for (RSObject object : objects) {
             Point loc = object.getScreenLocation();
-            graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
+            switch (object.getObjectType()) {
+
+                case GROUND_DECORATION:
+                    graphics.setColor(Color.GREEN);
+                    break;
+                case WALL_DECORATION:
+                    graphics.setColor(Color.BLUE);
+                    break;
+                case WALL_OBJECT:
+                    graphics.setColor(Color.RED);
+                    break;
+                case ANIMABLE:
+                    graphics.setColor(Color.YELLOW);
+                    break;
+                case NULL:
+                    break;
+            }
+            graphics.drawString(object.toString(), loc.x, loc.y);
+            try {
+                graphics.drawPolygon(object.getModel().getHull());
+            } catch (Exception ignored) {}
         }
     }
 

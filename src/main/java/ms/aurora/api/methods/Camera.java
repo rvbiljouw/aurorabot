@@ -19,10 +19,19 @@ public final class Camera {
      * @return camera angle
      */
     public static int getAngle() {
-        double mapAngle = Context.get().getClient().getCameraYaw();
+        double mapAngle = Context.getClient().getCameraYaw();
         mapAngle /= 2048;
         mapAngle *= 360;
         return (int) mapAngle;
+    }
+
+    /**
+     * Retrieves the current camera pitch
+     *
+     * @return camera pitch
+     */
+    public static int getPitch() {
+        return (int) ((Context.getClient().getCameraPitch() - 1024) / 20.48);
     }
 
     /**
@@ -89,11 +98,38 @@ public final class Camera {
     }
 
     /**
-     * Sets the camera all the way up.
+     * Moves the camera view to the extreme up or down.
+     *
+     * @param up true move camera up, false down.
      */
-    public static void setUp() {
-        VirtualKeyboard.holdKey(KeyEvent.VK_UP);
+    public static void setPitch(boolean up) {
+        int direction = up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN;
+        VirtualKeyboard.holdKey(direction);
         sleepNoException(1200);
-        VirtualKeyboard.releaseKey(KeyEvent.VK_UP);
+        VirtualKeyboard.releaseKey(direction);
+    }
+
+    /**
+     * Sets the camera to the specified value.
+     *
+     * @param pitch pitch of the height.
+     */
+    public static void setPitch(int pitch) {
+        int direction = getPitch() > pitch ? KeyEvent.VK_DOWN : KeyEvent.VK_UP;
+        VirtualKeyboard.holdKey(direction);
+        int timeWaited = 0;
+        int turnTime = 0;
+        while ((getPitch() > pitch + 5 || getAngle() < pitch - 5) && turnTime < 6000) {
+            sleepNoException(10);
+            turnTime += 10;
+            timeWaited += 10;
+            if (timeWaited > 500) {
+                int time = timeWaited - 500;
+                if (time == 0 || time % 40 == 0) {
+                    VirtualKeyboard.holdKey(direction);
+                }
+            }
+        }
+        VirtualKeyboard.releaseKey(direction);
     }
 }
