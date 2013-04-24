@@ -144,7 +144,6 @@ public class DefaultSecurityManager extends SecurityManager {
     }
 
     public void checkSecurityAccess(String target) {
-        System.out.println(target);
     }
 
     protected String getCallerClassName(int callStackDepth) {
