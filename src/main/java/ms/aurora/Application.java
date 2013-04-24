@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -46,13 +47,15 @@ public final class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        mainStage = stage;
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();
         Versioning.checkForUpdates();
-        mainStage = stage;
     }
 
     public static void showStage() {
+        Account.init();
+
         mainStage.setTitle("Aurora - Automation Toolkit");
         mainStage.setResizable(false);
         Scene scene = new Scene(new ApplicationGUI(), 765, 590);
