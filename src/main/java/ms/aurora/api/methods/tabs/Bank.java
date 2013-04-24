@@ -28,7 +28,7 @@ public final class Bank {
     private static final Logger logger = Logger.getLogger(Bank.class);
     private static final int BANK_ID = 12;
     private static final int BANK_PANE_ID = 89;
-    private static final int BANK_CLOSE_ID = 102;
+    private static final int BANK_CLOSE_ID = 104;
 
     private static final int[] BANK_NPCS = {56, 56, 494, 495, 496};
     private static final int[] BANK_OBJECTS = {2213, 25808};
