@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <Button fx:id="btnCopy" layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#onCopy" text="Copy to Clipboard" />
+    <ToggleButton fx:id="tglStartStop" layoutX="232.0" layoutY="365.0" mnemonicParsing="false" onAction="#onToggle" text="Start" />
+    <ListView fx:id="listTiles" editable="false" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="343.0" prefWidth="273.0" />
+  </children>
+</fx:root>
