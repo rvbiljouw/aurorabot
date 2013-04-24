@@ -65,6 +65,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
      * {@inheritDoc}
      */
     public void onSwapBuffer(BufferedImage image) {
+        // Expensive operations hoor doorr
         toFXImage(image, canvas);
     }
 
