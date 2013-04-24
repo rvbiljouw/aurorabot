@@ -3,16 +3,16 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.input.VirtualMouse;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -101,14 +101,7 @@ public final class Inventory {
      * @return An array of all matching items (can be empty).
      */
     public static InventoryItem[] getAll(final Predicate<InventoryItem> predicate) {
-        return filter(newArrayList(getAll()),
-                new com.google.common.base.Predicate<InventoryItem>() {
-                    @Override
-                    public boolean apply(InventoryItem inventoryItem) {
-                        return predicate.apply(inventoryItem);
-                    }
-                }
-        ).toArray(new InventoryItem[0]);
+        return ArrayUtils.filter(getAll(), predicate);
     }
 
     /**
@@ -118,7 +111,7 @@ public final class Inventory {
      * @return list of items found, which can be empty.
      */
     public static InventoryItem[] getAll(int id) {
-        List<InventoryItem> inventoryItems = newArrayList();
+        List<InventoryItem> inventoryItems = new ArrayList<InventoryItem>();
         for (InventoryItem inventoryItem : getAll()) {
             if (inventoryItem.getId() == id) {
                 inventoryItems.add(inventoryItem);
@@ -134,7 +127,7 @@ public final class Inventory {
      * @return list of items found, which can be empty.
      */
     public static InventoryItem[] getAll(int... ids) {
-        List<InventoryItem> inventoryItems = newArrayList();
+        List<InventoryItem> inventoryItems = new ArrayList<InventoryItem>();
         for (InventoryItem inventoryItem : getAll()) {
             for (int id : ids) {
                 if (inventoryItem.getId() == id) {
@@ -154,7 +147,7 @@ public final class Inventory {
         RSWidget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
-        List<InventoryItem> wrappers = newArrayList();
+        List<InventoryItem> wrappers = new ArrayList<InventoryItem>();
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {

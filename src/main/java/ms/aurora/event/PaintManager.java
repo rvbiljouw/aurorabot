@@ -6,16 +6,16 @@ import ms.aurora.event.listeners.SwapBufferListener;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Rick
  */
 public final class PaintManager implements PaintListener {
     private static final Logger logger = Logger.getLogger(PaintManager.class);
-    private final List<PaintListener> listeners = newArrayList();
+    private final List<PaintListener> listeners = new ArrayList<PaintListener>();
     private SwapBufferListener swapBufferListener;
     private final Session session;
 

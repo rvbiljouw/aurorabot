@@ -1,18 +1,12 @@
 package ms.aurora.api.methods.tabs;
 
-import com.google.common.base.Function;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multiset;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.transform;
 
 /**
  * @author tobiewarburton
@@ -51,36 +45,47 @@ public class Tabs {
      * @return the current selected tab
      */
     public static Tab getCurrent() {
-        final Map<RSWidget, Integer> widgetTextureMap = Maps.toMap(getTabWidgets(),
-                new Function<RSWidget, Integer>() {
-                    @Override
-                    public Integer apply(RSWidget input) {
-                        return input.getTextureId();
-                    }
-                }
-        );
-        final Map<Integer, Integer> textureFrequencyMap = Maps.toMap(widgetTextureMap.values(),
-                new Function<Integer, Integer>() {
-                    @Override
-                    public Integer apply(Integer input) {
-                        return Collections.frequency(widgetTextureMap.values(), input);
-                    }
-                }
-        );
-        assert textureFrequencyMap.size() == 2 : "textures on inventory is fucked";
-        for (Map.Entry<RSWidget, Integer> widgetTexture : widgetTextureMap.entrySet()) {
-            int frequency = textureFrequencyMap.get(widgetTexture.getValue());
-            if (frequency == 1) {
-                int id = widgetTexture.getKey().getId();
-                return Tab.byId(id);
+        return obtainOpen(getTabWidgets());
+    }
+
+    private static Tab obtainOpen(List<RSWidget> widgetList) {
+        RSWidget[] widgets = widgetList.toArray(new RSWidget[widgetList.size()]);
+        int targetTextureID = getOpenTextureID(widgets);
+        for (RSWidget widget : widgets) {
+            if (widget.getTextureId() == targetTextureID) {
+                return Tab.byId(widget.getId());
             }
         }
-        // the following should NEVER happen while logged in, if it does we have a problem
+        return null;
+    }
+
+    private static int getOpenTextureID(RSWidget[] widgets) {
+        int[] textureIDs = new int[widgets.length];
+        Map<Integer, Integer> frequency = new HashMap<Integer, Integer>();
+        for (int i = 0; i < widgets.length; i++) {
+            textureIDs[i] = widgets[i].getTextureId();
+            if (frequency.containsKey(textureIDs[i])) {
+                int freq = frequency.get(textureIDs[i]);
+                frequency.remove(textureIDs[i]);
+                frequency.put(textureIDs[i], freq + 1);
+            } else {
+                frequency.put(textureIDs[i], 1);
+            }
+        }
+        return extractSingleton(frequency);
+    }
+
+    private static <T> T extractSingleton(Map<T, Integer> items) {
+        for (Map.Entry<T, Integer> entries : items.entrySet()) {
+            if (entries.getValue() == 1) {
+                return entries.getKey();
+            }
+        }
         return null;
     }
 
     private static List<RSWidget> getTabWidgets() {
-        List<RSWidget> tabs = newArrayList();
+        List<RSWidget> tabs = new ArrayList<RSWidget>();
         for (Tab tab : Tab.values()) {
             tabs.add(Widgets.getWidget(548, tab.getId()));
         }

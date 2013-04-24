@@ -2,6 +2,7 @@ package ms.aurora.api.methods.filters;
 
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSObject;
+import ms.aurora.api.wrappers.RSTile;
 
 /**
  * @author tobiewarburton
@@ -44,6 +45,21 @@ public final class ObjectFilters {
                     }
                 }
                 return false;
+            }
+        };
+    }
+
+    /**
+     * a predictae which tests the location of the {@link ms.aurora.api.wrappers.RSObject} matches specified.
+     *
+     * @param location location that the {@link ms.aurora.api.wrappers.RSObject} should be on.
+     * @return true if the location matches the {@link ms.aurora.api.wrappers.RSObject} location.
+     */
+    public static Predicate<RSObject> LOCATION(final RSTile location) {
+        return new Predicate<RSObject>() {
+            @Override
+            public boolean apply(RSObject object) {
+                return object.getLocation().equals(location);
             }
         };
     }

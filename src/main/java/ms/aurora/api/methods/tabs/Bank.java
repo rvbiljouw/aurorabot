@@ -7,6 +7,7 @@ import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
@@ -15,10 +16,9 @@ import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -129,13 +129,7 @@ public final class Bank {
      * @return An array of all matching items (can be empty).
      */
     public static BankItem[] getAll(final Predicate<BankItem> predicate) {
-        return filter(newArrayList(getAll()),
-                new com.google.common.base.Predicate<BankItem>() {
-                    @Override
-                    public boolean apply(BankItem item) {
-                        return predicate.apply(item);
-                    }
-                }).toArray(new BankItem[0]);
+        return ArrayUtils.filter(getAll(), predicate);
     }
 
     /**
@@ -145,7 +139,7 @@ public final class Bank {
      * @return list of items found, which can be empty.
      */
     public static BankItem[] getAll(int id) {
-        List<BankItem> items = newArrayList();
+        List<BankItem> items = new ArrayList<BankItem>();
         for (BankItem item : getAll()) {
             if (item.getId() == id) {
                 items.add(item);
@@ -163,7 +157,7 @@ public final class Bank {
         RSWidget bank = getBankWidget();
         int[] items = bank.getInventoryItems();
         int[] stacks = bank.getInventoryStackSizes();
-        List<BankItem> wrappers = newArrayList();
+        List<BankItem> wrappers = new ArrayList<BankItem>();
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
                 BankItem item = new BankItem(bank, items[i] - 1, stacks[i]);

@@ -10,8 +10,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 /**
  * Widget related functions
  *
@@ -29,7 +27,7 @@ public final class Widgets {
         Widget[][] cache = getClient().getWidgetCache();
         if (cache == null) return new RSWidgetGroup[0];
 
-        List<RSWidgetGroup> groups = newArrayList();
+        List<RSWidgetGroup> groups = new ArrayList<RSWidgetGroup>();
         for (int i = 0; i < cache.length; i++) {
             RSWidgetGroup group = getWidgets(i);
             if (group != null) {

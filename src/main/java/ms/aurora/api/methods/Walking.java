@@ -1,5 +1,6 @@
 package ms.aurora.api.methods;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.StatePredicate;
@@ -25,6 +26,15 @@ public final class Walking {
 
     public static final int FORWARDS = 0;
     public static final int BACKWARDS = 1;
+
+    private static final StatePredicate WALKING(final RSTile tile, final int distance) {
+        return new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > distance;
+            }
+        };
+    }
 
     /**
      * Reverses an array of tiles
@@ -54,10 +64,7 @@ public final class Walking {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
             VirtualMouse.clickMouse(true);
             Utilities.sleepNoException(700);
-            while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
-                    && !Thread.currentThread().isInterrupted()) {
-                Utilities.sleepNoException(400);
-            }
+            Utilities.sleepWhile(WALKING(tile, 5));
             success = true;
         }
         VirtualKeyboard.releaseControl();
@@ -75,10 +82,7 @@ public final class Walking {
             VirtualMouse.moveMouse(screenPoint.x, screenPoint.y);
             VirtualMouse.clickMouse(true);
             Utilities.sleepNoException(700);
-            while (Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > 5
-                    && !Thread.currentThread().isInterrupted()) {
-                Utilities.sleepNoException(400);
-            }
+            Utilities.sleepWhile(WALKING(tile, 5));
         }
     }
 
@@ -173,14 +177,9 @@ public final class Walking {
      * @param direction direction in which to walk.
      */
     public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
-        while (!walkUntil.apply()) {
+        while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
             step(path, direction);
-            sleepUntil(new StatePredicate() {
-                @Override
-                public boolean apply() {
-                    return Players.getLocal().isMoving();
-                }
-            }, 2000);
+            Utilities.sleepNoException(100);
         }
     }
 

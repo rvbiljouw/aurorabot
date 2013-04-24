@@ -6,14 +6,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.core.model.Account;
+import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -76,15 +75,7 @@ public class AccountSelectDialog extends AnchorPane {
     }
 
     public void show() {
-        Stage stage = new Stage();
-        stage.setTitle("Select Account");
-        stage.setWidth(415);
-        stage.setHeight(215);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(null);
-        Scene scene = new Scene(this);
-        scene.getStylesheets().add("soft-responsive.css");
-        stage.setScene(scene);
+        Stage stage = FXUtils.createModalStage("Account selection", this);
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {

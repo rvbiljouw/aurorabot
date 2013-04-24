@@ -8,9 +8,8 @@ import ms.aurora.browser.wrapper.Plaintext;
 import org.apache.log4j.Logger;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
-
-import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * ResponseHandler for the client configuration page.
@@ -24,7 +23,7 @@ public final class ClientConfig implements ResponseHandler {
     private String archiveName;
     private String mainClass;
 
-    private Map<String, String> parameters = newHashMap();
+    private Map<String, String> parameters = new HashMap<String, String>();
 
     public ClientConfig(Browser browser) {
         this.browser = browser;

@@ -3,13 +3,10 @@ package ms.aurora.input;
 import ms.aurora.api.Context;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
-import ms.aurora.event.listeners.SwapBufferListener;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static ms.aurora.api.Context.get;
 
 /**

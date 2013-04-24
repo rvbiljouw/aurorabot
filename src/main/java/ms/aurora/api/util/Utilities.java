@@ -57,7 +57,7 @@ public final class Utilities {
      * @param predicate predicate
      */
     public static void sleepWhile(StatePredicate predicate) {
-        while(!predicate.apply() && !currentThread().isInterrupted()) {
+        while(predicate.apply() && !currentThread().isInterrupted()) {
             sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
         }
     }

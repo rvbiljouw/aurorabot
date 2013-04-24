@@ -1,11 +1,11 @@
 package ms.aurora.api.methods;
 
-import com.google.common.collect.Lists;
 import ms.aurora.api.Context;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import org.jboss.logging.Logger;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -116,7 +116,7 @@ public final class Menu {
     private static List<String> getMenuContent() {
         String[] actions = Context.getClient().getMenuActions();
         String[] targets = Context.getClient().getMenuTargets();
-        List<String> menuContent = Lists.newArrayList();
+        List<String> menuContent = new ArrayList<String>();
 
         for (int index = 0; index < Context.getClient().getMenuCount(); index++) {
             if (actions[index] != null && targets[index] != null) {

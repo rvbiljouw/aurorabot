@@ -1,10 +1,10 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.*;
+import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.input.VirtualMouse;
@@ -12,11 +12,9 @@ import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Lists.newArrayList;
-import static ms.aurora.api.util.Utilities.sleepNoException;
 import static ms.aurora.api.util.Utilities.sleepUntil;
 
 /**
@@ -57,10 +55,11 @@ public class Shop {
 
     /**
      * Gets all the items in the shop.
+     *
      * @return array containing all the items in the shop.
      */
     public static ShopItem[] getAll() {
-        List<ShopItem> items = newArrayList();
+        List<ShopItem> items = new ArrayList<ShopItem>();
         if (isOpen()) {
             RSWidget itemPane = getShopWidget();
             int[] ids = itemPane.getInventoryItems();
@@ -78,26 +77,22 @@ public class Shop {
 
     /**
      * Retrieves all items that match the supplied predicate.
+     *
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
     public static ShopItem[] getAll(final Predicate<ShopItem> predicate) {
-        return filter(newArrayList(getAll()),
-                new com.google.common.base.Predicate<ShopItem>() {
-                    @Override
-                    public boolean apply(ShopItem item) {
-                        return predicate.apply(item);
-                    }
-                }).toArray(new ShopItem[0]);
+        return ArrayUtils.filter(getAll(), predicate);
     }
 
     /**
      * Gets the first item in the shop with the corresponding id.
+     *
      * @param id id of item to get.
      * @return item with the corresponding id else null.
      */
     public static ShopItem get(int id) {
-        for (ShopItem item: getAll()) {
+        for (ShopItem item : getAll()) {
             if (item.getId() == id) {
                 return item;
             }
@@ -107,6 +102,7 @@ public class Shop {
 
     /**
      * Retrieves the first item that matches the predicate.
+     *
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
@@ -120,7 +116,8 @@ public class Shop {
 
     /**
      * Will buy the amount of item with the corresponding id
-     * @param id id of item to buy.
+     *
+     * @param id     id of item to buy.
      * @param amount amount to buy.
      */
     public static void buy(int id, Amount amount) {

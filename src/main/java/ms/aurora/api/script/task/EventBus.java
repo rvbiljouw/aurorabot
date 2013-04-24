@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.reflect.Modifier.isStatic;
 
 /**
@@ -17,7 +17,7 @@ import static java.lang.reflect.Modifier.isStatic;
  * @author rvbiljouw
  */
 public class EventBus {
-    private final List<EventHandlerBridge> bridges = newArrayList();
+    private final List<EventHandlerBridge> bridges = new ArrayList<EventHandlerBridge>();
 
     public EventBus() {
 

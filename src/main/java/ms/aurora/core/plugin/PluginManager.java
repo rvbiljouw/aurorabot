@@ -6,16 +6,15 @@ import ms.aurora.core.Session;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.Map;
-
-import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * @author Rick
  */
 public final class PluginManager {
     private static final Logger logger = Logger.getLogger(PluginManager.class);
-    private final Map<String, Plugin> pluginMap = newHashMap();
+    private final Map<String, Plugin> pluginMap = new HashMap<String, Plugin>();
     private final Session session;
 
     public PluginManager(Session session) {

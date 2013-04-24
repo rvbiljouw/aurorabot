@@ -4,9 +4,9 @@ import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
 import org.jboss.logging.Logger;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.Thread.currentThread;
 import static ms.aurora.api.methods.Widgets.getWidget;
 
@@ -14,7 +14,7 @@ import static ms.aurora.api.methods.Widgets.getWidget;
  * @author Rick
  */
 public class Context {
-    private static final Map<ThreadGroup, Context> contextMap = newHashMap();
+    private static final Map<ThreadGroup, Context> contextMap = new HashMap<ThreadGroup, Context>();
     private static final Logger logger = Logger.getLogger(Context.class);
     private ThreadGroup threadGroup;
     private Session session;
@@ -37,18 +37,18 @@ public class Context {
     }
 
     public static boolean isLoggedIn() {
-        if(get() == null) {
+        if (get() == null) {
             logger.error("Context not set, cannot check logged in state!");
         }
         return get() != null && get().isLoggedInInternal();
     }
 
     private boolean isLoggedInInternal() {
-        if(getClient().getLoginIndex() != 30) {
+        if (getClient().getLoginIndex() != 30) {
             logger.debug("Login index: " + getClient().getLoginIndex());
         }
 
-        if(getWidget(378, 6) != null) {
+        if (getWidget(378, 6) != null) {
             logger.debug("Welcome screen is set.");
         }
         return getClient().getLoginIndex() == 30 && getWidget(378, 6) == null;
