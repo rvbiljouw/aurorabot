@@ -177,30 +177,18 @@ public final class RSModel {
         return points;
     }
 
-    // return area of polygon
-    public static double area(Polygon hull) { return Math.abs(signedArea(hull)); }
-
-    // return signed area of polygon
-    public static double signedArea(Polygon hull) {
-        Point2D[] points = getPoints(hull);
-        double sum = 0.0;
-        for (int i = 0; i < points.length; i++) {
-            sum = sum + (points[i].getX() * points[i+1].getX()) - (points[i].getX() * points[i+1].getX());
-        }
-        return 0.5 * sum;
-    }
-
-    // return the centroid of the polygon
     public static Point2D centroid(Polygon hull) {
         Point2D[] points = getPoints(hull);
-        double cx = 0.0, cy = 0.0;
+        double x = 0, y = 0;
         for (int i = 0; i < points.length; i++) {
-            cx = cx + (points[i].getX() + points[i+1].getX()) * (points[i].getY() * points[i+1].getX() - points[i].getX() * points[i+1].getY());
-            cy = cy + (points[i].getY() + points[i+1].getX()) * (points[i].getY() * points[i+1].getX() - points[i].getX() * points[i+1].getY());
+            x += points[i].getX();
+            y += points[i].getY();
         }
-        cx /= (6 * area(hull));
-        cy /= (6 * area(hull));
-        return new Point2D.Double(cx, cy);
+
+        //int totalPoints = points.length / 2;
+        x /= points.length;
+        y /= points.length;
+        return new Point2D.Double(x, y);
     }
 
     private static final int[] SIN_TABLE = new int[16384];
