@@ -36,7 +36,7 @@ public class SDNConnection implements Runnable {
 
     }
 
-    public static SDNConnection getInstance() {
+    public static synchronized SDNConnection getInstance() {
         return instance;
     }
 
