@@ -1,5 +1,6 @@
 package ms.aurora.sdn;
 
+import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
@@ -86,15 +87,6 @@ public class SDNConnection implements Runnable {
 
     public void writePacket(OutgoingPacket packet) {
         try {
-            while (dos == null || !socket.isConnected()) {
-                if (self != null) {
-                    self.interrupt();
-                }
-                self = new Thread(this);
-                self.start();
-                sleepNoException(1000);
-            }
-
             packet.prepare(); // Prepare zeh meal
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
