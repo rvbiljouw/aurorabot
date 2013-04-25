@@ -29,7 +29,6 @@ public final class Application extends javafx.application.Application {
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
-        SDNConnection.getInstance().start();
         boot();
     }
 
@@ -41,6 +40,7 @@ public final class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
+        SDNConnection.getInstance().start();
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();
         Versioning.checkForUpdates();

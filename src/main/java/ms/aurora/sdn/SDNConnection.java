@@ -1,7 +1,6 @@
 package ms.aurora.sdn;
 
-import jfx.messagebox.MessageBox;
-import ms.aurora.Application;
+import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
@@ -12,12 +11,11 @@ import org.apache.log4j.Logger;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ms.aurora.api.util.Utilities.sleepNoException;
 import static org.apache.log4j.Logger.getLogger;
 
 /**
@@ -55,10 +53,12 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
 
+            logger.info("Attempting to connect.");
             socket = new Socket("208.94.241.76", 443);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
+            logger.info("Connection established.");
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
                     IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
@@ -87,19 +87,6 @@ public class SDNConnection implements Runnable {
 
     public void writePacket(OutgoingPacket packet) {
         try {
-            long time = System.currentTimeMillis();
-            while ((dos == null || !socket.isConnected()) &&
-                    (System.currentTimeMillis() - time) <= 20000) {
-                Thread.sleep(1000);
-            }
-
-            if (dos == null || !socket.isConnected()) {
-                MessageBox.show(Application.mainStage, "We couldn't make a connection to the dashboard.\n" +
-                        "If you think this is wrong, please make a post on the forums.",
-                        "Connection error!", MessageBox.OK);
-                System.exit(0);
-            }
-
             packet.prepare(); // Prepare zeh meal
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
