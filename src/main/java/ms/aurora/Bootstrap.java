@@ -19,8 +19,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 public class Bootstrap {
-    private static final String BOOTSTRAP_NAME = "ms.aurora.Bootstrap";
-    private static boolean verbose = false;
+    private static boolean verbose = true;
     private static Attributes attrs = null;
 
     private static URL fileToURL(File file) throws IOException {

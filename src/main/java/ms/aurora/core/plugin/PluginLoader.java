@@ -40,7 +40,7 @@ public final class PluginLoader {
 
                 try {
                     URLClassLoader jarClassLoader = new URLClassLoader(new URL[]{
-                            new URL("file:" + file.getAbsolutePath())});
+                            new URL("file:" + file.getAbsolutePath())}, Thread.currentThread().getContextClassLoader());
                     JarFile jarFile = new JarFile(file);
 
                     Enumeration<JarEntry> entries = jarFile.entries();
