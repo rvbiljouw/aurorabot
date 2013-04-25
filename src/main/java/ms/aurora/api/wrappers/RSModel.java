@@ -6,6 +6,9 @@ import ms.aurora.api.util.GrahamScan;
 import ms.aurora.rt3.Model;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import static ms.aurora.api.util.Utilities.random;
@@ -131,6 +134,75 @@ public final class RSModel {
         return p;
     }
 
+    public static Polygon scaleHull(Polygon hull, double scale) {
+        int[] x = hull.xpoints;
+        int[] y = hull.ypoints;
+        int[] tx = new int[x.length];
+        int[] ty = new int[y.length];
+
+        /*Rectangle2D bounds = hull.getBounds2D();
+        double scaledWidth = bounds.getWidth() * scale;
+        double scaledHeight = bounds.getHeight() * scale;
+        double translateX = (bounds.getWidth() - scaledWidth) / 2;
+        double translateY = (bounds.getHeight() - scaledHeight) / 2;
+
+        double scaleX = x[0] + translateX;
+        double scaleY = y[0] + translateY;*/
+
+        Point2D centroid = centroid(hull);
+
+        final AffineTransform affineTransform =
+                AffineTransform.getTranslateInstance((1 - scale) * centroid.getX(),
+                        (1 - scale) * centroid.getY());
+        affineTransform.scale(scale, scale);
+
+        for (int i = 0; i < hull.npoints; i++) {
+            Point2D p = new Point2D.Double(x[i], y[i]);
+
+            affineTransform.transform(p, p);
+
+            tx[i] = (int) p.getX();
+            ty[i] = (int) p.getY();
+        }
+        return new Polygon(tx, ty, hull.npoints);
+    }
+
+    public static Point2D[] getPoints(Polygon hull) {
+        int[] x = hull.xpoints;
+        int[] y = hull.ypoints;
+        Point2D[] points = new Point2D[hull.npoints];
+        for (int i = 0; i < hull.npoints; i++) {
+            points[i] = new Point2D.Double(x[i], y[i]);
+        }
+        return points;
+    }
+
+    // return area of polygon
+    public static double area(Polygon hull) { return Math.abs(signedArea(hull)); }
+
+    // return signed area of polygon
+    public static double signedArea(Polygon hull) {
+        Point2D[] points = getPoints(hull);
+        double sum = 0.0;
+        for (int i = 0; i < points.length; i++) {
+            sum = sum + (points[i].getX() * points[i+1].getX()) - (points[i].getX() * points[i+1].getX());
+        }
+        return 0.5 * sum;
+    }
+
+    // return the centroid of the polygon
+    public static Point2D centroid(Polygon hull) {
+        Point2D[] points = getPoints(hull);
+        double cx = 0.0, cy = 0.0;
+        for (int i = 0; i < points.length; i++) {
+            cx = cx + (points[i].getX() + points[i+1].getX()) * (points[i].getY() * points[i+1].getX() - points[i].getX() * points[i+1].getY());
+            cy = cy + (points[i].getY() + points[i+1].getX()) * (points[i].getY() * points[i+1].getX() - points[i].getX() * points[i+1].getY());
+        }
+        cx /= (6 * area(hull));
+        cy /= (6 * area(hull));
+        return new Point2D.Double(cx, cy);
+    }
+
     private static final int[] SIN_TABLE = new int[16384];
     private static final int[] COS_TABLE = new int[16384];
 
@@ -141,4 +213,5 @@ public final class RSModel {
             COS_TABLE[i] = (int) (32768D * Math.cos(i * d));
         }
     }
+
 }

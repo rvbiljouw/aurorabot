@@ -1,7 +1,8 @@
+package ms.aurora.api.plugin.internal;
+
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSModel;
 import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.event.listeners.PaintListener;
 
@@ -20,11 +21,8 @@ public class GroundObjectPaint implements PaintListener {
             graphics.setColor(Color.GREEN);
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
             try {
-                Polygon hull = object.getModel().getHull();
-                graphics.drawPolygon(hull);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
-            }
+                graphics.drawPolygon(object.getModel().getHull());
+            } catch (Exception ignored) {}
         }
     }
 

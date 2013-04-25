@@ -23,7 +23,6 @@ public class PaintDebug extends Plugin {
     private MinimapPaint minimapPaint = new MinimapPaint();
     private ShopPaint shopPaint = new ShopPaint();
     private CameraPaint cameraPaint = new CameraPaint();
-    private GroundItemPaint groundItemPaint = new GroundItemPaint();
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;
@@ -37,7 +36,6 @@ public class PaintDebug extends Plugin {
     private boolean minimapPaintActive = false;
     private boolean shopPaintActive = false;
     private boolean cameraPaintActive = false;
-    private boolean groundItemPaintActive = false;
 
 
     private Menu paint;
@@ -212,20 +210,6 @@ public class PaintDebug extends Plugin {
             }
         });
         paint.getItems().add(camera);
-
-        CheckMenuItem groundItem = new CheckMenuItem("Draw GroundItems");
-        groundItem.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
-            @Override
-            public void handle(javafx.event.ActionEvent actionEvent) {
-                if (!groundItemPaintActive) {
-                    getSession().getPaintManager().register(groundItemPaint);
-                } else {
-                    getSession().getPaintManager().deregister(groundItemPaint);
-                }
-                groundItemPaintActive = !groundItemPaintActive;
-            }
-        });
-        paint.getItems().add(groundItem);
 
         getSession().registerMenu(paint);
     }
