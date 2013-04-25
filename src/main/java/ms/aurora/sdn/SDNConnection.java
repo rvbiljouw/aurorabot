@@ -1,5 +1,7 @@
 package ms.aurora.sdn;
 
+import jfx.messagebox.MessageBox;
+import ms.aurora.Application;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
@@ -74,6 +76,7 @@ public class SDNConnection implements Runnable {
                     e.printStackTrace();
                 }
             }
+            logger.info("Connection lost..");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(255);
@@ -82,11 +85,17 @@ public class SDNConnection implements Runnable {
 
     public void writePacket(OutgoingPacket packet) {
         try {
+            if (dos == null || !socket.isConnected()) {
+                MessageBox.show(Application.mainStage, "We couldn't make a connection to the dashboard.\n" +
+                        "If you think this is wrong, please make a post on the forums.",
+                        "Connection error!", MessageBox.OK);
+                System.exit(0);
+            }
+
             packet.prepare(); // Prepare zeh meal
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
             dos.flush();
-            System.out.println("Wrote packet " + packet.getOpcode());
         } catch (Exception e) {
             e.printStackTrace();
         }
