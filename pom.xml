@@ -80,6 +80,7 @@
                 <version>1.5</version>
                 <configuration>
                     <mainClass>ms.aurora.Application</mainClass>
+                    <css2bin>false</css2bin>
                 </configuration>
                 <executions>
                     <execution>
