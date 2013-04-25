@@ -85,6 +85,12 @@ public class SDNConnection implements Runnable {
 
     public void writePacket(OutgoingPacket packet) {
         try {
+            long time = System.currentTimeMillis();
+            while ((dos == null || !socket.isConnected()) &&
+                    (System.currentTimeMillis() - time) <= 20000) {
+                Thread.sleep(1000);
+            }
+
             if (dos == null || !socket.isConnected()) {
                 MessageBox.show(Application.mainStage, "We couldn't make a connection to the dashboard.\n" +
                         "If you think this is wrong, please make a post on the forums.",
