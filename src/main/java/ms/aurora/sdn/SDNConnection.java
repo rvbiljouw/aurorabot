@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,7 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
 
-            socket = new Socket("208.94.241.76", 65500);
+            socket = new Socket("208.94.241.76", 443);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
