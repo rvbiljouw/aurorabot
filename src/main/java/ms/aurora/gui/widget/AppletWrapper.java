@@ -140,6 +140,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
                     }
                 }
             }
+            keyEvent.consume();
         }
 
     };
