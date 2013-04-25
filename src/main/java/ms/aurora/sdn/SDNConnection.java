@@ -55,10 +55,12 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
 
+            logger.info("Attempting to connect.");
             socket = new Socket("208.94.241.76", 443);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
+            logger.info("Connection established.");
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
                     IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
