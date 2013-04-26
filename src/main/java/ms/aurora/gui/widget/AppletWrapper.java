@@ -1,8 +1,10 @@
 package ms.aurora.gui.widget;
 
+import com.sun.javafx.applet.FXApplet2;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,14 +72,8 @@ public class AppletWrapper extends Region implements SwapBufferListener {
      * {@inheritDoc}
      */
     public void onSwapBuffer(BufferedImage image) {
-        @SuppressWarnings("deprecation")
-        final Image img = Image.impl_fromExternalImage(image);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                imageView.setImage(img);
-            }
-        });
+        Image frame = SwingFXUtils.toFXImage(image, null);
+        imageView.setImage(frame);
     }
 
     /**
