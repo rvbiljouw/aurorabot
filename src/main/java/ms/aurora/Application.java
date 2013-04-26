@@ -44,9 +44,10 @@ public final class Application extends javafx.application.Application {
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
         mainStage = stage;
         SDNConnection.getInstance().start();
-        LOGIN_WINDOW = new LoginWindow();
-        LOGIN_WINDOW.display();
+        //LOGIN_WINDOW = new LoginWindow();
+        //LOGIN_WINDOW.display();
         Versioning.checkForUpdates();
+        showStage();
     }
 
     public static void showStage() {

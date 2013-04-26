@@ -2,7 +2,9 @@ package ms.aurora.gui.widget;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
@@ -16,11 +18,15 @@ import ms.aurora.event.listeners.SwapBufferListener;
 import ms.aurora.input.ClientCanvas;
 import ms.aurora.rt3.Client;
 
+import javax.imageio.ImageIO;
 import java.applet.Applet;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
-import static javafx.embed.swing.SwingFXUtils.toFXImage;
 import static ms.aurora.core.SessionRepository.get;
 
 /**
@@ -65,8 +71,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
      * {@inheritDoc}
      */
     public void onSwapBuffer(BufferedImage image) {
-        // Expensive operations hoor doorr
-        toFXImage(image, canvas);
+        imageView.setImage(Image.impl_fromPlatformImage(image));
     }
 
     /**
@@ -95,7 +100,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             eventCode = java.awt.event.KeyEvent.KEY_TYPED;
         }
 
-        if(event.getCharacter().length() == 0) return null;
+        if (event.getCharacter().length() == 0) return null;
         char keyChar = event.getCharacter().toCharArray()[0];
         int keyCode = event.getCode().impl_getCode();
         int modifiers = 0;
@@ -125,7 +130,7 @@ public class AppletWrapper extends Region implements SwapBufferListener {
             applet.requestFocus();
 
             java.awt.event.KeyEvent event = transform(keyEvent);
-            if(event == null) {
+            if (event == null) {
                 System.out.println("Trying to send null key.");
                 return;
             }
