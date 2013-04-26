@@ -1,15 +1,11 @@
 package ms.aurora.gui.widget;
 
-import com.sun.javafx.applet.FXApplet2;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +20,6 @@ import ms.aurora.rt3.Client;
 import java.applet.Applet;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 
 import static ms.aurora.core.SessionRepository.get;
 
@@ -34,14 +29,12 @@ import static ms.aurora.core.SessionRepository.get;
  * @author rvbiljouw
  */
 public class AppletWrapper extends Region implements SwapBufferListener {
-    private final WritableImage canvas = new WritableImage(765, 503);
-    private final PixelWriter writer = canvas.getPixelWriter();
-    private long lastUpdate = System.currentTimeMillis();
     private final ImageView imageView;
     private final Applet applet;
+    private int ctr;
 
     public AppletWrapper(Applet applet) {
-        imageView = new ImageView(canvas);
+        imageView = new ImageView();
         this.applet = applet;
         this.init();
     }
@@ -74,6 +67,12 @@ public class AppletWrapper extends Region implements SwapBufferListener {
     public void onSwapBuffer(BufferedImage image) {
         Image frame = SwingFXUtils.toFXImage(image, null);
         imageView.setImage(frame);
+
+        ctr++;
+        if (ctr >= 1000) { // Garbage collection every 1000 frames.
+            ctr = 0;
+            System.gc();
+        }
     }
 
     /**
