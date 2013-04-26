@@ -1,14 +1,17 @@
 package ms.aurora.gui.widget;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Region;
 import ms.aurora.core.Session;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.event.PaintManager;
@@ -19,6 +22,7 @@ import ms.aurora.rt3.Client;
 import java.applet.Applet;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 
 import static ms.aurora.core.SessionRepository.get;
 
@@ -27,10 +31,15 @@ import static ms.aurora.core.SessionRepository.get;
  *
  * @author rvbiljouw
  */
-public class AppletWrapper extends Canvas implements SwapBufferListener {
+public class AppletWrapper extends Region implements SwapBufferListener {
+    private final WritableImage canvas = new WritableImage(765, 503);
+    private final PixelWriter writer = canvas.getPixelWriter();
+    private long lastUpdate = System.currentTimeMillis();
+    private final ImageView imageView;
     private final Applet applet;
 
     public AppletWrapper(Applet applet) {
+        imageView = new ImageView(canvas);
         this.applet = applet;
         this.init();
     }
@@ -42,16 +51,17 @@ public class AppletWrapper extends Canvas implements SwapBufferListener {
             pm.setSwapBufferListener(this);
         }
 
-        addEventFilter(KeyEvent.ANY, keyEventHandler);
-        addEventFilter(MouseEvent.ANY, mouseEventHandler);
+        imageView.addEventFilter(KeyEvent.ANY, keyEventHandler);
+        imageView.addEventFilter(MouseEvent.ANY, mouseEventHandler);
         setWidth(765);
         setHeight(503);
+        getChildren().add(imageView);
         setVisible(true);
 
         focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> a, Boolean b, Boolean newValue) {
-                requestFocus();
+                imageView.requestFocus();
             }
         });
     }
@@ -60,17 +70,14 @@ public class AppletWrapper extends Canvas implements SwapBufferListener {
      * {@inheritDoc}
      */
     public void onSwapBuffer(BufferedImage image) {
-        GraphicsContext gfx = getGraphicsContext2D();
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                int rgb = image.getRGB(x, y);
-                int red = (rgb >> 16) & 0xFF;
-                int green = (rgb >> 8) & 0xFF;
-                int blue = (rgb) & 0xFF;
-                gfx.setFill(Color.rgb(red, green, blue));
-                gfx.fillRect(x, y, 1, 1);
+        @SuppressWarnings("deprecation")
+        final Image img = Image.impl_fromExternalImage(image);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setImage(img);
             }
-        }
+        });
     }
 
     /**
@@ -125,7 +132,8 @@ public class AppletWrapper extends Canvas implements SwapBufferListener {
         @Override
         public void handle(KeyEvent keyEvent) {
             if (getClientCanvas() == null) return;
-            requestFocus();
+            imageView.requestFocus();
+            applet.requestFocus();
 
             java.awt.event.KeyEvent event = transform(keyEvent);
             if (event == null) {
@@ -185,7 +193,8 @@ public class AppletWrapper extends Canvas implements SwapBufferListener {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if (getClientCanvas() == null || GlobalEventQueue.blocking) return;
-            requestFocus();
+            imageView.requestFocus();
+
             getClientCanvas().dispatchEvent(transform(mouseEvent));
         }
     };
