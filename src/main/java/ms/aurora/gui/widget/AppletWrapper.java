@@ -2,10 +2,10 @@ package ms.aurora.gui.widget;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -18,14 +18,10 @@ import ms.aurora.event.listeners.SwapBufferListener;
 import ms.aurora.input.ClientCanvas;
 import ms.aurora.rt3.Client;
 
-import javax.imageio.ImageIO;
 import java.applet.Applet;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.awt.image.PixelGrabber;
 
 import static ms.aurora.core.SessionRepository.get;
 
@@ -35,8 +31,10 @@ import static ms.aurora.core.SessionRepository.get;
  * @author rvbiljouw
  */
 public class AppletWrapper extends Region implements SwapBufferListener {
-    private final ImageView imageView;
     private final WritableImage canvas = new WritableImage(765, 503);
+    private final PixelWriter writer = canvas.getPixelWriter();
+    private long lastUpdate = System.currentTimeMillis();
+    private final ImageView imageView;
     private final Applet applet;
 
     public AppletWrapper(Applet applet) {
@@ -71,7 +69,15 @@ public class AppletWrapper extends Region implements SwapBufferListener {
      * {@inheritDoc}
      */
     public void onSwapBuffer(BufferedImage image) {
-        imageView.setImage(Image.impl_fromPlatformImage(image));
+        long sysTime = System.currentTimeMillis();
+        if (sysTime - lastUpdate >= 5) { // Some refresh delay
+            lastUpdate = System.currentTimeMillis();
+            for(int x = 0; x < image.getWidth(); x++) {
+                for(int y = 0; y < image.getHeight(); y++) {
+                    writer.setArgb(x, y, image.getRGB(x, y));
+                }
+            }
+        }
     }
 
     /**
