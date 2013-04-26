@@ -3,7 +3,6 @@ package ms.aurora.gui.widget;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -21,7 +20,6 @@ import ms.aurora.rt3.Client;
 import java.applet.Applet;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 
 import static ms.aurora.core.SessionRepository.get;
 
@@ -69,15 +67,13 @@ public class AppletWrapper extends Region implements SwapBufferListener {
      * {@inheritDoc}
      */
     public void onSwapBuffer(BufferedImage image) {
-        long sysTime = System.currentTimeMillis();
-        if (sysTime - lastUpdate >= 5) { // Some refresh delay
-            lastUpdate = System.currentTimeMillis();
-            for(int x = 0; x < image.getWidth(); x++) {
-                for(int y = 0; y < image.getHeight(); y++) {
-                    writer.setArgb(x, y, image.getRGB(x, y));
-                }
+        imageView.setSmooth(true);
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                writer.setArgb(x, y, image.getRGB(x, y));
             }
         }
+        imageView.setImage(canvas);
     }
 
     /**
