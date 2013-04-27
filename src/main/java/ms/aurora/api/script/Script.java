@@ -18,9 +18,9 @@ public abstract class Script extends Context implements Runnable {
     private final TaskQueue taskQueue = new TaskQueue(this);
     private Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
+    private final Object lock = new Object();
     private EventBus eventBus = new EventBus();
     private Randoms randoms = new Randoms();
-
     public Script() {
     }
 
@@ -78,9 +78,16 @@ public abstract class Script extends Context implements Runnable {
                             @Override
                             public void run() {
                                 onStart();
+                                synchronized (lock) {
+                                    lock.notifyAll();
+                                }
                             }
                         });
-                        setState(ScriptState.RUNNING);
+
+                        synchronized (lock) {
+                            lock.wait();
+                            setState(ScriptState.RUNNING);
+                        }
                         break;
 
 
