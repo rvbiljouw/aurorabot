@@ -133,6 +133,6 @@ public class MasterPasswordDialog extends AnchorPane {
                 System.exit(0);
             }
         });
-        stage.show();
+        stage.showAndWait();
     }
 }

@@ -3,6 +3,7 @@ package ms.aurora;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -53,6 +54,7 @@ public final class Application {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        Account.init();
                         Scene scene = new Scene(new ApplicationGUI());
                         scene.getStylesheets().add("soft-responsive.css");
                         panel.setScene(scene);

@@ -65,9 +65,14 @@ public class LoginWindow extends AnchorPane {
         Authentication.login(username, password);
     }
 
-    public void setMessage(String msg) {
-        MessageBox.show(currentStage, msg, "Message", MessageBox.OK);
-        btnAuthenticate.setDisable(false);
+    public void setMessage(final String msg) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                MessageBox.show(currentStage, msg, "Message", MessageBox.OK);
+                btnAuthenticate.setDisable(false);
+            }
+        });
     }
 
     @FXML
