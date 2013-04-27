@@ -1,6 +1,5 @@
 package ms.aurora.sdn;
 
-import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
@@ -15,14 +14,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ms.aurora.api.util.Utilities.sleepNoException;
 import static org.apache.log4j.Logger.getLogger;
 
 /**
  * @author rvbiljouw
  */
 public class SDNConnection implements Runnable {
-    private static final SDNConnection instance = new SDNConnection();
+    public static final SDNConnection instance = new SDNConnection();
     private static Logger logger = getLogger(SDNConnection.class);
     private List<PacketHandler> packetHandlers = new ArrayList<PacketHandler>();
     private DataInputStream dis;
@@ -59,6 +57,9 @@ public class SDNConnection implements Runnable {
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
             logger.info("Connection established.");
+            synchronized (instance) {
+                instance.notifyAll();
+            }
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
                     IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
