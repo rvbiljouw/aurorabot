@@ -136,7 +136,7 @@ public class ApplicationGUI extends AnchorPane {
 
     @FXML
     void onToggleInput(ActionEvent evt) {
-        ToggleButton button = (ToggleButton) evt.getSource();
+        ToggleButton button = btnToggleInput;
         if (!button.isSelected()) {
             GlobalEventQueue.blocking = false;
             button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/enabled.png"))));
@@ -236,6 +236,11 @@ public class ApplicationGUI extends AnchorPane {
 
     public MenuItem getPluginOverview() {
         return pluginOverview;
+    }
+
+    public static void setInputEnabled(boolean enabled) {
+        self.btnToggleInput.setSelected(!enabled);
+        self.onToggleInput(null);
     }
 
     public static synchronized ApplicationGUI getInstance() {

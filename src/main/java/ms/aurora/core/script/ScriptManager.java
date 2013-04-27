@@ -3,7 +3,6 @@ package ms.aurora.core.script;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
-import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public final class ScriptManager {
         Future<?> future = executorService.submit(script);
         futures.put(script, future);
         state = State.RUNNING;
-        GlobalEventQueue.blocking = true;
+        ApplicationGUI.setInputEnabled(false);
         ApplicationGUI.update();
     }
 
