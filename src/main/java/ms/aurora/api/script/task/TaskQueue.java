@@ -49,6 +49,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
                 currentTask.setQueue(this);
                 currentTask.run();
             }
+            sleepNoException(300);
         }
 
         passiveThread.interrupt();
@@ -94,6 +95,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
                     currentTask.setQueue(self);
                     currentTask.run();
                 }
+                sleepNoException(200, 500);
             }
         }
     };
