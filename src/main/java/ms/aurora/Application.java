@@ -38,13 +38,7 @@ public final class Application {
     public static void boot() {
         new JFXPanel();
         SDNConnection.getInstance().start();
-        try {
-            synchronized (SDNConnection.instance) {
-                SDNConnection.instance.wait();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         Versioning.checkForUpdates();
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();

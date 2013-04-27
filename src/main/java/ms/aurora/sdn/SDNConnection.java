@@ -37,8 +37,19 @@ public class SDNConnection implements Runnable {
     }
 
     public void start() {
-        self = new Thread(this);
-        self.start();
+        try {
+            logger.info("Attempting to connect.");
+            socket = new Socket("208.94.241.76", 443);
+            socket.setKeepAlive(true);
+            dis = new DataInputStream(socket.getInputStream());
+            dos = new DataOutputStream(socket.getOutputStream());
+            logger.info("Connection established.");
+
+            self = new Thread(this);
+            self.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stop() {
@@ -50,16 +61,6 @@ public class SDNConnection implements Runnable {
         try {
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
-
-            logger.info("Attempting to connect.");
-            socket = new Socket("208.94.241.76", 443);
-            socket.setKeepAlive(true);
-            dis = new DataInputStream(socket.getInputStream());
-            dos = new DataOutputStream(socket.getOutputStream());
-            logger.info("Connection established.");
-            synchronized (instance) {
-                instance.notifyAll();
-            }
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
                     IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
