@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import jfx.messagebox.MessageBox;
 import ms.aurora.sdn.net.api.Authentication;
 
 import java.io.IOException;
@@ -65,12 +66,8 @@ public class LoginWindow extends AnchorPane {
     }
 
     public void setMessage(String msg) {
-        if (lblInfo != null) {
-            lblInfo.setText(msg);
-            btnAuthenticate.setDisable(false);
-        } else {
-            System.out.println("wot..");
-        }
+        MessageBox.show(currentStage, msg, "Message", MessageBox.OK);
+        btnAuthenticate.setDisable(false);
     }
 
     @FXML
