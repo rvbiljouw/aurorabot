@@ -26,9 +26,6 @@ public class GroundObjectPaint implements PaintListener {
                 Polygon hull = object.getModel().getHull();
                 graphics.drawPolygon(hull);
                 graphics.setColor(Color.RED);
-                Point2D centroid = RSModel.centroid(hull);
-                System.out.println(centroid);
-                graphics.drawRect((int) centroid.getX(), (int) centroid.getY(), 1, 1);
                 graphics.drawPolygon(RSModel.scaleHull(hull, 0.5));
             } catch (Exception ignored) {}
         }

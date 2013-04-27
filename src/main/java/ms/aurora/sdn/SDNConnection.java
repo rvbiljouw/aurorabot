@@ -81,7 +81,7 @@ public class SDNConnection implements Runnable {
             logger.info("Connection lost..");
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(255);
+            //System.exit(255);
         }
     }
 
