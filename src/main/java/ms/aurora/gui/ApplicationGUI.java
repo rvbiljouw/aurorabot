@@ -17,6 +17,7 @@ import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
+import ms.aurora.gui.config.Properties;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.util.FXUtils;
@@ -113,6 +114,12 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onAccounts(ActionEvent evt) {
         FXUtils.showModalDialog("Account overview", new AccountOverview());
+    }
+
+    @FXML
+    void onProperties(ActionEvent evt) {
+        Properties properties = new Properties();
+        properties.open();
     }
 
     @FXML

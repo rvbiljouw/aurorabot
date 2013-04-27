@@ -28,6 +28,8 @@
         <Menu mnemonicParsing="false" text="Edit">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Manage accounts" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#onProperties" text="Properties" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Plug-ins" visible="true" fx:id="mnPlugins">

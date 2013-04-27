@@ -52,6 +52,11 @@ public final class PluginSource extends AbstractModel {
         this.devMode = devMode;
     }
 
+    @Override
+    public String toString() {
+        return source;
+    }
+
     public static List<PluginSource> getAll() {
         TypedQuery<PluginSource> query = getEm().createNamedQuery("pluginSource.getAll", PluginSource.class);
         return query.getResultList();

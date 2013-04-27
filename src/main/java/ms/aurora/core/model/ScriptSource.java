@@ -52,6 +52,11 @@ public final class ScriptSource extends AbstractModel {
         this.devMode = devMode;
     }
 
+    @Override
+    public String toString() {
+        return source;
+    }
+
     public static List<ScriptSource> getAll() {
         TypedQuery<ScriptSource> query = getEm().createNamedQuery("scriptSource.getAll", ScriptSource.class);
         return query.getResultList();

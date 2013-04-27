@@ -24,6 +24,9 @@ public class ClientCanvas extends Canvas {
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
+
+    public static int PAINT_DELAY = 10;
+
     private Session session;
 
     public ClientCanvas() {
@@ -40,7 +43,7 @@ public class ClientCanvas extends Canvas {
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
-        Utilities.sleepNoException(15);
+        Utilities.sleepNoException(PAINT_DELAY);
         return backBuffer.getGraphics();
     }
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="762.0" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <TabPane layoutX="7.0" layoutY="14.0" prefHeight="440.0" prefWidth="748.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="General">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="pane">
+              <children>
+                <Label layoutX="54.0" layoutY="69.0" text="Paint delay:" />
+                <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="Timing" />
+                <Slider layoutX="159.0" layoutY="70.0" max="1000.0" prefWidth="575.0" showTickLabels="true" showTickMarks="true" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Scripts">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="pane">
+              <children>
+                <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="Script folders" />
+                <ScrollPane layoutX="33.0" layoutY="66.0" prefHeight="294.0" prefWidth="694.0">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="673.0">
+                      <children>
+                        <ListView fx:id="lstScriptSources" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="293.0" prefWidth="693.0" />
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </ScrollPane>
+                <Button fx:id="btnAddScriptSource" layoutX="33.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAddScriptSource" text="+" />
+                <Button fx:id="btnRemoveScriptSource" layoutX="66.0" layoutY="360.0" mnemonicParsing="false" onAction="#onRemoveScriptSource" text="-" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Plugins">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="pane">
+              <children>
+                <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="Plugin folders" />
+                <ScrollPane layoutX="33.0" layoutY="66.0" prefHeight="294.0" prefWidth="694.0">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="673.0">
+                      <children>
+                        <ListView id="lstScriptSources" fx:id="lstPluginSources" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="293.0" prefWidth="693.0" />
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </ScrollPane>
+                <Button id="btnAddScriptSource" layoutX="33.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAddPluginSource" text="+" />
+                <Button id="btnRemoveScriptSource" layoutX="66.0" layoutY="360.0" mnemonicParsing="false" onAction="#onRemovePluginSource" text="-" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <Separator layoutX="7.0" layoutY="440.0" orientation="HORIZONTAL" prefHeight="14.0" prefWidth="748.0" />
+    <Button layoutX="707.0" layoutY="456.0" mnemonicParsing="false" onAction="#onOk" text="OK" />
+  </children>
+  <stylesheets>
+    <URL value="@../../../../soft-responsive.css" />
+  </stylesheets>
+</AnchorPane>

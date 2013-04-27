@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" minHeight="30.0" prefHeight="30.0" prefWidth="765.0" xmlns:fx="http://javafx.com/fxml">
+<fx:root type="javafx.scene.layout.AnchorPane" minHeight="590.0" prefHeight="590.0" prefWidth="765.0" xmlns:fx="http://javafx.com/fxml">
   <children>
     <MenuBar fx:id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="765.0">
       <menus>
@@ -19,7 +19,7 @@
             <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Run script" />
             <MenuItem mnemonicParsing="false" onAction="#onPauseScript" text="Pause script" />
             <MenuItem mnemonicParsing="false" onAction="#onPauseScript" text="Resume script" />
-            <MenuItem mnemonicParsing="false" text="Stop script" />
+            <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Stop script" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem disable="true" mnemonicParsing="false" text="Hide" />
             <MenuItem mnemonicParsing="false" onAction="#onCloseClicked" text="Close" fx:id="mntmClose" />
