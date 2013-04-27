@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import ms.aurora.Application;
 
 /**
  * @author rvbiljouw
@@ -14,10 +13,11 @@ import ms.aurora.Application;
 public class FXUtils {
 
     public static void showModalDialog(String title, Parent parent) {
+
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(Application.mainStage);
+        stage.initOwner(null);
         Scene scene = new Scene(parent);
         scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
@@ -29,7 +29,7 @@ public class FXUtils {
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(Application.mainStage);
+        stage.initOwner(null);
         Scene scene = new Scene(parent);
         scene.getStylesheets().add("soft-responsive.css");
         stage.setScene(scene);
@@ -40,7 +40,7 @@ public class FXUtils {
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(Application.mainStage);
+        stage.initOwner(null);
         stage.setOnCloseRequest(closeHandler);
         stage.setOnHidden(closeHandler);
         Scene scene = new Scene(parent);

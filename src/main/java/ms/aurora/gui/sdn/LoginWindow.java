@@ -65,8 +65,12 @@ public class LoginWindow extends AnchorPane {
     }
 
     public void setMessage(String msg) {
-        lblInfo.setText(msg);
-        btnAuthenticate.setDisable(false);
+        if (lblInfo != null) {
+            lblInfo.setText(msg);
+            btnAuthenticate.setDisable(false);
+        } else {
+            System.out.println("wot..");
+        }
     }
 
     @FXML
@@ -78,27 +82,38 @@ public class LoginWindow extends AnchorPane {
     }
 
     public void display() {
-        currentStage = new Stage();
-        currentStage.setScene(new Scene(this));
-        currentStage.centerOnScreen();
-        currentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        final LoginWindow window = this;
+        Platform.runLater(new Runnable() {
             @Override
-            public void handle(WindowEvent windowEvent) {
-                Platform.exit();
-                System.exit(0);
-            }
-        });
-        currentStage.showAndWait();
-        currentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                Platform.exit();
-                System.exit(0);
+            public void run() {
+                currentStage = new Stage();
+                currentStage.setScene(new Scene(window));
+                currentStage.centerOnScreen();
+                currentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent windowEvent) {
+                        Platform.exit();
+                        System.exit(0);
+                    }
+                });
+                currentStage.showAndWait();
+                currentStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent windowEvent) {
+                        Platform.exit();
+                        System.exit(0);
+                    }
+                });
             }
         });
     }
 
     public void close() {
-        currentStage.close();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                currentStage.close();
+            }
+        });
     }
 }

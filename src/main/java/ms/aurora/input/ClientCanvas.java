@@ -1,6 +1,7 @@
 package ms.aurora.input;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
@@ -33,14 +34,13 @@ public class ClientCanvas extends Canvas {
     public Graphics getGraphics() {
         Graphics _super = super.getGraphics();
         Graphics2D graphics2D = (Graphics2D) botBuffer.getGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.drawImage(backBuffer, 0, 0, null);
         drawMouse(graphics2D);
         dispatchEvent(graphics2D);
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
+        Utilities.sleepNoException(15);
         return backBuffer.getGraphics();
     }
 
@@ -49,8 +49,6 @@ public class ClientCanvas extends Canvas {
             session = SessionRepository.get(getParent().hashCode());
         } else {
             session.getPaintManager().onRepaint(g);
-            session.getPaintManager().getSwapBufferListener().
-                    onSwapBuffer(botBuffer);
         }
     }
 

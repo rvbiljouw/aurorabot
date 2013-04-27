@@ -1,11 +1,8 @@
 package ms.aurora;
 
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -14,20 +11,24 @@ import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
+
 import static java.awt.Toolkit.getDefaultToolkit;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  * Application entry point
  *
  * @author Rick
  */
-public final class Application extends javafx.application.Application {
+public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
+    private static final Object initialisation_lock = new Object();
+
     public static LoginWindow LOGIN_WINDOW;
-    public static Stage mainStage;
+    public static JFrame mainFrame;
 
     public static void main(String[] args) {
-        logger.info("Entered main(String[] args);");
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
         boot();
@@ -35,39 +36,42 @@ public final class Application extends javafx.application.Application {
 
     public static void boot() {
         new JFXPanel();
-        launch("");
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        System.setSecurityManager(new DefaultSecurityManager());
-        getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
-        mainStage = stage;
         SDNConnection.getInstance().start();
+        Versioning.checkForUpdates();
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();
-        Versioning.checkForUpdates();
     }
 
     public static void showStage() {
-        mainStage.setTitle("Aurora - Automation Toolkit");
-        mainStage.setResizable(false);
-        Scene scene = new Scene(new ApplicationGUI(), 765, 590);
-        scene.getStylesheets().add("soft-responsive.css");
-        mainStage.setScene(scene);
-        mainStage.centerOnScreen();
-        mainStage.show();
-        Account.init();
-
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void handle(WindowEvent windowEvent) {
-                System.exit(0);
+            public void run() {
+                mainFrame = new JFrame("Aurora - Automation Toolkit");
+                mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                final JFXPanel panel = new JFXPanel();
+                mainFrame.add(panel);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Scene scene = new Scene(new ApplicationGUI());
+                        scene.getStylesheets().add("soft-responsive.css");
+                        panel.setScene(scene);
+                        synchronized (initialisation_lock) {
+                            initialisation_lock.notifyAll();
+                        }
+                    }
+                });
+
+                try {
+                    synchronized (initialisation_lock) {
+                        initialisation_lock.wait();
+                        mainFrame.pack();
+                        mainFrame.setVisible(true);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
-    }
-
-    static {
-        new JFXPanel();
     }
 }

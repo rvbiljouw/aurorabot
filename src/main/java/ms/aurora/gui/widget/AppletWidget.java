@@ -1,21 +1,28 @@
 package ms.aurora.gui.widget;
 
-import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.Application;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.gui.ApplicationGUI;
 
+import javax.swing.*;
 import java.applet.Applet;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static ms.aurora.core.SessionRepository.get;
@@ -23,9 +30,19 @@ import static ms.aurora.core.SessionRepository.get;
 /**
  * @author Rick
  */
-public class AppletWidget extends AnchorPane {
+public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> {
     private final Tab tab = new Tab();
     private final ApplicationGUI parent;
+
+    @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+
+    @FXML
+    private AnchorPane appletPane;
+
 
     private Applet applet;
 
@@ -35,6 +52,7 @@ public class AppletWidget extends AnchorPane {
         getTab().setContent(this);
         getTab().setClosable(true);
         getTab().setText("No account");
+        getTab().selectedProperty().addListener(this);
         getTab().setOnClosed(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
@@ -47,10 +65,12 @@ public class AppletWidget extends AnchorPane {
     }
 
     private void loadFace() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AppletWidget.fxml"));
+
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AppletWidget.fxml"));
-            fxmlLoader.setRoot(this);
-            fxmlLoader.setController(this);
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
@@ -59,24 +79,79 @@ public class AppletWidget extends AnchorPane {
 
     @FXML
     void initialize() {
+        assert appletPane != null : "fx:id=\"appletPane\" was not injected: check your FXML file 'AppletWidget.fxml'.";
     }
 
     public void setApplet(final Applet applet) {
+        Application.mainFrame.add(applet);
         this.applet = applet;
-        Platform.runLater(new Runnable() {
+        update();
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                getChildren().clear();
-                getChildren().add(new AppletWrapper(applet));
-                applet.requestFocus();
+                Utilities.sleepNoException(100);
+                update();
             }
         });
     }
 
+    private int calculateRelX() {
+        int x = 0;
+        Parent obj = this;
+        while (obj != null) {
+            x += obj.getLayoutX();
+            obj = obj.getParent();
+        }
+        return x;
+    }
+
+    private int calculateRelY() {
+        int y = 0;
+        Parent obj = this;
+        while (obj != null) {
+            y += obj.getLayoutY();
+            obj = obj.getParent();
+        }
+        return y;
+    }
+
+    public Applet getApplet() {
+        return applet;
+    }
+
+    public Tab getTab() {
+        return tab;
+    }
+
     public void update() {
+        if(applet == null) return;
+
         Session session = SessionRepository.get(applet.hashCode());
-        if(session != null && session.getAccount() != null) {
+        if (session != null && session.getAccount() != null) {
             getTab().setText(session.getName());
+        }
+
+        int relX = calculateRelX();
+        int relY = calculateRelY();
+        if(relX < 0 || relY < 0) {
+            System.out.println("Ref #1: Relative coordinates are off. Please re-select tab.");
+            return;
+        }
+
+        if (tab.isSelected()) {
+            applet.setBounds(relX, relY, applet.getWidth(),
+                    applet.getHeight());
+            applet.setSize(765, 503);
+            applet.setVisible(true);
+        } else {
+            applet.setBounds(relX - 1000, relY,
+                    applet.getWidth(), applet.getHeight());
+            applet.setSize(765, 503);
+            applet.setVisible(false);
         }
     }
 
@@ -92,13 +167,5 @@ public class AppletWidget extends AnchorPane {
             parent.getPluginsMenu().getItems().add(parent.getPluginOverview());
             parent.getPluginsMenu().getItems().addAll(items);
         }
-    }
-
-    public Applet getApplet() {
-        return applet;
-    }
-
-    public Tab getTab() {
-        return tab;
     }
 }
