@@ -8,7 +8,6 @@ import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.SDNConnection;
-import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
 
@@ -38,8 +37,6 @@ public final class Application {
     public static void boot() {
         new JFXPanel();
         SDNConnection.getInstance().start();
-
-        Versioning.checkForUpdates();
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();
     }

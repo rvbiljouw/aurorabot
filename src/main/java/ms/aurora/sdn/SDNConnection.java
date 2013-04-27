@@ -94,6 +94,7 @@ public class SDNConnection implements Runnable {
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
             dos.flush();
+            logger.info("Wrote package " + packet.getOpcode());
         } catch (Exception e) {
             e.printStackTrace();
         }
