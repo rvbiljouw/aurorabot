@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 
@@ -17,13 +18,15 @@ public class TileUtilities extends Plugin {
     private Menu menu;
     private PathMaker pathMaker = new PathMaker(this);
     private PathMakerStage pathMakerStage;
+    private CheckMenuItem pathMakerCheckbox;
 
     @Override
     public void startup() {
 
         menu = new Menu("Tile Utilities");
 
-        CheckMenuItem pathMakerCheckbox = new CheckMenuItem("Toggle Path Maker");
+        pathMakerCheckbox = new CheckMenuItem("Toggle Path Maker");
+
         pathMakerCheckbox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
@@ -31,7 +34,9 @@ public class TileUtilities extends Plugin {
                     pathMakerStage.hide();
                     pathMaker.stop();
                 } else {
-                    pathMakerStage = new PathMakerStage();
+                    if (pathMakerStage == null) {
+                        pathMakerStage = new PathMakerStage();
+                    }
                     pathMakerStage.show();
                 }
             }
@@ -54,11 +59,18 @@ public class TileUtilities extends Plugin {
 
     class PathMakerStage extends Stage {
         public PathMakerStage() {
+            initOwner(null);
             setTitle("Aurora Path Maker");
             setMinWidth(300);
             setMinHeight(400);
             setResizable(false);
             setScene(new Scene(pathMaker));
+            setOnHidden(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    pathMakerCheckbox.setSelected(false);
+                }
+            });
             centerOnScreen();
         }
     }

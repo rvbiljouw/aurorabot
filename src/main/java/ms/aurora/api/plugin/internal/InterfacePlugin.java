@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 
@@ -17,13 +18,15 @@ public class InterfacePlugin extends Plugin {
     private Menu menu;
     private InterfaceExplorer interfaceExplorer = new InterfaceExplorer(this);
     private InterfaceExplorerStage interfaceExplorerStage;
+    private CheckMenuItem explorerToggleCheckbox;
 
     @Override
     public void startup() {
 
         menu = new Menu("Interface Utilities");
 
-        CheckMenuItem explorerToggleCheckbox = new CheckMenuItem("Toggle Explorer");
+        explorerToggleCheckbox = new CheckMenuItem("Toggle Explorer");
+
         explorerToggleCheckbox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
@@ -31,7 +34,9 @@ public class InterfacePlugin extends Plugin {
                     interfaceExplorerStage.hide();
                     getSession().getPaintManager().deregister(interfaceExplorer);
                 } else {
-                    interfaceExplorerStage = new InterfaceExplorerStage();
+                    if (interfaceExplorerStage == null) {
+                        interfaceExplorerStage = new InterfaceExplorerStage();
+                    }
                     interfaceExplorerStage.show();
                     getSession().getPaintManager().register(interfaceExplorer);
                 }
@@ -55,11 +60,18 @@ public class InterfacePlugin extends Plugin {
 
     class InterfaceExplorerStage extends Stage {
         public InterfaceExplorerStage() {
+            initOwner(null);
             setTitle("Aurora Interface Tools");
             setMinWidth(600);
             setMinHeight(400);
             setResizable(false);
             setScene(new Scene(interfaceExplorer));
+            setOnHidden(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    explorerToggleCheckbox.setSelected(false);
+                }
+            });
             centerOnScreen();
         }
     }
