@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 
 /**
@@ -47,6 +48,7 @@ public class PathMaker extends AnchorPane {
 
     private Plugin plugin;
     private Thread thread;
+    private RSTile last;
     private ArrayList<RSTile> tiles = new ArrayList<RSTile>();
 
     public PathMaker(Plugin plugin) {
@@ -115,23 +117,19 @@ public class PathMaker extends AnchorPane {
     class Recorder implements Runnable {
         @Override
         public void run() {
-
-            RSTile last = null;
             while (!Thread.currentThread().isInterrupted()) {
                 if (last == null) {
-                    last = Players.getLocal().getLocation();
-                    add(last);
-                } else {
-                    if (Calculations.distance(last, Players.getLocal().getLocation()) > 6) {
-                        last = Players.getLocal().getLocation();
-                        add(last);
-                    }
+                    add(Players.getLocal().getLocation());
+                }
+                if (Calculations.distance(last, Players.getLocal().getLocation()) > 6) {
+                    add(Players.getLocal().getLocation());
                 }
             }
         }
     }
 
     private void add(RSTile tile) {
+        last = tile;
         tiles.add(tile);
         update();
         System.out.println("Added: " + tile);
