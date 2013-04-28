@@ -120,7 +120,25 @@ public final class RSModel {
 
     public Point getRandomHullPoint() {
         Polygon hull = this.getHull();
+
+        Polygon[] targetArray = new Polygon[3];
+        targetArray[0] = scaleHull(hull, 0.8);
+        targetArray[1] = scaleHull(hull, 0.4);
+        targetArray[2] = scaleHull(hull, 0.2);
+
+        int random = random(1, 20);
+        if (random < 18) {
+            hull = targetArray[0];
+            if (random < 15) {
+                hull = targetArray[1];
+                if (random < 12) {
+                    hull = targetArray[2];
+                }
+            }
+        }
+
         Rectangle bounds = hull.getBounds();
+
         Point p = new Point(-1, -1);
         do {
             Point temp = new Point(random((int)bounds.getCenterX() - (bounds.width / 4),
@@ -130,27 +148,17 @@ public final class RSModel {
             if (hull.contains(temp)) {
                 p = temp;
             }
-        } while (p.x == -1 || p.y == -1);
+        } while (p.x == -1 && p.y == -1);
         return p;
     }
 
-    public static Polygon scaleHull(Polygon hull, double scale) {
+    private Polygon scaleHull(Polygon hull, double scale) {
         int[] x = hull.xpoints;
         int[] y = hull.ypoints;
         int[] tx = new int[x.length];
         int[] ty = new int[y.length];
 
-        /*Rectangle2D bounds = hull.getBounds2D();
-        double scaledWidth = bounds.getWidth() * scale;
-        double scaledHeight = bounds.getHeight() * scale;
-        double translateX = (bounds.getWidth() - scaledWidth) / 2;
-        double translateY = (bounds.getHeight() - scaledHeight) / 2;
-
-        double scaleX = x[0] + translateX;
-        double scaleY = y[0] + translateY;*/
-
         Point2D centroid = centroid(hull);
-
         final AffineTransform affineTransform =
                 AffineTransform.getTranslateInstance((1 - scale) * centroid.getX(),
                         (1 - scale) * centroid.getY());
@@ -167,7 +175,7 @@ public final class RSModel {
         return new Polygon(tx, ty, hull.npoints);
     }
 
-    public static Point2D[] getPoints(Polygon hull) {
+    private Point2D[] getPoints(Polygon hull) {
         int[] x = hull.xpoints;
         int[] y = hull.ypoints;
         Point2D[] points = new Point2D[hull.npoints];
@@ -177,15 +185,13 @@ public final class RSModel {
         return points;
     }
 
-    public static Point2D centroid(Polygon hull) {
+    private Point2D centroid(Polygon hull) {
         Point2D[] points = getPoints(hull);
         double x = 0, y = 0;
         for (int i = 0; i < points.length; i++) {
             x += points[i].getX();
             y += points[i].getY();
         }
-
-        //int totalPoints = points.length / 2;
         x /= points.length;
         y /= points.length;
         return new Point2D.Double(x, y);

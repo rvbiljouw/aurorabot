@@ -345,8 +345,8 @@ public final class Bank {
             // until we getScrollBarShit
             int col = (slot % 8);
             int row = (slot / 8);
-            int x = container.getX() + (col * 47) + 50;
-            int y = container.getY() + (row * 37) + 50;
+            int x = container.getX() + (col * 47) + 20;
+            int y = container.getY() + (row * 38) + 18;
             return new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
         }
 
