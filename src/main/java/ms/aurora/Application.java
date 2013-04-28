@@ -3,6 +3,7 @@ package ms.aurora;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import ms.aurora.api.pathfinding.impl.RSMap;
 import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
@@ -31,6 +32,7 @@ public final class Application {
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
+        new RSMap(); // PRELOAD..
         boot();
     }
 

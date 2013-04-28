@@ -6,15 +6,14 @@ import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.event.listeners.PaintListener;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
-import ms.aurora.rt3.Player;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
 
 import static ms.aurora.api.methods.Calculations.distance;
-import static ms.aurora.api.util.Utilities.sleepUntil;
 
 /**
  * Date: 25/03/13
@@ -26,6 +25,8 @@ public final class Walking {
 
     public static final int FORWARDS = 0;
     public static final int BACKWARDS = 1;
+    private static boolean walking = false;
+    private static RSTile[] currPath;
 
     private static final StatePredicate WALKING(final RSTile tile, final int distance) {
         return new StatePredicate() {
@@ -193,9 +194,35 @@ public final class Walking {
      */
     public static void walkTo(int x, int y) {
         RSPathFinder pf = new RSPathFinder();
+        final long time = System.currentTimeMillis();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
+        final long time2 = System.currentTimeMillis();
         if (path != null && path.getLength() != 0) {
-            traverse(path.toTiles(3), FORWARDS);
+            final RSTile[] tiles = path.toTiles(3);
+            PaintListener listener = new PaintListener() {
+                @Override
+                public void onRepaint(Graphics graphics) {
+                    for (RSTile tile : tiles) {
+                        double dist = Calculations.distance(tile, Players.getLocal().getLocation());
+                        if (dist < 21) {
+                            if (dist < 4) {
+                                Point p = Viewport.convert(tile);
+                                graphics.setColor(Color.GREEN);
+                                graphics.drawRect(p.x, p.y, 1, 1);
+                            }
+
+                            Point m = Minimap.convert(tile);
+                            graphics.drawRect(m.x, m.y, 1, 1);
+                        }
+                        graphics.drawString("Pathfinding took: " + (time2 - time) + " ms.", 10, 100);
+                        graphics.drawString("Length: " + ((tiles.length * 3) - 3) + " tiles.", 10, 140);
+                    }
+                }
+            };
+            Context.get().getSession().getPaintManager().register(listener);
+            traverse(tiles, FORWARDS); // Path's by pathfinder are always inverted.
+            Context.get().getSession().getPaintManager().deregister(listener);
+            walking = false;
         } else {
             System.out.println("Path not found to " + x + ", " + y);
         }
@@ -203,13 +230,8 @@ public final class Walking {
 
     /**
      * @param tile destination tile
-     * @see Walking.walkTo(int x, int y);
      */
     public static void walkTo(RSTile tile) {
-        if (distance(Players.getLocal().getLocation(), tile) <= 9) {
-            clickOnMap(tile);
-            return;
-        }
         walkTo(tile.getX(), tile.getY());
     }
 

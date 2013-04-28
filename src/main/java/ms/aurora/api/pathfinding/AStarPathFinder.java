@@ -1,5 +1,6 @@
 package ms.aurora.api.pathfinding;
 
+import ms.aurora.api.pathfinding.impl.RSMap;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 
 import java.awt.geom.Point2D;
@@ -17,7 +18,7 @@ public class AStarPathFinder {
     private ArrayList closed = new ArrayList();
     private SortedList open = new SortedList();
 
-    private TileBasedMap map;
+    private RSMap map;
 
     private int maxSearchDistance;
 
@@ -35,18 +36,8 @@ public class AStarPathFinder {
      * @param maxSearchDistance The maximum depth we'll search before giving up
      * @param allowDiagMovement True if the search should try diaganol movement
      */
-    public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement) {
+    public AStarPathFinder(RSMap map, int maxSearchDistance, boolean allowDiagMovement) {
         this(map, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
-    }
-
-    public boolean[][] getWalkables() {
-        boolean[][] out = new boolean[104][104];
-        for (int x = 0; x < out.length; x++) {
-            for (int y = 0; y < out[x].length; y++) {
-                out[x][y] = map.solid(x, y);
-            }
-        }
-        return out;
     }
 
     /**
@@ -57,38 +48,34 @@ public class AStarPathFinder {
      * @param maxSearchDistance The maximum depth we'll search before giving up
      * @param allowDiagMovement True if the search should try diaganol movement
      */
-    public AStarPathFinder(TileBasedMap map, int maxSearchDistance,
+    public AStarPathFinder(RSMap map, int maxSearchDistance,
                            boolean allowDiagMovement, AStarHeuristic heuristic) {
         this.heuristic = heuristic;
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
-
         nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
-        for (int x = 0; x < map.getWidthInTiles(); x++) {
-            for (int y = 0; y < map.getHeightInTiles(); y++) {
-                nodes[x][y] = new Node(x, y);
-            }
-        }
     }
 
     public Path findPath(int sx, int sy, int tx, int ty, int full) {
         // easy first check, if the destination is blocked, we can't get there, find an adjacent tile instead
 
         if (map.solid(tx, ty)) {
-            if ((tx - 1) < 104 && (tx - 1) > 0 && !map.solid(tx - 1, ty)) {
+            if ((tx - 1) < map.getWidthInTiles() && (tx - 1) > 0 && !map.solid(tx - 1, ty)) {
                 tx -= 1;
-            } else if ((ty - 1) < 104 && (ty - 1) > 0 && !map.solid(tx, ty - 1)) {
+            } else if ((ty - 1) < map.getHeightInTiles() && (ty - 1) > 0 && !map.solid(tx, ty - 1)) {
                 ty -= 1;
-            } else if ((tx + 1) < 104 && (tx + 1) > 0 && !map.solid(tx + 1, ty)) {
+            } else if ((tx + 1) < map.getWidthInTiles() && (tx + 1) > 0 && !map.solid(tx + 1, ty)) {
                 tx += 1;
-            } else if ((ty + 1) < 104 && (ty + 1) > 0 && !map.solid(tx, ty + 1)) {
+            } else if ((ty + 1) < map.getHeightInTiles() && (ty + 1) > 0 && !map.solid(tx, ty + 1)) {
                 ty += 1;
             }
-            //System.out.println("Our target is solid... wat do");
             return findPath(sx, sy, tx, ty, full);
             //return null;
         }
+
+        nodes[sx][sy] = new Node(sx, sy);
+        nodes[tx][ty] = new Node(tx, ty);
 
         // initial state for A*. The closed group is empty. Only the starting
 
@@ -105,7 +92,6 @@ public class AStarPathFinder {
         //System.out.println("Starting the search.");
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
-            //System.out.println(maxDepth + " / " + maxSearchDistance + " ( " + open.size() + " open.)");
             // pull out the first node in our open list, this is determined to
 
             // be the most likely to be the next step based on our heuristic
@@ -128,72 +114,79 @@ public class AStarPathFinder {
 
             for (int x = -1; x < 2; x++) {
                 for (int y = -1; y < 2; y++) {
-                    // not a neighbour, its the current tile
-                    if ((x == 0) && (y == 0)) {
-                        continue;
-                    }
-
-                    // if we're not allowing diaganol movement then only
-
-                    // one of x or y can be set
-
-                    if (!allowDiagMovement) {
-                        if ((x != 0) && (y != 0)) {
+                    try {
+                        // not a neighbour, its the current tile
+                        if ((x == 0) && (y == 0)) {
                             continue;
                         }
-                    }
 
-                    // determine the location of the neighbour and evaluate it
+                        // if we're not allowing diaganol movement then only
 
-                    int xp = x + current.x;
-                    int yp = y + current.y;
-                    boolean isValid;
+                        // one of x or y can be set
 
-                    if (full == RSPathFinder.FULL) {
-                        isValid = isValidLocation(sx, sy, xp, yp, map.getDirection(x, y));
-                    } else {
-                        isValid = isValidLocation(sx, sy, xp, yp, -1);
-                    }
-
-                    if (isValid) {
-                        // the cost to get to this node is cost the current plus the movement
-
-                        // cost to reach this node. Note that the heursitic value is only used
-
-                        // in the sorted open list
-
-                        float nextStepCost = current.cost + getMovementCost(current.x, current.y, xp, yp);
-                        Node neighbour = nodes[xp][yp];
-                        map.pathFinderVisited(xp, yp);
-
-                        // if the new cost we've determined for this node is lower than
-
-                        // it has been previously makes sure the node hasn'e've
-                        // determined that there might have been a better path to get to
-
-                        // this node so it needs to be re-evaluated
-
-                        if (nextStepCost < neighbour.cost) {
-                            if (inOpenList(neighbour)) {
-                                removeFromOpen(neighbour);
-                            }
-                            if (inClosedList(neighbour)) {
-                                removeFromClosed(neighbour);
+                        if (!allowDiagMovement) {
+                            if ((x != 0) && (y != 0)) {
+                                continue;
                             }
                         }
 
-                        // if the node hasn't already been processed and discarded then
+                        // determine the location of the neighbour and evaluate it
 
-                        // reset it's cost to our current cost and add it as a next possible
+                        int xp = x + current.x;
+                        int yp = y + current.y;
+                        boolean isValid;
 
-                        // step (i.e. to the open list)
-
-                        if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
-                            neighbour.cost = nextStepCost;
-                            neighbour.heuristic = getHeuristicCost(xp, yp, tx, ty);
-                            maxDepth = Math.max(maxDepth, neighbour.setParent(current));
-                            addToOpen(neighbour);
+                        if (full == RSPathFinder.FULL) {
+                            isValid = isValidLocation(current.x, current.y, xp, yp, map.getDirection(x, y));
+                        } else {
+                            isValid = isValidLocation(current.x, current.y, xp, yp, -1);
                         }
+
+                        if (isValid) {
+                            // the cost to get to this node is cost the current plus the movement
+
+                            // cost to reach this node. Note that the heursitic value is only used
+
+                            // in the sorted open list
+
+                            float nextStepCost = current.cost + getMovementCost(current.x, current.y, xp, yp);
+                            if (nodes[xp][yp] == null) {
+                                nodes[xp][yp] = new Node(xp, yp);
+                            }
+                            Node neighbour = nodes[xp][yp];
+                            map.pathFinderVisited(xp, yp);
+
+                            // if the new cost we've determined for this node is lower than
+
+                            // it has been previously makes sure the node hasn'e've
+                            // determined that there might have been a better path to get to
+
+                            // this node so it needs to be re-evaluated
+
+                            if (nextStepCost < neighbour.cost) {
+                                if (inOpenList(neighbour)) {
+                                    removeFromOpen(neighbour);
+                                }
+                                if (inClosedList(neighbour)) {
+                                    removeFromClosed(neighbour);
+                                }
+                            }
+
+                            // if the node hasn't already been processed and discarded then
+
+                            // reset it's cost to our current cost and add it as a next possible
+
+                            // step (i.e. to the open list)
+
+                            if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
+                                neighbour.cost = nextStepCost;
+                                neighbour.heuristic = getHeuristicCost(xp, yp, tx, ty);
+                                maxDepth = Math.max(maxDepth, neighbour.setParent(current));
+                                addToOpen(neighbour);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -220,8 +213,14 @@ public class AStarPathFinder {
         }
         path.prependStep(sx, sy);
 
-        // thats it, we have our path
+        // deallocate all the bullshit
+        for(int i = 0; i < nodes.length; i++) {
+            for(int j = 0; j < nodes[i].length; j++) {
+                nodes[i][j] = null;
+            }
+        }
 
+        // thats it, we have our path
         return path;
     }
 
@@ -301,16 +300,10 @@ public class AStarPathFinder {
      * @return True if the location is valid for the given mover
      */
     protected boolean isValidLocation(int sx, int sy, int x, int y, int direction) {
-        boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
-        if ((!invalid) && ((sx != x) || (sy != y))) {
-            if (direction != -1) {
-                invalid = map.blocked(x, y, direction);
-            } else {
-                invalid = map.solid(x, y);
-            }
-        }
 
-        return !invalid;
+        boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
+        if(map.getBlock(x, y) == -9000 || map.solid(x, y) || invalid) return false;
+        return map.isWalkable(sx, sy, x, y);
     }
 
     /**

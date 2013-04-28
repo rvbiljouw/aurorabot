@@ -1,6 +1,5 @@
 package ms.aurora.api.pathfinding;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSTile;
 
 import java.awt.*;
@@ -117,9 +116,9 @@ public class Path {
     public RSTile[] toTiles(int step) {
         ArrayList<RSTile> points = new ArrayList<RSTile>();
         for (int i = 0; i < steps.size(); i += step) {
-            points.add(new RSTile(steps.get(i).getX() + Context.get().getClient().getBaseX(), steps.get(i).getY() + Context.get().getClient().getBaseY()));
+            points.add(new RSTile(steps.get(i).getX(), steps.get(i).getY()));
         }
-        points.add(new RSTile(steps.get(steps.size() - 1).getX() + Context.get().getClient().getBaseX(), steps.get(steps.size() - 1).getY() + Context.get().getClient().getBaseY()));
+        points.add(new RSTile(steps.get(steps.size() - 1).getX(), steps.get(steps.size() - 1).getY()));
         return points.toArray(new RSTile[points.size()]);
     }
 
