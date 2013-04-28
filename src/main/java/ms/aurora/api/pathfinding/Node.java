@@ -7,11 +7,11 @@ public class Node implements Comparable {
     /**
      * The x coordinate of the node
      */
-    public int x;
+    public short x;
     /**
      * The y coordinate of the node
      */
-    public int y;
+    public short y;
     /**
      * The path cost for this node
      */
@@ -35,7 +35,7 @@ public class Node implements Comparable {
      * @param x The x coordinate of the node
      * @param y The y coordinate of the node
      */
-    public Node(int x, int y) {
+    public Node(short x, short y) {
         this.x = x;
         this.y = y;
     }

@@ -74,8 +74,8 @@ public class AStarPathFinder {
             //return null;
         }
 
-        nodes[sx][sy] = new Node(sx, sy);
-        nodes[tx][ty] = new Node(tx, ty);
+        nodes[sx][sy] = new Node((short) sx, (short) sy);
+        nodes[tx][ty] = new Node((short) tx, (short) ty);
 
         // initial state for A*. The closed group is empty. Only the starting
 
@@ -151,7 +151,7 @@ public class AStarPathFinder {
 
                             float nextStepCost = current.cost + getMovementCost(current.x, current.y, xp, yp);
                             if (nodes[xp][yp] == null) {
-                                nodes[xp][yp] = new Node(xp, yp);
+                                nodes[xp][yp] = new Node((short) xp, (short) yp);
                             }
                             Node neighbour = nodes[xp][yp];
                             map.pathFinderVisited(xp, yp);
@@ -214,13 +214,21 @@ public class AStarPathFinder {
         path.prependStep(sx, sy);
 
         // deallocate all the bullshit
-        for(int i = 0; i < nodes.length; i++) {
-            for(int j = 0; j < nodes[i].length; j++) {
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes[i].length; j++) {
+                if (nodes[i][j] != null) {
+                    nodes[i][j].parent = null; // unlink the nodes..
+                }
                 nodes[i][j] = null;
             }
+            nodes[i] = null;
         }
+        nodes = null;
 
         // thats it, we have our path
+        closed.clear();
+        open.clear();
+        System.gc();
         return path;
     }
 
@@ -302,7 +310,7 @@ public class AStarPathFinder {
     protected boolean isValidLocation(int sx, int sy, int x, int y, int direction) {
 
         boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
-        if(map.getBlock(x, y) == -9000 || map.solid(x, y) || invalid) return false;
+        if (map.getBlock(x, y) == -128 || map.solid(x, y) || invalid) return false;
         return map.isWalkable(sx, sy, x, y);
     }
 

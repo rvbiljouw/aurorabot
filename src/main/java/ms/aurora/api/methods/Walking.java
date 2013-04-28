@@ -1,12 +1,10 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSTile;
-import ms.aurora.event.listeners.PaintListener;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import org.apache.log4j.Logger;
@@ -199,30 +197,7 @@ public final class Walking {
         final long time2 = System.currentTimeMillis();
         if (path != null && path.getLength() != 0) {
             final RSTile[] tiles = path.toTiles(3);
-            PaintListener listener = new PaintListener() {
-                @Override
-                public void onRepaint(Graphics graphics) {
-                    for (RSTile tile : tiles) {
-                        double dist = Calculations.distance(tile, Players.getLocal().getLocation());
-                        if (dist < 21) {
-                            if (dist < 4) {
-                                Point p = Viewport.convert(tile);
-                                graphics.setColor(Color.GREEN);
-                                graphics.drawRect(p.x, p.y, 1, 1);
-                            }
-
-                            Point m = Minimap.convert(tile);
-                            graphics.drawRect(m.x, m.y, 1, 1);
-                        }
-                        graphics.drawString("Pathfinding took: " + (time2 - time) + " ms.", 10, 100);
-                        graphics.drawString("Length: " + ((tiles.length * 3) - 3) + " tiles.", 10, 140);
-                    }
-                }
-            };
-            Context.get().getSession().getPaintManager().register(listener);
             traverse(tiles, FORWARDS); // Path's by pathfinder are always inverted.
-            Context.get().getSession().getPaintManager().deregister(listener);
-            walking = false;
         } else {
             System.out.println("Path not found to " + x + ", " + y);
         }

@@ -10,7 +10,7 @@ import java.io.FileInputStream;
  * @author rvbiljouw
  */
 public class RSMap implements TileBasedMap {
-    public static final int[][] CLIPPING_MASKS = new int[6000][6000];
+    public static final byte[][] CLIPPING_MASKS = new byte[4000][4000];
     private boolean[][] visited = new boolean[getWidthInTiles()][getHeightInTiles()];
 
     private static final int DIRECTION_NORTHWEST = 0x1;
@@ -43,7 +43,7 @@ public class RSMap implements TileBasedMap {
         return 4000;
     }
 
-    public int getBlock(int x, int y) {
+    public byte getBlock(int x, int y) {
         return CLIPPING_MASKS[x][y];
     }
 
@@ -59,7 +59,7 @@ public class RSMap implements TileBasedMap {
                 (
                         blocked(x, y, INVALID | BLOCKED)
 
-                ) || CLIPPING_MASKS[x][y] == -9000;
+                ) || CLIPPING_MASKS[x][y] == -128;
     }
 
     public int getDirection(int x, int y) {
@@ -77,34 +77,34 @@ public class RSMap implements TileBasedMap {
     public boolean isWalkable(int x, int y, int x2, int y2) {
         int here = getBlock(x, y);
         int upper = Integer.MAX_VALUE;
-        if(x == x2 && y - 1 == y2)
-            return(y > 0 && (here & WALL_SOUTH) == 0 && (getBlock(x, y - 1) & (BLOCKED | INVALID)) == 0);
-        if(x - 1 == x2 && y == y2)
-            return(x > 0 && (here & WALL_WEST) == 0 && (getBlock(x - 1, y) & (BLOCKED | INVALID)) == 0);
-        if(x == x2 && y + 1 == y2)
-            return(y < upper && (here & WALL_NORTH) == 0 && (getBlock(x, y + 1) & (BLOCKED | INVALID)) == 0);
-        if(x + 1 == x2 && y == y2)
-            return(x < upper && (here & WALL_EAST) == 0 && (getBlock(x + 1, y) & (BLOCKED | INVALID)) == 0);
-        if(x - 1 == x2 && y - 1 == y2)
-            return(x > 0 && y > 0
+        if (x == x2 && y - 1 == y2)
+            return (y > 0 && (here & WALL_SOUTH) == 0 && (getBlock(x, y - 1) & (BLOCKED | INVALID)) == 0);
+        if (x - 1 == x2 && y == y2)
+            return (x > 0 && (here & WALL_WEST) == 0 && (getBlock(x - 1, y) & (BLOCKED | INVALID)) == 0);
+        if (x == x2 && y + 1 == y2)
+            return (y < upper && (here & WALL_NORTH) == 0 && (getBlock(x, y + 1) & (BLOCKED | INVALID)) == 0);
+        if (x + 1 == x2 && y == y2)
+            return (x < upper && (here & WALL_EAST) == 0 && (getBlock(x + 1, y) & (BLOCKED | INVALID)) == 0);
+        if (x - 1 == x2 && y - 1 == y2)
+            return (x > 0 && y > 0
                     && (here & (WALL_SOUTH_WEST | WALL_SOUTH | WALL_WEST)) == 0
                     && (getBlock(x - 1, y - 1) & (BLOCKED | INVALID)) == 0
                     && (getBlock(x, y - 1) & (BLOCKED | INVALID | WALL_WEST)) == 0 && (getBlock(
                     x - 1, y) & (BLOCKED | INVALID | WALL_SOUTH)) == 0);
-        if(x - 1 == x2 && y + 1 == y2)
-            return(x > 0 && y < upper
+        if (x - 1 == x2 && y + 1 == y2)
+            return (x > 0 && y < upper
                     && (here & (WALL_NORTH_WEST | WALL_NORTH | WALL_WEST)) == 0
                     && (getBlock(x - 1, y + 1) & (BLOCKED | INVALID)) == 0
                     && (getBlock(x, y + 1) & (BLOCKED | INVALID | WALL_WEST)) == 0 && (getBlock(
                     x - 1, y) & (BLOCKED | INVALID | WALL_NORTH)) == 0);
-        if(x + 1 == x2 && y - 1 == y2)
-            return(x < upper && y > 0
+        if (x + 1 == x2 && y - 1 == y2)
+            return (x < upper && y > 0
                     && (here & (WALL_SOUTH_EAST | WALL_SOUTH | WALL_EAST)) == 0
                     && (getBlock(x + 1, y - 1) & (BLOCKED | INVALID)) == 0
                     && (getBlock(x, y - 1) & (BLOCKED | INVALID | WALL_EAST)) == 0 && (getBlock(
                     x + 1, y) & (BLOCKED | INVALID | WALL_SOUTH)) == 0);
-        if(x + 1 == x2 && y + 1 == y2)
-            return(x < upper && y < upper
+        if (x + 1 == x2 && y + 1 == y2)
+            return (x < upper && y < upper
                     && (here & (WALL_NORTH_EAST | WALL_NORTH | WALL_EAST)) == 0
                     && (getBlock(x + 1, y + 1) & (BLOCKED | INVALID)) == 0
                     && (getBlock(x, y + 1) & (BLOCKED | INVALID | WALL_EAST)) == 0 && (getBlock(
@@ -126,9 +126,9 @@ public class RSMap implements TileBasedMap {
 
     static {
         try {
-            for(int x = 0; x < CLIPPING_MASKS.length; x++) {
-                for(int y = 0; y < CLIPPING_MASKS[x].length; y++) {
-                    CLIPPING_MASKS[x][y] = -9000;
+            for (int x = 0; x < CLIPPING_MASKS.length; x++) {
+                for (int y = 0; y < CLIPPING_MASKS[x].length; y++) {
+                    CLIPPING_MASKS[x][y] = -128;
                 }
             }
 
@@ -139,8 +139,14 @@ public class RSMap implements TileBasedMap {
                 int len = in.readInt();
                 for (int i = 0; i < len; i++) {
                     int sublen = in.readInt();
-                    for (int j = 0; j < sublen; j++)
-                        CLIPPING_MASKS[rx + i][ry + j] = in.readInt();
+                    for (int j = 0; j < sublen; j++) {
+                        int mask = in.readInt();
+                        if ((mask & (BLOCKED | INVALID)) != 0) {
+                            CLIPPING_MASKS[rx + i][ry + j] = -128;
+                        } else {
+                            CLIPPING_MASKS[rx + i][ry + j] = (byte) mask;
+                        }
+                    }
                 }
                 System.out.println("Loaded " + rx + ", " + ry);
             }
