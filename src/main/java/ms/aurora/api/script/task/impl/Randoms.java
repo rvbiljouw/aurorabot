@@ -5,7 +5,6 @@ import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
-import ms.aurora.api.script.task.TaskQueue;
 import org.jboss.logging.Logger;
 
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -17,7 +16,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  */
 public class Randoms extends PassiveTask {
     private final Logger logger = Logger.getLogger(Randoms.class);
-    private static final Random[] RANDOMS = {
+    private final Random[] RANDOMS = {
             new AutoLogin(), new AxeHandler(),
             new BeehiveSolver(), new CapnArnav(),
             new ScapeRuneIsland(), new Talker(),
@@ -39,17 +38,17 @@ public class Randoms extends PassiveTask {
                 while (random.activate()) {
                     queue.getOwner().setState(ScriptState.PAUSED);
                     String name = random.getClass().getSimpleName();
-                    logger.info("Random  '" + name + "' triggered.");
+                    logger.info("Random  '" + name + "' triggered..");
 
                     int time = random.loop();
-                    if (time == -1) continue;
+                    if (time == -1) break;
                     sleepNoException(time);
-
-                    queue.getOwner().setState(ScriptState.RUNNING);
                 }
             } catch (Exception e) {
                 logger.error("Random has failed.", e);
             }
+            // rvbiljouw: Make sure the state always gets set back to running..
+            queue.getOwner().setState(ScriptState.RUNNING);
         }
         return 5000;
     }

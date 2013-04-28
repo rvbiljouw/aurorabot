@@ -27,7 +27,7 @@ public abstract class ActionScript extends Script {
                 return action.execute();
             }
         }
-        return 0;
+        return 200;
     }
 
 }

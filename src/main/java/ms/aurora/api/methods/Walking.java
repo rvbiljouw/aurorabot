@@ -4,6 +4,7 @@ import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.api.wrappers.Locatable;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
@@ -208,6 +209,13 @@ public final class Walking {
      */
     public static void walkTo(RSTile tile) {
         walkTo(tile.getX(), tile.getY());
+    }
+
+    /**
+     * @param locatable the destination
+     */
+    public static void walkTo(Locatable locatable) {
+        walkTo(locatable.getLocation());
     }
 
 }
