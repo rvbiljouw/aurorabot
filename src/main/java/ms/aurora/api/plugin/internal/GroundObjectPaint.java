@@ -16,7 +16,8 @@ import java.awt.geom.Point2D;
 public class GroundObjectPaint implements PaintListener {
 
     @Override
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(Graphics g) {
+        Graphics2D graphics = (Graphics2D) g;
         RSObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);
         for (RSObject object : objects) {
             Point loc = object.getScreenLocation();
@@ -24,10 +25,12 @@ public class GroundObjectPaint implements PaintListener {
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
             try {
                 Polygon hull = object.getModel().getHull();
-                graphics.drawPolygon(hull);
-                graphics.setColor(Color.RED);
-                graphics.drawPolygon(RSModel.scaleHull(hull, 0.5));
-            } catch (Exception ignored) {}
+                graphics.draw(hull);
+                /*graphics.setColor(Color.RED);
+                graphics.draw(RSModel.scaleHull(hull, 0.5));*/
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
         }
     }
 

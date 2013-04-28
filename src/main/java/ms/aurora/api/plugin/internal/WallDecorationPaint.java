@@ -18,7 +18,8 @@ import java.awt.*;
 public class WallDecorationPaint implements PaintListener {
 
     @Override
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(Graphics g) {
+        Graphics2D graphics = (Graphics2D) g;
         RSObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);
         for (RSObject object : objects) {
             Point loc = object.getScreenLocation();

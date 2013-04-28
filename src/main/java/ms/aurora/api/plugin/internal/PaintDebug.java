@@ -24,6 +24,7 @@ public class PaintDebug extends Plugin {
     private ShopPaint shopPaint = new ShopPaint();
     private CameraPaint cameraPaint = new CameraPaint();
     private GroundItemPaint groundItemPaint = new GroundItemPaint();
+    private BankPaint bankPaint = new BankPaint();
 
     private boolean npcPaintActive = false;
     private boolean mousePaintActive = false;
@@ -38,6 +39,7 @@ public class PaintDebug extends Plugin {
     private boolean shopPaintActive = false;
     private boolean cameraPaintActive = false;
     private boolean groundItemPaintActive = false;
+    private boolean bankItemPaintActive = false;
 
 
     private Menu paint;
@@ -226,6 +228,20 @@ public class PaintDebug extends Plugin {
             }
         });
         paint.getItems().add(groundItem);
+
+        CheckMenuItem bankItem = new CheckMenuItem("Draw Bank");
+        bankItem.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent actionEvent) {
+                if (!bankItemPaintActive) {
+                    getSession().getPaintManager().register(bankPaint);
+                } else {
+                    getSession().getPaintManager().deregister(bankPaint);
+                }
+                bankItemPaintActive = !bankItemPaintActive;
+            }
+        });
+        paint.getItems().add(bankItem);
 
         getSession().registerMenu(paint);
     }

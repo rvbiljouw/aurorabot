@@ -16,8 +16,10 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class AnimableObjectPaint implements PaintListener {
+
     @Override
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(Graphics g) {
+        Graphics2D graphics = (Graphics2D) g;
         RSObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);
         for (RSObject object : objects) {
             Point loc = object.getScreenLocation();
@@ -25,6 +27,11 @@ public class AnimableObjectPaint implements PaintListener {
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
             try {
                 graphics.drawPolygon(object.getModel().getHull());
+
+                Point randomPoint = object.getModel().getRandomHullPoint();
+                graphics.setColor(Color.RED);
+                graphics.fillRect(randomPoint.x - 1, randomPoint.y - 1, 3, 3);
+
             } catch (Exception ignored) {}
         }
     }
