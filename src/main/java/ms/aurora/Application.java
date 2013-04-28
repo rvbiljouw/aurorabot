@@ -33,7 +33,6 @@ public final class Application {
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
-        Utilities.sleepNoException(10000);
         new RSMap();
         boot();
     }
@@ -52,7 +51,7 @@ public final class Application {
                 mainFrame = new JFrame("Aurora - Automation Toolkit");
                 mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 final JFXPanel panel = new JFXPanel();
-                mainFrame.add(panel);
+                mainFrame.setContentPane(panel);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -69,7 +68,12 @@ public final class Application {
                 try {
                     synchronized (initialisation_lock) {
                         initialisation_lock.wait();
-                        mainFrame.pack();
+                        String name = System.getProperty("os.name");
+                        if(name.toLowerCase().contains("win")) {
+                            mainFrame.setSize(765, 620);
+                        } else {
+                            mainFrame.setSize(765, 590);
+                        }
                         mainFrame.setResizable(false);
                         mainFrame.setVisible(true);
                     }
