@@ -19,6 +19,7 @@ public final class Utilities {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            currentThread().interrupt();
         }
     }
 
@@ -27,6 +28,7 @@ public final class Utilities {
             Thread.sleep(random(min, max));
         } catch (InterruptedException e) {
             e.printStackTrace();
+            currentThread().interrupt();
         }
     }
 
