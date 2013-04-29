@@ -151,7 +151,7 @@ public final class RSObject implements Locatable, Interactable {
         return null;
     }
 
-    private boolean isValid() {
+    public boolean isValid() {
         RSObject[] objectsAtPos = Objects.getObjectsAtLocal(localX, localY).toArray(new RSObject[0]);
         for (RSObject object : objectsAtPos) {
             if (object.getId() == getId()) return true;

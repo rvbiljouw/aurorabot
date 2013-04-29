@@ -170,6 +170,12 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
                     props.add(new InterfaceModel("text", widget.getText()));
                     props.add(new InterfaceModel("type", widget.getType()));
                     props.add(new InterfaceModel("model", widget.getModelId()));
+                    if (widget.getChildren() != null ) {
+                        props.add(new InterfaceModel("children count", widget.getChildren().length));
+                    }
+                    if (widget.getInventoryItems() != null) {
+                        props.add(new InterfaceModel("items", widget.getInventoryItems().length));
+                    }
 
                     x = widget.getX();
                     y = widget.getY();
