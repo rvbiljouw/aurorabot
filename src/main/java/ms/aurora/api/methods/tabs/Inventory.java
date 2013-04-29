@@ -15,6 +15,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * @author Rick
+ * @author tobiewarburton
  */
 public final class Inventory {
     private static final int INVENTORY_ID = 149;
@@ -53,9 +54,9 @@ public final class Inventory {
      * @return the first matching item, or null if none were found.
      */
     public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
-        RSWidgetItem[] RSWidgetItems = getAll(predicate);
-        if (RSWidgetItems.length > 0) {
-            return RSWidgetItems[0];
+        RSWidgetItem[] items = getAll(predicate);
+        if (items.length > 0) {
+            return items[0];
         }
         return null;
     }
@@ -67,9 +68,9 @@ public final class Inventory {
      * @return item if it was found, otherwise null.
      */
     public static RSWidgetItem get(int id) {
-        for (RSWidgetItem RSWidgetItem : getAll()) {
-            if (RSWidgetItem.getId() == id) {
-                return RSWidgetItem;
+        for (RSWidgetItem item : getAll()) {
+            if (item.getId() == id) {
+                return item;
             }
         }
         return null;
@@ -82,10 +83,10 @@ public final class Inventory {
      * @return item if it was found, otherwise null.
      */
     public static RSWidgetItem get(int... ids) {
-        for (RSWidgetItem RSWidgetItem : getAll()) {
+        for (RSWidgetItem item : getAll()) {
             for (int id : ids) {
-                if (RSWidgetItem.getId() == id) {
-                    return RSWidgetItem;
+                if (item.getId() == id) {
+                    return item;
                 }
             }
         }
@@ -109,13 +110,13 @@ public final class Inventory {
      * @return list of items found, which can be empty.
      */
     public static RSWidgetItem[] getAll(int id) {
-        List<RSWidgetItem> RSWidgetItems = new ArrayList<RSWidgetItem>();
-        for (RSWidgetItem RSWidgetItem : getAll()) {
-            if (RSWidgetItem.getId() == id) {
-                RSWidgetItems.add(RSWidgetItem);
+        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
+        for (RSWidgetItem item : getAll()) {
+            if (item.getId() == id) {
+                items.add(item);
             }
         }
-        return RSWidgetItems.toArray(new RSWidgetItem[RSWidgetItems.size()]);
+        return items.toArray(new RSWidgetItem[items.size()]);
     }
 
     /**
@@ -125,15 +126,15 @@ public final class Inventory {
      * @return list of items found, which can be empty.
      */
     public static RSWidgetItem[] getAll(int... ids) {
-        List<RSWidgetItem> RSWidgetItems = new ArrayList<RSWidgetItem>();
-        for (RSWidgetItem RSWidgetItem : getAll()) {
+        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
+        for (RSWidgetItem item : getAll()) {
             for (int id : ids) {
-                if (RSWidgetItem.getId() == id) {
-                    RSWidgetItems.add(RSWidgetItem);
+                if (item.getId() == id) {
+                    items.add(item);
                 }
             }
         }
-        return RSWidgetItems.toArray(new RSWidgetItem[RSWidgetItems.size()]);
+        return items.toArray(new RSWidgetItem[items.size()]);
     }
 
     /**
@@ -169,8 +170,8 @@ public final class Inventory {
      * @return true if found, otherwise false.
      */
     public static boolean contains(int id) {
-        for (RSWidgetItem RSWidgetItem : getAll()) {
-            if (RSWidgetItem.getId() == id) {
+        for (RSWidgetItem item : getAll()) {
+            if (item.getId() == id) {
                 return true;
             }
         }
@@ -186,8 +187,8 @@ public final class Inventory {
      * @return true if the inventory contains at least the amount specified.
      */
     public static boolean containsMinimum(int id, int amount) {
-        for (RSWidgetItem RSWidgetItem : getAll()) {
-            if (RSWidgetItem.getId() == id && RSWidgetItem.getStackSize() >= amount) {
+        for (RSWidgetItem item : getAll()) {
+            if (item.getId() == id && item.getStackSize() >= amount) {
                 return true;
             }
         }
@@ -203,8 +204,8 @@ public final class Inventory {
      * @return true if the inventory contains at most the amount specified.
      */
     public static boolean containsMaximum(int id, int amount) {
-        for (RSWidgetItem RSWidgetItem : getAll()) {
-            if (RSWidgetItem.getId() == id && RSWidgetItem.getStackSize() <= amount) {
+        for (RSWidgetItem item : getAll()) {
+            if (item.getId() == id && item.getStackSize() <= amount) {
                 return true;
             }
         }
@@ -245,14 +246,16 @@ public final class Inventory {
     /**
      * Counts all the items matching the specified ID.
      *
-     * @param id RSWidgetItem ID of the items to count
+     * @param ids RSWidgetItem ids of the items to count
      * @return total amount of items matching id in inventory.
      */
-    public static int count(int id) {
+    public static int count(int... ids) {
         int count = 0;
-        for (RSWidgetItem RSWidgetItem : getAll()) {
-            if (RSWidgetItem.getId() == id) {
-                count += RSWidgetItem.getStackSize();
+        for (RSWidgetItem item : getAll()) {
+            for (int id : ids) {
+                if (item.getId() == id) {
+                    count += item.getStackSize();
+                }
             }
         }
         return count;
@@ -288,8 +291,12 @@ public final class Inventory {
      * @param ids A var-args list of IDs to drop.
      */
     public static void dropAll(int... ids) {
-        for (int id : ids) {
-            dropAll(id);
+        for (RSWidgetItem item : getAll()) {
+            for (int id : ids) {
+                if (item.getId() == id) {
+                    item.applyAction("Drop");
+                }
+            }
         }
     }
 
@@ -299,14 +306,14 @@ public final class Inventory {
      * @param ids A var-args list of items to exclude from dropping.
      */
     public static void dropAllExcept(int... ids) {
-        for (RSWidgetItem RSWidgetItem : getAll()) {
+        for (RSWidgetItem item : getAll()) {
             boolean drop = true;
             for (int id : ids) {
-                if (RSWidgetItem.getId() == id) drop = false;
+                if (item.getId() == id) drop = false;
             }
 
             if (drop) {
-                RSWidgetItem.applyAction("Drop");
+                item.applyAction("Drop");
             }
         }
     }
