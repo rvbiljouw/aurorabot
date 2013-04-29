@@ -1,8 +1,12 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.util.Utilities;
+import ms.aurora.api.wrappers.Locatable;
+import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 
+import javax.rmi.CORBA.Util;
 import java.awt.event.KeyEvent;
 
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -132,4 +136,54 @@ public final class Camera {
         }
         VirtualKeyboard.releaseKey(direction);
     }
+
+    private static int getAngleTo(RSTile tile) {
+        RSTile playerLocation = Players.getLocal().getLocation();
+        int angle = ((int) Math.toDegrees(Math.atan2(tile.getY() - playerLocation.getY(),
+                tile.getX() - playerLocation.getX()))) - 90;
+        if (angle < 0) {
+            angle += 360;
+        }
+        return angle % 360;
+    }
+
+    /**
+     * Turns to the tile with the given deviation.
+     *
+     * @param tile RSTile to turn camera to.
+     * @param deviation degree of accuracy.
+     */
+    public static void turnTo(RSTile tile, int deviation) {
+        int angle = getAngleTo(tile);
+        angle = Utilities.random(angle - deviation, angle + deviation + 1);
+        setAngle(angle);
+    }
+
+    /**
+     * Turns to the tile.
+     *
+     * @param tile RSTile to turn to.
+     */
+    public static void turnTo(RSTile tile) {
+        turnTo(tile, 0);
+    }
+
+    /**
+     * Turns to the given Locatable with the given deviation.
+     *
+     * @param locatable Locatable to turn to.
+     * @param deviation degree of accuracy.
+     */
+    public static void turnTo(Locatable locatable, int deviation) {
+        turnTo(locatable.getLocation(), deviation);
+    }
+
+    /**
+     * Turns to the given Locatable.
+     * @param locatable Locatable to turn to.
+     */
+    public static void turnTo(Locatable locatable) {
+        turnTo(locatable.getLocation(), 0);
+    }
+
 }

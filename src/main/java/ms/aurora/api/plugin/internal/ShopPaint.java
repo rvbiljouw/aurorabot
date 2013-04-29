@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.tabs.Shop;
+import ms.aurora.api.wrappers.RSWidgetItem;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -15,9 +16,9 @@ public class ShopPaint implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        Shop.ShopItem[] items = Shop.getAll();
+        RSWidgetItem[] items = Shop.getAll();
         graphics.drawString(items.length + "", 10, 10);
-        for (Shop.ShopItem item: items) {
+        for (RSWidgetItem item: items) {
             Rectangle r = item.getArea();
             graphics.drawRect(r.x, r.y, r.width, r.height);
         }

@@ -70,14 +70,11 @@ public final class Menu {
                     VirtualMouse.clickMouse(false);
                     sleepNoException(300);
                 }
-
-
                 if (isMenuOpen()) {
                     int menuOptionX = Context.getClient().getMenuX() + (random(10, action.length() * 4));
                     int menuOptionY = Context.getClient().getMenuY() + (21 + (15 * itemIndex));
                     logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
-                    VirtualMouse.clickMouse(menuOptionX, menuOptionY,
-                            true);
+                    VirtualMouse.clickMouse(menuOptionX, menuOptionY, true);
                     VirtualKeyboard.releaseControl();
                     return true;
                 }
