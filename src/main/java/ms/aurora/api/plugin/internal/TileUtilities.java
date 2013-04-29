@@ -53,7 +53,9 @@ public class TileUtilities extends Plugin {
 
     @Override
     public void cleanup() {
-        pathMakerStage.hide();
+        if (pathMakerStage != null) {
+            pathMakerStage.hide();
+        }
         getSession().deregisterMenu(menu);
     }
 

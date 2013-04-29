@@ -40,10 +40,14 @@ public final class PluginManager {
     }
 
     public void stop(Class<? extends Plugin> pluginClass) {
-        if (pluginMap.containsKey(pluginClass.getName())) {
-            Plugin plugin = pluginMap.get(pluginClass.getName());
-            plugin.setState(PluginState.STOPPED);
-            pluginMap.remove(pluginClass.getName());
+        try {
+            if (pluginMap.containsKey(pluginClass.getName())) {
+                Plugin plugin = pluginMap.get(pluginClass.getName());
+                plugin.setState(PluginState.STOPPED);
+                pluginMap.remove(pluginClass.getName());
+            }
+        } catch (Exception e) {
+            logger.error("Failed to stop plugin", e);
         }
     }
 

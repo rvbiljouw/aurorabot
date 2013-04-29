@@ -54,7 +54,9 @@ public class InterfacePlugin extends Plugin {
 
     @Override
     public void cleanup() {
-        interfaceExplorerStage.hide();
+        if (interfaceExplorerStage != null) {
+            interfaceExplorerStage.hide();
+        }
         getSession().deregisterMenu(menu);
     }
 
