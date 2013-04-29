@@ -7,10 +7,7 @@ import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Timer;
-import ms.aurora.api.wrappers.RSArea;
-import ms.aurora.api.wrappers.RSGroundItem;
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.*;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -106,7 +103,7 @@ public class ChickenKiller extends Script implements PaintListener {
                     }
                     break;
                 case BURY:
-                    Inventory.InventoryItem bones = Inventory.get(BONE_ID);
+                    RSWidgetItem bones = Inventory.get(BONE_ID);
                     if (bones != null) {
                         final int invSize = Inventory.getCount();
                         bones.applyAction("Bury");

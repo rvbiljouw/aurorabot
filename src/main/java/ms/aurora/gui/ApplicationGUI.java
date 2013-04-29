@@ -217,7 +217,8 @@ public class ApplicationGUI extends AnchorPane {
 
                         case PAUSED:
                             self.btnPause.setText("Resume");
-                            self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/resume.png"))));
+                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
+                            //self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/resume.png"))));
                             self.btnPlay.setText("Stop");
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;

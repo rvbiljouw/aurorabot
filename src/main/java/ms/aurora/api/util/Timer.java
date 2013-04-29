@@ -41,30 +41,16 @@ public class Timer {
         return System.currentTimeMillis() - startTime;
     }
 
+    public int getHourlyRate(int current) {
+        return (int) (current * 3600000D / elapsed());
+    }
+
     public static String formatTime(long timeMilliseconds) {
-        StringBuilder b = new StringBuilder();
         long runtime = timeMilliseconds;
-        long totalSecs = runtime / 1000;
-        long totalMins = totalSecs / 60;
-        long totalHours = totalMins / 60;
-        int seconds = (int) totalSecs % 60;
-        int minutes = (int) totalMins % 60;
-        int hours = (int) totalHours % 60;
-        if (hours < 10) {
-            b.append("0");
-        }
-        b.append(hours);
-        b.append(" : ");
-        if (minutes < 10) {
-            b.append("0");
-        }
-        b.append(minutes);
-        b.append(" : ");
-        if (seconds < 10) {
-            b.append("0");
-        }
-        b.append(seconds);
-        return b.toString();
+        int seconds = ((int) ((runtime / 1000) % 60));
+        int mins = ((int) (((runtime / 1000) / 60) % 60));
+        int hours = ((int) ((((runtime / 1000) / 60) / 60) % 60));
+        return String.format("%02d:%02d:%02d", hours, mins, seconds);
     }
 
 }

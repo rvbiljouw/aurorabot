@@ -7,6 +7,7 @@ import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSGroundItem;
+import ms.aurora.api.wrappers.RSWidgetItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +28,9 @@ public class AxeHandler extends Random {
         }
     };
 
-    private static final Predicate<Inventory.InventoryItem> AXE_HEAD_INV_PREDICATE = new Predicate<Inventory.InventoryItem>() {
+    private static final Predicate<RSWidgetItem> AXE_HEAD_INV_PREDICATE = new Predicate<RSWidgetItem>() {
         @Override
-        public boolean apply(Inventory.InventoryItem object) {
+        public boolean apply(RSWidgetItem object) {
             return AXE_HEADS.contains(object.getId());
         }
     };
@@ -48,7 +49,7 @@ public class AxeHandler extends Random {
     public boolean activate() {
         if(!Context.isLoggedIn()) return false;
         RSGroundItem axe = GroundItems.get(AXE_HEAD_PREDICATE);
-        Inventory.InventoryItem handle = Inventory.get(HANDLE);
+        RSWidgetItem handle = Inventory.get(HANDLE);
         return handle != null && axe != null;
     }
 
@@ -59,7 +60,7 @@ public class AxeHandler extends Random {
         }
         switch (getState()) {
             case DROP_ITEM:
-                Inventory.InventoryItem itemToDrop = Inventory.getAll()[0];
+                RSWidgetItem itemToDrop = Inventory.getAll()[0];
                 droppedItemId = itemToDrop.getId();
                 itemToDrop.applyAction("Drop");
                 droppedItem = true;
@@ -69,8 +70,8 @@ public class AxeHandler extends Random {
                 itemToPickup.applyAction("Pickup");
                 break;
             case FIX:
-                Inventory.InventoryItem axeHead = Inventory.get(AXE_HEAD_INV_PREDICATE);
-                Inventory.InventoryItem axeHandle = Inventory.get(HANDLE);
+                RSWidgetItem axeHead = Inventory.get(AXE_HEAD_INV_PREDICATE);
+                RSWidgetItem axeHandle = Inventory.get(HANDLE);
                 axeHandle.applyAction("Use");
                 axeHead.applyAction("Use");
                 break;

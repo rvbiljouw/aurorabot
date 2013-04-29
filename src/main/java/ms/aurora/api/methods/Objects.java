@@ -7,6 +7,7 @@ import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.rt3.AnimableObject;
 import ms.aurora.rt3.Client;
 import ms.aurora.rt3.Ground;
+import ms.aurora.rt3.WorldController;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,10 +97,12 @@ public final class Objects {
      * @return collection of objects at the specified tile
      */
     public static Collection<RSObject> getObjectsAtLocal(int x, int y) {
-        Client client = getClient();
-        Ground ground = client.getWorld().getGroundArray()[client.getPlane()][x][y];
-
         List<RSObject> objects = new ArrayList<RSObject>();
+        Client client = getClient();
+        WorldController worldController = client.getWorld();
+        Ground[][][] grounds = worldController.getGroundArray();
+        Ground ground = grounds[client.getPlane()][x][y];
+
         if (ground != null) {
             try {
                 if (ground.getGroundDecoration() != null) {

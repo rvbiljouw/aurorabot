@@ -1,6 +1,11 @@
 package ms.aurora.api.wrappers;
 
+import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Players;
+import ms.aurora.api.util.Utilities;
+
 import java.awt.*;
+import java.util.HashSet;
 
 /**
  * Date: 09/04/13
@@ -26,6 +31,35 @@ public class RSArea {
     public RSArea(int x1, int y1, int x2, int y2) {
         this(new RSTile(x1 > x2 ? x1 : x2, y1 > y2 ? y1 : y2)
                 , new RSTile(x1 > x2 ? x2 : x1, y1 > y2 ? y2 : y1));
+    }
+
+    public RSTile[] getAllTiles() {
+        HashSet<RSTile> tiles = new HashSet<RSTile>();
+        Rectangle areaBounds = area.getBounds();
+        for (int x = areaBounds.x; x < (areaBounds.x + areaBounds.width); x++) {
+            for (int y = areaBounds.y; y < (areaBounds.y + areaBounds.height); y++) {
+                if (area.contains(x, y)) {
+                    tiles.add(new RSTile(x, y));
+                }
+            }
+        }
+        return tiles.toArray(new RSTile[tiles.size()]);
+    }
+
+    public RSTile getNearestTile() {
+        RSTile location = Players.getLocal().getLocation(), closest = null;
+        double dist = Double.MAX_VALUE;
+        for (RSTile tile: getAllTiles()) {
+            if (Calculations.distance(location, tile) < dist) {
+                closest = tile;
+            }
+        }
+        return closest;
+    }
+
+    public RSTile getRandomTile() {
+        RSTile[] tiles = getAllTiles();
+        return tiles[Utilities.random(0, tiles.length - 1)];
     }
 
     public boolean contains(int x, int y) {

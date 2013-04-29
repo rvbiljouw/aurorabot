@@ -60,8 +60,8 @@
         <HBox prefHeight="21.0" prefWidth="741.0" spacing="5.0">
           <children>
             <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewSession" prefWidth="75.0" text="New" />
-            <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="72.0" text="Play" />
-            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="72.0" text="Pause" />
+            <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="85.0" text="Play" />
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="85.0" text="Pause" />
             <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="402.0" HBox.hgrow="ALWAYS" />
             <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="Mouse" />
           </children>

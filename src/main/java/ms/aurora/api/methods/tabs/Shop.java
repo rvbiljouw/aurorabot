@@ -7,6 +7,7 @@ import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.RSWidgetItem;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
@@ -58,21 +59,25 @@ public class Shop {
      *
      * @return array containing all the items in the shop.
      */
-    public static ShopItem[] getAll() {
-        List<ShopItem> items = new ArrayList<ShopItem>();
+    public static RSWidgetItem[] getAll() {
+        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
         if (isOpen()) {
             RSWidget itemPane = getShopWidget();
             int[] ids = itemPane.getInventoryItems();
             int[] stacks = itemPane.getInventoryStackSizes();
             for (int i = 0; i < ids.length; i++) {
                 if (ids[i] - 1 > 0 && stacks[i] > 0) {
-                    ShopItem item = new ShopItem(itemPane, ids[i], stacks[i]);
-                    item.slot = i;
+                    int col = (i % 8);
+                    int row = (i / 8);
+                    int x = itemPane.getX() + (col * 47) + 22;
+                    int y = itemPane.getY() + (row * 47) + 18;
+                    Rectangle area = new Rectangle(x - (46 / 2), y - (36 / 2), 32, 32);
+                    RSWidgetItem item = new RSWidgetItem(area, ids[i] - 1, stacks[i]);
                     items.add(item);
                 }
             }
         }
-        return items.toArray(new ShopItem[items.size()]);
+        return items.toArray(new RSWidgetItem[items.size()]);
     }
 
     /**
@@ -81,8 +86,8 @@ public class Shop {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static ShopItem[] getAll(final Predicate<ShopItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new ShopItem[0]);
+    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem> predicate) {
+        return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
     }
 
     /**
@@ -91,8 +96,8 @@ public class Shop {
      * @param id id of item to get.
      * @return item with the corresponding id else null.
      */
-    public static ShopItem get(int id) {
-        for (ShopItem item : getAll()) {
+    public static RSWidgetItem get(int id) {
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id) {
                 return item;
             }
@@ -106,8 +111,8 @@ public class Shop {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static ShopItem get(final Predicate<ShopItem> predicate) {
-        ShopItem[] items = getAll(predicate);
+    public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
+        RSWidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
         }
@@ -121,7 +126,7 @@ public class Shop {
      * @param amount amount to buy.
      */
     public static void buy(int id, Amount amount) {
-        ShopItem item = get(id);
+        RSWidgetItem item = get(id);
         if (item == null || !isOpen()) {
             return;
         }
@@ -152,58 +157,6 @@ public class Shop {
                 } while (!Inventory.isFull());
                 break;
         }
-    }
-
-    public static class ShopItem implements Interactable {
-
-        private int id, stackSize, slot;
-        private RSWidget container;
-
-        private ShopItem(RSWidget container, int id, int stackSize) {
-            this.container = container;
-            this.id = id;
-            this.stackSize = stackSize;
-        }
-
-        public int getStackSize() {
-            return stackSize;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public Rectangle getArea() { // TODO: will only work for the first row?
-            // until we getScrollBarShit
-            int col = (slot % 8);
-            int row = (slot / 8);
-            int x = container.getX() + (col * 47) + 22;
-            int y = container.getY() + (row * 47) + 18;
-            return new Rectangle(x - (46 / 2), y - (36 / 2), 32, 32);
-        }
-
-        @Override
-        public boolean applyAction(String action) {
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            return ms.aurora.api.methods.Menu.click(action);
-        }
-
-        @Override
-        public boolean hover() {
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            Mouse clientMouse = Context.getClient().getMouse();
-            return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
-        }
-
-        @Override
-        public boolean click(boolean left) {
-            Rectangle area = getArea();
-            VirtualMouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
-            return true;
-        }
-
     }
 
 }

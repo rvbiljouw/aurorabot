@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.tabs.Bank;
+import ms.aurora.api.wrappers.RSWidgetItem;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -16,7 +17,7 @@ public class BankPaint implements PaintListener {
     @Override
     public void onRepaint(Graphics graphics) {
         if (Bank.isOpen()) {
-            for (Bank.BankItem item: Bank.getAll()) {
+            for (RSWidgetItem item: Bank.getAll()) {
                 Rectangle rect = item.getArea();
                 graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
             }

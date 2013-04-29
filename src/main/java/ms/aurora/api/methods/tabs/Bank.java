@@ -11,6 +11,7 @@ import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.RSWidgetItem;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
@@ -99,8 +100,8 @@ public final class Bank {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static BankItem get(final Predicate<BankItem> predicate) {
-        BankItem[] items = getAll(predicate);
+    public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
+        RSWidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
         }
@@ -110,11 +111,11 @@ public final class Bank {
     /**
      * Retrieves the first item that matches the specified ID.
      *
-     * @param id BankItem ID to look for
+     * @param id RSWidgetItem ID to look for
      * @return item if it was found, otherwise null.
      */
-    public static BankItem get(int id) {
-        for (BankItem item : getAll()) {
+    public static RSWidgetItem get(int id) {
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id) {
                 return item;
             }
@@ -128,24 +129,24 @@ public final class Bank {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static BankItem[] getAll(final Predicate<BankItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new BankItem[0]);
+    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem> predicate) {
+        return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
     }
 
     /**
      * Retrieves all items that match the specified ID.
      *
-     * @param id BankItem ID to look for
+     * @param id RSWidgetItem ID to look for
      * @return list of items found, which can be empty.
      */
-    public static BankItem[] getAll(int id) {
-        List<BankItem> items = new ArrayList<BankItem>();
-        for (BankItem item : getAll()) {
+    public static RSWidgetItem[] getAll(int id) {
+        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id) {
                 items.add(item);
             }
         }
-        return items.toArray(new BankItem[items.size()]);
+        return items.toArray(new RSWidgetItem[items.size()]);
     }
 
     /**
@@ -153,29 +154,33 @@ public final class Bank {
      *
      * @return an array containing all items in the Bank.
      */
-    public static BankItem[] getAll() {
+    public static RSWidgetItem[] getAll() {
         RSWidget bank = getBankWidget();
         int[] items = bank.getInventoryItems();
         int[] stacks = bank.getInventoryStackSizes();
-        List<BankItem> wrappers = new ArrayList<BankItem>();
+        List<RSWidgetItem> wrappers = new ArrayList<RSWidgetItem>();
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
-                BankItem item = new BankItem(bank, items[i] - 1, stacks[i]);
-                item.slot = i;
+                int col = (i % 8);
+                int row = (i / 8);
+                int x = bank.getX() + (col * 47) + 20;
+                int y = bank.getY() + (row * 38) + 18;
+                Rectangle area =  new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
+                RSWidgetItem item = new RSWidgetItem(area, items[i] - 1, stacks[i]);
                 wrappers.add(item);
             }
         }
-        return wrappers.toArray(new BankItem[wrappers.size()]);
+        return wrappers.toArray(new RSWidgetItem[wrappers.size()]);
     }
 
     /**
      * Checks if the Bank contains a specific item
      *
-     * @param id BankItem to look for
+     * @param id RSWidgetItem to look for
      * @return true if found, otherwise false.
      */
     public static boolean contains(int id) {
-        for (BankItem item : getAll()) {
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id) {
                 return true;
             }
@@ -187,12 +192,12 @@ public final class Bank {
      * Checks if the Bank contains at least the specified amount of the
      * specified item,
      *
-     * @param id     BankItem to count
+     * @param id     RSWidgetItem to count
      * @param amount Minimum amount to pass.
      * @return true if the Bank contains at least the amount specified.
      */
     public static boolean containsMinimum(int id, int amount) {
-        for (BankItem item : getAll()) {
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id && item.getStackSize() >= amount) {
                 return true;
             }
@@ -204,12 +209,12 @@ public final class Bank {
      * Checks if the Bank contains at most the specified amount of the specified
      * item,
      *
-     * @param id     BankItem to count
+     * @param id     RSWidgetItem to count
      * @param amount Maximum amount to pass.
      * @return true if the Bank contains at most the amount specified.
      */
     public static boolean containsMaximum(int id, int amount) {
-        for (BankItem item : getAll()) {
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id && item.getStackSize() <= amount) {
                 return true;
             }
@@ -250,12 +255,12 @@ public final class Bank {
     /**
      * Counts all the items matching the specified ID.
      *
-     * @param id BankItem ID of the items to count
+     * @param id RSWidgetItem ID of the items to count
      * @return total amount of items matching id in Bank.
      */
     public static int count(int id) {
         int count = 0;
-        for (BankItem item : getAll()) {
+        for (RSWidgetItem item : getAll()) {
             if (item.getId() == id) {
                 count += item.getStackSize();
             }
@@ -269,7 +274,7 @@ public final class Bank {
      * @param ids set of IDs to deposit.
      */
     public static void depositAll(int... ids) {
-        Inventory.InventoryItem item = Inventory.get(ids);
+        RSWidgetItem item = Inventory.get(ids);
         do {
             if (item != null && item.applyAction("Store All")) {
                 sleepNoException(500, 1000);
@@ -283,9 +288,9 @@ public final class Bank {
      * @param ids set of IDs to deposit.
      */
     public static void depositAllExcept(final int... ids) {
-        Predicate<Inventory.InventoryItem> not = new Predicate<Inventory.InventoryItem>() {
+        Predicate<RSWidgetItem> not = new Predicate<RSWidgetItem>() {
             @Override
-            public boolean apply(Inventory.InventoryItem object) {
+            public boolean apply(RSWidgetItem object) {
                 boolean match = false;
                 for (int id : ids) {
                     if (object.getId() == id) match = true;
@@ -294,7 +299,7 @@ public final class Bank {
             }
         };
 
-        Inventory.InventoryItem item = Inventory.get(not);
+        RSWidgetItem item = Inventory.get(not);
         do {
             if (item != null && item.applyAction("Store All")) {
                 sleepNoException(500, 1000);
@@ -308,68 +313,10 @@ public final class Bank {
      * @param id ID of the item to deposit.
      */
     public static void deposit(int id) {
-        Inventory.InventoryItem item = Inventory.get(id);
+        RSWidgetItem item = Inventory.get(id);
         if (item != null) {
             item.click(true);
         }
     }
 
-    /**
-     * A class encapsulating Bank items.
-     */
-    public static final class BankItem implements Interactable {
-        private int slot;
-        private int id;
-        private int stackSize;
-        private RSWidget container;
-
-        public BankItem(RSWidget container, int id) {
-            this(container, id, 1);
-        }
-
-        public BankItem(RSWidget container, int id, int stackSize) {
-            this.container = container;
-            this.id = id;
-            this.stackSize = stackSize;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public int getStackSize() {
-            return stackSize;
-        }
-
-        public Rectangle getArea() { // TODO: will only work for the first row?
-            // until we getScrollBarShit
-            int col = (slot % 8);
-            int row = (slot / 8);
-            int x = container.getX() + (col * 47) + 20;
-            int y = container.getY() + (row * 38) + 18;
-            return new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
-        }
-
-        @Override
-        public boolean applyAction(String action) {
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            return Menu.click(action);
-        }
-
-        @Override
-        public boolean hover() {
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            Mouse clientMouse = Context.getClient().getMouse();
-            return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
-        }
-
-        @Override
-        public boolean click(boolean left) {
-            Rectangle area = getArea();
-            VirtualMouse.clickMouse((int) area.getCenterX(), (int) area.getCenterY(), left);
-            return true;
-        }
-    }
 }

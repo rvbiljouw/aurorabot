@@ -1,6 +1,7 @@
 package ms.aurora.api.script;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tobiewarburton
@@ -12,6 +13,10 @@ public abstract class ActionScript extends Script {
 
     public void submit(Action action) {
         this.actions.add(action);
+    }
+
+    public Action[] getActions() {
+        return actions.toArray(new Action[actions.size()]);
     }
 
     public void remove(Action action) {

@@ -1,13 +1,11 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.input.VirtualMouse;
+import ms.aurora.api.wrappers.RSWidgetItem;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -54,10 +52,10 @@ public final class Inventory {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static InventoryItem get(final Predicate<InventoryItem> predicate) {
-        InventoryItem[] inventoryItems = getAll(predicate);
-        if (inventoryItems.length > 0) {
-            return inventoryItems[0];
+    public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
+        RSWidgetItem[] RSWidgetItems = getAll(predicate);
+        if (RSWidgetItems.length > 0) {
+            return RSWidgetItems[0];
         }
         return null;
     }
@@ -65,13 +63,13 @@ public final class Inventory {
     /**
      * Retrieves the first item that matches the specified ID.
      *
-     * @param id InventoryItem ID to look for
+     * @param id RSWidgetItem ID to look for
      * @return item if it was found, otherwise null.
      */
-    public static InventoryItem get(int id) {
-        for (InventoryItem inventoryItem : getAll()) {
-            if (inventoryItem.getId() == id) {
-                return inventoryItem;
+    public static RSWidgetItem get(int id) {
+        for (RSWidgetItem RSWidgetItem : getAll()) {
+            if (RSWidgetItem.getId() == id) {
+                return RSWidgetItem;
             }
         }
         return null;
@@ -80,14 +78,14 @@ public final class Inventory {
     /**
      * Retrieves the first item that matches one od the specified Ids.
      *
-     * @param ids InventoryItem ID to look for
+     * @param ids RSWidgetItem ID to look for
      * @return item if it was found, otherwise null.
      */
-    public static InventoryItem get(int... ids) {
-        for (InventoryItem inventoryItem : getAll()) {
+    public static RSWidgetItem get(int... ids) {
+        for (RSWidgetItem RSWidgetItem : getAll()) {
             for (int id : ids) {
-                if (inventoryItem.getId() == id) {
-                    return inventoryItem;
+                if (RSWidgetItem.getId() == id) {
+                    return RSWidgetItem;
                 }
             }
         }
@@ -100,42 +98,42 @@ public final class Inventory {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static InventoryItem[] getAll(final Predicate<InventoryItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new InventoryItem[0]);
+    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem> predicate) {
+        return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
     }
 
     /**
      * Retrieves all items that match the specified ID.
      *
-     * @param id InventoryItem ID to look for
+     * @param id RSWidgetItem ID to look for
      * @return list of items found, which can be empty.
      */
-    public static InventoryItem[] getAll(int id) {
-        List<InventoryItem> inventoryItems = new ArrayList<InventoryItem>();
-        for (InventoryItem inventoryItem : getAll()) {
-            if (inventoryItem.getId() == id) {
-                inventoryItems.add(inventoryItem);
+    public static RSWidgetItem[] getAll(int id) {
+        List<RSWidgetItem> RSWidgetItems = new ArrayList<RSWidgetItem>();
+        for (RSWidgetItem RSWidgetItem : getAll()) {
+            if (RSWidgetItem.getId() == id) {
+                RSWidgetItems.add(RSWidgetItem);
             }
         }
-        return inventoryItems.toArray(new InventoryItem[inventoryItems.size()]);
+        return RSWidgetItems.toArray(new RSWidgetItem[RSWidgetItems.size()]);
     }
 
     /**
      * Retrieves all items that match the specified IDs.
      *
-     * @param ids InventoryItem IDs to look for
+     * @param ids RSWidgetItem IDs to look for
      * @return list of items found, which can be empty.
      */
-    public static InventoryItem[] getAll(int... ids) {
-        List<InventoryItem> inventoryItems = new ArrayList<InventoryItem>();
-        for (InventoryItem inventoryItem : getAll()) {
+    public static RSWidgetItem[] getAll(int... ids) {
+        List<RSWidgetItem> RSWidgetItems = new ArrayList<RSWidgetItem>();
+        for (RSWidgetItem RSWidgetItem : getAll()) {
             for (int id : ids) {
-                if (inventoryItem.getId() == id) {
-                    inventoryItems.add(inventoryItem);
+                if (RSWidgetItem.getId() == id) {
+                    RSWidgetItems.add(RSWidgetItem);
                 }
             }
         }
-        return inventoryItems.toArray(new InventoryItem[inventoryItems.size()]);
+        return RSWidgetItems.toArray(new RSWidgetItem[RSWidgetItems.size()]);
     }
 
     /**
@@ -143,31 +141,36 @@ public final class Inventory {
      *
      * @return an array containing all items in the inventory.
      */
-    public static InventoryItem[] getAll() {
+    public static RSWidgetItem[] getAll() {
         RSWidget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
-        List<InventoryItem> wrappers = new ArrayList<InventoryItem>();
+        List<ms.aurora.api.wrappers.RSWidgetItem> wrappers = new ArrayList<ms.aurora.api.wrappers.RSWidgetItem>();
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
-                InventoryItem inventoryItem = new InventoryItem(items[i] - 1, stacks[i]);
-                inventoryItem.slot = i;
-                wrappers.add(inventoryItem);
+                int col = (i % 4);
+                int row = (i / 4);
+                int x = 580 + (col * 42);
+                int y = 228 + (row * 36);
+
+                Rectangle area = new Rectangle(x - (36 / 2), y - (32 / 2), 36, 32);
+                ms.aurora.api.wrappers.RSWidgetItem item = new ms.aurora.api.wrappers.RSWidgetItem(area, items[i] - 1, stacks[i]);
+                wrappers.add(item);
             }
         }
-        return wrappers.toArray(new InventoryItem[wrappers.size()]);
+        return wrappers.toArray(new ms.aurora.api.wrappers.RSWidgetItem[wrappers.size()]);
     }
 
     /**
      * Checks if the inventory contains a specific item
      *
-     * @param id InventoryItem to look for
+     * @param id RSWidgetItem to look for
      * @return true if found, otherwise false.
      */
     public static boolean contains(int id) {
-        for (InventoryItem inventoryItem : getAll()) {
-            if (inventoryItem.getId() == id) {
+        for (RSWidgetItem RSWidgetItem : getAll()) {
+            if (RSWidgetItem.getId() == id) {
                 return true;
             }
         }
@@ -178,13 +181,13 @@ public final class Inventory {
      * Checks if the inventory contains at least the
      * specified amount of the specified item,
      *
-     * @param id     InventoryItem to count
+     * @param id     RSWidgetItem to count
      * @param amount Minimum amount to pass.
      * @return true if the inventory contains at least the amount specified.
      */
     public static boolean containsMinimum(int id, int amount) {
-        for (InventoryItem inventoryItem : getAll()) {
-            if (inventoryItem.getId() == id && inventoryItem.getStackSize() >= amount) {
+        for (RSWidgetItem RSWidgetItem : getAll()) {
+            if (RSWidgetItem.getId() == id && RSWidgetItem.getStackSize() >= amount) {
                 return true;
             }
         }
@@ -195,13 +198,13 @@ public final class Inventory {
      * Checks if the inventory contains at most the
      * specified amount of the specified item,
      *
-     * @param id     InventoryItem to count
+     * @param id     RSWidgetItem to count
      * @param amount Maximum amount to pass.
      * @return true if the inventory contains at most the amount specified.
      */
     public static boolean containsMaximum(int id, int amount) {
-        for (InventoryItem inventoryItem : getAll()) {
-            if (inventoryItem.getId() == id && inventoryItem.getStackSize() <= amount) {
+        for (RSWidgetItem RSWidgetItem : getAll()) {
+            if (RSWidgetItem.getId() == id && RSWidgetItem.getStackSize() <= amount) {
                 return true;
             }
         }
@@ -242,14 +245,14 @@ public final class Inventory {
     /**
      * Counts all the items matching the specified ID.
      *
-     * @param id InventoryItem ID of the items to count
+     * @param id RSWidgetItem ID of the items to count
      * @return total amount of items matching id in inventory.
      */
     public static int count(int id) {
         int count = 0;
-        for (InventoryItem inventoryItem : getAll()) {
-            if (inventoryItem.getId() == id) {
-                count += inventoryItem.getStackSize();
+        for (RSWidgetItem RSWidgetItem : getAll()) {
+            if (RSWidgetItem.getId() == id) {
+                count += RSWidgetItem.getStackSize();
             }
         }
         return count;
@@ -261,7 +264,7 @@ public final class Inventory {
      * @param id ID of the item to drop.
      */
     public static void dropItem(int id) {
-        InventoryItem firstMatch = get(id);
+        RSWidgetItem firstMatch = get(id);
         if (firstMatch != null) {
             firstMatch.applyAction("Drop");
         }
@@ -273,8 +276,8 @@ public final class Inventory {
      * @param id ID of the item to drop.
      */
     public static void dropAll(int id) {
-        InventoryItem[] matches = getAll(id);
-        for (InventoryItem match : matches) {
+        RSWidgetItem[] matches = getAll(id);
+        for (RSWidgetItem match : matches) {
             match.applyAction("Drop");
         }
     }
@@ -296,14 +299,14 @@ public final class Inventory {
      * @param ids A var-args list of items to exclude from dropping.
      */
     public static void dropAllExcept(int... ids) {
-        for (InventoryItem inventoryItem : getAll()) {
+        for (RSWidgetItem RSWidgetItem : getAll()) {
             boolean drop = true;
             for (int id : ids) {
-                if (inventoryItem.getId() == id) drop = false;
+                if (RSWidgetItem.getId() == id) drop = false;
             }
 
             if (drop) {
-                inventoryItem.applyAction("Drop");
+                RSWidgetItem.applyAction("Drop");
             }
         }
     }
@@ -315,10 +318,10 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOnAll(int id, int targetId) {
-        InventoryItem main = get(id);
+        RSWidgetItem main = get(id);
         if (main != null) {
-            InventoryItem[] targets = getAll(targetId);
-            for (InventoryItem target : targets) {
+            RSWidgetItem[] targets = getAll(targetId);
+            for (RSWidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click(true);
@@ -338,10 +341,10 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public void useItemOn(int id, int targetId) {
-        InventoryItem main = get(id);
+        RSWidgetItem main = get(id);
         if (main != null) {
-            InventoryItem[] targets = getAll(targetId);
-            for (InventoryItem target : targets) {
+            RSWidgetItem[] targets = getAll(targetId);
+            for (RSWidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click(true);
@@ -354,67 +357,4 @@ public final class Inventory {
             }
         }
     }
-
-    /**
-     * A class encapsulating inventory items.
-     */
-    public static final class InventoryItem implements Interactable {
-        private int slot;
-        private int id;
-        private int stackSize;
-
-        public InventoryItem(int id) {
-            this(id, 1);
-        }
-
-        public InventoryItem(int id, int stackSize) {
-            this.id = id;
-            this.stackSize = stackSize;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public int getStackSize() {
-            return stackSize;
-        }
-
-        public Rectangle getArea() {
-            int col = (slot % 4);
-            int row = (slot / 4);
-            int x = 580 + (col * 42);
-            int y = 228 + (row * 36);
-
-            return new Rectangle(x - (36 / 2), y - (32 / 2), 36, 32);
-        }
-
-        @Override
-        public boolean applyAction(String action) {
-            Tabs.openTab(Tabs.Tab.INVENTORY);
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            boolean result = Menu.click(action);
-            sleepNoException(200, 300);
-            return result;
-        }
-
-        @Override
-        public boolean hover() {
-            Tabs.openTab(Tabs.Tab.INVENTORY);
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            return true;
-        }
-
-        @Override
-        public boolean click(boolean left) {
-            Tabs.openTab(Tabs.Tab.INVENTORY);
-            Rectangle area = getArea();
-            VirtualMouse.moveMouse((int) area.getCenterX(), (int) area.getCenterY());
-            VirtualMouse.clickMouse(left);
-            return true;
-        }
-    }
-
 }

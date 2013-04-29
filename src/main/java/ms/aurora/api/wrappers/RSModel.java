@@ -129,9 +129,9 @@ public final class RSModel {
         int random = random(1, 20);
         if (random < 18) {
             hull = targetArray[0];
-            if (random < 15) {
+            if (random < 17) {
                 hull = targetArray[1];
-                if (random < 12) {
+                if (random < 15) {
                     hull = targetArray[2];
                 }
             }
