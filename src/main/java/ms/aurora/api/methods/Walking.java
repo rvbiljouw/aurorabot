@@ -76,14 +76,17 @@ public final class Walking {
      *
      * @param tile tile to click
      */
-    public static void clickOnScreen(RSTile tile) {
+    public static boolean clickOnScreen(RSTile tile) {
+        boolean success = false;
         Point screenPoint = Viewport.convert(tile);
         if (screenPoint.x != -1 && screenPoint.y != -1) {
             VirtualMouse.moveMouse(screenPoint.x, screenPoint.y);
             VirtualMouse.clickMouse(true);
             Utilities.sleepNoException(700);
             Utilities.sleepWhile(WALKING(tile, 5));
+            success = true;
         }
+        return success;
     }
 
     /**
