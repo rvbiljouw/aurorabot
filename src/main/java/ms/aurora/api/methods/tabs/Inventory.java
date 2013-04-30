@@ -362,7 +362,7 @@ public final class Inventory {
      * @param id       ID of the main item
      * @param targetId ID of the target item
      */
-    public void useItemOn(int id, int targetId) {
+    public static void useItemOn(int id, int targetId) {
         RSWidgetItem main = get(id);
         if (main != null) {
             RSWidgetItem[] targets = getAll(targetId);
@@ -376,6 +376,33 @@ public final class Inventory {
                 }
                 sleepNoException(100, 120);
                 return;
+            }
+        }
+    }
+
+
+    public static void dropAllColumn(Predicate<RSWidgetItem>... predicates) {
+        for (int i = 1; i <= 4; i++) {
+            dropColumn(i, predicates);
+        }
+    }
+
+    public static void dropColumn(int column, Predicate<RSWidgetItem>... predicates) {
+        if (column >= 1 && column <= 4) {
+            RSWidgetItem[] all = _getAll();
+            for (int i = 0; i < all.length; i++) {
+                RSWidgetItem item = all[i];
+                if ((i % column) == 0 && item != null) {
+                    boolean drop = true;
+                    for (Predicate<RSWidgetItem> predicate : predicates) {
+                        if (!predicate.apply(item)) {
+                            drop = false;
+                        }
+                    }
+                    if (drop) {
+                        item.applyAction("Drop");
+                    }
+                }
             }
         }
     }
