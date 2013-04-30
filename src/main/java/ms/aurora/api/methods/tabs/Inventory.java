@@ -150,23 +150,23 @@ public final class Inventory {
         RSWidget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
-        List<ms.aurora.api.wrappers.RSWidgetItem> wrappers = new ArrayList<ms.aurora.api.wrappers.RSWidgetItem>();
+        List<RSWidgetItem> wrappers = new ArrayList<RSWidgetItem>();
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
                 int col = (i % 4);
                 int row = (i / 4);
-                int x = 580 + (col * 42);
-                int y = 228 + (row * 36);
+                int x = inventory.getX() + (col * 42);
+                int y = inventory.getY() + (row * 36);
 
-                Rectangle area = new Rectangle(x - (36 / 2), y - (32 / 2), 36, 32);
-                ms.aurora.api.wrappers.RSWidgetItem item = new ms.aurora.api.wrappers.RSWidgetItem(area, items[i] - 1, stacks[i]);
+                Rectangle area = new Rectangle(x, y, 31, 31);
+                RSWidgetItem item = new RSWidgetItem(area, items[i] - 1, stacks[i]);
                 wrappers.add(item);
             } else {
                 wrappers.add(null);
             }
         }
-        return wrappers.toArray(new ms.aurora.api.wrappers.RSWidgetItem[wrappers.size()]);
+        return wrappers.toArray(new RSWidgetItem[wrappers.size()]);
     }
 
     public static RSWidgetItem[] getAll() {
