@@ -126,13 +126,17 @@ public class RSMap implements TileBasedMap {
 
     static {
         try {
+            File tileFile = new File("tiles.dat");
+            if (!tileFile.exists()) {
+                tileFile.createNewFile();
+            }
             for (int x = 0; x < CLIPPING_MASKS.length; x++) {
                 for (int y = 0; y < CLIPPING_MASKS[x].length; y++) {
                     CLIPPING_MASKS[x][y] = -128;
                 }
             }
 
-            DataInputStream in = new DataInputStream(new FileInputStream(new File("tiles.dat")));
+            DataInputStream in = new DataInputStream(new FileInputStream(tileFile));
             while (in.available() > 0 && in.readByte() == 0) {
                 int rx = in.readInt();
                 int ry = in.readInt();
