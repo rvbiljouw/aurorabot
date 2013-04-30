@@ -1,7 +1,5 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
-import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Npcs;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Widgets;
@@ -12,8 +10,6 @@ import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetItem;
-import ms.aurora.input.VirtualMouse;
-import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -165,7 +161,7 @@ public final class Bank {
                 int row = (i / 8);
                 int x = bank.getX() + (col * 47) + 20;
                 int y = bank.getY() + (row * 38) + 18;
-                Rectangle area =  new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
+                Rectangle area = new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
                 RSWidgetItem item = new RSWidgetItem(area, items[i] - 1, stacks[i]);
                 wrappers.add(item);
             }
@@ -275,11 +271,12 @@ public final class Bank {
      */
     public static void depositAll(int... ids) {
         RSWidgetItem item = Inventory.get(ids);
-        do {
-            if (item != null && item.applyAction("Store All")) {
-                sleepNoException(500, 1000);
-            }
-        } while ((item = Inventory.get(ids)) != null);
+        if (item != null && item.applyAction("Store All")) {
+            sleepNoException(500, 1000);
+        }
+        if (Inventory.get(ids) != null) {
+            depositAll(ids);
+        }
     }
 
     /**
@@ -300,11 +297,12 @@ public final class Bank {
         };
 
         RSWidgetItem item = Inventory.get(not);
-        do {
-            if (item != null && item.applyAction("Store All")) {
-                sleepNoException(500, 1000);
-            }
-        } while ((item = Inventory.get(not)) != null);
+        if (item != null && item.applyAction("Store All")) {
+            sleepNoException(500, 1000);
+        }
+        if (Inventory.get(not) != null) {
+            depositAllExcept(ids);
+        }
     }
 
     /**
