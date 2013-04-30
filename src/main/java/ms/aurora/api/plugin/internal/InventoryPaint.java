@@ -18,6 +18,7 @@ public class InventoryPaint implements PaintListener {
             Rectangle loc = item.getArea();
             graphics.drawString(String.valueOf(item.getId()),
                     loc.x + 3, loc.y + 3);
+            graphics.drawRect(loc.x, loc.y, loc.width, loc.height);
         }
     }
 
