@@ -137,12 +137,16 @@ public final class Inventory {
         return items.toArray(new RSWidgetItem[items.size()]);
     }
 
+    public static RSWidgetItem getItemAt(int slot) {
+        return _getAll()[slot - 1]; // -1 because java arrays start at 0!
+    }
+
     /**
      * Retrieves all the items in the inventory
      *
      * @return an array containing all items in the inventory.
      */
-    public static RSWidgetItem[] getAll() {
+    private static RSWidgetItem[] _getAll() {
         RSWidget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
@@ -158,9 +162,20 @@ public final class Inventory {
                 Rectangle area = new Rectangle(x - (36 / 2), y - (32 / 2), 36, 32);
                 ms.aurora.api.wrappers.RSWidgetItem item = new ms.aurora.api.wrappers.RSWidgetItem(area, items[i] - 1, stacks[i]);
                 wrappers.add(item);
+            } else {
+                wrappers.add(null);
             }
         }
         return wrappers.toArray(new ms.aurora.api.wrappers.RSWidgetItem[wrappers.size()]);
+    }
+
+    public static RSWidgetItem[] getAll() {
+        return ArrayUtils.filter(_getAll(), new Predicate<RSWidgetItem>() {
+            @Override
+            public boolean apply(RSWidgetItem object) {
+                return object != null;
+            }
+        }).toArray(new RSWidgetItem[]{});
     }
 
     /**
