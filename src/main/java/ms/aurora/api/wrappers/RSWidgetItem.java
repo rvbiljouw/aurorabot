@@ -36,10 +36,12 @@ public class RSWidgetItem implements Interactable {
         return stackSize;
     }
 
-    private Point getRandomPoint() {
-        int x = Utilities.random(area.x, area.x + area.width);
-        int y = Utilities.random(area.y, area.y + area.height);
-        return new Point(x, y);
+    private Point getRandomPoint() { // TODO - fix to make it random
+        int x = area.x + Utilities.random(0, area.width);
+        int y = area.y + Utilities.random(0, area.height);
+        Point p = new Point(x, y);
+        System.out.println(p);
+        return p; //new Point((int) area.getCenterX(), (int) area.getCenterY());
     }
 
     @Override

@@ -86,8 +86,8 @@ public class DraynorShrimper extends Script implements PaintListener {
                     break;
 
                 case WALK_TO_FISH:
-                    //Walking.walkPath(FISH_PATH);
-                    Walking.walkTo(FISHING_TILE);
+                    Walking.traverse(FISH_PATH, Walking.FORWARDS);
+                    //Walking.walkTo(FISHING_TILE);
                     break;
 
                 case FISH:
@@ -102,8 +102,8 @@ public class DraynorShrimper extends Script implements PaintListener {
                     break;
 
                 case WALK_TO_BANK:
-                    //Walking.walkPath(BANK_PATH);
-                    Walking.walkTo(BANK_TILE);
+                    Walking.traverse(FISH_PATH, Walking.BACKWARDS);
+                    //Walking.walkTo(BANK_TILE);
                     break;
 
             }
