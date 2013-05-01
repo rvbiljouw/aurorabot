@@ -88,7 +88,7 @@ public final class Application {
     }
 
     private static void initialize() {
-        Maps.obtainMap();
         Hooks.obtainHooks();
+        Maps.obtainMap();
     }
 }

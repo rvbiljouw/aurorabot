@@ -116,7 +116,7 @@ public final class Walking {
      */
     public static RSTile getNext(RSTile[] path) {
         for (int i = (path.length - 1); i > -1; i--) {
-            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
+            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 7) {
                 return path[i];
             }
         }
@@ -130,7 +130,7 @@ public final class Walking {
      */
     public static RSTile getPrevious(RSTile[] path) {
         for (int i = 0; i < path.length; i++) {
-            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 14) {
+            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 7) {
                 return path[i];
             }
         }
@@ -152,7 +152,7 @@ public final class Walking {
                 tile = getPrevious(path);
                 break;
         }
-        if (tile == null || Calculations.distance(tile, Players.getLocal().getLocation()) < 3) {
+        if (tile == null || Calculations.distance(tile, Players.getLocal().getLocation()) < 5) {
             return;
         }
         Walking.clickOnMap(tile);
