@@ -16,6 +16,7 @@ import static ms.aurora.api.methods.Widgets.getWidget;
 public class Context {
     private static final Map<ThreadGroup, Context> contextMap = new HashMap<ThreadGroup, Context>();
     private static final Logger logger = Logger.getLogger(Context.class);
+    private final Map<String, String> properties = new HashMap<String, String>();
     private ThreadGroup threadGroup;
     private Session session;
 
@@ -27,6 +28,11 @@ public class Context {
         threadGroup = session.getThreadGroup();
         contextMap.put(session.getThreadGroup(), this);
         this.session = session;
+        setDefaults();
+    }
+
+    private void setDefaults() {
+        properties.put("interaction.walkTo", "true");
     }
 
     public static Client getClient() {
@@ -60,6 +66,19 @@ public class Context {
             return contextMap.get(tg);
         }
         return null;
+    }
+
+    public static void setProperty(String key, Object value) {
+        Context instance = get();
+        if(instance.properties.containsKey(key)) {
+            instance.properties.remove(key);
+        }
+        instance.properties.put(key, value.toString());
+    }
+
+    public static String getProperty(String key) {
+        Context instance = get();
+        return instance.properties.get(key);
     }
 
     public ThreadGroup getThreadGroup() {

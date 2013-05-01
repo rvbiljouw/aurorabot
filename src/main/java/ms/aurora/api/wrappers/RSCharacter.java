@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 
+import static ms.aurora.api.Context.getProperty;
 import static ms.aurora.input.VirtualMouse.moveMouse;
 
 
@@ -58,11 +59,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final int getX() {
-        return ctx.getClient().getBaseX() + (getLocalX() >> 7);
+        return Context.getClient().getBaseX() + (getLocalX() >> 7);
     }
 
     public final int getY() {
-        return ctx.getClient().getBaseY() + (getLocalY() >> 7);
+        return Context.getClient().getBaseY() + (getLocalY() >> 7);
     }
 
     public final int getLocalX() {
@@ -83,11 +84,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
             return null;
         } else if (interacting < 32767) {
             return new RSNPC(ctx,
-                    ctx.getClient().getAllNpcs()[interacting]);
+                    Context.getClient().getAllNpcs()[interacting]);
         } else if (interacting >= 32767) {
             int index = (interacting - 32767);
             return new RSPlayer(ctx,
-                    ctx.getClient().getAllPlayers()[index]);
+                    Context.getClient().getAllPlayers()[index]);
         }
         return null;
     }
@@ -105,7 +106,9 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      */
     public final boolean applyAction(final String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.clickOnMap(getLocation());
+            if (getProperty("interaction.walkTo").equals("true")) {
+                Walking.clickOnMap(getLocation());
+            }
             return false;
         }
 
