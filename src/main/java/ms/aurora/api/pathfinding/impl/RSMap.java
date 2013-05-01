@@ -2,10 +2,6 @@ package ms.aurora.api.pathfinding.impl;
 
 import ms.aurora.api.pathfinding.TileBasedMap;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-
 /**
  * @author rvbiljouw
  */
@@ -123,43 +119,5 @@ public class RSMap implements TileBasedMap {
     public void pathFinderVisited(int x, int y) {
         visited[x][y] = true;
     }
-
-    static {
-        try {
-            File tileFile = new File("tiles.dat");
-            if (!tileFile.exists()) {
-                tileFile.createNewFile();
-            }
-            for (int x = 0; x < CLIPPING_MASKS.length; x++) {
-                for (int y = 0; y < CLIPPING_MASKS[x].length; y++) {
-                    CLIPPING_MASKS[x][y] = -128;
-                }
-            }
-
-            DataInputStream in = new DataInputStream(new FileInputStream(tileFile));
-            while (in.available() > 0 && in.readByte() == 0) {
-                int rx = in.readInt();
-                int ry = in.readInt();
-                int len = in.readInt();
-                for (int i = 0; i < len; i++) {
-                    int sublen = in.readInt();
-                    for (int j = 0; j < sublen; j++) {
-                        int mask = in.readInt();
-                        if ((mask & (BLOCKED | INVALID)) != 0) {
-                            CLIPPING_MASKS[rx + i][ry + j] = -128;
-                        } else {
-                            CLIPPING_MASKS[rx + i][ry + j] = (byte) mask;
-                        }
-                    }
-                }
-                System.out.println("Loaded " + rx + ", " + ry);
-            }
-            System.out.println("Loading completed.");
-            in.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Failure loading map data.", e);
-        }
-    }
-
 
 }

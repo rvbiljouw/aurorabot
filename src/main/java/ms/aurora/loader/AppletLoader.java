@@ -1,5 +1,6 @@
 package ms.aurora.loader;
 
+import ms.aurora.api.util.Utilities;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
 import ms.aurora.browser.ContextBuilder;
@@ -39,6 +40,10 @@ public final class AppletLoader implements Runnable {
 
         AppletStubImpl appletStub = new AppletStubImpl(clientConfig);
         try {
+            while(Hooks.getHooks() == null) {
+                Utilities.sleepNoException(100, 300);
+            }
+
             URL jarURL = new URL("jar:" + clientConfig.getDocumentBase()
                     + clientConfig.getArchiveName() + "!/");
             JarURLConnection jarConnection = (JarURLConnection) jarURL.openConnection();

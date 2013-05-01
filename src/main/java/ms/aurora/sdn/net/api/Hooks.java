@@ -19,7 +19,6 @@ public class Hooks {
     }
 
     public static synchronized void setHooks(ClientDefinition aDefinition) {
-        System.out.println("Set hooks");
         definition = aDefinition;
     }
 }
