@@ -3,7 +3,9 @@ package ms.aurora.sdn;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
+import ms.aurora.sdn.net.impl.HookPacketHandler;
 import ms.aurora.sdn.net.impl.LoginPacketHandler;
+import ms.aurora.sdn.net.impl.MapDataPacketHandler;
 import ms.aurora.sdn.net.impl.UpdatePacketHandler;
 import org.apache.log4j.Logger;
 
@@ -38,14 +40,11 @@ public class SDNConnection implements Runnable {
 
     public void start() {
         try {
-            logger.info("Attempting to connect.");
-            socket = new Socket("208.94.241.76", 443);
+            socket = new Socket("localhost", 8080);
             socket.setSoTimeout(1000);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
-            logger.info("Connection established.");
-
             self = new Thread(this);
             self.start();
         } catch (IOException e) {
@@ -62,11 +61,12 @@ public class SDNConnection implements Runnable {
         try {
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
+            packetHandlers.add(new MapDataPacketHandler());
+            packetHandlers.add(new HookPacketHandler());
+
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
                     IncomingPacket packet = new IncomingPacket(dis.readInt(), dis);
-                    logger.info("Received " + packet.getOpcode());
-
                     for (PacketHandler handler : packetHandlers) {
                         if (handler.getOpcode() == packet.getOpcode()) {
                             handler.handle(packet);
@@ -94,7 +94,6 @@ public class SDNConnection implements Runnable {
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
             dos.flush();
-            logger.info("Wrote package " + packet.getOpcode());
         } catch (Exception e) {
             e.printStackTrace();
         }

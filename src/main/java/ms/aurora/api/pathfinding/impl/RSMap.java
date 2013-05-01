@@ -21,8 +21,8 @@ public class RSMap implements TileBasedMap {
     private static final int DIRECTION_SOUTH = 0x20;
     private static final int DIRECTION_SOUTHWEST = 0x40;
     private static final int DIRECTION_WEST = 0x80;
-    private static final int BLOCKED = 0x100;
-    private static final int INVALID = 0x200000 | 0x40000;
+    public static final int BLOCKED = 0x100;
+    public static final int INVALID = 0x200000 | 0x40000;
 
     private static final int WALL_NORTH_WEST = 0x1;
     private static final int WALL_NORTH = 0x2;

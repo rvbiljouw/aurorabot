@@ -3,12 +3,14 @@ package ms.aurora;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.api.pathfinding.impl.RSMap;
 import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.SDNConnection;
+import ms.aurora.sdn.net.api.Hooks;
+import ms.aurora.sdn.net.api.Maps;
+import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
 
@@ -32,13 +34,14 @@ public final class Application {
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
-        new RSMap();
         boot();
     }
 
     public static void boot() {
         new JFXPanel();
         SDNConnection.getInstance().start();
+        Versioning.checkForUpdates();
+
         LOGIN_WINDOW = new LoginWindow();
         LOGIN_WINDOW.display();
     }
@@ -75,11 +78,17 @@ public final class Application {
                         }
                         mainFrame.setResizable(false);
                         mainFrame.setVisible(true);
+                        initialize();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private static void initialize() {
+        Maps.obtainMap();
+        Hooks.obtainHooks();
     }
 }

@@ -5,7 +5,7 @@ import ms.aurora.browser.Context;
 import ms.aurora.browser.ContextBuilder;
 import ms.aurora.loader.exception.AppletInitialisationException;
 import ms.aurora.loader.web.ClientConfig;
-import ms.aurora.loader.web.ClientDefinitionJSON;
+import ms.aurora.sdn.net.api.Hooks;
 import ms.aurora.transform.TransformingClassLoader;
 
 import java.applet.Applet;
@@ -36,9 +36,6 @@ public final class AppletLoader implements Runnable {
     public void run() {
         ClientConfig clientConfig = new ClientConfig(browser);
         clientConfig.visit();
-        browser.setContext(ContextBuilder.get().domain("hookers.aurora.ms").build());
-        ClientDefinitionJSON definitionJSON = new ClientDefinitionJSON(browser);
-        definitionJSON.visit();
 
         AppletStubImpl appletStub = new AppletStubImpl(clientConfig);
         try {
@@ -46,7 +43,7 @@ public final class AppletLoader implements Runnable {
                     + clientConfig.getArchiveName() + "!/");
             JarURLConnection jarConnection = (JarURLConnection) jarURL.openConnection();
             final ClassLoader classLoader = new TransformingClassLoader(
-                    definitionJSON.getDefinition(), jarConnection.getJarFile());
+                    Hooks.getHooks(), jarConnection.getJarFile());
 
             Class<?> appletClass = classLoader.loadClass(clientConfig
                     .getMainClass());

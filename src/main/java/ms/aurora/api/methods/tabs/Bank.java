@@ -1,5 +1,6 @@
 package ms.aurora.api.methods.tabs;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.Npcs;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Widgets;
@@ -70,7 +71,10 @@ public final class Bank {
             }
         }
         logger.info("Clicking bank");
+        String originalProperty = Context.getProperty("interaction.walkTo");
+        Context.setProperty("interaction.walkTo", "false");
         bank.applyAction("Bank(.*)Bank");
+        Context.setProperty("interaction.walkTo", originalProperty);
         return isOpen();
     }
 

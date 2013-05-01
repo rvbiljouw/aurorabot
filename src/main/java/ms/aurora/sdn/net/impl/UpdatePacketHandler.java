@@ -2,12 +2,8 @@ package ms.aurora.sdn.net.impl;
 
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.PacketHandler;
-import ms.aurora.sdn.net.api.Versioning;
 
 import javax.swing.*;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static ms.aurora.Application.logger;
@@ -30,26 +26,9 @@ public class UpdatePacketHandler implements PacketHandler {
                 break;
 
             case 1:
-                logger.info("Update available.");
-                handleUpdate(Versioning.FILE, incomingPacket.getStream());
+                JOptionPane.showMessageDialog(null, "This release is disabled.\nA new release is available from http://www.aurora.ms !");
+                System.exit(0);
                 break;
         }
-    }
-
-    private void handleUpdate(File file, DataInputStream dis) throws IOException {
-        FileOutputStream fos = new FileOutputStream(file);
-        long fileSize = dis.readLong();
-        long totalRead = 0;
-        int read = 0;
-        byte[] buffer = new byte[256];
-        while (totalRead != fileSize) {
-            read = dis.read(buffer);
-            totalRead += read;
-            fos.write(buffer, 0, read);
-        }
-        fos.flush();
-        fos.close();
-        JOptionPane.showMessageDialog(null, "The client was updated, please re-start!");
-        System.exit(0);
     }
 }
