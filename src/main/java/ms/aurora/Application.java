@@ -69,11 +69,11 @@ public final class Application {
                     synchronized (initialisation_lock) {
                         initialisation_lock.wait();
                         String name = System.getProperty("os.name");
-                        if(name.toLowerCase().contains("win")) {
+                        /*if(name.toLowerCase().contains("win")) {
                             mainFrame.setSize(765, 620);
                         } else {
                             mainFrame.setSize(765, 590);
-                        }
+                        }*/
                         mainFrame.pack();
                         mainFrame.setResizable(false);
                         mainFrame.setVisible(true);
