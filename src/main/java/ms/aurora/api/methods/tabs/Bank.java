@@ -28,7 +28,7 @@ public final class Bank {
     private static final int BANK_CLOSE_ID = 104;
 
     private static final int[] BANK_NPCS = {56, 56, 494, 495, 496};
-    private static final int[] BANK_OBJECTS = {2213, 25808};
+    private static final int[] BANK_OBJECTS = {2213, 25808, 11758};
 
     /**
      * Retrieves the bank widget

@@ -14,6 +14,10 @@ public final class Utilities {
         return (int) (min + (Math.random() * max));
     }
 
+    public static double random(double min, double max) {
+        return (min + (Math.random() * max));
+    }
+
     public static void sleepNoException(int ms) {
         try {
             Thread.sleep(ms);

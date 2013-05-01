@@ -1,16 +1,16 @@
 package ms.aurora.input.algorithm;
 
-import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.MousePathGenerator;
 
 import java.awt.*;
 
 /**
  * @author rvbiljouw
  */
-public class StraightLineAlgorithm implements VirtualMouse.MousePathAlgorithm {
+public class StraightLineGenerator implements MousePathGenerator {
 
     @Override
-    public Point[] generatePath(Point origin, Point dest) {
+    public Point[] generate(Point origin, Point dest) {
         double dist = origin.distance(dest);
         double xStep = (dest.x - origin.x) / dist;
         double yStep = (dest.y - origin.y) / dist;

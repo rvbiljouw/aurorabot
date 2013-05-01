@@ -1,6 +1,6 @@
 package ms.aurora.input.algorithm;
 
-import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.MousePathGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ import java.util.List;
  * @author Benland100
  * @author Rick
  */
-public final class BezierAlgorithm implements VirtualMouse.MousePathAlgorithm {
+public final class BezierGenerator implements MousePathGenerator {
     private java.util.Random random = new java.util.Random();
 
-    public Point[] generatePath(Point start, Point dest) {
+    public Point[] generate(Point start, Point dest) {
         return generateSpline(generateControls(start.x,
                 start.y, dest.x + random.nextInt(2),
                 dest.y + random.nextInt(2), 50, 120));

@@ -125,7 +125,8 @@ public final class RSObject implements Locatable, Interactable {
     @Override
     public final boolean click(boolean left) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
+            //Walking.walkTo(getLocation());
+            Walking.clickOnMap(getLocation());
             return false;
         }
         Point screen = getClickLocation();

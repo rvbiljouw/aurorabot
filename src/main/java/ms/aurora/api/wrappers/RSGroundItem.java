@@ -89,7 +89,8 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
+            //Walking.walkTo(getLocation());
+            Walking.clickOnMap(getLocation());
             return false;
         }
         Point screen = getScreenLocation();
@@ -106,7 +107,8 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean hover() {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
+            //Walking.walkTo(getLocation());
+            Walking.clickOnMap(getLocation());
             return false;
         }
         Point screen = getScreenLocation();
@@ -123,7 +125,8 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean click(boolean left) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.walkTo(getLocation());
+            //Walking.walkTo(getLocation());
+            Walking.clickOnMap(getLocation());
             return false;
         }
         Point screen = getScreenLocation();
