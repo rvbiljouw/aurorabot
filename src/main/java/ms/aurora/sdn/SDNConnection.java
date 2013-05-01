@@ -40,7 +40,7 @@ public class SDNConnection implements Runnable {
 
     public void start() {
         try {
-            socket = new Socket("localhost", 8080);
+            socket = new Socket("208.94.241.76", 443);
             socket.setSoTimeout(1000);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
