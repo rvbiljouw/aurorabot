@@ -63,7 +63,7 @@
             <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="85.0" text="Play" />
             <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="85.0" text="Pause" />
             <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="402.0" HBox.hgrow="ALWAYS" />
-            <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="Mouse" />
+            <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="Input" />
           </children>
         </HBox>
       </items>
