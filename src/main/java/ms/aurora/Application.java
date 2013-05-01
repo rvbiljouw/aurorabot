@@ -74,6 +74,7 @@ public final class Application {
                         } else {
                             mainFrame.setSize(765, 590);
                         }
+                        mainFrame.pack();
                         mainFrame.setResizable(false);
                         mainFrame.setVisible(true);
                     }
