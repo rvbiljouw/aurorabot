@@ -1,7 +1,6 @@
 package ms.aurora.sdn.net.packet;
 
 import ms.aurora.sdn.net.OutgoingPacket;
-import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.sdn.net.encode.MD5;
 
 import java.io.File;
@@ -26,7 +25,6 @@ public class UpdateRequest extends OutgoingPacket {
     public void prepare() throws IOException {
         try {
             String digest = MD5.digest(file);
-            getStream().writeInt(2);
             getStream().writeUTF(digest);
             getStream().flush();
         } catch (Exception e) {
