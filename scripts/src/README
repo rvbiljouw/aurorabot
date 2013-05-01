@@ -1,1 +1,0 @@
-JAR all the resulting classes up or the bot won't be able to deal with them ;)
