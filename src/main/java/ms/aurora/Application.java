@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import ms.aurora.api.pathfinding.impl.RSMap;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.core.model.Account;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
@@ -69,12 +68,11 @@ public final class Application {
                     synchronized (initialisation_lock) {
                         initialisation_lock.wait();
                         String name = System.getProperty("os.name");
-                        /*if(name.toLowerCase().contains("win")) {
+                        if (name.toLowerCase().contains("win")) {
                             mainFrame.setSize(765, 620);
                         } else {
-                            mainFrame.setSize(765, 590);
-                        }*/
-                        mainFrame.pack();
+                            mainFrame.pack();
+                        }
                         mainFrame.setResizable(false);
                         mainFrame.setVisible(true);
                     }
