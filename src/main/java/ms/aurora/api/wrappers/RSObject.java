@@ -11,6 +11,8 @@ import ms.aurora.rt3.*;
 
 import java.awt.*;
 
+import static ms.aurora.api.Context.getProperty;
+
 /**
  * @author Rick
  */
@@ -22,7 +24,7 @@ public final class RSObject implements Locatable, Interactable {
     private int localX;
     private int localY;
 
-    public static enum ObjectType { GROUND_DECORATION, WALL_DECORATION, WALL_OBJECT, ANIMABLE, NULL }
+    public static enum ObjectType {GROUND_DECORATION, WALL_DECORATION, WALL_OBJECT, ANIMABLE, NULL}
 
     public RSObject(Context ctx, GameObject wrapped, int localX, int localY) {
         this.ctx = ctx;
@@ -53,11 +55,11 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final int getX() {
-        return (getLocalX() >> 7) + ctx.getClient().getBaseX();
+        return (getLocalX() >> 7) + Context.getClient().getBaseX();
     }
 
     public final int getY() {
-        return (getLocalY() >> 7) + ctx.getClient().getBaseY();
+        return (getLocalY() >> 7) + Context.getClient().getBaseY();
     }
 
     public ObjectType getObjectType() {
@@ -99,7 +101,9 @@ public final class RSObject implements Locatable, Interactable {
      */
     public final boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            Walking.clickOnMap(getLocation());
+            if (getProperty("interaction.walkTo").equals("true")) {
+                Walking.clickOnMap(getLocation());
+            }
             return false;
         }
 
@@ -125,8 +129,9 @@ public final class RSObject implements Locatable, Interactable {
     @Override
     public final boolean click(boolean left) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            //Walking.walkTo(getLocation());
-            Walking.clickOnMap(getLocation());
+            if (getProperty("interaction.walkTo").equals("true")) {
+                Walking.clickOnMap(getLocation());
+            }
             return false;
         }
         Point screen = getClickLocation();

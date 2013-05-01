@@ -10,8 +10,11 @@ import ms.aurora.rt3.Item;
 
 import java.awt.*;
 
+import static ms.aurora.api.Context.getProperty;
+
 /**
  * Wrapper for ground items.
+ *
  * @author tobiewarburton
  */
 public final class RSGroundItem implements Locatable, Interactable {
@@ -54,11 +57,11 @@ public final class RSGroundItem implements Locatable, Interactable {
     }
 
     public int getX() {
-        return getLocalX() + ctx.getClient().getBaseX();
+        return getLocalX() + Context.getClient().getBaseX();
     }
 
     public int getY() {
-        return getLocalY() + ctx.getClient().getBaseY();
+        return getLocalY() + Context.getClient().getBaseY();
     }
 
     @Override
@@ -89,8 +92,9 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            //Walking.walkTo(getLocation());
-            Walking.clickOnMap(getLocation());
+            if (getProperty("interaction.walkTo").equals("true")) {
+                Walking.clickOnMap(getLocation());
+            }
             return false;
         }
         Point screen = getScreenLocation();
@@ -107,8 +111,6 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean hover() {
         if (!Viewport.tileOnScreen(getLocation())) {
-            //Walking.walkTo(getLocation());
-            Walking.clickOnMap(getLocation());
             return false;
         }
         Point screen = getScreenLocation();
@@ -125,8 +127,9 @@ public final class RSGroundItem implements Locatable, Interactable {
     @Override
     public boolean click(boolean left) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            //Walking.walkTo(getLocation());
-            Walking.clickOnMap(getLocation());
+            if (getProperty("interaction.walkTo").equals("true")) {
+                Walking.clickOnMap(getLocation());
+            }
             return false;
         }
         Point screen = getScreenLocation();
