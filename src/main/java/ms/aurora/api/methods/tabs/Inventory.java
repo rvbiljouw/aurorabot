@@ -4,6 +4,8 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
+import ms.aurora.api.util.StatePredicate;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetItem;
 
@@ -289,27 +291,27 @@ public final class Inventory {
     }
 
     /**
-     * Drops all items with the specified ID.
-     *
-     * @param id ID of the item to drop.
-     */
-    public static void dropAll(int id) {
-        RSWidgetItem[] matches = getAll(id);
-        for (RSWidgetItem match : matches) {
-            match.applyAction("Drop");
-        }
-    }
-
-    /**
      * Drops all items matching any of the IDs specified.
      *
      * @param ids A var-args list of IDs to drop.
      */
     public static void dropAll(int... ids) {
-        for (RSWidgetItem item : getAll()) {
+        for (int i = 1; i <= 28 && !Thread.currentThread().isInterrupted();) {
+            RSWidgetItem item = getItemAt(i);
+            boolean drop = false;
             for (int id : ids) {
-                if (item.getId() == id) {
-                    item.applyAction("Drop");
+                if (item != null && item.getId() == id) {
+                    drop = true;
+                }
+            }
+            if (item == null || !drop) {
+                i++;
+                continue;
+            } else {
+                if (item.applyAction("Drop")) {
+                    if (Utilities.sleepUntil(EMPTY(i), 2000)) {
+                        i++;
+                    }
                 }
             }
         }
@@ -321,14 +323,23 @@ public final class Inventory {
      * @param ids A var-args list of items to exclude from dropping.
      */
     public static void dropAllExcept(int... ids) {
-        for (RSWidgetItem item : getAll()) {
+        for (int i = 1; i <= 28 && !Thread.currentThread().isInterrupted();) {
+            RSWidgetItem item = getItemAt(i);
             boolean drop = true;
             for (int id : ids) {
-                if (item.getId() == id) drop = false;
+                if (item != null && item.getId() == id) {
+                    drop = false;
+                }
             }
-
-            if (drop) {
-                item.applyAction("Drop");
+            if (item == null || !drop) {
+                i++;
+                continue;
+            } else {
+                if (item.applyAction("Drop")) {
+                    if (Utilities.sleepUntil(EMPTY(i), 2000)) {
+                        i++;
+                    }
+                }
             }
         }
     }
@@ -381,29 +392,36 @@ public final class Inventory {
     }
 
 
-    public static void dropAllColumn(Predicate<RSWidgetItem>... predicates) {
-        for (int i = 1; i <= 4; i++) {
-            dropColumn(i, predicates);
-        }
-    }
-
-    public static void dropColumn(int column, Predicate<RSWidgetItem>... predicates) {
-        if (column >= 1 && column <= 4) {
-            RSWidgetItem[] all = _getAll();
-            for (int i = 0; i < all.length; i++) {
-                RSWidgetItem item = all[i];
-                if ((i % column) == 0 && item != null) {
-                    boolean drop = true;
-                    for (Predicate<RSWidgetItem> predicate : predicates) {
-                        if (!predicate.apply(item)) {
-                            drop = false;
-                        }
+    public static void dropAllByColumn(int... ids) {
+        for (int column = 1; column < 5 && !Thread.currentThread().isInterrupted(); column++) {
+            for (int slot = 0; slot <= 28 && !Thread.currentThread().isInterrupted();) {
+                RSWidgetItem item = getItemAt(slot + column);
+                boolean drop = false;
+                for (int id : ids) {
+                    if (item != null && item.getId() == id) {
+                        drop = true;
                     }
-                    if (drop) {
-                        item.applyAction("Drop");
+                }
+                if (item == null || !drop) {
+                    slot += 4;
+                    continue;
+                } else {
+                    if (item.applyAction("Drop")) {
+                        if (Utilities.sleepUntil(EMPTY(slot + column), 2000)) {
+                            slot += 4;
+                        }
                     }
                 }
             }
         }
     }
+    private static StatePredicate EMPTY(final int slot) {
+        return new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return getItemAt(slot) == null;
+            }
+        };
+    }
+
 }

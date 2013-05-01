@@ -36,6 +36,7 @@ public final class Utilities {
      * Sleeps until the passed predicate returns true.
      * @param predicate predicate
      */
+    @Deprecated
     public static void sleepUntil(StatePredicate predicate) {
         while(!predicate.apply() && !currentThread().isInterrupted()) {
             sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
@@ -47,9 +48,22 @@ public final class Utilities {
      * @param predicate predicate
      * @param timeOut millis time out
      */
-    public static void sleepUntil(StatePredicate predicate, long timeOut) {
+    public static boolean sleepUntil(StatePredicate predicate, long timeOut) {
         Timer timer = new Timer(timeOut);
-        while(!predicate.apply() && !currentThread().isInterrupted() && !timer.finished()) {
+        boolean success;
+        while((success = !predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
+            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        }
+        return !success;
+    }
+
+    /**
+     * Sleeps until the passed predicate returns false.
+     * @param predicate predicate
+     */
+    @Deprecated
+    public static void sleepWhile(StatePredicate predicate) {
+        while(predicate.apply() && !currentThread().isInterrupted()) {
             sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
         }
     }
@@ -57,13 +71,15 @@ public final class Utilities {
     /**
      * Sleeps until the passed predicate returns false.
      * @param predicate predicate
+     * @param timeOut millis time out
      */
-    public static void sleepWhile(StatePredicate predicate) {
-        while(predicate.apply() && !currentThread().isInterrupted()) {
+    public static boolean sleepWhile(StatePredicate predicate, long timeOut) {
+        Timer timer = new Timer(timeOut);
+        boolean success;
+        while((success = predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
             sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
         }
+        return !success;
     }
-
-
 
 }
