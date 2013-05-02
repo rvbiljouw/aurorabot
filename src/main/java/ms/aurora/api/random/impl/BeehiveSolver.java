@@ -86,8 +86,10 @@ public class BeehiveSolver extends Random {
     public boolean dragInterfaces(RSWidget child1, RSWidget child2) {
         Point start = returnMidInterface(child1);
         Point finish = returnMidInterface(child2);
-        VirtualMouse.releaseMouse(start.x, start.y, true);
-        VirtualMouse.releaseMouse(finish.x, finish.y, true);
+        VirtualMouse.moveMouse(start);
+        VirtualMouse.dragMouse(finish, true);
+        /*VirtualMouse.releaseMouse(start.x, start.y, true);
+        VirtualMouse.releaseMouse(finish.x, finish.y, true);*/
         return true;
     }
 

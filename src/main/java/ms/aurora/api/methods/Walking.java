@@ -27,6 +27,15 @@ public final class Walking {
     private static boolean walking = false;
     private static RSTile[] currPath;
 
+        private static final StatePredicate WALKING() {
+        return new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return Players.getLocal().isMoving();
+            }
+        };
+    }
+
     private static final StatePredicate WALKING(final RSTile tile, final int distance) {
         return new StatePredicate() {
             @Override
@@ -60,12 +69,13 @@ public final class Walking {
         VirtualKeyboard.holdControl();
         Logger.getLogger(Walking.class).info("Clicking tile " + tile);
         Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
+        Logger.getLogger(Walking.class).info("Clicking Point " + minimapPoint);
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
             VirtualMouse.clickMouse(true);
-            Utilities.sleepNoException(700);
-            Utilities.sleepWhile(WALKING(tile, 5));
-            success = true;
+            if (Utilities.sleepUntil(WALKING(), 2500)) {
+                success = Utilities.sleepWhile(WALKING(tile, 3), 7500);
+            }
         }
         VirtualKeyboard.releaseControl();
         return success;
@@ -82,9 +92,9 @@ public final class Walking {
         if (screenPoint.x != -1 && screenPoint.y != -1) {
             VirtualMouse.moveMouse(screenPoint.x, screenPoint.y);
             VirtualMouse.clickMouse(true);
-            Utilities.sleepNoException(700);
-            Utilities.sleepWhile(WALKING(tile, 5));
-            success = true;
+            if (Utilities.sleepUntil(WALKING(), 2500)) {
+                success = Utilities.sleepWhile(WALKING(tile, 3), 7500);
+            }
         }
         return success;
     }
@@ -109,18 +119,38 @@ public final class Walking {
         }
     }
 
+    private static int getCurrentPosition(RSTile[] path) {
+        int idx = -1;
+        double distance = Double.MAX_VALUE;
+        RSTile currentLocation = Players.getLocal().getLocation();
+        for (int i = 0; i < path.length; i++) {
+            double currentDistance = Calculations.distance(currentLocation, path[i]);
+            if (currentDistance < distance) {
+                idx = i;
+                distance = currentDistance;
+            }
+        }
+        return idx;
+    }
+
     /**
      * Gets the next tile along the path that is over 14 away.
      *
      * @return next tile along the path else null.
      */
     public static RSTile getNext(RSTile[] path) {
-        for (int i = (path.length - 1); i > -1; i--) {
-            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 7) {
-                return path[i];
+        int idx = getCurrentPosition(path);
+        RSTile previous = Players.getLocal().getLocation(), next = path[idx];
+        double distance = Calculations.distance(previous, next);
+        for (int i = idx + 1; i < path.length; i++) {
+            previous = next;
+            next = path[i];
+            distance += Calculations.distance(previous, next);
+            if (distance >= 14D) {
+                return previous;
             }
         }
-        return null;
+        return path[path.length - 1];
     }
 
     /**
@@ -129,12 +159,18 @@ public final class Walking {
      * @return previous tile along the path else null.
      */
     public static RSTile getPrevious(RSTile[] path) {
-        for (int i = 0; i < path.length; i++) {
-            if (Calculations.distance(path[i], Players.getLocal().getLocation()) <= 7) {
-                return path[i];
+        int idx = getCurrentPosition(path);
+        RSTile previous = Players.getLocal().getLocation(), next = path[idx];
+        double distance = Calculations.distance(previous, next);
+        for (int i = idx + 1; i < path.length; i--) {
+            previous = next;
+            next = path[i];
+            distance += Calculations.distance(previous, next);
+            if (distance >= 14D) {
+                return previous;
             }
         }
-        return null;
+        return path[0];
     }
 
     /**
@@ -152,7 +188,7 @@ public final class Walking {
                 tile = getPrevious(path);
                 break;
         }
-        if (tile == null || Calculations.distance(tile, Players.getLocal().getLocation()) < 5) {
+        if (tile == null || Calculations.distance(tile, Players.getLocal().getLocation()) < 3) {
             return;
         }
         Walking.clickOnMap(tile);
@@ -182,7 +218,6 @@ public final class Walking {
     public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
         while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
             step(path, direction);
-            Utilities.sleepNoException(100);
         }
     }
 

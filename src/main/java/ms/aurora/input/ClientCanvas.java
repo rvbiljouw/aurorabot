@@ -65,11 +65,11 @@ public class ClientCanvas extends Canvas {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
             g.setColor(new Color(49, 110, 163, 150));
-            g.fillRoundRect(mouseX - 8, mouseY - 2, 16, 5, 4, 4);
-            g.fillRoundRect(mouseX - 2, mouseY - 8 , 5, 16, 4, 4);
+            g.fillRoundRect(mouseX - 8, mouseY - 2, 17, 5, 4, 4);
+            g.fillRoundRect(mouseX - 2, mouseY - 8 , 5, 17, 4, 4);
             g.setColor(Color.BLACK);
-            g.drawRoundRect(mouseX - 8, mouseY - 2, 16, 5, 4, 4);
-            g.drawRoundRect(mouseX - 2, mouseY - 8, 5, 16, 4, 4);
+            g.drawRoundRect(mouseX - 8, mouseY - 2, 17, 5, 4, 4);
+            g.drawRoundRect(mouseX - 2, mouseY - 8, 5, 17, 4, 4);
         }
     }
 }
