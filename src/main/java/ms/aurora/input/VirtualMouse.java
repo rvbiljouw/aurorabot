@@ -2,6 +2,7 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.input.algorithm.StraightLineGenerator;
 import ms.aurora.input.algorithm.ZetaMouseGenerator;
 import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
@@ -47,7 +48,12 @@ public final class VirtualMouse {
 
     public static void moveMouse(final int x, final int y) {
         Point currentPosition = null;
-        while ((currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY())).distance(new Point(x,y)) > 4 && !Thread.currentThread().isInterrupted()) {
+        Point target = new Point(x,y);
+        while ((currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY())).distance(target) > 4 && !Thread.currentThread().isInterrupted()) {
+            MousePathGenerator algorithm = new ZetaMouseGenerator();
+            if(target.distance(currentPosition) < 20) {
+                algorithm = new StraightLineGenerator();
+            }
             Point[] path = algorithm.generate(currentPosition, new Point(x, y));
             MouseEventChain chain = MouseEventChain.createMousePath(path);
             MouseEvent[] events = chain.getMouseEvents();
