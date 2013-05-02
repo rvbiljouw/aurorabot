@@ -44,18 +44,14 @@ public class RSMap implements TileBasedMap {
     }
 
     public boolean solid(int x, int y) {
-        return (blocked(x, y, DIRECTION_NORTH) &&
+        return (blocked(x, y, INVALID | BLOCKED)) || CLIPPING_MASKS[x][y] == -128 || (blocked(x, y, DIRECTION_NORTH) &&
                 blocked(x, y, DIRECTION_SOUTH) &&
                 blocked(x, y, DIRECTION_EAST) &&
                 blocked(x, y, DIRECTION_WEST) &&
                 blocked(x, y, DIRECTION_NORTHEAST) &&
                 blocked(x, y, DIRECTION_NORTHWEST) &&
                 blocked(x, y, DIRECTION_SOUTHEAST) &&
-                blocked(x, y, DIRECTION_SOUTHWEST)) ||
-                (
-                        blocked(x, y, INVALID | BLOCKED)
-
-                ) || CLIPPING_MASKS[x][y] == -128;
+                blocked(x, y, DIRECTION_SOUTHWEST));
     }
 
     public int getDirection(int x, int y) {
@@ -71,7 +67,9 @@ public class RSMap implements TileBasedMap {
     }
 
     public boolean isWalkable(int x, int y, int x2, int y2) {
-        int here = getBlock(x, y);
+        byte here = getBlock(x, y);
+        if (here == -128) return false;
+
         int upper = Integer.MAX_VALUE;
         if (x == x2 && y - 1 == y2)
             return (y > 0 && (here & WALL_SOUTH) == 0 && (getBlock(x, y - 1) & (BLOCKED | INVALID)) == 0);
