@@ -1,14 +1,13 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Npcs;
-import ms.aurora.api.methods.Objects;
-import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Interactable;
+import ms.aurora.api.wrappers.Locatable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetItem;
 import org.apache.log4j.Logger;
@@ -76,6 +75,7 @@ public final class Bank {
         logger.info("Clicking bank");
         String originalProperty = Context.getProperty("interaction.walkTo");
         Context.setProperty("interaction.walkTo", "false");
+        Camera.setAngle(Calculations.getAngleTo(((Locatable)bank).getLocation()));
         bank.applyAction("Bank(.*)Bank");
         Context.setProperty("interaction.walkTo", originalProperty);
         return isOpen();
