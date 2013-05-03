@@ -162,7 +162,7 @@ public final class Walking {
         int idx = getCurrentPosition(path);
         RSTile previous = Players.getLocal().getLocation(), next = path[idx];
         double distance = Calculations.distance(previous, next);
-        for (int i = idx + 1; i < path.length; i--) {
+        for (int i = idx + 1; i > 0; i--) {
             previous = next;
             next = path[i];
             distance += Calculations.distance(previous, next);

@@ -57,7 +57,7 @@ public class Context {
         if (getWidget(378, 6) != null) {
             logger.debug("Welcome screen is set.");
         }
-        return getClient().getLoginIndex() == 30 && getWidget(378, 6) == null;
+        return getClient().getLoginIndex() >= 25 && getWidget(378, 6) == null;
     }
 
     public static Context get() {

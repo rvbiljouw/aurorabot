@@ -36,7 +36,7 @@ public final class Minimap {
      * @return Point representing the position on the minimap. This point may have an x/y of -1.
      */
     public static Point convert(int x, int y) {
-        /*x -= get().getClient().getBaseX();
+        x -= get().getClient().getBaseX();
         y -= get().getClient().getBaseY();
         int calculatedX = x * 4 + 2 - Players.getLocal().getLocalX() / 32;
         int calculatedY = y * 4 + 2 - Players.getLocal().getLocalY() / 32;
@@ -56,9 +56,9 @@ public final class Minimap {
             int screenX = minimap.x + (minimap.width / 2) + i_26_;
             int screenY = -i_25_ + minimap.y + (minimap.height / 2);
             return new Point(screenX, screenY);
-        }*/
+        }
 
-        RSWidget mm = Widgets.getWidget(MINIMAP_INTERFACE_GROUP, MINIMAP_INTERFACE_CHILD);
+        /*RSWidget mm = Widgets.getWidget(MINIMAP_INTERFACE_GROUP, MINIMAP_INTERFACE_CHILD);
 
         x -= get().getClient().getBaseX();
         y -= get().getClient().getBaseY();
@@ -90,7 +90,7 @@ public final class Minimap {
             final int screeny = (mm.getY() + mm.getWidth() / 2 - 1) + my;
 
             return new Point(screenx, screeny);
-        }
+        }*/
         return new Point(-1, -1);
     }
 
