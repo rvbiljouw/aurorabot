@@ -68,7 +68,8 @@ public class RSMap implements TileBasedMap {
 
     public boolean isWalkable(int x, int y, int x2, int y2) {
         byte here = getBlock(x, y);
-        if (here == -128) return false;
+        byte there = getBlock(x2, y2);
+        if (here == -128 || there == -128) return false;
 
         int upper = Integer.MAX_VALUE;
         if (x == x2 && y - 1 == y2)
@@ -111,7 +112,18 @@ public class RSMap implements TileBasedMap {
     }
 
     public float getCost(int sx, int sy, int tx, int ty) {
-        return 1;
+        int direction = getDirection(Math.abs(sx - tx), Math.abs(sy - ty));
+        switch (direction) {
+            case DIRECTION_NORTH:
+            case DIRECTION_SOUTH:
+            case DIRECTION_EAST:
+            case DIRECTION_WEST:
+                return 1;
+
+            default:
+                return 1.4F;
+
+        }
     }
 
     public void pathFinderVisited(int x, int y) {
