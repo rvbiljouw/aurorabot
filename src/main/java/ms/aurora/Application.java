@@ -26,6 +26,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
+    public static final double VERSION = 4.2;
     private static final Object initialisation_lock = new Object();
 
     public static LoginWindow LOGIN_WINDOW;
@@ -50,7 +51,7 @@ public final class Application {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                mainFrame = new JFrame("Aurora - Automation Toolkit");
+                mainFrame = new JFrame("Aurora - Automation Toolkit v" + VERSION);
                 mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 final JFXPanel panel = new JFXPanel();
                 mainFrame.setContentPane(panel);

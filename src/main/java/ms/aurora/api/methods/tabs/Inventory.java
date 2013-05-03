@@ -296,7 +296,7 @@ public final class Inventory {
      * @param ids A var-args list of IDs to drop.
      */
     public static void dropAll(int... ids) {
-        for (int i = 1; i <= 28 && !Thread.currentThread().isInterrupted();) {
+        for (int i = 1; i < 29 && !Thread.currentThread().isInterrupted();) {
             RSWidgetItem item = getItemAt(i);
             boolean drop = false;
             for (int id : ids) {
@@ -323,7 +323,7 @@ public final class Inventory {
      * @param ids A var-args list of items to exclude from dropping.
      */
     public static void dropAllExcept(int... ids) {
-        for (int i = 1; i <= 28 && !Thread.currentThread().isInterrupted();) {
+        for (int i = 1; i < 28 && !Thread.currentThread().isInterrupted();) {
             RSWidgetItem item = getItemAt(i);
             boolean drop = true;
             for (int id : ids) {
@@ -394,7 +394,7 @@ public final class Inventory {
 
     public static void dropAllByColumn(int... ids) {
         for (int column = 1; column < 5 && !Thread.currentThread().isInterrupted(); column++) {
-            for (int slot = 0; slot <= 28 && !Thread.currentThread().isInterrupted();) {
+            for (int slot = 0; (slot + column) < 29 && !Thread.currentThread().isInterrupted();) {
                 RSWidgetItem item = getItemAt(slot + column);
                 boolean drop = false;
                 for (int id : ids) {

@@ -181,8 +181,8 @@ public final class RSWidget implements Interactable {
      */
     public Point getRandomPoint() {
         Rectangle area = getArea();
-        int x = Utilities.random(area.x, area.width);
-        int y = Utilities.random(area.y, area.height);
+        int x = area.x + Utilities.random(0, area.width);
+        int y = area.y + Utilities.random(0, area.height);
         return new Point(x, y);
     }
 
