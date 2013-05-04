@@ -7,6 +7,8 @@ import ms.aurora.rt3.Mouse;
 
 import java.awt.*;
 
+import static ms.aurora.api.util.Utilities.random;
+
 /**
  * Date: 29/04/13
  * Time: 11:47
@@ -36,9 +38,11 @@ public class RSWidgetItem implements Interactable {
         return stackSize;
     }
 
-    private Point getRandomPoint() { // TODO - fix to make it random
-        int x = (int) area.getCenterX();
-        int y = (int) area.getCenterY();
+    private Point getRandomPoint() {
+        int hx = (area.width / 2);
+        int hy = (area.height / 2);
+        int x = (int) area.getCenterX() + random(-hx, hx);
+        int y = (int) area.getCenterY() + +random(-hy, hy);
         Point p = new Point(x, y);
         System.out.println(p);
         return p;
