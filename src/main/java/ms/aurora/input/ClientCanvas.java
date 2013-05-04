@@ -68,8 +68,8 @@ public class ClientCanvas extends Canvas {
             g.fillRoundRect(mouseX - 8, mouseY - 2, 18, 6, 4, 4);
             g.fillRoundRect(mouseX - 2, mouseY - 8, 6, 18, 4, 4);
             g.setColor(Color.BLACK);
-            g.drawRoundRect(mouseX - 8, mouseY - 2, 17, 5, 4, 4);
-            g.drawRoundRect(mouseX - 2, mouseY - 8, 5, 17, 4, 4);
+            g.drawRoundRect(mouseX - 8, mouseY - 2, 18, 5, 4, 4);
+            g.drawRoundRect(mouseX - 2, mouseY - 8, 6, 18, 4, 4);
         }
     }
 }

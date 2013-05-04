@@ -1,6 +1,5 @@
 package ms.aurora.api.script;
 
-import javafx.application.Platform;
 import ms.aurora.api.Context;
 import ms.aurora.api.script.task.EventBus;
 import ms.aurora.api.script.task.TaskQueue;
@@ -113,10 +112,12 @@ public abstract class Script extends Context implements Runnable {
 
                 }
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 destroy();
                 return;
             } catch (Exception e) {
                 // Any other exception we print the stack trace before destroying.
+                e.printStackTrace();
                 logger.error("Script has thrown exception and has exited.", e);
                 destroy();
                 return;
