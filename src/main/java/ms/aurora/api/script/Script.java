@@ -75,21 +75,10 @@ public abstract class Script extends Context implements Runnable {
                 switch (getState()) {
                     case START:
                         init();
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                invokeAndWait(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        onStart();
-                                    }
-                                });
-                                synchronized (lock) {
-                                    lock.notifyAll();
-                                }
-                            }
-                        });
-
+                        onStart();
+                        synchronized (lock) {
+                            lock.notifyAll();
+                        }
                         synchronized (lock) {
                             lock.wait();
                             setState(ScriptState.RUNNING);
