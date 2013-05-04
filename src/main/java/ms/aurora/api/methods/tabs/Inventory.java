@@ -323,7 +323,7 @@ public final class Inventory {
      * @param ids A var-args list of items to exclude from dropping.
      */
     public static void dropAllExcept(int... ids) {
-        for (int i = 1; i < 28 && !Thread.currentThread().isInterrupted();) {
+        for (int i = 1; i < 29 && !Thread.currentThread().isInterrupted();) {
             RSWidgetItem item = getItemAt(i);
             boolean drop = true;
             for (int id : ids) {
