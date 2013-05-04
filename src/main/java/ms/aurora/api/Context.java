@@ -70,7 +70,7 @@ public class Context {
 
     public static void setProperty(String key, Object value) {
         Context instance = get();
-        if(instance.properties.containsKey(key)) {
+        if (instance.properties.containsKey(key)) {
             instance.properties.remove(key);
         }
         instance.properties.put(key, value.toString());
@@ -83,5 +83,20 @@ public class Context {
 
     public ThreadGroup getThreadGroup() {
         return threadGroup;
+    }
+
+    public void invokeLater(Runnable runnable) {
+        Thread thread = new Thread(getThreadGroup(), runnable);
+        thread.start();
+    }
+
+    public void invokeAndWait(Runnable runnable) {
+        try {
+            Thread thread = new Thread(getThreadGroup(), runnable);
+            thread.start();
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -21,6 +21,7 @@ public abstract class Script extends Context implements Runnable {
     private final Object lock = new Object();
     private EventBus eventBus = new EventBus();
     private Randoms randoms = new Randoms();
+
     public Script() {
     }
 
@@ -77,7 +78,12 @@ public abstract class Script extends Context implements Runnable {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                onStart();
+                                invokeAndWait(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        onStart();
+                                    }
+                                });
                                 synchronized (lock) {
                                     lock.notifyAll();
                                 }
