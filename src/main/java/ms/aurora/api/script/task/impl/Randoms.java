@@ -22,7 +22,7 @@ public class Randoms extends PassiveTask {
             new ScapeRuneIsland(), new Talker(),
             new Teleother(), new WelcomeScreen(),
             new StrangeBox(), new Pinball(),
-            new MrMordaut()
+            new MrMordaut(), new FrogCave()
     };
 
     @Override

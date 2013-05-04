@@ -3,19 +3,13 @@ package ms.aurora.api.random.impl;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
-import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSNPC;
 
 import static ms.aurora.api.util.Utilities.random;
-import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 01/04/13
- * Time: 11:35
- * To change this template use File | Settings | File Templates.
+ * @author tobiewarburton
  */
 public class FrogCave extends Random {
 
@@ -25,14 +19,7 @@ public class FrogCave extends Random {
 
     @Override
     public boolean activate() {
-        if(!Context.isLoggedIn()) return false;
-
-        if (Npcs.get(NpcFilters.NAMED("Frog Herald")) != null
-                && Objects.get(ObjectFilters.ID(5917)) != null) {
-            sleepNoException(2000, 3000);
-            return (Npcs.get(NpcFilters.NAMED("Frog Herald")) != null) && (Objects.get(ObjectFilters.ID(5917)) != null);
-        }
-        return false;
+        return Npcs.get(NpcFilters.ID(567)) != null && Context.isLoggedIn();
     }
 
     @Override
@@ -53,7 +40,7 @@ public class FrogCave extends Random {
                 return random(600, 800);
             }
             if (!talkedToHerald) {
-                final RSNPC herald = Npcs.get(NpcFilters.NAMED("Frog Herald"));
+                final RSNPC herald = Npcs.get(NpcFilters.ID(567));
                 if (Calculations.distance(Players.getLocal().getLocation(), herald.getLocation()) < 5) {
                     herald.applyAction("Talk-to");
                     return random(500, 1000);
