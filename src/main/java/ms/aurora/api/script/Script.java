@@ -40,11 +40,31 @@ public abstract class Script extends Context implements Runnable {
     }
 
     public final synchronized void setState(ScriptState state) {
+        switch (state) {
+            case PAUSED:
+                onPause();
+                break;
+            case RUNNING:
+                if (this.state == ScriptState.PAUSED) {
+                    onResume();
+                }
+                break;
+            default:
+                break;
+        }
         this.state = state;
     }
 
     public final synchronized ScriptState getState() {
         return this.state;
+    }
+
+    public void onPause() {
+
+    }
+
+    public void onResume() {
+
     }
 
     public void onStart() {
