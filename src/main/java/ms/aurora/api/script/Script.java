@@ -7,8 +7,6 @@ import ms.aurora.api.script.task.impl.Randoms;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
-import static java.lang.Thread.currentThread;
-
 /**
  * @author Rick
  */
@@ -17,7 +15,6 @@ public abstract class Script extends Context implements Runnable {
     private final TaskQueue taskQueue = new TaskQueue(this);
     private Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
-    private final Object lock = new Object();
     private EventBus eventBus = new EventBus();
     private Randoms randoms = new Randoms();
 
@@ -68,61 +65,33 @@ public abstract class Script extends Context implements Runnable {
 
     @Override
     public final void run() {
-        logger.info("Thread " + currentThread().getThreadGroup().getName());
-        while (!currentThread().isInterrupted()) {
-            try {
-                switch (getState()) {
-                    case START:
-                        init();
-                        onStart();
-                        synchronized (lock) {
-                            lock.notifyAll();
-                        }
-                        synchronized (lock) {
-                            lock.wait();
-                            setState(ScriptState.RUNNING);
-                        }
+        logger.info("Started " + getManifest().name() + " by " + getManifest().author());
+
+
+        init();
+        try {
+
+            onStart();
+
+            while (getState() != ScriptState.STOP) {
+                int delay = 600;
+                if (isLoggedIn() && getState() != ScriptState.PAUSED) {
+                    int loopCycle = tick();
+                    if (loopCycle == -1) {
                         break;
-
-
-                    case RUNNING:
-                        if (Context.isLoggedIn()) {
-                            int loopResult = tick();
-                            if (loopResult != -1) {
-                                Thread.sleep(loopResult + 600);
-                            } else {
-                                // Returning -1 means exit.
-                                state = ScriptState.STOP;
-                            }
-                        } else {
-                            info("Not logged in.");
-                            Thread.sleep(5000);
-                        }
-                        break;
-
-                    case PAUSED:
-                        Thread.sleep(1000);
-                        break;
-
-                    case STOP:
-                        cleanup();
-                        destroy();
-                        onFinish();
-                        return;
-
+                    }
+                    delay += loopCycle;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                destroy();
-                return;
-            } catch (Exception e) {
-                // Any other exception we print the stack trace before destroying.
-                e.printStackTrace();
-                logger.error("Script has thrown exception and has exited.", e);
-                destroy();
-                return;
+
+                Thread.sleep(delay);
             }
+
+            onFinish();
+        } catch (Exception e) {
+            error("Script error!", e);
+            e.printStackTrace();
         }
+        cleanup();
     }
 
     private void init() {
@@ -141,13 +110,6 @@ public abstract class Script extends Context implements Runnable {
         }
         taskQueue.remove(randoms);
         taskQueueThread.interrupt();
-    }
-
-    public void destroy() {
-        state = ScriptState.STOP;
-        cleanup();
-        onFinish();
-        currentThread().interrupt();
     }
 
     public TaskQueue getQueue() {

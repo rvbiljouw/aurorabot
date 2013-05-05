@@ -1,7 +1,6 @@
 package ms.aurora.input;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
@@ -43,7 +42,7 @@ public class ClientCanvas extends Canvas {
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
-        Utilities.sleepNoException(PAINT_DELAY);
+        //Utilities.sleepNoException(PAINT_DELAY);
         return backBuffer.getGraphics();
     }
 
@@ -65,11 +64,11 @@ public class ClientCanvas extends Canvas {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
             g.setColor(new Color(49, 110, 163, 150));
-            g.fillRoundRect(mouseX - 8, mouseY - 2, 18, 6, 4, 4);
-            g.fillRoundRect(mouseX - 2, mouseY - 8, 6, 18, 4, 4);
+            g.fillRoundRect(mouseX - 9, mouseY - 3, 18, 6, 4, 4);
+            g.fillRoundRect(mouseX - 3, mouseY - 9, 6, 18, 4, 4);
             g.setColor(Color.BLACK);
-            g.drawRoundRect(mouseX - 8, mouseY - 2, 18, 5, 4, 4);
-            g.drawRoundRect(mouseX - 2, mouseY - 8, 6, 18, 4, 4);
+            g.drawRoundRect(mouseX - 9, mouseY - 3, 18, 6, 4, 4);
+            g.drawRoundRect(mouseX - 3, mouseY - 9, 6, 18, 4, 4);
         }
     }
 }

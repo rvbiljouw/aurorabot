@@ -27,7 +27,7 @@ public final class Walking {
     private static boolean walking = false;
     private static RSTile[] currPath;
 
-        private static final StatePredicate WALKING() {
+    private static final StatePredicate WALKING() {
         return new StatePredicate() {
             @Override
             public boolean apply() {
@@ -230,12 +230,15 @@ public final class Walking {
      * @param y Destination Y
      */
     public static void walkTo(int x, int y) {
+        if (x >= 4000 || y >= 4000) {
+            System.out.println("Trying to walk in unmapped area.. please make your own path.");
+            return;
+        }
+
         RSPathFinder pf = new RSPathFinder();
-        final long time = System.currentTimeMillis();
         Path path = pf.getPath(x, y, RSPathFinder.FULL);
-        final long time2 = System.currentTimeMillis();
         if (path != null && path.getLength() != 0) {
-            final RSTile[] tiles = path.toTiles(3);
+            final RSTile[] tiles = path.toTiles(1);
             traverse(tiles, FORWARDS); // Path's by pathfinder are always inverted.
         } else {
             System.out.println("Path not found to " + x + ", " + y);

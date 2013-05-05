@@ -3,79 +3,75 @@ package ms.aurora.core.script;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
+import ms.aurora.core.script.exception.NoScriptRunningException;
+import ms.aurora.core.script.exception.ScriptAlreadyRunningException;
 import ms.aurora.gui.ApplicationGUI;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 public final class ScriptManager {
-    private final ExecutorService executorService = Executors.newFixedThreadPool(16);
-    private final Map<Script, Future<?>> futures = new HashMap<Script, Future<?>>();
     private final Session session;
-    private State state = State.STOPPED;
+    private Script currentScript;
+    private Thread currentThread;
 
     public ScriptManager(Session session) {
         this.session = session;
     }
 
-    public void start(final Script script) {
-        startScript(script);
-    }
+    public void start(Script script) {
+        if (!hasScript()) {
+            currentThread = new Thread(session.getThreadGroup(), script);
+            currentScript = script;
+            currentScript.setSession(session);
+            currentScript.setState(ScriptState.START);
+            currentThread.start();
 
-    private void startScript(Script script) {
-        script.setSession(session);
-        Future<?> future = executorService.submit(script);
-        futures.put(script, future);
-        state = State.RUNNING;
-        ApplicationGUI.setInputEnabled(false);
-        ApplicationGUI.update();
+            ApplicationGUI.setInputEnabled(false);
+            ApplicationGUI.update();
+        } else {
+            throw new ScriptAlreadyRunningException(currentScript);
+        }
     }
 
     public void pause() {
-        for (Script script : futures.keySet()) {
-            script.setState(ScriptState.PAUSED);
+        if (hasScript()) {
+            currentScript.setState(ScriptState.PAUSED);
+
+            ApplicationGUI.setInputEnabled(true);
+            ApplicationGUI.update();
+        } else {
+            throw new NoScriptRunningException();
         }
-        state = State.PAUSED;
-        ApplicationGUI.update();
     }
 
     public void resume() {
-        for (Script script : futures.keySet()) {
-            script.setState(ScriptState.RUNNING);
+        if (hasScript()) {
+            currentScript.setState(ScriptState.RUNNING);
+
+            ApplicationGUI.setInputEnabled(false);
+            ApplicationGUI.update();
+        } else {
+            throw new NoScriptRunningException();
         }
-        state = State.RUNNING;
-        ApplicationGUI.update();
     }
 
     public void stop() {
-        for (Script script : futures.keySet()) {
-            script.setState(ScriptState.STOP);
-            futures.remove(script);
+        try {
+            currentScript.setState(ScriptState.STOP);
+            currentThread.interrupt();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        state = State.STOPPED;
+        currentThread = null;
+        currentScript = null;
+
+        ApplicationGUI.setInputEnabled(true);
         ApplicationGUI.update();
     }
 
-    public void shutdown() {
-        executorService.shutdown();
-        state = State.STOPPED;
-        ApplicationGUI.update();
+    private boolean hasScript() {
+        return currentScript != null && currentThread != null;
     }
 
-    public void shutdownNow() {
-        executorService.shutdownNow();
-        state = State.STOPPED;
-        ApplicationGUI.update();
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public static enum State {
-        STOPPED, RUNNING, PAUSED
+    public ScriptState getState() {
+        return currentScript != null ? currentScript.getState() : ScriptState.STOP;
     }
 }

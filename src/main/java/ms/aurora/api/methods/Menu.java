@@ -62,7 +62,6 @@ public final class Menu {
         if (itemIndex != -1) {
 
             if (itemIndex == 0) {
-                logger.info("Found menu item at " + itemIndex + ", left clicking.");
                 VirtualMouse.clickMouse(true);
                 return true;
             } else {
@@ -73,7 +72,6 @@ public final class Menu {
                 if (isMenuOpen()) {
                     int menuOptionX = Context.getClient().getMenuX() + (random(10, action.length() * 4));
                     int menuOptionY = Context.getClient().getMenuY() + (21 + (15 * itemIndex));
-                    logger.info("Clicking menu option at " + menuOptionX + "," + menuOptionY);
                     VirtualMouse.clickMouse(menuOptionX, menuOptionY, true);
                     VirtualKeyboard.releaseControl();
                     return true;

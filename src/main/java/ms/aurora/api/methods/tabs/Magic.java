@@ -24,7 +24,7 @@ public class Magic {
         Tabs.openTab(Tabs.Tab.MAGIC);
         RSWidget spellButton = getSpellGroup().getWidgets()[spell.id];
         if (spellButton != null) {
-            spellButton.applyAction("Cast");
+            spellButton.click(true);
         } else {
             logger.error("Failed to cast spell " + spell.name() + ": no such interface.");
         }

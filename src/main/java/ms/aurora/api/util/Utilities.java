@@ -28,60 +28,85 @@ public final class Utilities {
     }
 
     public static void sleepNoException(int min, int max) {
+        int ms = random(min, max);
         try {
-            Thread.sleep(random(min, max));
+            Thread.sleep(ms);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             currentThread().interrupt();
         }
     }
 
     /**
      * Sleeps until the passed predicate returns true.
+     *
      * @param predicate predicate
      */
     @Deprecated
     public static void sleepUntil(StatePredicate predicate) {
-        while(!predicate.apply() && !currentThread().isInterrupted()) {
-            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        while (!predicate.apply() && !currentThread().isInterrupted()) {
+            try {
+                Thread.sleep(random(10, 20));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
     }
 
     /**
      * Sleeps until the passed predicate returns true or sleeping for longer than the timeout.
+     *
      * @param predicate predicate
-     * @param timeOut millis time out
+     * @param timeOut   millis time out
      */
     public static boolean sleepUntil(StatePredicate predicate, long timeOut) {
         Timer timer = new Timer(timeOut);
         boolean success;
-        while((success = !predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
-            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        while ((success = !predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
+            try {
+                Thread.sleep(random(10, 20));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
         return !success;
     }
 
     /**
      * Sleeps until the passed predicate returns false.
+     *
      * @param predicate predicate
      */
     @Deprecated
     public static void sleepWhile(StatePredicate predicate) {
-        while(predicate.apply() && !currentThread().isInterrupted()) {
-            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        while (predicate.apply() && !currentThread().isInterrupted()) {
+            try {
+                Thread.sleep(random(10, 20));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
     }
 
     /**
      * Sleeps until the passed predicate returns false.
+     *
      * @param predicate predicate
-     * @param timeOut millis time out
+     * @param timeOut   millis time out
      */
     public static boolean sleepWhile(StatePredicate predicate, long timeOut) {
         Timer timer = new Timer(timeOut);
         boolean success;
-        while((success = predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
-            sleepNoException(random(10, 20)); // Prevent it from slerping CPU.
+        while ((success = predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
+            try {
+                Thread.sleep(random(10, 20));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
         return !success;
     }

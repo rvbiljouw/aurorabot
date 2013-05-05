@@ -132,7 +132,7 @@ public class ApplicationGUI extends AnchorPane {
                     session.getScriptManager().stop();
                     break;
 
-                case STOPPED:
+                case STOP:
                     FXUtils.showModalDialog("Script overview", new ScriptOverview());
                     break;
 
@@ -201,7 +201,7 @@ public class ApplicationGUI extends AnchorPane {
                 if (session != null) {
                     switch (session.getScriptManager().getState()) {
 
-                        case STOPPED:
+                        case STOP:
                             self.btnPause.setText("Pause");
                             self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
                             self.btnPlay.setText("Play");

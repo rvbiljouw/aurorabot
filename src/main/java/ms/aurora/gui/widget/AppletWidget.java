@@ -50,7 +50,7 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         this.parent = parent;
         this.loadFace();
         getTab().setContent(this);
-        getTab().setClosable(true);
+        getTab().setClosable(false);
         getTab().setText("No account");
         getTab().selectedProperty().addListener(this);
         getTab().setOnClosed(new EventHandler<Event>() {
@@ -85,6 +85,8 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     public void setApplet(final Applet applet) {
         Application.mainFrame.add(applet);
         this.applet = applet;
+
+        tab.setClosable(true);
         update();
     }
 
