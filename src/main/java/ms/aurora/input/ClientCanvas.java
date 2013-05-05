@@ -1,6 +1,7 @@
 package ms.aurora.input;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 
@@ -42,7 +43,7 @@ public class ClientCanvas extends Canvas {
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
-        //Utilities.sleepNoException(PAINT_DELAY);
+        Utilities.sleepNoException(PAINT_DELAY);
         return backBuffer.getGraphics();
     }
 
