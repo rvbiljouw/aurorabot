@@ -40,11 +40,31 @@ public abstract class Script extends Context implements Runnable {
     }
 
     public final synchronized void setState(ScriptState state) {
+        switch (state) {
+            case PAUSED:
+                onPause();
+                break;
+            case RUNNING:
+                if (this.state == ScriptState.PAUSED) {
+                    onResume();
+                }
+                break;
+            default:
+                break;
+        }
         this.state = state;
     }
 
     public final synchronized ScriptState getState() {
         return this.state;
+    }
+
+    public void onPause() {
+
+    }
+
+    public void onResume() {
+
     }
 
     public void onStart() {
@@ -74,10 +94,11 @@ public abstract class Script extends Context implements Runnable {
             onStart();
 
             while (getState() != ScriptState.STOP) {
-                int delay = 600;
+                String _delay = getProperty("script.delay");
+                int delay = _delay == null ? 500 : Integer.parseInt(_delay);
                 if (isLoggedIn() && getState() != ScriptState.PAUSED) {
                     int loopCycle = tick();
-                    if (loopCycle == -1) {
+                    if (loopCycle < 0) {
                         break;
                     }
                     delay += loopCycle;
