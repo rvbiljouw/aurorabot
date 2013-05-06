@@ -1,5 +1,7 @@
 package ms.aurora.api.script.task;
 
+import ms.aurora.Application;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,6 +33,7 @@ public class EventBus {
                 EventHandlerBridge bridge = new EventHandlerBridge(object, method);
                 if (bridge.validate()) {
                     bridges.add(bridge);
+                    Application.logger.info("Registered event handler: " + object.getClass().getSimpleName() + "." + method.toString());
                 } else {
                     throw new IllegalArgumentException("Invalid EventHandler: " + method.getName());
                 }

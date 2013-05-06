@@ -130,9 +130,13 @@ public final class Session implements Runnable {
     }
 
     public void destroy() {
-        scriptManager.stop();
-        for (Plugin plugin : PluginLoader.getPlugins()) {
-            pluginManager.stop(plugin.getClass());
+        try {
+            scriptManager.stop();
+            for (Plugin plugin : PluginLoader.getPlugins()) {
+                pluginManager.stop(plugin.getClass());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         applet.stop();
         applet.destroy();

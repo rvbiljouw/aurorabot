@@ -5,6 +5,7 @@ import ms.aurora.api.script.ScriptState;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.lang.Thread.currentThread;
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -13,14 +14,15 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  * @author rvbiljouw
  */
 public class TaskQueue extends PriorityQueue<Task> implements Runnable {
-    private final PriorityQueue<PassiveTask> passive_internal =
-            new PriorityQueue<PassiveTask>(16, taskComparator);
+    private final CopyOnWriteArrayList<PassiveTask> passive_internal =
+            new CopyOnWriteArrayList<PassiveTask>();
     private final TaskQueue self;
     private final Script owner;
     private final EventBus eventBus;
 
     /**
      * Constructor
+     *
      * @param owner The script that owns this task queue.
      */
     public TaskQueue(Script owner) {
@@ -38,14 +40,14 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
         Thread passiveThread = new Thread(passiveProcessor);
         passiveThread.start();
 
-        while(owner.getState() != ScriptState.STOP && !currentThread().isInterrupted()) {
-            if(owner.getState() == ScriptState.PAUSED) {
+        while (owner.getState() != ScriptState.STOP && !currentThread().isInterrupted()) {
+            if (owner.getState() == ScriptState.PAUSED) {
                 sleepNoException(100);
                 continue;
             }
 
             Task currentTask = poll();
-            if(currentTask != null) {
+            if (currentTask != null) {
                 currentTask.setQueue(this);
                 currentTask.run();
             }
@@ -57,14 +59,15 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
 
     @Override
     public boolean add(Task task) {
-        if(task instanceof PassiveTask) {
-            return passive_internal.add((PassiveTask)task);
+        if (task instanceof PassiveTask) {
+            return passive_internal.add((PassiveTask) task);
         }
         return super.add(task);
     }
 
     /**
      * Gets the owner this task queue
+     *
      * @return owner
      */
     public Script getOwner() {
@@ -84,16 +87,18 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
     private Runnable passiveProcessor = new Runnable() {
         @Override
         public void run() {
-            while(owner.getState() != ScriptState.STOP && !currentThread().isInterrupted()) {
-                if(owner.getState() == ScriptState.PAUSED) {
+            while (owner.getState() != ScriptState.STOP && !currentThread().isInterrupted()) {
+                if (owner.getState() == ScriptState.PAUSED) {
                     sleepNoException(100);
                     continue;
+
                 }
 
-                Task currentTask = passive_internal.peek(); // Peek, don't remove.
-                if(currentTask != null) {
-                    currentTask.setQueue(self);
-                    currentTask.run();
+                for (Task currentTask : passive_internal) {
+                    if (currentTask != null) {
+                        currentTask.setQueue(self);
+                        currentTask.run();
+                    }
                 }
                 sleepNoException(200, 500);
             }

@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
@@ -73,11 +72,11 @@ public final class Bank {
             }
         }
         logger.info("Clicking bank");
-        String originalProperty = Context.getProperty("interaction.walkTo");
-        Context.setProperty("interaction.walkTo", "false");
+        //String originalProperty = Context.getProperty("interaction.walkTo");
+        //Context.setProperty("interaction.walkTo", "false");
         Camera.setAngle(Calculations.getAngleTo(((Locatable)bank).getLocation()));
         bank.applyAction("Bank(.*)Bank");
-        Context.setProperty("interaction.walkTo", originalProperty);
+        //Context.setProperty("interaction.walkTo", originalProperty);
         return isOpen();
     }
 

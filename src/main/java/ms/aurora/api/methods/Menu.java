@@ -30,7 +30,7 @@ public final class Menu {
      * @return The index of the item if it was found, otherwise -1.
      */
     public static int getIndex(String item) {
-        Pattern pattern = Pattern.compile(item);
+        Pattern pattern = Pattern.compile(item.toLowerCase());
         for (String menuEntry : getMenuContent()) {
             Matcher matcher = pattern.matcher(menuEntry);
             if (matcher.find()) {
@@ -115,7 +115,7 @@ public final class Menu {
 
         for (int index = 0; index < Context.getClient().getMenuCount(); index++) {
             if (actions[index] != null && targets[index] != null) {
-                menuContent.add(removeFormatting(targets[index] + " " + actions[index]));
+                menuContent.add(removeFormatting(targets[index] + " " + actions[index]).toLowerCase());
             }
         }
         Collections.reverse(menuContent);

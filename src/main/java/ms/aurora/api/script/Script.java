@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
  */
 public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
+    private final EventBus eventBus = new EventBus();
     private final TaskQueue taskQueue = new TaskQueue(this);
     private Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
-    private EventBus eventBus = new EventBus();
     private Randoms randoms = new Randoms();
 
     public Script() {

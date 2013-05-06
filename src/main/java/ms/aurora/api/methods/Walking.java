@@ -19,13 +19,12 @@ import static ms.aurora.api.methods.Calculations.distance;
  * Time: 12:51
  *
  * @author A_C/Cov
+ * @author Rick
  */
 public final class Walking {
-
+    private static final Logger logger = Logger.getLogger(Walking.class);
     public static final int FORWARDS = 0;
     public static final int BACKWARDS = 1;
-    private static boolean walking = false;
-    private static RSTile[] currPath;
 
     private static final StatePredicate WALKING() {
         return new StatePredicate() {
@@ -67,15 +66,16 @@ public final class Walking {
     public static boolean clickOnMap(RSTile tile) {
         boolean success = false;
         VirtualKeyboard.holdControl();
-        Logger.getLogger(Walking.class).info("Clicking tile " + tile);
+        logger.info("Walking: " + tile);
         Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
-        Logger.getLogger(Walking.class).info("Clicking Point " + minimapPoint);
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
             VirtualMouse.clickMouse(true);
             if (Utilities.sleepUntil(WALKING(), 2500)) {
                 success = Utilities.sleepWhile(WALKING(tile, 3), 7500);
             }
+        } else {
+            logger.error("Tile not on minimap: " + tile);
         }
         VirtualKeyboard.releaseControl();
         return success;
@@ -110,7 +110,10 @@ public final class Walking {
             int currentDist = (int) distance(p, path[path.length - 1]);
             int maxDist = (int) distance(Players.getLocal().getLocation(), path[path.length - 1]);
             if (currentDist <= maxDist) {
-                clickOnMap(p);
+                if (!clickOnMap(p)) {
+
+                    return;
+                }
             }
         }
 
@@ -178,7 +181,7 @@ public final class Walking {
      *
      * @param direction direction in which to walk.
      */
-    public static void step(RSTile[] path, int direction) {
+    public static boolean step(RSTile[] path, int direction) {
         RSTile tile = null;
         switch (direction) {
             case Walking.FORWARDS:
@@ -188,10 +191,8 @@ public final class Walking {
                 tile = getPrevious(path);
                 break;
         }
-        if (tile == null || Calculations.distance(tile, Players.getLocal().getLocation()) < 3) {
-            return;
-        }
-        Walking.clickOnMap(tile);
+
+        return tile != null && (Calculations.distance(tile, Players.getLocal().getLocation()) < 4 || Walking.clickOnMap(tile));
     }
 
     /**
@@ -204,7 +205,7 @@ public final class Walking {
         traverse(path, new StatePredicate() {
             @Override
             public boolean apply() {
-                return Calculations.distance(Players.getLocal().getLocation(), target) < 3;
+                return Calculations.distance(Players.getLocal().getLocation(), target) <= 3;
             }
         }, direction);
     }
@@ -217,7 +218,9 @@ public final class Walking {
      */
     public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
         while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
-            step(path, direction);
+            if(!step(path, direction)) {
+                break;
+            }
         }
     }
 

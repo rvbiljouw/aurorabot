@@ -1,9 +1,10 @@
 package ms.aurora.api.pathfinding;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.impl.RSMap;
 import ms.aurora.api.pathfinding.impl.RSPathFinder;
+import ms.aurora.api.script.ScriptState;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
@@ -17,6 +18,7 @@ public class AStarPathFinder {
 
     private ArrayList closed = new ArrayList();
     private SortedList open = new SortedList();
+    int stackDepth = 0;
 
     private RSMap map;
 
@@ -55,11 +57,20 @@ public class AStarPathFinder {
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
         nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
+        stackDepth = 0;
     }
 
     public Path findPath(int sx, int sy, int tx, int ty, int full) {
-        // easy first check, if the destination is blocked, we can't get there, find an adjacent tile instead
+        if(Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
+            System.out.println("Stack dropped...");
+            for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
+                System.out.println(element.getClassName() + "." + element.getMethodName() + " " + element.getLineNumber());
+            }
+            return null;
+        }
 
+
+        // easy first check, if the destination is blocked, we can't get there, find an adjacent tile instead
         if (map.solid(tx, ty)) {
             if ((tx - 1) < map.getWidthInTiles() && (tx - 1) > 0 && !map.solid(tx - 1, ty)) {
                 tx -= 1;
@@ -69,6 +80,12 @@ public class AStarPathFinder {
                 tx += 1;
             } else if ((ty + 1) < map.getHeightInTiles() && (ty + 1) > 0 && !map.solid(tx, ty + 1)) {
                 ty += 1;
+            }
+
+            stackDepth++;
+
+            if(stackDepth > 8) {
+                return null;
             }
             return findPath(sx, sy, tx, ty, full);
             //return null;
@@ -92,16 +109,16 @@ public class AStarPathFinder {
         //System.out.println("Starting the search.");
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
-            // pull out the first node in our open list, this is determined to
+            if(Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
+                break;
+            }
 
+            // pull out the first node in our open list, this is determined to
             // be the most likely to be the next step based on our heuristic
 
             Node current = getFirstInOpen();
             //System.out.println(current.x +"," + current.y);
             if (current == nodes[tx][ty]) {
-                break;
-            } else if (Point2D.distance(current.x, current.y, tx, ty) < 4) {
-                nodes[tx][ty].parent = current;
                 break;
             }
 
