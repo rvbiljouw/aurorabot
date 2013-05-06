@@ -1,7 +1,6 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
 
@@ -42,7 +41,7 @@ public class RSWidgetItem implements Interactable {
         int hx = (area.width / 2);
         int hy = (area.height / 2);
         int x = (int) area.getCenterX() + random(-hx, hx);
-        int y = (int) area.getCenterY() + +random(-hy, hy);
+        int y = (int) area.getCenterY() + random(-hy, hy);
         Point p = new Point(x, y);
         System.out.println(p);
         return p;
