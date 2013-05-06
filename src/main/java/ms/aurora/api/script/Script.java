@@ -94,10 +94,11 @@ public abstract class Script extends Context implements Runnable {
             onStart();
 
             while (getState() != ScriptState.STOP) {
-                int delay = 600;
+                String _delay = getProperty("script.delay");
+                int delay = _delay == null ? 500 : Integer.parseInt(_delay);
                 if (isLoggedIn() && getState() != ScriptState.PAUSED) {
                     int loopCycle = tick();
-                    if (loopCycle == -1) {
+                    if (loopCycle < 0) {
                         break;
                     }
                     delay += loopCycle;
