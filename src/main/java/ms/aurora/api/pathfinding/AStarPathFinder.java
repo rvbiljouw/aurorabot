@@ -61,9 +61,9 @@ public class AStarPathFinder {
     }
 
     public Path findPath(int sx, int sy, int tx, int ty, int full) {
-        if(Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
+        if (Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
             System.out.println("Stack dropped...");
-            for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
                 System.out.println(element.getClassName() + "." + element.getMethodName() + " " + element.getLineNumber());
             }
             return null;
@@ -84,13 +84,16 @@ public class AStarPathFinder {
 
             stackDepth++;
 
-            if(stackDepth > 8) {
+            if (stackDepth > 8) {
                 return null;
             }
             return findPath(sx, sy, tx, ty, full);
             //return null;
         }
 
+        if (!(sx < map.getWidthInTiles() && sx > 0 && sy < map.getHeightInTiles() && sy > 0)) {
+            return null;
+        }
         nodes[sx][sy] = new Node((short) sx, (short) sy);
         nodes[tx][ty] = new Node((short) tx, (short) ty);
 
@@ -109,7 +112,7 @@ public class AStarPathFinder {
         //System.out.println("Starting the search.");
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
-            if(Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
+            if (Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
                 break;
             }
 

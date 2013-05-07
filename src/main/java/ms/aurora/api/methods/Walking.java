@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 
 import static ms.aurora.api.methods.Calculations.distance;
+import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * Date: 25/03/13
@@ -71,9 +72,8 @@ public final class Walking {
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
             VirtualMouse.clickMouse(true);
-            if (Utilities.sleepUntil(WALKING(), 2500)) {
-                success = Utilities.sleepWhile(WALKING(tile, 3), 7500);
-            }
+            sleepNoException(500, 700);
+            success = Utilities.sleepWhile(WALKING(tile, 3), 7500);
         } else {
             logger.error("Tile not on minimap: " + tile);
         }
@@ -218,7 +218,7 @@ public final class Walking {
      */
     public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
         while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
-            if(!step(path, direction)) {
+            if (!step(path, direction)) {
                 break;
             }
         }
