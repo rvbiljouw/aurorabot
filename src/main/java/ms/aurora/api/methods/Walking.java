@@ -1,7 +1,8 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.pathfinding.Path;
-import ms.aurora.api.pathfinding.impl.RSPathFinder;
+import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
+import ms.aurora.api.pathfinding.impl.RSRegionPathFinder;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Locatable;
@@ -225,10 +226,8 @@ public final class Walking {
     }
 
     /**
-     * UNSTABLE: Walks to a specific coordinate
-     * It is required  that this coordinate lies in the same
-     * region as the current position of the player, or it will not work.
-     *
+     * Tries to walk to the destination X and Y using path finding over the mapped areas of RuneScape.
+     * In case no path is found, it will attempt to walk regardless by calling walkToLocal
      * @param x Destination X
      * @param y Destination Y
      */
@@ -238,13 +237,33 @@ public final class Walking {
             return;
         }
 
-        RSPathFinder pf = new RSPathFinder();
-        Path path = pf.getPath(x, y, RSPathFinder.FULL);
+        RSMapPathFinder pf = new RSMapPathFinder();
+        Path path = pf.getPath(x, y, RSMapPathFinder.FULL);
         if (path != null && path.getLength() != 0) {
             final RSTile[] tiles = path.toTiles(1);
             traverse(tiles, FORWARDS); // Path's by pathfinder are always inverted.
         } else {
-            System.out.println("Path not found to " + x + ", " + y);
+            logger.error("Path not found to " + x + ", " + y);
+            logger.warn("Attempting local navigation to " + x + "," + y);
+            walkToLocal(x, y);
+        }
+    }
+
+    /**
+     * Path finding within a region of 104x104 tiles.
+     * This method is suitable for use in small-ish dungeons
+     * or with appropriate way points.
+     * @param x Destination X
+     * @param y Destination Y
+     */
+    public static void walkToLocal(int x, int y) {
+        RSRegionPathFinder pf = new RSRegionPathFinder();
+        Path path = pf.getPath(x, y, RSRegionPathFinder.FULL);
+        if (path != null && path.getLength() != 0) {
+            final RSTile[] tiles = path.toTiles(1);
+            traverse(tiles, FORWARDS); // Path's by pathfinder are always inverted.
+        } else {
+            logger.error("Local path not found to " + x + ", " + y);
         }
     }
 
@@ -253,6 +272,10 @@ public final class Walking {
      */
     public static void walkTo(RSTile tile) {
         walkTo(tile.getX(), tile.getY());
+    }
+
+    public static void walkToLocal(RSTile tile) {
+        walkToLocal(tile.getX(), tile.getY());
     }
 
     /**

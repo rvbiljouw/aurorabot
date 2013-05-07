@@ -1,8 +1,8 @@
 package ms.aurora.api.pathfinding;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.pathfinding.impl.RSMap;
-import ms.aurora.api.pathfinding.impl.RSPathFinder;
+import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
+import ms.aurora.api.pathfinding.impl.RSRegion;
 import ms.aurora.api.script.ScriptState;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class AStarPathFinder {
     private SortedList open = new SortedList();
     int stackDepth = 0;
 
-    private RSMap map;
+    private TileBasedMap map;
 
     private int maxSearchDistance;
 
@@ -38,7 +38,7 @@ public class AStarPathFinder {
      * @param maxSearchDistance The maximum depth we'll search before giving up
      * @param allowDiagMovement True if the search should try diaganol movement
      */
-    public AStarPathFinder(RSMap map, int maxSearchDistance, boolean allowDiagMovement) {
+    public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement) {
         this(map, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
     }
 
@@ -50,7 +50,7 @@ public class AStarPathFinder {
      * @param maxSearchDistance The maximum depth we'll search before giving up
      * @param allowDiagMovement True if the search should try diaganol movement
      */
-    public AStarPathFinder(RSMap map, int maxSearchDistance,
+    public AStarPathFinder(TileBasedMap map, int maxSearchDistance,
                            boolean allowDiagMovement, AStarHeuristic heuristic) {
         this.heuristic = heuristic;
         this.map = map;
@@ -156,7 +156,7 @@ public class AStarPathFinder {
                         int yp = y + current.y;
                         boolean isValid;
 
-                        if (full == RSPathFinder.FULL) {
+                        if (full == RSMapPathFinder.FULL) {
                             isValid = isValidLocation(current.x, current.y, xp, yp, map.getDirection(x, y));
                         } else {
                             isValid = isValidLocation(current.x, current.y, xp, yp, -1);
@@ -226,6 +226,10 @@ public class AStarPathFinder {
         // to the start recording the nodes on the way.
 
         Path path = new Path();
+        if(map instanceof RSRegion) {
+            path = new Path(true);
+        }
+
         Node target = nodes[tx][ty];
         while (target != nodes[sx][sy]) {
             path.prependStep(target.x, target.y);

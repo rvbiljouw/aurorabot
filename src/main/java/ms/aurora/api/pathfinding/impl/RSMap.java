@@ -39,7 +39,7 @@ public class RSMap implements TileBasedMap {
         return 4000;
     }
 
-    public byte getBlock(int x, int y) {
+    public int getBlock(int x, int y) {
         return CLIPPING_MASKS[x][y];
     }
 
@@ -67,8 +67,8 @@ public class RSMap implements TileBasedMap {
     }
 
     public boolean isWalkable(int x, int y, int x2, int y2) {
-        byte here = getBlock(x, y);
-        byte there = getBlock(x2, y2);
+        int here = getBlock(x, y);
+        int there = getBlock(x2, y2);
         if (here == -128 || there == -128) return false;
 
         int upper = Integer.MAX_VALUE;

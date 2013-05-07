@@ -1,10 +1,11 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Walking;
 import ms.aurora.api.pathfinding.Path;
-import ms.aurora.api.pathfinding.impl.RSPathFinder;
+import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Item;
 
@@ -72,8 +73,8 @@ public final class RSGroundItem implements Locatable, Interactable {
 
     @Override
     public boolean canReach() {
-        RSPathFinder pf = new RSPathFinder();
-        Path path = pf.getPath(getX(), getY(), RSPathFinder.FULL);
+        RSMapPathFinder pf = new RSMapPathFinder();
+        Path path = pf.getPath(getX(), getY(), RSMapPathFinder.FULL);
         return path != null && path.getLength() > 0;
     }
 
@@ -93,7 +94,9 @@ public final class RSGroundItem implements Locatable, Interactable {
     public boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
             if (getProperty("interaction.walkTo").equals("true")) {
-                Walking.clickOnMap(getLocation());
+                if (Minimap.convert(getLocation()).x != -1) {
+                    Walking.walkToLocal(getLocation());
+                }
             }
             return false;
         }

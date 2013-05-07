@@ -5,6 +5,8 @@ import ms.aurora.api.wrappers.RSTile;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static ms.aurora.api.Context.getClient;
+
 /**
  * A path determined by some path finding algorithm. A series of steps from
  * the starting location to the target location. This includes a step for the
@@ -18,11 +20,17 @@ public class Path {
      */
     private ArrayList<Step> steps = new ArrayList<Step>();
 
+    private boolean appendBase = false;
+
     /**
      * Create an empty path
      */
     public Path() {
+        this(false);
+    }
 
+    public Path(boolean appendBase) {
+        this.appendBase = appendBase;
     }
 
     /**
@@ -72,6 +80,10 @@ public class Path {
      * @param y The y coordinate of the new step
      */
     public void appendStep(int x, int y) {
+        if(appendBase) {
+            x = x + getClient().getBaseX();
+            y = y + getClient().getBaseY();
+        }
         steps.add(new Step(x, y));
     }
 
@@ -82,6 +94,10 @@ public class Path {
      * @param y The y coordinate of the new step
      */
     public void prependStep(int x, int y) {
+        if(appendBase) {
+            x = x + getClient().getBaseX();
+            y = y + getClient().getBaseY();
+        }
         steps.add(0, new Step(x, y));
     }
 
@@ -93,6 +109,10 @@ public class Path {
      * @return True if the path contains the given step
      */
     public boolean contains(int x, int y) {
+        if(appendBase) {
+            x = x + getClient().getBaseX();
+            y = y + getClient().getBaseY();
+        }
         return steps.contains(new Step(x, y));
     }
 

@@ -48,6 +48,10 @@ public interface TileBasedMap {
 
     public int getDirection(int x, int y);
 
+    public int getBlock(int x, int y);
+
+    public boolean isWalkable(int sx, int sy, int tx, int ty);
+
     /**
      * Get the cost of moving through the given tile. This can be used to
      * make certain areas more desirable. A simple and valid implementation
