@@ -30,11 +30,29 @@ public class RSRegionPathFinder {
 
     public Path getPath(int destX, int destY, int full) {
         reload();
-        Point destPoint = new Point(destX, destY);
+        Point destPoint = getFixedPoint(destX, destY);
         return getPath(Players.getLocal().getLocalX() >> 7,
                 Players.getLocal().getLocalY() >> 7,
-                destPoint.x - getClient().getBaseX(),
-                destPoint.y - getClient().getBaseY(), full);
+                destPoint.x,
+                destPoint.y, full);
+    }
+
+    private Point getFixedPoint(int x, int y) {
+        x = x - getClient().getBaseX();
+        y = y - getClient().getBaseY();
+
+        if(x > 103) {
+            x = 103;
+        } else if(x < 0) {
+            x = 0;
+        }
+
+        if(y > 103) {
+            y = 103;
+        } else if(y < 0) {
+            y = 0;
+        }
+        return new Point(x, y);
     }
 
     public Path getPath(int startX, int startY, int destX, int destY, int full) {
