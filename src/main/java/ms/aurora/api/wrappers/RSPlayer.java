@@ -19,10 +19,12 @@ public final class RSPlayer extends RSCharacter {
         return wrapped.getName();
     }
 
+    @Override
     public final int getCurrentHealth() {
         return Skills.getLevel(Skills.Skill.HITPOINTS);
     }
 
+    @Override
     public final int getMaxHealth() {
         return Skills.getBaseLevel(Skills.Skill.HITPOINTS);
     }

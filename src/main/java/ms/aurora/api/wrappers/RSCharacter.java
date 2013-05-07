@@ -175,6 +175,14 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         return this.getScreenLocation().getX() != -1 && this.getScreenLocation().getY() != -1;
     }
 
+    public int getCurrentHealth() {
+        return wrapped.getCurrentHealth();
+    }
+
+    public int getMaxHealth() {
+        return wrapped.getMaxHealth();
+    }
+
     public boolean canReach() {
         RSMapPathFinder pf = new RSMapPathFinder();
         Path path = pf.getPath(getX(), getY(), RSMapPathFinder.FULL);
