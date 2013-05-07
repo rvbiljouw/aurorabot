@@ -25,6 +25,7 @@ public final class Minimap {
      * @return Point representing the position on the minimap. This point may have an x/y of -1.
      */
     public static Point convert(RSTile tile) {
+        if (tile == null) return new Point(-1, -1);
         return convert(tile.getX(), tile.getY());
     }
 

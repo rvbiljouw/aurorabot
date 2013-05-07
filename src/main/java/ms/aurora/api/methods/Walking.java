@@ -69,7 +69,7 @@ public final class Walking {
         boolean success = false;
         VirtualKeyboard.holdControl();
         logger.info("Walking: " + tile);
-        Point minimapPoint = Minimap.convert(tile.getX(), tile.getY());
+        Point minimapPoint = Minimap.convert(getClosestOnMap(tile));
         if (minimapPoint.x != -1 && minimapPoint.y != -1) {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
             VirtualMouse.clickMouse(true);
@@ -98,6 +98,21 @@ public final class Walking {
             }
         }
         return success;
+    }
+
+    public static RSTile getClosestOnMap(RSTile tile) {
+        if (Minimap.convert(tile).x != -1) return tile;
+
+        for (int x = -5; x < 5; x++) {
+            for (int y = -5; y < 5; y++) {
+                RSTile relative = new RSTile(tile.getX() + x, tile.getY() + y);
+                Point minimap = Minimap.convert(relative);
+                if (minimap.x != -1 && minimap.y != -1) {
+                    return relative;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -228,6 +243,7 @@ public final class Walking {
     /**
      * Tries to walk to the destination X and Y using path finding over the mapped areas of RuneScape.
      * In case no path is found, it will attempt to walk regardless by calling walkToLocal
+     *
      * @param x Destination X
      * @param y Destination Y
      */
@@ -253,6 +269,7 @@ public final class Walking {
      * Path finding within a region of 104x104 tiles.
      * This method is suitable for use in small-ish dungeons
      * or with appropriate way points.
+     *
      * @param x Destination X
      * @param y Destination Y
      */

@@ -78,7 +78,7 @@ public class MasterPasswordDialog extends AnchorPane {
                 stage.close();
             }
 
-            if(getCallback() != null) {
+            if (getCallback() != null) {
                 getCallback().call();
             }
         }
@@ -98,6 +98,10 @@ public class MasterPasswordDialog extends AnchorPane {
         assert warning != null : "fx:id=\"warning\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert caption != null : "fx:id=\"caption\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         caption.setText(properties.size() == 0 ? "Create password" : "Unlock database");
+
+        if (properties.size() != 0) {
+            txtVerifyPassword.setVisible(false);
+        }
     }
 
     private void showWarning() {
@@ -114,9 +118,9 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     public boolean authenticated() {
-        return txtPassword.getText().length() != 0
-                && txtVerifyPassword.getText().length() != 0
-                && txtPassword.getText().equalsIgnoreCase(txtVerifyPassword.getText());
+        return txtPassword.getText().length() != 0 && (properties.size() > 0 ||
+                (txtVerifyPassword.getText().length() != 0
+                        && txtPassword.getText().equalsIgnoreCase(txtVerifyPassword.getText())));
     }
 
     public String get() {

@@ -21,7 +21,7 @@ public class RSMapPathFinder {
     }
 
     private void reload() {
-        pathFinder = new AStarPathFinder(new RSMap(), 200, true, new ClosestHeuristic());
+        pathFinder = new AStarPathFinder(new RSMap(), 600, true, new ClosestHeuristic());
     }
 
     public Path getPath(int destX, int destY, int full) {
