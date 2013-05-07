@@ -58,6 +58,7 @@ public final class Menu {
      */
     public static boolean click(String action) {
         VirtualKeyboard.holdControl();
+        sleepNoException(200, 300);
         int itemIndex = getIndex(action);
         if (itemIndex != -1) {
 
