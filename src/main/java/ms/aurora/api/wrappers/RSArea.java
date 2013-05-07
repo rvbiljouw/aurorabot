@@ -52,6 +52,7 @@ public class RSArea {
         for (RSTile tile: getAllTiles()) {
             if (Calculations.distance(location, tile) < dist) {
                 closest = tile;
+                dist = Calculations.distance(location, tile);
             }
         }
         return closest;
