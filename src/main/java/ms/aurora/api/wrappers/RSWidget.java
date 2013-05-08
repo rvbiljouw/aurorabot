@@ -86,18 +86,18 @@ public final class RSWidget implements Interactable {
     public int getWidth() {
         int[] widthBounds = getClient().getBoundsWidth();
         int width = widget.getWidth();
-        if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
+/*        if (getBoundsIndex() > 0 && getBoundsIndex() < widthBounds.length) {
             return widthBounds[getBoundsIndex()];
-        }
+        }*/
         return width;
     }
 
     public int getHeight() {
         int[] heightBounds = getClient().getBoundsHeight();
         int height = widget.getHeight();
-        if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
+/*        if (getBoundsIndex() > 0 && getBoundsIndex() < heightBounds.length) {
             return heightBounds[getBoundsIndex()];
-        }
+        }*/
         return height;
     }
 

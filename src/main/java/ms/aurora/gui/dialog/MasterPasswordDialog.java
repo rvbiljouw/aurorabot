@@ -43,6 +43,9 @@ public class MasterPasswordDialog extends AnchorPane {
     private PasswordField txtVerifyPassword;
 
     @FXML
+    private Label lblVerifyPassword;
+
+    @FXML
     private Label caption;
 
     @FXML
@@ -100,6 +103,7 @@ public class MasterPasswordDialog extends AnchorPane {
         caption.setText(properties.size() == 0 ? "Create password" : "Unlock database");
 
         if (properties.size() != 0) {
+            lblVerifyPassword.setVisible(false);
             txtVerifyPassword.setVisible(false);
         }
     }
