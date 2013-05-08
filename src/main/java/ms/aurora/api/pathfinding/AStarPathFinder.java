@@ -112,6 +112,7 @@ public class AStarPathFinder {
         //System.out.println("Starting the search.");
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
+            System.out.println("Looping in path finder");
             if (Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
                 break;
             }
@@ -120,7 +121,7 @@ public class AStarPathFinder {
             // be the most likely to be the next step based on our heuristic
 
             Node current = getFirstInOpen();
-            //System.out.println(current.x +"," + current.y);
+            System.out.println(current.x +"," + current.y);
             if (current == nodes[tx][ty]) {
                 break;
             }

@@ -102,12 +102,8 @@ public final class RSObject implements Locatable, Interactable {
      */
     public final boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            if (getProperty("interaction.walkTo").equals("true")) {
-                Walking.clickOnMap(getLocation());
-            }
             return false;
         }
-
         for (int attempt = 0; attempt < 10; attempt++) {
             Point click = getClickLocation();
             VirtualMouse.moveMouse(click.x, click.y);
@@ -119,22 +115,17 @@ public final class RSObject implements Locatable, Interactable {
     }
 
     public final boolean hover() {
-        Point screen = getScreenLocation();
-        if (screen.x != -1 && screen.y != -1) {
-            VirtualMouse.moveMouse(screen.x, screen.y);
-            return true;
+        if (!Viewport.tileOnScreen(getLocation())) {
+            return false;
         }
-        return false;
+        Point screen = getScreenLocation();
+        VirtualMouse.moveMouse(screen.x, screen.y);
+        return true;
     }
 
     @Override
     public final boolean click(boolean left) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            if (getProperty("interaction.walkTo").equals("true")) {
-                if (Minimap.convert(getLocation()).x != -1) {
-                    Walking.walkToLocal(getLocation());
-                }
-            }
             return false;
         }
         Point screen = getClickLocation();

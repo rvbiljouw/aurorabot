@@ -59,9 +59,14 @@ public final class Menu {
     public static boolean click(String action) {
         VirtualKeyboard.holdControl();
         sleepNoException(200, 300);
-        int itemIndex = getIndex(action);
+        int itemIndex;
+        int tries = 0;
+        while((itemIndex = getIndex(action)) == -1 && tries < 12 &&
+                !Thread.currentThread().isInterrupted()) {
+            tries++;
+            sleepNoException(50);
+        }
         if (itemIndex != -1) {
-
             if (itemIndex == 0) {
                 VirtualMouse.clickMouse(true);
                 return true;
@@ -80,6 +85,7 @@ public final class Menu {
             }
 
         }
+        System.out.println("Index == 0");
         VirtualKeyboard.releaseControl();
         return false;
     }

@@ -107,16 +107,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      */
     public final boolean applyAction(final String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
-            if (getProperty("interaction.walkTo").equals("true")) {
-                if (Minimap.convert(getLocation()).x != -1) {
-                    Walking.walkToLocal(getLocation());
-                }
-            }
             return false;
         }
-
-        for (int attempt = 0; attempt < 10; attempt++) {
+        for (int attempt = 0; attempt < 10 && !Thread.currentThread().isInterrupted(); attempt++) {
             Point click = getClickLocation();
+            if (click.x <= 0 || click.y <= 0) continue;
             VirtualMouse.moveMouse(click.x, click.y);
             if (ms.aurora.api.methods.Menu.getIndex(actionName) != -1) {
                 return ms.aurora.api.methods.Menu.click(actionName);

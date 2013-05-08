@@ -62,14 +62,15 @@ public final class Utilities {
      */
     public static boolean sleepUntil(StatePredicate predicate, long timeOut) {
         Timer timer = new Timer(timeOut);
-        boolean success;
-        while ((success = !predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
+        boolean success = !predicate.apply();
+        while (success && !currentThread().isInterrupted() && !timer.finished()) {
             try {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
+            success = !predicate.apply();
         }
         return !success;
     }
@@ -99,14 +100,15 @@ public final class Utilities {
      */
     public static boolean sleepWhile(StatePredicate predicate, long timeOut) {
         Timer timer = new Timer(timeOut);
-        boolean success;
-        while ((success = predicate.apply()) && !currentThread().isInterrupted() && !timer.finished()) {
+        boolean success = predicate.apply();
+        while (success && !currentThread().isInterrupted() && !timer.finished()) {
             try {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
+            success = predicate.apply();
         }
         return !success;
     }

@@ -154,7 +154,7 @@ public class DefaultSecurityManager extends SecurityManager {
         for (int i = 4; i < 6; i++) {
             Class<?> stack = getClassContext()[i];
             if (stack.getClassLoader() != getClass().getClassLoader() &&
-                    !stack.getName().startsWith("java.")) {
+                    !stack.getName().startsWith("java.") && !stack.getName().contains("zeroturnaround")) {
                 System.out.println(getClassContext()[i].getName() + " is not trusted.");
                 return false;
             }

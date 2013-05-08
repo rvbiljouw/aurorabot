@@ -86,8 +86,6 @@ public abstract class Script extends Context implements Runnable {
     @Override
     public final void run() {
         logger.info("Started " + getManifest().name() + " by " + getManifest().author());
-
-
         init();
         try {
 

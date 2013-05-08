@@ -58,7 +58,7 @@ public final class VirtualMouse {
             MouseEventChain chain = MouseEventChain.createMousePath(path);
             MouseEvent[] events = chain.getMouseEvents();
             int[] sleepTimes = chain.getSleepTimes();
-            for (int i = 0; i < events.length; i++) {
+            for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
                 dispatchEvent(events[i]);
                 Utilities.sleepNoException(sleepTimes[i]);
             }
@@ -74,7 +74,7 @@ public final class VirtualMouse {
         MouseEventChain chain = MouseEventChain.createMouseClick(new Point(x, y), left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3, 1);
         MouseEvent[] events = chain.getMouseEvents();
         int[] sleepTimes = chain.getSleepTimes();
-        for (int i = 0; i < events.length; i++) {
+        for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
             dispatchEvent(events[i]);
             Utilities.sleepNoException(sleepTimes[i]);
         }
@@ -90,7 +90,7 @@ public final class VirtualMouse {
         MouseEventChain chain = MouseEventChain.createMouseDrag(path, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
         MouseEvent[] events = chain.getMouseEvents();
         int[] sleepTimes = chain.getSleepTimes();
-        for (int i = 0; i < events.length; i++) {
+        for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
             dispatchEvent(events[i]);
             Utilities.sleepNoException(sleepTimes[i]);
         }

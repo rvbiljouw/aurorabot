@@ -41,6 +41,7 @@ public final class Walking {
         return new StatePredicate() {
             @Override
             public boolean apply() {
+                System.out.println("WALKING(final RSTile tile, final int distance) called");
                 return Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > distance;
             }
         };
