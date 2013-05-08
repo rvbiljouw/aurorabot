@@ -3,10 +3,7 @@ package ms.aurora.sdn;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
-import ms.aurora.sdn.net.impl.HookPacketHandler;
-import ms.aurora.sdn.net.impl.LoginPacketHandler;
-import ms.aurora.sdn.net.impl.MapDataPacketHandler;
-import ms.aurora.sdn.net.impl.UpdatePacketHandler;
+import ms.aurora.sdn.net.impl.*;
 import org.apache.log4j.Logger;
 
 import java.io.DataInputStream;
@@ -63,6 +60,8 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new UpdatePacketHandler());
             packetHandlers.add(new MapDataPacketHandler());
             packetHandlers.add(new HookPacketHandler());
+            packetHandlers.add(new ScriptPacketHandler());
+            packetHandlers.add(new PluginPacketHandler());
 
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
