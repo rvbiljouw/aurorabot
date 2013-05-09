@@ -104,8 +104,8 @@ public final class RSObject implements Locatable, Interactable {
         if (!Viewport.tileOnScreen(getLocation())) {
             return false;
         }
+        Point click = getClickLocation();
         for (int attempt = 0; attempt < 10; attempt++) {
-            Point click = getClickLocation();
             VirtualMouse.moveMouse(click.x, click.y);
             if (ms.aurora.api.methods.Menu.getIndex(actionName) != -1) {
                 return ms.aurora.api.methods.Menu.click(actionName);
@@ -138,9 +138,7 @@ public final class RSObject implements Locatable, Interactable {
             if (getModel() != null) {
                 return getModel().getRandomPoint();
             }
-        } catch (Exception e) {
-            //  e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         return getScreenLocation();
     }
 

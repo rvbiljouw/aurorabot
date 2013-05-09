@@ -141,10 +141,13 @@ public final class RSModel {
 
         Point p = new Point(-1, -1);
         do {
-            Point temp = new Point(random((int)bounds.getCenterX() - (bounds.width / 4),
+            /*Point temp = new Point(random((int)bounds.getCenterX() - (bounds.width / 4),
                     (int)bounds.getCenterX() + (bounds.width / 4)),
                     random((int)bounds.getCenterY() - (bounds.height/ 4),
-                            (int)bounds.getCenterY() + (bounds.height / 4)));
+                            (int)bounds.getCenterY() + (bounds.height / 4)));*/
+            int x = random(bounds.x, (bounds.x + bounds.width));
+            int y = random(bounds.y, (bounds.y + bounds.height));
+            Point temp = new Point(x, y);
             if (hull.contains(temp)) {
                 p = temp;
             }

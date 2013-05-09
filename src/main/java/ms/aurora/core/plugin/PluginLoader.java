@@ -34,8 +34,8 @@ public final class PluginLoader {
 
     public static List<Plugin> getPlugins() {
         List<Plugin> plugins = new ArrayList<Plugin>();
-        Repository.loadPlugins();
-        plugins.addAll(loadRemotePlugins());
+        //Repository.loadPlugins();
+        //plugins.addAll(loadRemotePlugins());
         plugins.add(new InterfacePlugin());
         plugins.add(new TileUtilities());
         plugins.add(new PaintDebug());

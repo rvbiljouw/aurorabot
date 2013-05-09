@@ -85,7 +85,6 @@ public final class Menu {
             }
 
         }
-        System.out.println("Index == 0");
         VirtualKeyboard.releaseControl();
         return false;
     }

@@ -26,7 +26,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
-    public static final double VERSION = 6;
+    public static final double VERSION = 8;
     private static final Object initialisation_lock = new Object();
 
     public static LoginWindow LOGIN_WINDOW;
