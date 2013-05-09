@@ -4,7 +4,10 @@ import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.internal.InterfacePlugin;
 import ms.aurora.api.plugin.internal.PaintDebug;
 import ms.aurora.api.plugin.internal.TileUtilities;
+import ms.aurora.api.script.Script;
 import ms.aurora.core.model.PluginSource;
+import ms.aurora.sdn.net.api.Repository;
+import ms.aurora.util.JarInputStreamClassLoader;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -16,11 +19,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
 
 /**
  * @author Rick
  */
 public final class PluginLoader {
+    public static List<JarInputStream> remoteStreams = null;
+
     private static final Logger logger = Logger.getLogger(PluginLoader.class);
 
     private PluginLoader() {
@@ -28,6 +34,8 @@ public final class PluginLoader {
 
     public static List<Plugin> getPlugins() {
         List<Plugin> plugins = new ArrayList<Plugin>();
+        Repository.loadPlugins();
+        plugins.addAll(loadRemotePlugins());
         plugins.add(new InterfacePlugin());
         plugins.add(new TileUtilities());
         plugins.add(new PaintDebug());
@@ -58,6 +66,20 @@ public final class PluginLoader {
                     }
                 } catch (IOException e) {
                     logger.debug("Failed to load plugin from JAR " + file.getName(), e);
+                }
+            }
+        }
+        return plugins;
+    }
+
+    private static synchronized List<Plugin> loadRemotePlugins() {
+        List<Plugin> plugins = new ArrayList<Plugin>();
+        if (remoteStreams != null) {
+            JarInputStreamClassLoader classLoader = new JarInputStreamClassLoader(Thread.currentThread().getContextClassLoader(), remoteStreams);
+            for (String name : classLoader.getClassNames()) {
+                Plugin plugin = loadPlugin(classLoader, name);
+                if (plugin != null) {
+                    plugins.add(plugin);
                 }
             }
         }

@@ -2,6 +2,10 @@ package ms.aurora.core.script;
 
 import ms.aurora.api.script.Script;
 import ms.aurora.core.model.ScriptSource;
+import ms.aurora.sdn.SDNConnection;
+import ms.aurora.sdn.net.api.Repository;
+import ms.aurora.sdn.net.packet.ScriptRequest;
+import ms.aurora.util.JarInputStreamClassLoader;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -13,11 +17,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
 
 /**
  * @author Rick
  */
 public final class ScriptLoader {
+    public static List<JarInputStream> remoteStreams = null;
+
     private static final Logger logger = Logger.getLogger(ScriptLoader.class);
 
     private ScriptLoader() {
@@ -25,10 +32,12 @@ public final class ScriptLoader {
 
     public static List<Script> getScripts() {
         List<Script> scripts = new ArrayList<Script>();
+        Repository.loadScripts();
+        scripts.addAll(loadRemoteScripts());
         for (ScriptSource sourceObj : ScriptSource.getAll()) {
             String source = sourceObj.getSource();
             File sourceDirectory = new File(source);
-            if(!sourceDirectory.exists()) {
+            if (!sourceDirectory.exists()) {
                 sourceDirectory.mkdirs();
             }
 
@@ -53,6 +62,20 @@ public final class ScriptLoader {
                     }
                 } catch (IOException e) {
                     logger.debug("Failed to load Script from JAR " + file.getName(), e);
+                }
+            }
+        }
+        return scripts;
+    }
+
+    private static synchronized List<Script> loadRemoteScripts() {
+        List<Script> scripts = new ArrayList<Script>();
+        if (remoteStreams != null) {
+            JarInputStreamClassLoader classLoader = new JarInputStreamClassLoader(Thread.currentThread().getContextClassLoader(), remoteStreams);
+            for (String name : classLoader.getClassNames()) {
+                Script script = loadScript(classLoader, name);
+                if (script != null) {
+                    scripts.add(script);
                 }
             }
         }
