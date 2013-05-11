@@ -1,6 +1,7 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.util.StatePredicate;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import org.jboss.logging.Logger;
@@ -95,7 +96,7 @@ public final class Menu {
      * @param action Action text (may be a regular expression, too!)
      * @return true if present
      */
-    public boolean contains(String action) {
+    public static boolean contains(String action) {
         return getIndex(action) != -1;
     }
 
@@ -132,5 +133,15 @@ public final class Menu {
         if (in == null)
             return "null";
         return pattern.matcher(in).replaceAll("");
+    }
+
+
+    public static StatePredicate containsPred(final String actionName) {
+        return new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return contains(actionName);
+            }
+        };
     }
 }

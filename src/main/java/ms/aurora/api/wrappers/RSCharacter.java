@@ -1,18 +1,19 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Minimap;
+import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Viewport;
-import ms.aurora.api.methods.Walking;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Model;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
 
-import static ms.aurora.api.Context.getProperty;
+import static ms.aurora.api.methods.Menu.contains;
+import static ms.aurora.api.methods.Menu.containsPred;
 import static ms.aurora.input.VirtualMouse.moveMouse;
 
 
@@ -107,17 +108,14 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      */
     public final boolean applyAction(final String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
+            logger.info("Character not on screen");
             return false;
         }
+
         Point click = getClickLocation();
-        for (int attempt = 0; attempt < 10 && !Thread.currentThread().isInterrupted(); attempt++) {
-            if (click.x <= 0 || click.y <= 0) continue;
-            VirtualMouse.moveMouse(click.x, click.y);
-            if (ms.aurora.api.methods.Menu.getIndex(actionName) != -1) {
-                return ms.aurora.api.methods.Menu.click(actionName);
-            }
-        }
-        return false;
+        VirtualMouse.moveMouse(click.x, click.y);
+        Utilities.sleepUntil(containsPred(actionName), 600);
+        return contains(actionName) && Menu.click(actionName);
     }
 
     @Override

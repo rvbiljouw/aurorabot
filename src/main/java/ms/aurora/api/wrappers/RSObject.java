@@ -1,23 +1,25 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Minimap;
-import ms.aurora.api.methods.Objects;
-import ms.aurora.api.methods.Viewport;
-import ms.aurora.api.methods.Walking;
+import ms.aurora.api.methods.*;
+import ms.aurora.api.methods.Menu;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.*;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 
-import static ms.aurora.api.Context.getProperty;
+import static ms.aurora.api.methods.Menu.contains;
+import static ms.aurora.api.methods.Menu.containsPred;
 
 /**
  * @author Rick
  */
 public final class RSObject implements Locatable, Interactable {
+    private static final Logger logger = Logger.getLogger(RSObject.class);
     private final Context ctx;
     private final GameObject wrapped;
 
@@ -102,16 +104,14 @@ public final class RSObject implements Locatable, Interactable {
      */
     public final boolean applyAction(String actionName) {
         if (!Viewport.tileOnScreen(getLocation())) {
+            logger.info("Object not on screen");
             return false;
         }
+
         Point click = getClickLocation();
-        for (int attempt = 0; attempt < 10; attempt++) {
-            VirtualMouse.moveMouse(click.x, click.y);
-            if (ms.aurora.api.methods.Menu.getIndex(actionName) != -1) {
-                return ms.aurora.api.methods.Menu.click(actionName);
-            }
-        }
-        return false;
+        VirtualMouse.moveMouse(click.x, click.y);
+        Utilities.sleepUntil(containsPred(actionName), 600);
+        return contains(actionName) && Menu.click(actionName);
     }
 
     public final boolean hover() {
