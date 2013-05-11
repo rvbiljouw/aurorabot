@@ -248,10 +248,7 @@ public final class Walking {
      * @param y Destination Y
      */
     public static void walkTo(int x, int y) {
-        if (x >= 4000 || y >= 4000) {
-            System.out.println("Trying to walk in unmapped area.. please make your own path.");
-            return;
-        }
+        logger.info("Attempting walkTo(" + x + ", " + y +");");
 
         RSMapPathFinder pf = new RSMapPathFinder();
         Path path = pf.getPath(x, y, RSMapPathFinder.FULL);
@@ -274,6 +271,8 @@ public final class Walking {
      * @param y Destination Y
      */
     public static void walkToLocal(int x, int y) {
+        logger.info("Attempting walkToLocal(" + x + ", " + y);
+
         RSRegionPathFinder pf = new RSRegionPathFinder();
         Path path = pf.getPath(x, y, RSRegionPathFinder.FULL);
         if (path != null && path.getLength() != 0) {
