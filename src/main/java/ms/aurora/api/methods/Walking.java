@@ -74,7 +74,9 @@ public final class Walking {
             VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
             VirtualMouse.clickMouse(true);
             sleepNoException(500, 700);
+            logger.info("Sleeping while we wait for movement to occur.");
             success = Utilities.sleepWhile(WALKING(tile, 3), 7500);
+            logger.info("Done sleeping!");
         } else {
             logger.error("Tile not on minimap: " + tile);
         }
@@ -197,7 +199,7 @@ public final class Walking {
      *
      * @param direction direction in which to walk.
      */
-    public static boolean step(RSTile[] path, int direction) {
+    public static RSTile step(RSTile[] path, int direction) {
         RSTile tile = null;
         switch (direction) {
             case Walking.FORWARDS:
@@ -208,7 +210,10 @@ public final class Walking {
                 break;
         }
 
-        return tile != null && (Calculations.distance(tile, Players.getLocal().getLocation()) < 4 || Walking.clickOnMap(tile));
+        if (tile != null) {
+            Walking.clickOnMap(tile);
+        }
+        return tile;
     }
 
     /**
@@ -233,9 +238,15 @@ public final class Walking {
      * @param direction direction in which to walk.
      */
     public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
+        RSTile lastTarget = null;
         while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
-            if (!step(path, direction)) {
+            RSTile target = step(path, direction);
+            if (target == null) {
                 break;
+            } else if (target.equals(lastTarget)) {
+                break;
+            } else {
+                lastTarget = target;
             }
         }
     }
@@ -248,7 +259,7 @@ public final class Walking {
      * @param y Destination Y
      */
     public static void walkTo(int x, int y) {
-        logger.info("Attempting walkTo(" + x + ", " + y +");");
+        logger.info("Attempting walkTo(" + x + ", " + y + ");");
 
         RSMapPathFinder pf = new RSMapPathFinder();
         Path path = pf.getPath(x, y, RSMapPathFinder.FULL);
