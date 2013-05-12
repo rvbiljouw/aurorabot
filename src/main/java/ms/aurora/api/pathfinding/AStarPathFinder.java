@@ -70,7 +70,7 @@ public class AStarPathFinder {
         }
 
 
-        if (!map.free(sx, sy)) {
+        if (map.solid(sx, sy)) {
             System.out.println("Starting tile has a blockade..");
             for (int x = -3; x <= 3; x++) {
                 for (int y = -3; y <= 3; y++) {
@@ -78,7 +78,7 @@ public class AStarPathFinder {
                     int mY = sy + y;
 
                     if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
-                        if (map.free(mX, mY)) {
+                        if (!map.solid(mX, mY)) {
                             System.out.println("Picking " + mX + ","+ mY + " as a starting tile.");
                             return findPath(mX, mY, tx, ty, full);
                         }
@@ -89,23 +89,20 @@ public class AStarPathFinder {
 
         // easy first check, if the destination is blocked, we can't get there, find an adjacent tile instead
         if (map.solid(tx, ty)) {
-            if ((tx - 1) < map.getWidthInTiles() && (tx - 1) > 0 && !map.solid(tx - 1, ty)) {
-                tx -= 1;
-            } else if ((ty - 1) < map.getHeightInTiles() && (ty - 1) > 0 && !map.solid(tx, ty - 1)) {
-                ty -= 1;
-            } else if ((tx + 1) < map.getWidthInTiles() && (tx + 1) > 0 && !map.solid(tx + 1, ty)) {
-                tx += 1;
-            } else if ((ty + 1) < map.getHeightInTiles() && (ty + 1) > 0 && !map.solid(tx, ty + 1)) {
-                ty += 1;
-            }
+            System.out.println("Destination tile has a blockade.. ( " + tx + ", " + ty + " )");
+            for (int x = -3; x <= 3; x++) {
+                for (int y = -3; y <= 3; y++) {
+                    int mX = tx + x;
+                    int mY = ty + y;
 
-            stackDepth++;
-
-            if (stackDepth > 8) {
-                return null;
+                    if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
+                        if (!map.solid(mX, mY)) {
+                            System.out.println("Picking " + mX + ","+ mY + " as a destination tile.");
+                            return findPath(sx, sy, mX, mY, full);
+                        }
+                    }
+                }
             }
-            return findPath(sx, sy, tx, ty, full);
-            //return null;
         }
 
         if (!(sx < map.getWidthInTiles() && sx > 0 && sy < map.getHeightInTiles() && sy > 0)) {
