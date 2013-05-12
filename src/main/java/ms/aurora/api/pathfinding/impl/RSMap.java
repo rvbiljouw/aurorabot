@@ -66,6 +66,17 @@ public class RSMap implements TileBasedMap {
         return 0;
     }
 
+    public boolean free(int x, int y) {
+        return !(blocked(x, y, INVALID | BLOCKED) || CLIPPING_MASKS[x][y] == -128 || (blocked(x, y, DIRECTION_NORTH) ||
+                blocked(x, y, DIRECTION_SOUTH) ||
+                blocked(x, y, DIRECTION_EAST) ||
+                blocked(x, y, DIRECTION_WEST) ||
+                blocked(x, y, DIRECTION_NORTHEAST) ||
+                blocked(x, y, DIRECTION_NORTHWEST) ||
+                blocked(x, y, DIRECTION_SOUTHEAST) ||
+                blocked(x, y, DIRECTION_SOUTHWEST)));
+    }
+
     public boolean isWalkable(int x, int y, int x2, int y2) {
         int here = getBlock(x, y);
         int there = getBlock(x2, y2);

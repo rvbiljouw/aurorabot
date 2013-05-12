@@ -8,7 +8,6 @@ import ms.aurora.rt3.Model;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import static ms.aurora.api.util.Utilities.random;
@@ -34,9 +33,9 @@ public final class RSModel {
 
     public RSModel(Context ctx, Model wrapped, int localX, int localY, int orientation) {
         this.ctx = ctx;
-        this.trianglesX = wrapped.getTrianglesX().clone();
-        this.trianglesY = wrapped.getTrianglesY().clone();
-        this.trianglesZ = wrapped.getTrianglesZ().clone();
+        this.trianglesX = wrapped.getTrianglesX();
+        this.trianglesY = wrapped.getTrianglesY();
+        this.trianglesZ = wrapped.getTrianglesZ();
         this.verticesX = wrapped.getVerticesX().clone();
         this.verticesY = wrapped.getVerticesY().clone();
         this.verticesZ = wrapped.getVerticesZ().clone();
@@ -198,6 +197,13 @@ public final class RSModel {
         x /= points.length;
         y /= points.length;
         return new Point2D.Double(x, y);
+    }
+
+    public void cleanup() {
+        trianglesX = trianglesY = trianglesZ = null;
+        verticesX = verticesY = verticesZ = null;
+        originalX = null;
+        originalZ = null;
     }
 
     private static final int[] SIN_TABLE = new int[16384];

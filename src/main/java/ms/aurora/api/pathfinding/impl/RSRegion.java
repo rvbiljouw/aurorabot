@@ -46,6 +46,17 @@ public class RSRegion implements TileBasedMap {
         }
     }
 
+    public boolean free(int x, int y) {
+        return (blocked(x, y, INVALID | BLOCKED) || clippingMasks[x][y] == -128 || (blocked(x, y, DIRECTION_NORTH) ||
+                blocked(x, y, DIRECTION_SOUTH) ||
+                blocked(x, y, DIRECTION_EAST) ||
+                blocked(x, y, DIRECTION_WEST) ||
+                blocked(x, y, DIRECTION_NORTHEAST) ||
+                blocked(x, y, DIRECTION_NORTHWEST) ||
+                blocked(x, y, DIRECTION_SOUTHEAST) ||
+                blocked(x, y, DIRECTION_SOUTHWEST)));
+    }
+
     @Override
     public int getWidthInTiles() {
         return 104;
