@@ -140,18 +140,15 @@ public final class RSModel {
         Rectangle bounds = hull.getBounds();
 
         Point p = new Point(-1, -1);
+        int tries = 0;
         do {
-            /*Point temp = new Point(random((int)bounds.getCenterX() - (bounds.width / 4),
-                    (int)bounds.getCenterX() + (bounds.width / 4)),
-                    random((int)bounds.getCenterY() - (bounds.height/ 4),
-                            (int)bounds.getCenterY() + (bounds.height / 4)));*/
-            int x = random(bounds.x, (bounds.x + bounds.width));
-            int y = random(bounds.y, (bounds.y + bounds.height));
+            int x = bounds.x + random(0, bounds.width);
+            int y = bounds.y + random(0, bounds.height);
             Point temp = new Point(x, y);
             if (hull.contains(temp)) {
                 p = temp;
             }
-        } while (p.x == -1 && p.y == -1);
+        } while ((p.x <= 0 || p.y <= 0) && !Thread.currentThread().isInterrupted() && tries++ < 20);
         return p;
     }
 
