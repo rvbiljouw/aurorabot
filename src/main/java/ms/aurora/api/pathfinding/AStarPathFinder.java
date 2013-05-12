@@ -70,6 +70,23 @@ public class AStarPathFinder {
         }
 
 
+        if (!map.free(sx, sy)) {
+            System.out.println("Starting tile has a blockade..");
+            for (int x = -3; x <= 3; x++) {
+                for (int y = -3; y <= 3; y++) {
+                    int mX = sx + x;
+                    int mY = sy + y;
+
+                    if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
+                        if (map.free(mX, mY)) {
+                            System.out.println("Picking " + mX + ","+ mY + " as a starting tile.");
+                            return findPath(mX, mY, tx, ty, full);
+                        }
+                    }
+                }
+            }
+        }
+
         // easy first check, if the destination is blocked, we can't get there, find an adjacent tile instead
         if (map.solid(tx, ty)) {
             if ((tx - 1) < map.getWidthInTiles() && (tx - 1) > 0 && !map.solid(tx - 1, ty)) {
@@ -226,7 +243,7 @@ public class AStarPathFinder {
         // to the start recording the nodes on the way.
 
         Path path = new Path();
-        if(map instanceof RSRegion) {
+        if (map instanceof RSRegion) {
             path = new Path(true);
         }
 

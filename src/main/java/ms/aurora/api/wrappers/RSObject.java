@@ -1,8 +1,9 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.Menu;
+import ms.aurora.api.methods.Objects;
+import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
 import ms.aurora.api.util.Utilities;
@@ -24,6 +25,7 @@ public final class RSObject implements Locatable, Interactable {
     private final GameObject wrapped;
 
     private ObjectType objectType = ObjectType.NULL;
+    private RSModel cachedModel;
     private int localX;
     private int localY;
 
@@ -111,7 +113,12 @@ public final class RSObject implements Locatable, Interactable {
         Point click = getClickLocation();
         VirtualMouse.moveMouse(click.x, click.y);
         Utilities.sleepUntil(containsPred(actionName), 600);
-        return contains(actionName) && Menu.click(actionName);
+        boolean success = contains(actionName) && Menu.click(actionName);
+        if(success) {
+            cachedModel.cleanup();
+            System.gc();
+        }
+        return success;
     }
 
     public final boolean hover() {
@@ -138,13 +145,16 @@ public final class RSObject implements Locatable, Interactable {
             if (getModel() != null) {
                 return getModel().getRandomPoint();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return getScreenLocation();
     }
 
     public RSModel getModel() {
         if (wrapped.getModel() != null && wrapped.getModel() instanceof Model) {
-            return new RSModel(ctx, (Model) wrapped.getModel(), getLocalX(), getLocalY(), 0);
+            if (cachedModel == null)
+                cachedModel = new RSModel(ctx, (Model) wrapped.getModel(), getLocalX(), getLocalY(), 0);
+            return cachedModel;
         }
         return null;
     }

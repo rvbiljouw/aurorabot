@@ -44,6 +44,9 @@ public interface TileBasedMap {
      */
     public boolean blocked(int x, int y, int direction);
 
+    public boolean free(int x, int y);
+
+
     public boolean solid(int x, int y);
 
     public int getDirection(int x, int y);
