@@ -32,8 +32,8 @@ public final class ScriptLoader {
 
     public static List<Script> getScripts() {
         List<Script> scripts = new ArrayList<Script>();
-        //Repository.loadScripts();
-        //scripts.addAll(loadRemoteScripts());
+        Repository.loadScripts();
+        scripts.addAll(loadRemoteScripts());
         for (ScriptSource sourceObj : ScriptSource.getAll()) {
             String source = sourceObj.getSource();
             File sourceDirectory = new File(source);
@@ -73,9 +73,13 @@ public final class ScriptLoader {
         if (remoteStreams != null) {
             JarInputStreamClassLoader classLoader = new JarInputStreamClassLoader(Thread.currentThread().getContextClassLoader(), remoteStreams);
             for (String name : classLoader.getClassNames()) {
-                Script script = loadScript(classLoader, name);
-                if (script != null) {
-                    scripts.add(script);
+                try {
+                    Script script = loadScript(classLoader, name);
+                    if (script != null) {
+                        scripts.add(script);
+                    }
+                } catch (Exception e) {
+                    logger.error("Failed to load script", e);
                 }
             }
         }
@@ -94,8 +98,8 @@ public final class ScriptLoader {
             }
         } catch (ReflectiveOperationException e) {
             logger.debug("Malformed class: " + className, e);
-        } catch (IOException e) {
-            logger.debug("Failed to load script", e);
+        } catch (Exception e) {
+            logger.error("Failed to load script", e);
         }
         return null;
     }

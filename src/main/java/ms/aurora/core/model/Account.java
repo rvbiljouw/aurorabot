@@ -1,5 +1,6 @@
 package ms.aurora.core.model;
 
+import com.avaje.ebean.Ebean;
 import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.dialog.MasterPasswordDialog;
 import ms.aurora.sdn.net.encode.Base64;
@@ -16,10 +17,7 @@ import java.util.List;
  * by the SecurityManager, to prevent accounts from being hijacked.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "account.getAll", query = "select a from Account a")
-})
-public final class Account extends AbstractModel {
+public class Account extends AbstractModel {
     private static String masterPassword;
 
     @Id
@@ -78,9 +76,12 @@ public final class Account extends AbstractModel {
     }
 
     public static List<Account> getAll() {
-        return getEm().createNamedQuery("account.getAll", Account.class).getResultList();
+        return Ebean.find(Account.class).findList();
     }
 
+    /*
+     * CRYPTO FUNCTIONS
+     */
     private static String encrypt(String input) {
         byte[] crypted = null;
         try {

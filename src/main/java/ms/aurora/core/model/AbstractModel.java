@@ -1,5 +1,8 @@
 package ms.aurora.core.model;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -8,38 +11,25 @@ import javax.persistence.Persistence;
  * @author Rick
  */
 public class AbstractModel {
-    private static final EntityManagerFactory factory =
-            Persistence.createEntityManagerFactory("default");
-
 
     public final void save() {
-        EntityManager em = getEm();
-        em.getTransaction().begin();
-        em.persist(this);
-        em.getTransaction().commit();
+        Ebean.save(this);
     }
 
     public final void update() {
-        EntityManager em = getEm();
-        em.getTransaction().begin();
-        em.merge(this);
-        em.getTransaction().commit();
+        Ebean.update(this);
     }
 
     public final void remove() {
-        EntityManager em = getEm();
-        em.getTransaction().begin();
-        em.remove(em.merge(this));
-        em.getTransaction().commit();
+        Ebean.delete(this);
     }
 
     public final void refresh() {
-        EntityManager em = getEm();
-        em.refresh(this);
+        Ebean.refresh(this);
     }
 
-    public static EntityManager getEm() {
-        return factory.createEntityManager();
+    public static <T> Query<T> finder(Class<T> t) {
+        return Ebean.find(t);
     }
 
 }

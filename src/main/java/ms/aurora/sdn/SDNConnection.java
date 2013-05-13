@@ -37,7 +37,7 @@ public class SDNConnection implements Runnable {
 
     public void start() {
         try {
-            socket = new Socket("208.94.241.76", 443);
+            socket = new Socket("208.94.241.76", 8008);
             socket.setSoTimeout(5000);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
@@ -62,6 +62,7 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new HookPacketHandler());
             packetHandlers.add(new ScriptPacketHandler());
             packetHandlers.add(new PluginPacketHandler());
+            packetHandlers.add(new ScriptCountPacketHandler());
 
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {
@@ -93,6 +94,8 @@ public class SDNConnection implements Runnable {
             byte[] buffer = packet.getPayload();
             dos.write(buffer, 0, buffer.length);
             dos.flush();
+
+            logger.info("Wrote packet " + packet.getOpcode());
         } catch (Exception e) {
             e.printStackTrace();
         }

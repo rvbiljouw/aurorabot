@@ -1,5 +1,7 @@
 package ms.aurora.core.model;
 
+import com.avaje.ebean.Ebean;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,11 +10,7 @@ import java.util.List;
  * @author Cov
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "property.getByName", query = "select p from Property p where p.name = :name"),
-        @NamedQuery(name = "property.getAll", query = "select p from Property p")
-})
-public final class Property extends AbstractModel {
+public class Property extends AbstractModel {
 
     @Id
     @GeneratedValue
@@ -49,13 +47,11 @@ public final class Property extends AbstractModel {
     }
 
     public static List<Property> getAll() {
-        TypedQuery<Property> query = getEm().createNamedQuery("property.getAll", Property.class);
-        return query.getResultList();
+        return Ebean.find(Property.class).findList();
     }
 
-    public static List<Property> getByName(String value) {
-        TypedQuery<Property> query = getEm().createNamedQuery("property.getByName", Property.class).setParameter("name", value);
-        return query.getResultList();
+    public static Property getByName(String value) {
+        return Ebean.find(Property.class).where().eq("name", value).findUnique();
     }
 
 

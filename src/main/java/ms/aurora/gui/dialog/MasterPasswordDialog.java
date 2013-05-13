@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -53,10 +55,10 @@ public class MasterPasswordDialog extends AnchorPane {
     private Label warning;
 
     private Callback callback;
-    private List<Property> properties;
+    private Property property;
 
     public MasterPasswordDialog() {
-        properties = Property.getByName("masterPassword");
+        property = Property.getByName("masterPassword");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MasterPasswordDialog.fxml"), Messages.getBundle());
 
         //fxmlLoader.setRoot(this);
@@ -72,13 +74,13 @@ public class MasterPasswordDialog extends AnchorPane {
     @FXML
     void authenticateAction(ActionEvent event) {
         if (authenticated()) {
-            if (properties.size() == 0) {
+            if (property == null) {
                 Property masterPass = new Property();
                 masterPass.setName("masterPassword");
                 masterPass.setValue(get());
                 masterPass.save();
                 stage.close();
-            } else if (get().equalsIgnoreCase(properties.get(0).getValue())) {
+            } else if (get().equalsIgnoreCase(property.getValue())) {
                 stage.close();
             }
 
@@ -87,6 +89,20 @@ public class MasterPasswordDialog extends AnchorPane {
             }
         }
         showWarning();
+    }
+
+    @FXML
+    void onPasswordKeyReleased(KeyEvent event) {
+        if (property != null && event.getCode() == KeyCode.ENTER) {
+            authenticateAction(null);
+        } else if (event.getCode() == KeyCode.ENTER) {
+            txtVerifyPassword.requestFocus();
+        }
+    }
+
+    @FXML
+    void onPasswordRepeatKeyReleased(KeyEvent event) {
+        authenticateAction(null);
     }
 
     @FXML
@@ -101,10 +117,10 @@ public class MasterPasswordDialog extends AnchorPane {
         assert txtVerifyPassword != null : "fx:id=\"txtVerifyPassword\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert warning != null : "fx:id=\"warning\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert caption != null : "fx:id=\"caption\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
-        caption.setText(properties.size() == 0 ? Messages.getString("masterPassword.create") :
+        caption.setText(property == null ? Messages.getString("masterPassword.create") :
                 Messages.getString("masterPassword.unlock"));
 
-        if (properties.size() != 0) {
+        if (property != null) {
             lblVerifyPassword.setVisible(false);
             txtVerifyPassword.setVisible(false);
         }
@@ -124,7 +140,7 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     public boolean authenticated() {
-        return txtPassword.getText().length() != 0 && (properties.size() > 0 ||
+        return txtPassword.getText().length() != 0 && (property != null ||
                 (txtVerifyPassword.getText().length() != 0
                         && txtPassword.getText().equalsIgnoreCase(txtVerifyPassword.getText())));
     }
@@ -134,7 +150,7 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     public void show() {
-        String title = properties.size() == 0 ? Messages.getString("masterPassword.create") :
+        String title = property == null ? Messages.getString("masterPassword.create") :
                 Messages.getString("masterPassword.unlock");
         stage = FXUtils.createModalStage(title, this);
         stage.centerOnScreen();

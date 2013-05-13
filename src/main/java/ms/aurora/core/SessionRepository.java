@@ -1,7 +1,6 @@
 package ms.aurora.core;
 
-import org.jboss.logging.Logger;
-
+import org.apache.log4j.Logger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

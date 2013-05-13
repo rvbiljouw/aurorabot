@@ -28,7 +28,6 @@ public class JarInputStreamClassLoader extends ClassLoader {
         try {
             for (JarInputStream stream : streams) {
                 ZipEntry current = null;
-
                 while ((current = stream.getNextEntry()) != null) {
                     if (current.getName().endsWith(".class")) {
                         byte[] b = new byte[2048];
@@ -43,7 +42,7 @@ public class JarInputStreamClassLoader extends ClassLoader {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

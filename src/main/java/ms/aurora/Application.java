@@ -1,9 +1,15 @@
 package ms.aurora;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.config.DataSourceConfig;
+import com.avaje.ebean.config.ServerConfig;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import ms.aurora.core.model.Account;
+import ms.aurora.core.model.Property;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -16,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -29,7 +36,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
-    public static final double VERSION = 8;
+    public static final double VERSION = 9;
     private static final Object initialisation_lock = new Object();
 
     public static LoginWindow LOGIN_WINDOW;
@@ -42,13 +49,24 @@ public final class Application {
     }
 
     public static void boot() {
+        try {
+            Property.getAll();
+        } catch(Exception e) {
+            makeDatabase();
+        }
+
         new JFXPanel();
-        /*SDNConnection.getInstance().start();
+        SDNConnection.getInstance().start();
         Versioning.checkForUpdates();
 
-        LOGIN_WINDOW = new LoginWindow();
-        LOGIN_WINDOW.display();       */
-        showStage();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Account.init();
+                LOGIN_WINDOW = new LoginWindow();
+                LOGIN_WINDOW.display();
+            }
+        });
     }
 
     public static void showStage() {
@@ -62,7 +80,6 @@ public final class Application {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        Account.init();
                         Scene scene = new Scene(new ApplicationGUI());
                         scene.getStylesheets().add(Messages.getString("gui.theme"));
                         panel.setScene(scene);
@@ -82,6 +99,10 @@ public final class Application {
                             mainFrame.pack();
                         }
                         mainFrame.setResizable(false);
+                        Toolkit toolkit = Toolkit.getDefaultToolkit();
+                        int centerX = (toolkit.getScreenSize().width / 2) - (mainFrame.getWidth() / 2);
+                        int centerY = (toolkit.getScreenSize().height / 2) - (mainFrame.getHeight() / 2);
+                        mainFrame.setLocation(centerX, centerY);
                         mainFrame.setVisible(true);
                         initialize();
                     }
@@ -95,5 +116,28 @@ public final class Application {
     private static void initialize() {
         Hooks.obtainHooks();
         Maps.obtainMap();
+    }
+
+    private static void makeDatabase() {
+        ServerConfig config = new ServerConfig();
+        config.setName("default");
+
+        DataSourceConfig dataSource = new DataSourceConfig();
+        dataSource.setDriver("org.h2.Driver");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:h2:~/.aurora.db");
+
+        config.setDataSourceConfig(dataSource);
+        config.setDdlGenerate(true);
+        config.setDdlRun(true);
+
+        config.setDefaultServer(true);
+        config.setRegister(false);
+        EbeanServer server = EbeanServerFactory.create(config);
+        server.runCacheWarming();
+
+        logger.info("Database initialised for the first time!");
+        logger.info("Next time we will use the properties file.");
     }
 }

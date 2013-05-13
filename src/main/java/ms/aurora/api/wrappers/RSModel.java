@@ -122,8 +122,8 @@ public final class RSModel {
 
         Polygon[] targetArray = new Polygon[3];
         targetArray[0] = scaleHull(hull, 0.8);
-        targetArray[1] = scaleHull(hull, 0.4);
-        targetArray[2] = scaleHull(hull, 0.2);
+        targetArray[1] = scaleHull(hull, 0.6);
+        targetArray[2] = scaleHull(hull, 0.4);
 
         int random = random(1, 20);
         if (random < 18) {
@@ -158,7 +158,7 @@ public final class RSModel {
         int[] ty = new int[y.length];
 
         Point2D centroid = centroid(hull);
-        final AffineTransform affineTransform =
+        AffineTransform affineTransform =
                 AffineTransform.getTranslateInstance((1 - scale) * centroid.getX(),
                         (1 - scale) * centroid.getY());
         affineTransform.scale(scale, scale);
@@ -171,6 +171,8 @@ public final class RSModel {
             tx[i] = (int) p.getX();
             ty[i] = (int) p.getY();
         }
+        affineTransform = null;
+        System.gc();
         return new Polygon(tx, ty, hull.npoints);
     }
 

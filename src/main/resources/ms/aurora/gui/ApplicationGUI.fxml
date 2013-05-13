@@ -42,6 +42,8 @@
           <items>
             <MenuItem mnemonicParsing="false" text="%mainWindow.menu.help.forums" />
             <MenuItem mnemonicParsing="false" text="%mainWindow.menu.help.about" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#onUnlinkAccount" text="%mainWindow.menu.help.unlink" />
           </items>
         </Menu>
       </menus>
@@ -62,7 +64,7 @@
             <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewSession" prefWidth="75.0" text="%mainWindow.script.new" />
             <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="85.0" text="%mainWindow.script.start" />
             <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="85.0" text="%mainWindow.script.pause" />
-            <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="380" HBox.hgrow="ALWAYS" />
+            <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="380.0" HBox.hgrow="ALWAYS" />
             <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="%mainWindow.input" />
           </children>
         </HBox>

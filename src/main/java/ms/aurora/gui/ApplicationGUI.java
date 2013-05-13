@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
+import ms.aurora.core.model.Property;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.config.Properties;
@@ -155,6 +156,18 @@ public class ApplicationGUI extends AnchorPane {
     }
 
     @FXML
+    void onUnlinkAccount(ActionEvent evt) {
+        Property property = Property.getByName("forumuser");
+        if (property != null) {
+            Property password = Property.getByName(property.getValue());
+            if (password != null) {
+                password.remove();
+            }
+            property.remove();
+        }
+    }
+
+    @FXML
     void initialize() {
         assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'Application.fxml'.";
         mnPlugins.setOnShowing(new EventHandler<Event>() {
@@ -203,24 +216,24 @@ public class ApplicationGUI extends AnchorPane {
                     switch (session.getScriptManager().getState()) {
 
                         case STOP:
-                            self.btnPause.setText(Messages.getString("script.pause"));
+                            self.btnPause.setText(Messages.getString("mainWindow.script.pause"));
                             self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-                            self.btnPlay.setText(Messages.getString("script.play"));
+                            self.btnPlay.setText(Messages.getString("mainWindow.script.start"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
                             break;
 
                         case RUNNING:
-                            self.btnPause.setText(Messages.getString("script.pause"));
+                            self.btnPause.setText(Messages.getString("mainWindow.script.pause"));
                             self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-                            self.btnPlay.setText(Messages.getString("script.stop"));
+                            self.btnPlay.setText(Messages.getString("mainWindow.script.stop"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;
 
                         case PAUSED:
-                            self.btnPause.setText(Messages.getString("script.resume"));
+                            self.btnPause.setText(Messages.getString("mainWindow.script.resume"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
                             //self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/resume.png"))));
-                            self.btnPlay.setText(Messages.getString("script.stop"));
+                            self.btnPlay.setText(Messages.getString("mainWindow.script.stop"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;
 

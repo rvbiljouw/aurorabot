@@ -5,8 +5,7 @@ import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
-import org.jboss.logging.Logger;
-
+import org.apache.log4j.Logger;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**

@@ -25,7 +25,7 @@ public class RSRegionPathFinder {
 
     private void reload() {
         Region current = getClient().getRegions()[getClient().getPlane()];
-        pathFinder = new AStarPathFinder(new RSRegion(current.getClippingMasks()), 104, true, new ClosestHeuristic());
+        pathFinder = new AStarPathFinder(new RSRegion(current.getClippingMasks()), 90, true, new ClosestHeuristic());
     }
 
     public Path getPath(int destX, int destY, int full) {

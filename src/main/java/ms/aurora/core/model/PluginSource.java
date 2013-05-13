@@ -1,5 +1,7 @@
 package ms.aurora.core.model;
 
+import com.avaje.ebean.Ebean;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,11 +10,7 @@ import java.util.List;
  * @author Rick
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "pluginSource.getAll", query = "select s from PluginSource s"),
-        @NamedQuery(name = "pluginSource.getBySource", query = "select s from PluginSource s where source = :source")
-})
-public final class PluginSource extends AbstractModel {
+public class PluginSource extends AbstractModel {
 
     @Id
     @GeneratedValue
@@ -59,13 +57,10 @@ public final class PluginSource extends AbstractModel {
     }
 
     public static List<PluginSource> getAll() {
-        TypedQuery<PluginSource> query = getEm().createNamedQuery("pluginSource.getAll", PluginSource.class);
-        return query.getResultList();
+        return Ebean.find(PluginSource.class).findList();
     }
 
     public static List<PluginSource> getBySource(String source) {
-        TypedQuery<PluginSource> query = getEm().createNamedQuery("pluginSource.getBySource",
-                PluginSource.class).setParameter("source", source);
-        return query.getResultList();
+        return Ebean.find(PluginSource.class).where().eq("source", source).findList();
     }
 }

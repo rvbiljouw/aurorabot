@@ -4,8 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
-import org.jboss.logging.Logger;
-
+import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

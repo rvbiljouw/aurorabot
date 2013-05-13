@@ -48,7 +48,7 @@ public final class Utilities {
             try {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
                 break;
             }
         }
@@ -67,7 +67,7 @@ public final class Utilities {
             try {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
                 break;
             }
             success = !predicate.apply();
@@ -86,7 +86,7 @@ public final class Utilities {
             try {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
                 break;
             }
         }
@@ -105,7 +105,7 @@ public final class Utilities {
             try {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
                 break;
             }
             success = predicate.apply();

@@ -1,7 +1,11 @@
 package ms.aurora.core.model;
 
+import com.avaje.ebean.Ebean;
+
 import javax.persistence.*;
 import java.util.List;
+
+import static com.avaje.ebean.Ebean.find;
 
 /**
  * Database-controlled plugin configuration so
@@ -10,13 +14,7 @@ import java.util.List;
  * @author Rick
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "pluginConfig.getByName",
-                query = "select p from PluginConfig p where p.pluginMain = :pluginMain"),
-        @NamedQuery(name = "pluginConfig.getAll",
-                query = "select p from PluginConfig p")
-})
-public final class PluginConfig extends AbstractModel {
+public class PluginConfig extends AbstractModel {
 
     @Id
     @GeneratedValue
@@ -49,9 +47,8 @@ public final class PluginConfig extends AbstractModel {
     }
 
     public static PluginConfig getByName(String pluginMain) {
-        TypedQuery<PluginConfig> query = getEm().createNamedQuery("pluginConfig.getByName",
-                PluginConfig.class).setParameter("pluginMain", pluginMain);
-        List<PluginConfig> results = query.getResultList();
+        List<PluginConfig> results = find(PluginConfig.class).where().eq(
+                "pluginMain", pluginMain).findList();
 
         if (results.size() == 1) {
             return results.get(0);
@@ -66,6 +63,6 @@ public final class PluginConfig extends AbstractModel {
     }
 
     public static List<PluginConfig> getAll() {
-        return getEm().createNamedQuery("pluginConfig.getAll", PluginConfig.class).getResultList();
+        return Ebean.find(PluginConfig.class).findList();
     }
 }

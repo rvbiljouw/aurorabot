@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?scenebuilder-stylesheet ../../../../blue.css?>
-
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<fx:root type="javafx.scene.layout.AnchorPane" minHeight="254.0" prefHeight="254.0" prefWidth="330" styleClass="pane"
-         xmlns:fx="http://javafx.com/fxml">
 
-    <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                prefHeight="254.0" prefWidth="329.0000999999975" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
-        <children>
-            <Button layoutX="274.0" layoutY="215.0" mnemonicParsing="false" onAction="#onOk" text="%MessageBox.OK"/>
-            <Button layoutX="202.0" layoutY="215.0" mnemonicParsing="false" onAction="#onCancel" text="%MessageBox.CANCEL"/>
-            <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="%newAccount.desc"/>
-            <Label layoutX="46.0" layoutY="99.0" text="%newAccount.username"/>
-            <Label layoutX="46.0" layoutY="133.0" text="%newAccount.password"/>
-            <Label layoutX="46.0" layoutY="166.0" text="%newAccount.bankPin"/>
-            <TextField fx:id="txtUsername" layoutX="128.0" layoutY="96.0" prefWidth="186.00009999999747"
-                       promptText="%newAccount.usernameDesc"/>
-            <PasswordField fx:id="txtPassword" layoutX="129.0" layoutY="130.0" prefWidth="187.0"
-                           promptText="%newAccount.passwordDesc"/>
-            <TextField fx:id="txtBankPin" layoutX="128.0" layoutY="163.0" prefWidth="187.0" promptText="0000"
-                       text="0000"/>
-        </children>
-    </AnchorPane>
+<fx:root type="javafx.scene.layout.AnchorPane" minHeight="254.0" prefHeight="254.0" prefWidth="395.0" styleClass="pane" xmlns:fx="http://javafx.com/fxml">
+  <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="254.0" prefWidth="395.0" styleClass="pane">
+    <children>
+      <Button layoutX="319.0" layoutY="215.0" mnemonicParsing="false" onAction="#onOk" text="%MessageBox.OK" />
+      <Button layoutX="218.0" layoutY="215.0" mnemonicParsing="false" onAction="#onCancel" text="%MessageBox.CANCEL" />
+      <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="%newAccount.desc" />
+      <Label layoutX="46.0" layoutY="99.0" text="%newAccount.username" />
+      <Label layoutX="46.0" layoutY="133.0" text="%newAccount.password" />
+      <Label layoutX="46.0" layoutY="166.0" text="%newAccount.bankPin" />
+      <TextField fx:id="txtUsername" layoutX="181.0" layoutY="96.0" prefWidth="186.00009999999747" promptText="%newAccount.usernameDesc" />
+      <PasswordField fx:id="txtPassword" layoutX="181.0" layoutY="130.0" prefWidth="187.0" promptText="%newAccount.passwordDesc" />
+      <TextField fx:id="txtBankPin" layoutX="181.0" layoutY="163.0" prefWidth="187.0" promptText="0000" text="0000" />
+    </children>
+  </AnchorPane>
 </fx:root>
