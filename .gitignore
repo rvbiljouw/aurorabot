@@ -1,7 +1,7 @@
 .idea/
 database/
-plugins/bin
-scripts/bin
+plugins/
+scripts/
 *.jar
 *.class
 *.log
