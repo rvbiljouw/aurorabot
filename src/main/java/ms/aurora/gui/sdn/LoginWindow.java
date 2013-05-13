@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jfx.messagebox.MessageBox;
+import ms.aurora.Messages;
 import ms.aurora.sdn.net.api.Authentication;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class LoginWindow extends AnchorPane {
     private TextField txtUsername;
 
     public LoginWindow() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginWindow.fxml"), Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -69,7 +70,7 @@ public class LoginWindow extends AnchorPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                MessageBox.show(currentStage, msg, "Message", MessageBox.OK);
+                MessageBox.show(currentStage, msg, Messages.getString("MesssageBox.MESSAGE"), MessageBox.OK);
                 btnAuthenticate.setDisable(false);
             }
         });

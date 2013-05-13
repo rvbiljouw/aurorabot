@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.Messages;
 import ms.aurora.api.script.Script;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
@@ -58,7 +59,7 @@ public class ScriptOverview extends AnchorPane {
     private TextField txtName;
 
     public ScriptOverview() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ScriptOverview.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ScriptOverview.fxml"), Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -103,7 +104,7 @@ public class ScriptOverview extends AnchorPane {
         String filterName = txtName.getText().toLowerCase();
 
         for (Script script : scripts) {
-            if (selectedCategory.equals("All") || selectedCategory.equals(script.getManifest().category())) {
+            if (selectedCategory.equals(Messages.getString("scriptOverview.all")) || selectedCategory.equals(script.getManifest().category())) {
                 if (filterName.length() == 0 || script.getManifest().name().toLowerCase().contains(filterName)) {
                     scriptModelList.add(new ScriptModel(script));
                 }
@@ -124,7 +125,7 @@ public class ScriptOverview extends AnchorPane {
 
 
         ObservableList<String> categoryList = FXCollections.observableArrayList();
-        categoryList.add("All");
+        categoryList.add(Messages.getString("scriptOverview.all"));
 
         List<Script> scripts = ScriptLoader.getScripts();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();

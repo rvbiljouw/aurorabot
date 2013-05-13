@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ms.aurora.Messages;
 import ms.aurora.core.model.Account;
 import ms.aurora.gui.util.FXUtils;
 
@@ -38,7 +39,7 @@ public class AccountSelectDialog extends AnchorPane {
     private Callback callback;
 
     public AccountSelectDialog() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AccountSelectDialog.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AccountSelectDialog.fxml"), Messages.getBundle());
 
         //fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -75,7 +76,7 @@ public class AccountSelectDialog extends AnchorPane {
     }
 
     public void show() {
-        Stage stage = FXUtils.createModalStage("Account selection", this);
+        Stage stage = FXUtils.createModalStage(Messages.getString("accountSelect.title"), this);
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {

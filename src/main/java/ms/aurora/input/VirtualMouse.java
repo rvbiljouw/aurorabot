@@ -5,7 +5,6 @@ import ms.aurora.api.util.Utilities;
 import ms.aurora.input.algorithm.StraightLineGenerator;
 import ms.aurora.input.algorithm.ZetaMouseGenerator;
 import ms.aurora.rt3.Mouse;
-import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -19,7 +18,6 @@ import java.util.Random;
  * @author Matty Cov
  */
 public final class VirtualMouse {
-    private static final Logger logger = Logger.getLogger(VirtualMouse.class);
     private static final MousePathGenerator algorithm = new ZetaMouseGenerator();
 
     private static void dispatchEvent(MouseEvent event) {
@@ -37,8 +35,6 @@ public final class VirtualMouse {
             getMouse().mouseEntered(event);
         } else if (event.getID() == MouseEvent.MOUSE_DRAGGED) {
             getMouse().mouseDragged(event);
-        } else {
-            System.out.println("Invalid mouse event type: " + event);
         }
     }
 
@@ -47,11 +43,11 @@ public final class VirtualMouse {
     }
 
     public static void moveMouse(final int x, final int y) {
-        Point currentPosition = null;
-        Point target = new Point(x,y);
+        Point currentPosition;
+        Point target = new Point(x, y);
         while ((currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY())).distance(target) > 4 && !Thread.currentThread().isInterrupted()) {
             MousePathGenerator algorithm = new ZetaMouseGenerator();
-            if(target.distance(currentPosition) < 20) {
+            if (target.distance(currentPosition) < 20) {
                 algorithm = new StraightLineGenerator();
             }
             Point[] path = algorithm.generate(currentPosition, new Point(x, y));
@@ -96,36 +92,6 @@ public final class VirtualMouse {
         }
     }
 
-    @Deprecated
-    public static void pressMouse(int x, int y, boolean left) {
-        MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_PRESSED,
-                System.currentTimeMillis(), 0, x, y, 1, false,
-                left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-        getMouse().mousePressed(event);
-    }
-
-    @Deprecated
-    public static void releaseMouse(int x, int y, boolean left) {
-        MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_RELEASED,
-                System.currentTimeMillis(), 0, x, y, 1, false,
-                left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-        getMouse().mouseReleased(event);
-    }
-
-    @Deprecated
-    public static void hopMouse(int x, int y) {
-        MouseEvent event = new MouseEvent(getComponent(), MouseEvent.MOUSE_MOVED,
-                System.currentTimeMillis(), 0, x, y, 0, false);
-        getMouse().mouseMoved(event);
-        int secs = (int) speed;
-        double nanos = speed - secs;
-        int nanosReal = (int) (nanos * 1000);
-        try {
-            Thread.sleep(secs, nanosReal);
-        } catch (InterruptedException ignored) {
-        }
-    }
-
     public static void moveRandomly(int distance) {
         int x = getMouse().getRealX() + Utilities.random(-distance, distance);
         int y = getMouse().getRealY() + Utilities.random(-distance, distance);
@@ -139,16 +105,6 @@ public final class VirtualMouse {
     public static Component getComponent() {
         return Context.getClient().getCanvas();
     }
-
-    @Deprecated
-    private static double getSpeed(int percentage) {
-        double a = random.nextDouble() * 0.01 + 0.0001;
-        double b = random.nextDouble() * 0.03 + 0.005;
-        double speedFactor = a * Math.pow(percentage, 2) + b * percentage;
-        return Utilities.random(0.05, 1.0) + speedFactor;
-    }
-
-    private static double speed = 7;
 
     private static final Random random = new Random();
 

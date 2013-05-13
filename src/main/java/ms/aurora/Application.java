@@ -28,7 +28,6 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @author Rick
  */
 public final class Application {
-    public static final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
     public static final Logger logger = Logger.getLogger(Application.class);
     public static final double VERSION = 8;
     private static final Object initialisation_lock = new Object();
@@ -44,18 +43,19 @@ public final class Application {
 
     public static void boot() {
         new JFXPanel();
-        SDNConnection.getInstance().start();
+        /*SDNConnection.getInstance().start();
         Versioning.checkForUpdates();
 
         LOGIN_WINDOW = new LoginWindow();
-        LOGIN_WINDOW.display();
+        LOGIN_WINDOW.display();       */
+        showStage();
     }
 
     public static void showStage() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                mainFrame = new JFrame(MessageFormat.format(resourceBundle.getString("mainWindow.title"), VERSION));
+                mainFrame = new JFrame(MessageFormat.format(Messages.getString("mainWindow.title"), VERSION));
                 mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 final JFXPanel panel = new JFXPanel();
                 mainFrame.setContentPane(panel);
@@ -64,7 +64,7 @@ public final class Application {
                     public void run() {
                         Account.init();
                         Scene scene = new Scene(new ApplicationGUI());
-                        scene.getStylesheets().add(resourceBundle.getString("gui.theme"));
+                        scene.getStylesheets().add(Messages.getString("gui.theme"));
                         panel.setScene(scene);
                         synchronized (initialisation_lock) {
                             initialisation_lock.notifyAll();

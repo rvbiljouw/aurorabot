@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.WindowEvent;
+import ms.aurora.Messages;
 import ms.aurora.core.model.Account;
 import ms.aurora.gui.util.FXUtils;
 
@@ -44,7 +45,7 @@ public class AccountOverview extends AnchorPane {
     private TableView<AccountModel> tblAccounts;
 
     public AccountOverview() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AccountOverview.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AccountOverview.fxml"), Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -63,7 +64,7 @@ public class AccountOverview extends AnchorPane {
 
     @FXML
     void onNewAccount(ActionEvent event) {
-        FXUtils.showModalDialog("Edit account", new NewAccount(), closeHandler);
+        FXUtils.showModalDialog(Messages.getString("newAccount.title"), new NewAccount(), closeHandler);
     }
 
     @FXML
@@ -85,7 +86,7 @@ public class AccountOverview extends AnchorPane {
     void onEditSelected(ActionEvent event) {
         AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
-            FXUtils.showModalDialog("Edit account", new EditAccount(selectedAccount), closeHandler);
+            FXUtils.showModalDialog(Messages.getString("editAccount.title"), new EditAccount(selectedAccount), closeHandler);
         }
     }
 

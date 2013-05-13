@@ -42,6 +42,7 @@
  *******************************************************************************/
 package ms.aurora;
 
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -59,5 +60,9 @@ public class Messages {
         } catch (MissingResourceException e) {
             return '!' + key + '!';
         }
+    }
+
+    public static ResourceBundle getBundle() {
+        return RESOURCE_BUNDLE;
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import ms.aurora.Messages;
 import ms.aurora.core.model.PluginSource;
 import ms.aurora.core.model.ScriptSource;
 import ms.aurora.gui.util.FXUtils;
@@ -50,7 +51,7 @@ public class Properties extends AnchorPane {
     private Stage currentStage;
 
     public Properties() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"), Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -65,7 +66,7 @@ public class Properties extends AnchorPane {
     @FXML
     void onAddPluginSource(ActionEvent event) {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Select a folder");
+        chooser.setTitle(Messages.getString("properties.selectFolder"));
         chooser.setInitialDirectory(new File("./"));
         File file = chooser.showDialog(currentStage);
         if(file != null && file.exists()) {
@@ -78,7 +79,7 @@ public class Properties extends AnchorPane {
     @FXML
     void onAddScriptSource(ActionEvent event) {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Select a folder");
+        chooser.setTitle(Messages.getString("properties.selectFolder"));
         chooser.setInitialDirectory(new File("./"));
         File file = chooser.showDialog(currentStage);
         if(file != null && file.exists()) {
@@ -147,7 +148,7 @@ public class Properties extends AnchorPane {
     }
 
     public void open() {
-        currentStage = FXUtils.createModalStage("Properties", this);
+        currentStage = FXUtils.createModalStage(Messages.getString("properties.title"), this);
         currentStage.show();
     }
 

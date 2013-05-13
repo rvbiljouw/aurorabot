@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.Messages;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.event.GlobalEventQueue;
@@ -60,8 +61,8 @@ public class ApplicationGUI extends AnchorPane {
     private ToggleButton btnToggleInput;
 
     public ApplicationGUI() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ApplicationGUI.fxml"));
-
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ApplicationGUI.fxml"),
+                Messages.getBundle());
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -108,12 +109,12 @@ public class ApplicationGUI extends AnchorPane {
 
     @FXML
     void onPluginOverview(ActionEvent evt) {
-        FXUtils.showModalDialog("Plugin overview", new PluginOverview());
+        FXUtils.showModalDialog(Messages.getString("pluginOverview.title"), new PluginOverview());
     }
 
     @FXML
     void onAccounts(ActionEvent evt) {
-        FXUtils.showModalDialog("Account overview", new AccountOverview());
+        FXUtils.showModalDialog(Messages.getString("accountOverview.title"), new AccountOverview());
     }
 
     @FXML
@@ -133,7 +134,7 @@ public class ApplicationGUI extends AnchorPane {
                     break;
 
                 case STOP:
-                    FXUtils.showModalDialog("Script overview", new ScriptOverview());
+                    FXUtils.showModalDialog(Messages.getString("scriptOverview.title"), new ScriptOverview());
                     break;
 
 
@@ -202,24 +203,24 @@ public class ApplicationGUI extends AnchorPane {
                     switch (session.getScriptManager().getState()) {
 
                         case STOP:
-                            self.btnPause.setText("Pause");
+                            self.btnPause.setText(Messages.getString("script.pause"));
                             self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-                            self.btnPlay.setText("Play");
+                            self.btnPlay.setText(Messages.getString("script.play"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
                             break;
 
                         case RUNNING:
-                            self.btnPause.setText("Pause");
+                            self.btnPause.setText(Messages.getString("script.pause"));
                             self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-                            self.btnPlay.setText("Stop");
+                            self.btnPlay.setText(Messages.getString("script.stop"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;
 
                         case PAUSED:
-                            self.btnPause.setText("Resume");
+                            self.btnPause.setText(Messages.getString("script.resume"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
                             //self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/resume.png"))));
-                            self.btnPlay.setText("Stop");
+                            self.btnPlay.setText(Messages.getString("script.stop"));
                             self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                             break;
 

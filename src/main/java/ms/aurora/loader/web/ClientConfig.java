@@ -1,5 +1,6 @@
 package ms.aurora.loader.web;
 
+import ms.aurora.Messages;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.ResponseHandler;
 import ms.aurora.browser.exception.ParsingException;
@@ -45,7 +46,7 @@ public final class ClientConfig implements ResponseHandler {
             archiveName = parameters.get("initial_jar");
             mainClass = parameters.get("initial_class").replace(".class", "");
         } catch (ParsingException e) {
-            logger.error("Failed to parse the client configuration", e);
+            logger.error(Messages.getString("cconfig.parsingFailed"), e);
         }
     }
 

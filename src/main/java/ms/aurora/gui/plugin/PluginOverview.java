@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.Messages;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.Session;
 import ms.aurora.core.model.PluginConfig;
@@ -58,7 +59,7 @@ public class PluginOverview extends AnchorPane {
     private TextField txtName;
 
     public PluginOverview() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PluginOverview.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PluginOverview.fxml"), Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

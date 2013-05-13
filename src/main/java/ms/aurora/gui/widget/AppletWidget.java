@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
+import ms.aurora.Messages;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
@@ -51,7 +52,7 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         this.loadFace();
         getTab().setContent(this);
         getTab().setClosable(false);
-        getTab().setText("No account");
+        getTab().setText(Messages.getString("appletWidget.noAccount"));
         getTab().selectedProperty().addListener(this);
         getTab().setOnClosed(new EventHandler<Event>() {
             @Override
@@ -65,7 +66,7 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     }
 
     private void loadFace() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AppletWidget.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AppletWidget.fxml"), Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -140,7 +141,6 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         int relX = calculateRelX();
         int relY = calculateRelY();
         if(relX < 0 || relY < 0) {
-            System.out.println("Ref #1: Relative coordinates are off. Please re-select tab.");
             return;
         }
 

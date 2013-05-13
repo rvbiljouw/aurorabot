@@ -1,5 +1,6 @@
 package ms.aurora.loader;
 
+import ms.aurora.Messages;
 import ms.aurora.loader.exception.MalformedStubException;
 import ms.aurora.loader.web.ClientConfig;
 
@@ -7,6 +8,7 @@ import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Map;
 
 /**
@@ -24,7 +26,7 @@ public final class AppletStubImpl implements AppletStub {
         try {
             this.documentBase = new URL(config.getDocumentBase());
         } catch (MalformedURLException e) {
-            throw new MalformedStubException("Failed to initialize applet stub.");
+            throw new MalformedStubException(Messages.getString("appletstub.malformedURL"));
         }
     }
 
@@ -46,7 +48,8 @@ public final class AppletStubImpl implements AppletStub {
     @Override
     public String getParameter(String name) {
         if (!appletParams.containsKey(name)) {
-            throw new MalformedStubException("Missing stub element " + name);
+            throw new MalformedStubException(MessageFormat.format(
+                    Messages.getString("appletstub.missingParam"), name));
         }
         return appletParams.get(name);
     }

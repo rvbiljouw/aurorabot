@@ -16,7 +16,7 @@
   <AnchorPane id="AnchorPane" fx:id="appletPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="765.0">
     <children>
       <ProgressBar layoutX="14.0" layoutY="431.0" prefHeight="35.0" prefWidth="737.0" progress="-0.44" />
-      <Label layoutX="222.0" layoutY="368.0" styleClass="big-label" text="Loading, please wait">
+      <Label layoutX="222.0" layoutY="368.0" styleClass="big-label" text="%appletWidget.loading">
         <font>
           <Font size="36.0" />
         </font>

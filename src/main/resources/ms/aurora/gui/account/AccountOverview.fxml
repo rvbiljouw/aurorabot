@@ -9,26 +9,26 @@
     <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                 prefHeight="532.0" prefWidth="825.0" styleClass="pane">
         <children>
-            <Label layoutX="28.0" layoutY="26.0" styleClass="big-label" text="Accounts"/>
+            <Label layoutX="28.0" layoutY="26.0" styleClass="big-label" text="%accountOverview.accounts"/>
             <TableView id="tbl" fx:id="tblAccounts" editable="true" layoutX="53.0" layoutY="97.0" prefHeight="329.0"
                        prefWidth="720.0">
                 <columns>
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="250.0" text="Username / Email address"
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="250.0" text="%accountOverview.username"
                                  fx:id="colUsername"/>
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="250.0" text="Password"
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="250.0" text="%accountOverview.password"
                                  fx:id="colPassword"/>
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="80.0" text="Bank PIN" fx:id="colBankPin"/>
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="80.0" text="%accountOverview.bankPin" fx:id="colBankPin"/>
                 </columns>
             </TableView>
             <ToolBar layoutX="53.0" layoutY="426.0" prefWidth="720.0">
                 <items>
-                    <Button mnemonicParsing="false" onAction="#onNewAccount" text="New account"/>
-                    <Button mnemonicParsing="false" onAction="#onEditSelected" text="Edit selected"/>
-                    <Button mnemonicParsing="false" onAction="#onRemoveSelected" text="Remove selected"/>
+                    <Button mnemonicParsing="false" onAction="#onNewAccount" text="%accountOverview.newAccount"/>
+                    <Button mnemonicParsing="false" onAction="#onEditSelected" text="%accountOverview.editSelected"/>
+                    <Button mnemonicParsing="false" onAction="#onRemoveSelected" text="%accountOverview.removeSelected"/>
                 </items>
             </ToolBar>
-            <Button layoutX="732.0" layoutY="470.0" mnemonicParsing="false" onAction="#onOk" text="OK"/>
-            <Button layoutX="659.0" layoutY="470.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel"/>
+            <Button layoutX="732.0" layoutY="470.0" mnemonicParsing="false" onAction="#onOk" text="%MessageBox.OK"/>
+            <Button layoutX="659.0" layoutY="470.0" mnemonicParsing="false" onAction="#onCancel" text="%MessageBox.CANCEL"/>
         </children>
     </AnchorPane>
 </fx:root>

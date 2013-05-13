@@ -12,43 +12,43 @@
   <children>
     <MenuBar fx:id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="765.0">
       <menus>
-        <Menu mnemonicParsing="false" text="File" fx:id="mnFile">
+        <Menu mnemonicParsing="false" text="%mainWindow.menu.file" fx:id="mnFile">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#onNewSession" text="New session" />
+            <MenuItem mnemonicParsing="false" onAction="#onNewSession" text="%mainWindow.menu.file.newSession" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Run script" />
-            <MenuItem mnemonicParsing="false" onAction="#onPauseScript" text="Pause script" />
-            <MenuItem mnemonicParsing="false" onAction="#onPauseScript" text="Resume script" />
-            <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="Stop script" />
+            <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="%mainWindow.menu.file.start" />
+            <MenuItem mnemonicParsing="false" onAction="#onPauseScript" text="%mainWindow.menu.file.pause" />
+            <MenuItem mnemonicParsing="false" onAction="#onPauseScript" text="%mainWindow.menu.file.resume" />
+            <MenuItem mnemonicParsing="false" onAction="#onStartScript" text="%mainWindow.menu.file.stop" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem disable="true" mnemonicParsing="false" text="Hide" />
-            <MenuItem mnemonicParsing="false" onAction="#onCloseClicked" text="Close" fx:id="mntmClose" />
+            <MenuItem disable="true" mnemonicParsing="false" text="%mainWindow.menu.file.hide" />
+            <MenuItem mnemonicParsing="false" onAction="#onCloseClicked" text="%mainWindow.menu.file.close" fx:id="mntmClose" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="%mainWindow.menu.edit">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="Manage accounts" />
+            <MenuItem mnemonicParsing="false" onAction="#onAccounts" text="%mainWindow.menu.edit.accounts" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#onProperties" text="Properties" />
+            <MenuItem mnemonicParsing="false" onAction="#onProperties" text="%mainWindow.menu.edit.settings" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Plug-ins" visible="true" fx:id="mnPlugins">
+        <Menu mnemonicParsing="false" text="%mainWindow.menu.plugins" visible="true" fx:id="mnPlugins">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="Manage plugins" fx:id="pluginOverview" />
+            <MenuItem mnemonicParsing="false" onAction="#onPluginOverview" text="%mainWindow.menu.plugins.overview" fx:id="pluginOverview" />
             <SeparatorMenuItem mnemonicParsing="false" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="%mainWindow.menu.help">
           <items>
-            <MenuItem mnemonicParsing="false" text="Forums" />
-            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem mnemonicParsing="false" text="%mainWindow.menu.help.forums" />
+            <MenuItem mnemonicParsing="false" text="%mainWindow.menu.help.about" />
           </items>
         </Menu>
       </menus>
     </MenuBar>
     <TabPane fx:id="tabPane" layoutX="0.0" layoutY="30.0" prefHeight="530.0" prefWidth="765.0" tabClosingPolicy="SELECTED_TAB" tabMaxHeight="20.0" tabMinHeight="20.0">
       <tabs>
-        <Tab text="Welcome">
+        <Tab text="%mainWindow.tabs.welcome">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="765.0" />
           </content>
@@ -59,11 +59,11 @@
       <items>
         <HBox prefHeight="21.0" prefWidth="741.0" spacing="5.0">
           <children>
-            <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewSession" prefWidth="75.0" text="New" />
-            <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="85.0" text="Play" />
-            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="85.0" text="Pause" />
-            <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="402.0" HBox.hgrow="ALWAYS" />
-            <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="Input" />
+            <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewSession" prefWidth="75.0" text="%mainWindow.script.new" />
+            <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#onStartScript" prefWidth="85.0" text="%mainWindow.script.start" />
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onPauseScript" prefWidth="85.0" text="%mainWindow.script.pause" />
+            <Separator orientation="HORIZONTAL" prefHeight="21.0" prefWidth="380" HBox.hgrow="ALWAYS" />
+            <ToggleButton fx:id="btnToggleInput" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#onToggleInput" prefWidth="92.0" text="%mainWindow.input" />
           </children>
         </HBox>
       </items>

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ms.aurora.Messages;
 
 /**
  * @author rvbiljouw
@@ -19,7 +20,7 @@ public class FXUtils {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(null);
         Scene scene = new Scene(parent);
-        scene.getStylesheets().add("soft-responsive.css");
+        scene.getStylesheets().add(Messages.getString("gui.theme"));
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
@@ -31,7 +32,7 @@ public class FXUtils {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(null);
         Scene scene = new Scene(parent);
-        scene.getStylesheets().add("soft-responsive.css");
+        scene.getStylesheets().add(Messages.getString("gui.theme"));
         stage.setScene(scene);
         return stage;
     }
@@ -44,7 +45,7 @@ public class FXUtils {
         stage.setOnCloseRequest(closeHandler);
         stage.setOnHidden(closeHandler);
         Scene scene = new Scene(parent);
-        scene.getStylesheets().add("soft-responsive.css");
+        scene.getStylesheets().add(Messages.getString("gui.theme"));
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();

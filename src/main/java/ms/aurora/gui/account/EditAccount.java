@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.Messages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +35,7 @@ public class EditAccount extends AnchorPane {
     private final AccountModel accountModel;
 
     public EditAccount(AccountModel accountModel) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditAccount.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditAccount.fxml"), Messages.getBundle());
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {

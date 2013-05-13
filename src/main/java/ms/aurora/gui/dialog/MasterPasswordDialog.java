@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ms.aurora.Messages;
 import ms.aurora.core.model.Property;
 import ms.aurora.gui.util.FXUtils;
 
@@ -56,7 +57,7 @@ public class MasterPasswordDialog extends AnchorPane {
 
     public MasterPasswordDialog() {
         properties = Property.getByName("masterPassword");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MasterPasswordDialog.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MasterPasswordDialog.fxml"), Messages.getBundle());
 
         //fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -100,7 +101,8 @@ public class MasterPasswordDialog extends AnchorPane {
         assert txtVerifyPassword != null : "fx:id=\"txtVerifyPassword\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert warning != null : "fx:id=\"warning\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
         assert caption != null : "fx:id=\"caption\" was not injected: check your FXML file 'MasterPasswordDialog.fxml'.";
-        caption.setText(properties.size() == 0 ? "Create password" : "Unlock database");
+        caption.setText(properties.size() == 0 ? Messages.getString("masterPassword.create") :
+                Messages.getString("masterPassword.unlock"));
 
         if (properties.size() != 0) {
             lblVerifyPassword.setVisible(false);
@@ -132,7 +134,8 @@ public class MasterPasswordDialog extends AnchorPane {
     }
 
     public void show() {
-        String title = properties.size() == 0 ? "Create Password" : "Unlock database";
+        String title = properties.size() == 0 ? Messages.getString("masterPassword.create") :
+                Messages.getString("masterPassword.unlock");
         stage = FXUtils.createModalStage(title, this);
         stage.centerOnScreen();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
