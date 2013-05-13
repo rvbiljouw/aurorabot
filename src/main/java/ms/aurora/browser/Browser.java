@@ -5,6 +5,10 @@ import ms.aurora.browser.exception.BrowsingException;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * A browser simulation, that supports synchronous and asynchronous I/O.
+ * @author Rick
+ */
 public final class Browser {
     private Context context;
 

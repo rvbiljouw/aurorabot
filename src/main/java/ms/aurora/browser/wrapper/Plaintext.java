@@ -35,7 +35,7 @@ public final class Plaintext {
             String text = "";
             String buffer = "";
             while ((buffer = streamReader.readLine()) != null) {
-                text += new StringBuilder().append(buffer).append("\n").toString();
+                text += buffer + "\n";
             }
             return new Plaintext(text);
         } catch (Exception e) {

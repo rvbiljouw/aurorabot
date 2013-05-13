@@ -4,9 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * User: Cov
- * Date: 11/04/13
- * Time: 21:10
+ * A generic property entry allowing storage of simple settings in the database.
+ * @author Cov
  */
 @Entity
 @NamedQueries({

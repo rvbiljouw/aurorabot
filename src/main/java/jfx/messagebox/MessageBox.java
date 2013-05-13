@@ -55,6 +55,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import ms.aurora.Messages;
 
 /**
  * JfxMessageBox is free MessageBox API for JavaFX 2.

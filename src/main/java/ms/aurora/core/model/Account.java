@@ -10,11 +10,16 @@ import javax.persistence.*;
 import java.util.List;
 
 
+/**
+ * Represents an Account in the database.
+ * WARNING: it's important that this class is properly secured
+ * by the SecurityManager, to prevent accounts from being hijacked.
+ */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "account.getAll", query = "select a from Account a")
 })
-public class Account extends AbstractModel {
+public final class Account extends AbstractModel {
     private static String masterPassword;
 
     @Id

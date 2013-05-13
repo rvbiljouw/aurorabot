@@ -5,6 +5,10 @@ import ms.aurora.browser.Request;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Wraps data for an HTTP get request.
+ * @author Rick
+ */
 public final class GetRequest implements Request {
     private Map<String, String> requestParams = new HashMap<String, String>();
     private boolean overrideContext;
@@ -28,9 +32,8 @@ public final class GetRequest implements Request {
         for (String paramName : requestParams.keySet()) {
             String paramValue = requestParams.get(paramName);
             String paramToken = paramCounter == 0 ? "?" : "&";
-            paramString += new StringBuilder().append(paramToken).
-                    append(paramName).append("=").
-                    append(paramValue).toString();
+            paramString += paramToken + paramName + "=" + paramValue;
+            paramCounter++;
         }
         return paramString;
     }

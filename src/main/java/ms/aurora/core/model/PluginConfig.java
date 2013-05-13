@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
+ * Database-controlled plugin configuration so
+ * we can restart previously enabled plugins
+ * when the bot starts.
  * @author Rick
  */
 @Entity

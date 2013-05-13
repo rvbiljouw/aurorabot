@@ -1,0 +1,39 @@
+<pixML>
+    <pixMLDocument>
+        <pixMLItem entity="CommonOrderData">
+            <pixMLItem valueType="integer" entity="CustomerID">13</pixMLItem>
+            <pixMLItem valueType="integer" entity="WebRoleID">5</pixMLItem>
+            <pixMLItem entity="ItemValues">
+
+                <pixMLItem entity="ItemValue">
+                    <pixMLItem valueType="integer" entity="ItemID">210222</pixMLItem>
+                    <pixMLItem valueType="string" entity="Value">TEST SL - INTERN (nulfactuur)</pixMLItem>
+                </pixMLItem>
+
+            </pixMLItem>
+        </pixMLItem>
+        <pixMLItem entity="PerProductOrderData">
+
+            <pixMLItem entity="ProductOrderData">
+                <pixMLItem valueType="integer" entity="ProductID">5088</pixMLItem>
+                <pixMLItem entity="ItemValues">
+                    <pixMLItem entity="ItemValue">
+                        <pixMLItem valueType="integer" entity="ItemID">210200</pixMLItem>
+                        <pixMLItem valueType="string" entity="Value">NTI - WORDT OP$</pixMLItem>
+                    </pixMLItem>
+                </pixMLItem>
+            </pixMLItem>
+
+            <pixMLItem entity="ProductOrderData">
+                <pixMLItem valueType="integer" entity="ProductID">6581</pixMLItem>
+                <pixMLItem entity="ItemValues">
+                    <pixMLItem entity="ItemValue">
+                        <pixMLItem valueType="integer" entity="ItemID">210200</pixMLItem>
+                        <pixMLItem valueType="string" entity="Value">NTI - WORDT OP$</pixMLItem>
+                    </pixMLItem>
+                </pixMLItem>
+            </pixMLItem>
+
+        </pixMLItem>
+    </pixMLDocument>
+</pixML>

@@ -16,6 +16,9 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -25,6 +28,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @author Rick
  */
 public final class Application {
+    public static final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
     public static final Logger logger = Logger.getLogger(Application.class);
     public static final double VERSION = 8;
     private static final Object initialisation_lock = new Object();
@@ -51,7 +55,7 @@ public final class Application {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                mainFrame = new JFrame("Aurora - Automation Toolkit v" + VERSION);
+                mainFrame = new JFrame(MessageFormat.format(resourceBundle.getString("mainWindow.title"), VERSION));
                 mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 final JFXPanel panel = new JFXPanel();
                 mainFrame.setContentPane(panel);
@@ -60,7 +64,7 @@ public final class Application {
                     public void run() {
                         Account.init();
                         Scene scene = new Scene(new ApplicationGUI());
-                        scene.getStylesheets().add("soft-responsive.css");
+                        scene.getStylesheets().add(resourceBundle.getString("gui.theme"));
                         panel.setScene(scene);
                         synchronized (initialisation_lock) {
                             initialisation_lock.notifyAll();

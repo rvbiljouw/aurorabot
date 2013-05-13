@@ -3,6 +3,10 @@ package ms.aurora.browser;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Class for wrapping a browser context (current host, protocol, URL tokens)
+ * @author Rick
+ */
 public final class Context {
     private final String protocol;
     private final String domain;

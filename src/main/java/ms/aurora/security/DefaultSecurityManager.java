@@ -8,6 +8,7 @@ import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
+import org.apache.log4j.Logger;
 
 import java.io.FileDescriptor;
 import java.net.InetAddress;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author rvbiljouw
  */
 public class DefaultSecurityManager extends SecurityManager {
-    public static final Map<String, Class<?>[]> packages = new HashMap<String, Class<?>[]>();
+    private static final Logger logger = Logger.getLogger(DefaultSecurityManager.class);
 
     public void checkConnect(String host, int port, Object context) {
     }
@@ -154,17 +155,12 @@ public class DefaultSecurityManager extends SecurityManager {
         for (int i = 4; i < 6; i++) {
             Class<?> stack = getClassContext()[i];
             if (stack.getClassLoader() != getClass().getClassLoader() &&
-                    !stack.getName().startsWith("java.") && !stack.getName().contains("zeroturnaround")) {
-                System.out.println(getClassContext()[i].getName() + " is not trusted.");
+                    !stack.getName().startsWith("java.") && !stack.getName().contains("zeroturnaround") &&
+                    !stack.getName().startsWith("ms.aurora.")) {
+                logger.error(getClassContext()[i].getName() + " is not trusted.");
                 return false;
             }
         }
         return true;
-    }
-
-    static {
-        packages.put("ms.aurora.core.model", new Class[]{AutoLogin.class, PluginManager.class,
-                ScriptManager.class, PluginOverview.class, ScriptOverview.class,
-                AccountOverview.class, ApplicationGUI.class, Account.class});
     }
 }

@@ -1,5 +1,6 @@
 package ms.aurora.loader;
 
+import ms.aurora.Messages;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
@@ -12,6 +13,7 @@ import ms.aurora.transform.TransformingClassLoader;
 import java.applet.Applet;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 public final class AppletLoader implements Runnable {
     private final Context browserContext;
@@ -20,14 +22,14 @@ public final class AppletLoader implements Runnable {
     private Thread self;
 
     public AppletLoader() {
-        browserContext = ContextBuilder.get().domain("oldschool.runescape.com")
+        browserContext = ContextBuilder.get().domain(Messages.getString("runescape.url"))
                 .build();
         browser = new Browser(browserContext);
         self = new Thread(this);
     }
 
     public AppletLoader(Language aLanguage) {
-        browserContext = ContextBuilder.get().domain("oldschool.runescape.com")
+        browserContext = ContextBuilder.get().domain(Messages.getString("runescape.url"))
                 .token(aLanguage.toString()).build();
         browser = new Browser(browserContext);
         self = new Thread(this);
@@ -58,7 +60,7 @@ public final class AppletLoader implements Runnable {
             appletInstance.start();
             applet = appletInstance;
         } catch (Exception e) {
-            throw new AppletInitialisationException("Failed to load applet!", e);
+            throw new AppletInitialisationException(Messages.getString("runescape.failed"), e);
         }
     }
 

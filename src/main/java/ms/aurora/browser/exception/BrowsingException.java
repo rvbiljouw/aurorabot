@@ -1,6 +1,7 @@
 package ms.aurora.browser.exception;
 
 /**
+ *
  * @author Rick
  */
 public class BrowsingException extends RuntimeException {

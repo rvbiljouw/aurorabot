@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A class responsible for the management of plugins.
+ * Plugins can be started and stopped.
  * @author Rick
  */
 public final class PluginManager {

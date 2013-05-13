@@ -11,6 +11,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A parser / access layer for HTML pages
+ * @author Rick
+ */
 public final class HTML {
     private static Logger logger = Logger.getLogger(HTML.class);
     private Document dom;

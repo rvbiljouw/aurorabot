@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
+ * A database entry for directories from which scripts may be loaded.
  * @author Rick
  */
 @Entity
