@@ -32,8 +32,8 @@ public final class ScriptLoader {
 
     public static List<Script> getScripts() {
         List<Script> scripts = new ArrayList<Script>();
-        Repository.loadScripts();
-        scripts.addAll(loadRemoteScripts());
+       // Repository.loadScripts();
+       // scripts.addAll(loadRemoteScripts());
         for (ScriptSource sourceObj : ScriptSource.getAll()) {
             String source = sourceObj.getSource();
             File sourceDirectory = new File(source);
