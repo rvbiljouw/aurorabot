@@ -114,7 +114,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
 
         Point click = getClickLocation();
         VirtualMouse.moveMouse(click.x, click.y);
-        Utilities.sleepUntil(containsPred(actionName), 600);
+        Utilities.sleepUntil(containsPred(actionName), 300);
         return contains(actionName) && Menu.click(actionName);
     }
 
