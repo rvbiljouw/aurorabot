@@ -139,8 +139,10 @@ public final class Walking {
     public static boolean clickOnMap(RSTile tile) {
         Point m = Minimap.convert(tile);
         if (m.x != -1 || clickOnMap(getClosestOnMap(tile))) {
+            VirtualKeyboard.holdControl();
             VirtualMouse.moveMouse(m.x, m.y);
             VirtualMouse.clickMouse(true);
+            VirtualKeyboard.releaseControl();
             Utilities.sleepUntil(WALKING(), 600);
             if (Players.getLocal().isMoving()) {
                 Utilities.sleepWhile(WALKING(tile, 3), 7500);
