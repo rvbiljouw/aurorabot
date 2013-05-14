@@ -67,7 +67,6 @@ public class Properties extends AnchorPane {
     void onAddPluginSource(ActionEvent event) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(Messages.getString("properties.selectFolder"));
-        chooser.setInitialDirectory(new File("./"));
         File file = chooser.showDialog(currentStage);
         if(file != null && file.exists()) {
             PluginSource source = new PluginSource(file.getAbsolutePath(), false);
@@ -80,7 +79,6 @@ public class Properties extends AnchorPane {
     void onAddScriptSource(ActionEvent event) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(Messages.getString("properties.selectFolder"));
-        chooser.setInitialDirectory(new File("./"));
         File file = chooser.showDialog(currentStage);
         if(file != null && file.exists()) {
             ScriptSource source = new ScriptSource(file.getAbsolutePath(), false);
