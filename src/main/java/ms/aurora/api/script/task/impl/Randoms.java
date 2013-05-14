@@ -6,6 +6,7 @@ import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
 import org.apache.log4j.Logger;
+
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -34,17 +35,21 @@ public class Randoms extends PassiveTask {
         for (Random random : RANDOMS) {
             random.setSession(Context.get().getSession());
             try {
-                while (random.activate()) {
+                while (random.activate() && !Thread.currentThread().isInterrupted()) {
+                    if (Context.get().getSession().getScriptManager().getState() == ScriptState.STOP) {
+                        return -1;
+                    }
+
                     queue.getOwner().setState(ScriptState.PAUSED);
                     String name = random.getClass().getSimpleName();
                     logger.info("Random  '" + name + "' triggered..");
-
                     int time = random.loop();
                     if (time == -1) break;
                     sleepNoException(time);
                 }
             } catch (Exception e) {
                 logger.error("Random has failed.", e);
+                return -1;
             }
             // rvbiljouw: Make sure the state always gets set back to running..
             queue.getOwner().setState(ScriptState.RUNNING);

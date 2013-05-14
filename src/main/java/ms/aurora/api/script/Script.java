@@ -102,7 +102,11 @@ public abstract class Script extends Context implements Runnable {
                     delay += loopCycle;
                 }
 
-                Thread.sleep(delay);
+                try {
+                    Thread.sleep(delay);
+                } catch (RuntimeException e) {
+                    break;
+                }
             }
 
             onFinish();
@@ -128,6 +132,7 @@ public abstract class Script extends Context implements Runnable {
             getSession().getPaintManager().deregister((PaintListener) this);
         }
         taskQueue.remove(randoms);
+        taskQueue.destruct();
         taskQueueThread.interrupt();
     }
 

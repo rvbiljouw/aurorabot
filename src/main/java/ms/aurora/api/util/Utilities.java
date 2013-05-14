@@ -22,8 +22,8 @@ public final class Utilities {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            currentThread().interrupt();
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Sleep was interrupted");
         }
     }
 
@@ -32,8 +32,8 @@ public final class Utilities {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            //e.printStackTrace();
-            currentThread().interrupt();
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Sleep was interrupted");
         }
     }
 
@@ -49,7 +49,7 @@ public final class Utilities {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                throw new RuntimeException("Sleep was interrupted");
             }
         }
     }
@@ -68,7 +68,7 @@ public final class Utilities {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                throw new RuntimeException("Sleep was interrupted");
             }
             success = !predicate.apply();
         }
@@ -87,7 +87,7 @@ public final class Utilities {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                throw new RuntimeException("Sleep was interrupted");
             }
         }
     }
@@ -106,7 +106,7 @@ public final class Utilities {
                 Thread.sleep(random(10, 20));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                throw new RuntimeException("Sleep was interrupted");
             }
             success = predicate.apply();
         }

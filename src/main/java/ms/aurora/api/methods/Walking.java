@@ -9,6 +9,7 @@ import ms.aurora.api.wrappers.Locatable;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.rt3.Player;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -63,28 +64,6 @@ public final class Walking {
     }
 
     /**
-     * Clicks tile on the minimap
-     */
-    public static boolean clickOnMap(RSTile tile) {
-        boolean success = false;
-        VirtualKeyboard.holdControl();
-        logger.info("Walking: " + tile);
-        Point minimapPoint = Minimap.convert(getClosestOnMap(tile));
-        if (minimapPoint.x != -1 && minimapPoint.y != -1) {
-            VirtualMouse.moveMouse(minimapPoint.x, minimapPoint.y);
-            VirtualMouse.clickMouse(true);
-            sleepNoException(500, 700);
-            logger.info("Sleeping while we wait for movement to occur.");
-            success = Utilities.sleepWhile(WALKING(tile, 5), 5000);
-            logger.info("Done sleeping!");
-        } else {
-            logger.error("Tile not on minimap: " + tile);
-        }
-        VirtualKeyboard.releaseControl();
-        return success;
-    }
-
-    /**
      * Clicks a tile on the screen
      *
      * @param tile tile to click
@@ -118,195 +97,60 @@ public final class Walking {
     }
 
     /**
-     * Walks the specified path.
-     *
-     * @param path Path to walk.
-     */
-    @Deprecated
-    public static void walkPath(RSTile[] path) {
-        for (RSTile p : path) {
-            int currentDist = (int) distance(p, path[path.length - 1]);
-            int maxDist = (int) distance(Players.getLocal().getLocation(), path[path.length - 1]);
-            if (currentDist <= maxDist) {
-                if (!clickOnMap(p)) {
-
-                    return;
-                }
-            }
-        }
-
-        if (distance(Players.getLocal().getLocation(), path[path.length - 1]) > 3) {
-            clickOnMap(path[path.length - 1]);
-        }
-    }
-
-    private static int getCurrentPosition(RSTile[] path) {
-        int idx = -1;
-        double distance = Double.MAX_VALUE;
-        RSTile currentLocation = Players.getLocal().getLocation();
-        for (int i = 0; i < path.length; i++) {
-            double currentDistance = Calculations.distance(currentLocation, path[i]);
-            if (currentDistance < distance) {
-                idx = i;
-                distance = currentDistance;
-            }
-        }
-        return idx;
-    }
-
-    /**
-     * Gets the next tile along the path that is over 14 away.
-     *
-     * @return next tile along the path else null.
-     */
-    public static RSTile getNext(RSTile[] path) {
-        int idx = getCurrentPosition(path);
-        RSTile previous = Players.getLocal().getLocation(), next = path[idx];
-        double distance = Calculations.distance(previous, next);
-        for (int i = idx + 1; i < path.length; i++) {
-            previous = next;
-            next = path[i];
-            distance += Calculations.distance(previous, next);
-            if (distance >= 7D) {
-                return previous;
-            }
-        }
-        return path[path.length - 1];
-    }
-
-    /**
-     * Gets the previous tile along the path that is over 14 away.
-     *
-     * @return previous tile along the path else null.
-     */
-    public static RSTile getPrevious(RSTile[] path) {
-        int idx = getCurrentPosition(path);
-        RSTile previous = Players.getLocal().getLocation(), next = path[idx];
-        double distance = Calculations.distance(previous, next);
-        for (int i = idx + 1; i > 0; i--) {
-            previous = next;
-            next = path[i];
-            distance += Calculations.distance(previous, next);
-            if (distance >= 7D) {
-                return previous;
-            }
-        }
-        return path[0];
-    }
-
-    /**
-     * Walks to the next tile along the path.
-     *
-     * @param direction direction in which to walk.
-     */
-    public static RSTile step(RSTile[] path, int direction) {
-        RSTile tile = null;
-        switch (direction) {
-            case Walking.FORWARDS:
-                tile = getNext(path);
-                break;
-            case BACKWARDS:
-                tile = getPrevious(path);
-                break;
-        }
-
-        if (tile != null) {
-            Walking.walkToLocal(tile);
-        }
-        return tile;
-    }
-
-    /**
-     * Walks to the next tile along the path.
-     *
-     * @param direction direction in which to walk.
-     */
-    public static RSTile stepInternal(RSTile[] path, int direction) {
-        RSTile tile = null;
-        switch (direction) {
-            case Walking.FORWARDS:
-                tile = getNext(path);
-                break;
-            case BACKWARDS:
-                tile = getPrevious(path);
-                break;
-        }
-
-        if (tile != null) {
-            Walking.clickOnMap(tile);
-        }
-        return tile;
-    }
-
-    /**
      * Walks the path from one end to the other.
      *
      * @param direction direction in which to walk.
      */
     public static void traverse(RSTile[] path, int direction) {
-        final RSTile target = direction == FORWARDS ? path[path.length - 1] : path[0];
-        traverse(path, new StatePredicate() {
-            @Override
-            public boolean apply() {
-                return Calculations.distance(Players.getLocal().getLocation(), target) <= 3;
-            }
-        }, direction);
-    }
+        RSTile target = direction == FORWARDS ? path[path.length - 1] : path[0];
+        if (direction == BACKWARDS) {
+            path = reversePath(path);
+        }
 
-
-    /**
-     * Walks the path from one end to the other.
-     *
-     * @param direction direction in which to walk.
-     */
-    public static void traverseInternal(RSTile[] path, int direction) {
-        final RSTile target = direction == FORWARDS ? path[path.length - 1] : path[0];
-        traverseInternal(path, new StatePredicate() {
-            @Override
-            public boolean apply() {
-                return Calculations.distance(Players.getLocal().getLocation(), target) <= 5;
-            }
-        }, direction);
-    }
-
-    /**
-     * Walks the path until the a certain condition
-     *
-     * @param walkUntil condition to stop walking.
-     * @param direction direction in which to walk.
-     */
-    public static void traverse(RSTile[] path, StatePredicate walkUntil, int direction) {
-        RSTile lastTarget = null;
-        while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
-            RSTile target = step(path, direction);
-            if (target == null) {
-                break;
-            } else if (target.equals(lastTarget)) {
-                break;
+        int attemptsMade = 0;
+        while (Calculations.distance(Players.getLocal().getLocation(), target) > 3
+                && attemptsMade < 10 && !Thread.currentThread().isInterrupted()) {
+            RSTile next = nextTile(path, 10);
+            if (next != null) {
+                boolean status = clickOnMap(next);
+                if (!status) {
+                    attemptsMade++;
+                }
             } else {
-                lastTarget = target;
+                logger.info("No next tile in path to " + target);
+                break;
+            }
+            Utilities.sleepNoException(10);
+        }
+        clickOnMap(target);
+    }
+
+    public static RSTile nextTile(RSTile[] path, int maxDist) {
+        RSTile cur = Players.getLocal().getLocation();
+        for (int i = path.length - 1; i >= 0; i--) {
+            if (Calculations.distance(cur, path[i]) <= maxDist
+                    && Calculations.distance(cur, path[path.length - 1]) > 3) {
+                return path[i];
             }
         }
+        return null;
     }
 
-    /**
-     * Walks the path until the a certain condition
-     *
-     * @param walkUntil condition to stop walking.
-     * @param direction direction in which to walk.
-     */
-    private static void traverseInternal(RSTile[] path, StatePredicate walkUntil, int direction) {
-        RSTile lastTarget = null;
-        while (!walkUntil.apply() && !Thread.currentThread().isInterrupted()) {
-            RSTile target = stepInternal(path, direction);
-            if (target == null) {
-                break;
-            } else if (target.equals(lastTarget)) {
-                break;
-            } else {
-                lastTarget = target;
+    public static boolean clickOnMap(RSTile tile) {
+        Point m = Minimap.convert(tile);
+        if (m.x != -1 || clickOnMap(getClosestOnMap(tile))) {
+            VirtualMouse.moveMouse(m.x, m.y);
+            VirtualMouse.clickMouse(true);
+            Utilities.sleepUntil(WALKING(), 600);
+            if (Players.getLocal().isMoving()) {
+                Utilities.sleepWhile(WALKING(tile, 3), 7500);
+                return true;
             }
+        } else {
+            logger.info("Tile is off screen " + tile);
+            logger.info("Current position " + Players.getLocal().getLocation());
         }
+        return false;
     }
 
     /**
@@ -319,12 +163,16 @@ public final class Walking {
     public static void walkTo(int x, int y) {
         logger.info("Attempting walkTo(" + x + ", " + y + ");");
 
-        RSMapPathFinder pf = new RSMapPathFinder();
-        Path path = pf.getPath(x, y, RSMapPathFinder.FULL);
-        if (path != null && path.getLength() != 0) {
-            final RSTile[] tiles = path.toTiles(1);
-            traverseInternal(tiles, FORWARDS); // Path's by pathfinder are always inverted.
-        } else {
+        try {
+            RSMapPathFinder pf = new RSMapPathFinder();
+            Path path = pf.getPath(x, y, RSMapPathFinder.FULL);
+            if (path != null && path.getLength() != 0) {
+                final RSTile[] tiles = path.toTiles(1);
+                traverse(tiles, FORWARDS);
+            } else {
+                throw new RuntimeException("Path not found");
+            }
+        } catch (Exception e) {
             logger.error("Path not found to " + x + ", " + y);
             logger.warn("Attempting local navigation to " + x + "," + y);
             walkToLocal(x, y);
@@ -346,7 +194,7 @@ public final class Walking {
         Path path = pf.getPath(x, y, RSRegionPathFinder.FULL);
         if (path != null && path.getLength() != 0) {
             final RSTile[] tiles = path.toTiles(1);
-            traverseInternal(tiles, FORWARDS); // Path's by pathfinder are always inverted.
+            traverse(tiles, FORWARDS);
         } else {
             logger.error("Local path not found to " + x + ", " + y);
         }

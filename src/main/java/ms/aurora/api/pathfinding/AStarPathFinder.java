@@ -134,7 +134,6 @@ public class AStarPathFinder {
             // be the most likely to be the next step based on our heuristic
 
             Node current = getFirstInOpen();
-            //System.out.println(current.x +"," + current.y);
             if (current == nodes[tx][ty]) {
                 break;
             }
@@ -228,6 +227,10 @@ public class AStarPathFinder {
 
         // since we'e've processData out of search
         // there was no path. Just return null
+        // rvbiljouw: might be possible we're already on the tile
+        if(tx == sx && ty == sy) {
+            nodes[tx][ty].parent = nodes[sx][sy];
+        }
 
         if (nodes[tx][ty].parent == null) {
             return null;

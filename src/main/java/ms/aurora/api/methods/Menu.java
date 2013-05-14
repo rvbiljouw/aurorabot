@@ -58,7 +58,6 @@ public final class Menu {
      */
     public static boolean click(String action) {
         VirtualKeyboard.holdControl();
-        sleepNoException(200, 300);
         int itemIndex;
         int tries = 0;
         while((itemIndex = getIndex(action)) == -1 && tries < 12 &&
@@ -67,11 +66,14 @@ public final class Menu {
             sleepNoException(50);
         }
         if (itemIndex != -1) {
+            logger.info("Menu index for " + action + " detected as " + itemIndex);
             if (itemIndex == 0) {
+                logger.info("First entry, left clicking.");
                 VirtualMouse.clickMouse(true);
                 return true;
             } else {
                 if (!isMenuOpen()) {
+                    logger.info("Menu is not open, opening..");
                     VirtualMouse.clickMouse(false);
                     sleepNoException(300);
                 }
@@ -79,6 +81,7 @@ public final class Menu {
                     int menuOptionX = Context.getClient().getMenuX() + (random(10, action.length() * 4));
                     int menuOptionY = Context.getClient().getMenuY() + (21 + (15 * itemIndex));
                     VirtualMouse.clickMouse(menuOptionX, menuOptionY, true);
+                    logger.info("Clicking item at " + menuOptionX + "," + menuOptionY);
                     VirtualKeyboard.releaseControl();
                     return true;
                 }

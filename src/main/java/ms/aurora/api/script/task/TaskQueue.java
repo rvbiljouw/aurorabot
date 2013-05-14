@@ -19,6 +19,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
     private final TaskQueue self;
     private final Script owner;
     private final EventBus eventBus;
+    private Thread passiveThread;
 
     /**
      * Constructor
@@ -37,7 +38,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
      */
     public void run() {
         // Initialize the passive processor.
-        Thread passiveThread = new Thread(passiveProcessor);
+        passiveThread = new Thread(passiveProcessor);
         passiveThread.start();
 
         while (owner.getState() != ScriptState.STOP && !currentThread().isInterrupted()) {
@@ -88,24 +89,33 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
         @Override
         public void run() {
             while (owner.getState() != ScriptState.STOP && !currentThread().isInterrupted()) {
-                if (owner.getState() == ScriptState.PAUSED) {
-                    sleepNoException(100);
-                    continue;
-
-                }
-
-                for (Task currentTask : passive_internal) {
-                    if (currentTask != null) {
-                        currentTask.setQueue(self);
-                        currentTask.run();
+                try {
+                    if (owner.getState() == ScriptState.PAUSED) {
+                        sleepNoException(100);
+                        continue;
                     }
+
+                    for (Task currentTask : passive_internal) {
+                        if (currentTask != null) {
+                            currentTask.setQueue(self);
+                            currentTask.run();
+                        }
+                    }
+                    sleepNoException(200, 500);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
                 }
-                sleepNoException(200, 500);
             }
         }
     };
 
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public void destruct() {
+        passiveThread.interrupt();
+        passiveThread.stop();
     }
 }
