@@ -88,7 +88,10 @@ public class MasterPasswordDialog extends AnchorPane {
                 getCallback().call();
             }
         }
-        showWarning();
+
+        if (txtPassword.getText().length() > 0 && txtVerifyPassword.getLength() > 0) {
+            showWarning();
+        }
     }
 
     @FXML
@@ -100,7 +103,9 @@ public class MasterPasswordDialog extends AnchorPane {
 
     @FXML
     void onPasswordRepeatKeyReleased(KeyEvent event) {
-        authenticateAction(null);
+        if (event.getCode() == KeyCode.ENTER) {
+            authenticateAction(null);
+        }
     }
 
     @FXML

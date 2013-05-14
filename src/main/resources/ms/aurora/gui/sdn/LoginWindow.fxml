@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="536.0" xmlns:fx="http://javafx.com/fxml">
+<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="618.0" xmlns:fx="http://javafx.com/fxml">
   <children>
     <PasswordField fx:id="pwdPassword" layoutX="260.0" layoutY="122.0" onKeyReleased="#onPasswordKeyRelease" prefWidth="200.0" />
     <Button fx:id="btnAuthenticate" layoutX="460.0" layoutY="187.0" mnemonicParsing="false" onAction="#onAuthenticate" prefWidth="57.0" text="OK" />
