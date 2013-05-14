@@ -8,8 +8,7 @@ import com.avaje.ebean.config.ServerConfig;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.core.model.Account;
-import ms.aurora.core.model.Property;
+import ms.aurora.core.model.*;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -123,6 +122,9 @@ public final class Application {
         ServerConfig config = new ServerConfig();
         config.setName("default");
         config.addJar(Versioning.PATH);
+        for(Class<?> clazz : BEAN_CLASSES) {
+            config.addClass(clazz);
+        }
 
         DataSourceConfig dataSource = new DataSourceConfig();
         dataSource.setDriver("org.h2.Driver");
@@ -147,6 +149,9 @@ public final class Application {
         ServerConfig config = new ServerConfig();
         config.setName("default");
         config.addJar(Versioning.PATH);
+        for(Class<?> clazz : BEAN_CLASSES) {
+            config.addClass(clazz);
+        }
 
         DataSourceConfig dataSource = new DataSourceConfig();
         dataSource.setDriver("org.h2.Driver");
@@ -166,4 +171,10 @@ public final class Application {
         logger.info("Database initialised for the first time!");
         logger.info("Next time we will use the properties file.");
     }
+
+    private static Class<?>[] BEAN_CLASSES = {
+            Account.class, PluginConfig.class,
+            PluginSource.class, ScriptSource.class,
+            Property.class
+    };
 }
