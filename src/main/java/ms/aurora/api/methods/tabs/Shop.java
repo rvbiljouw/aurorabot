@@ -2,6 +2,7 @@ package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.methods.filters.ShopFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
@@ -91,21 +92,6 @@ public class Shop {
     }
 
     /**
-     * Gets the first item in the shop with the corresponding id.
-     *
-     * @param id id of item to get.
-     * @return item with the corresponding id else null.
-     */
-    public static RSWidgetItem get(int id) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Retrieves the first item that matches the predicate.
      *
      * @param predicate Predicate to match items against
@@ -122,11 +108,11 @@ public class Shop {
     /**
      * Will buy the amount of item with the corresponding id
      *
-     * @param id     id of item to buy.
+     * @param predicate predicate of item to buy.
      * @param amount amount to buy.
      */
-    public static void buy(int id, Amount amount) {
-        RSWidgetItem item = get(id);
+    public static void buy(Predicate<RSWidgetItem> predicate, Amount amount) {
+        RSWidgetItem item = get(predicate);
         if (item == null || !isOpen()) {
             return;
         }
@@ -139,22 +125,26 @@ public class Shop {
         };
         switch (amount) {
             case ONE:
-                item.applyAction("Buy 1");
-                sleepUntil(invChange, 2000);
+                if (item.applyAction("Buy 1")) {
+                    sleepUntil(invChange, 2000);
+                }
                 break;
             case FIVE:
-                item.applyAction("Buy 5");
-                sleepUntil(invChange, 2000);
+                if (item.applyAction("Buy 5")) {
+                    sleepUntil(invChange, 2000);
+                }
                 break;
             case TEN:
-                item.applyAction("Buy 10");
-                sleepUntil(invChange, 2000);
+                if (item.applyAction("Buy 10")) {
+                    sleepUntil(invChange, 2000);
+                }
                 break;
             case ALL:
-                do {
-                    item.applyAction("Buy 10");
-                    sleepUntil(invChange, 2000);
-                } while (!Inventory.isFull());
+                while (!Inventory.isFull()) {
+                    if (item.applyAction("Buy 10")) {
+                        sleepUntil(invChange, 2000);
+                    }
+                }
                 break;
         }
     }

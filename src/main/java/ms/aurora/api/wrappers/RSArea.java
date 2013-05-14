@@ -63,6 +63,18 @@ public class RSArea {
         return tiles[Utilities.random(0, tiles.length - 1)];
     }
 
+    public RSTile getCenter() {
+        RSTile[] points = getAllTiles();
+        int x = 0, y = 0;
+        for (int i = 0; i < points.length; i++) {
+            x += points[i].getX();
+            y += points[i].getY();
+        }
+        x /= points.length;
+        y /= points.length;
+        return new RSTile(x, y);
+    }
+
     public boolean contains(int x, int y) {
         return this.area.contains(x, y);
     }
