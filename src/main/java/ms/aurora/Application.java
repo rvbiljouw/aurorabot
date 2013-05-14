@@ -50,9 +50,10 @@ public final class Application {
 
     public static void boot() {
         try {
+            loadDatabase();
             Property.getAll();
         } catch(Exception e) {
-            makeDatabase();
+            newDatabase();
         }
 
         new JFXPanel();
@@ -118,7 +119,7 @@ public final class Application {
         Maps.obtainMap();
     }
 
-    private static void makeDatabase() {
+    private static void newDatabase() {
         ServerConfig config = new ServerConfig();
         config.setName("default");
 
@@ -133,7 +134,30 @@ public final class Application {
         config.setDdlRun(true);
 
         config.setDefaultServer(true);
-        config.setRegister(false);
+        config.setRegister(true);
+        EbeanServer server = EbeanServerFactory.create(config);
+        server.runCacheWarming();
+
+        logger.info("Database initialised for the first time!");
+        logger.info("Next time we will use the properties file.");
+    }
+
+    private static void loadDatabase() {
+        ServerConfig config = new ServerConfig();
+        config.setName("default");
+
+        DataSourceConfig dataSource = new DataSourceConfig();
+        dataSource.setDriver("org.h2.Driver");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:h2:~/.aurora.db");
+
+        config.setDataSourceConfig(dataSource);
+        config.setDdlGenerate(false);
+        config.setDdlRun(false);
+
+        config.setDefaultServer(true);
+        config.setRegister(true);
         EbeanServer server = EbeanServerFactory.create(config);
         server.runCacheWarming();
 

@@ -5,10 +5,7 @@ import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.Interactable;
-import ms.aurora.api.wrappers.Locatable;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetItem;
+import ms.aurora.api.wrappers.*;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -28,7 +25,7 @@ public final class Bank {
 
     private static final int[] BANK_NPCS = {56, 56, 494, 495, 496};
     private static final int[] BANK_OBJECTS =  {782, 2012, 2015, 2213,
-            4483, 6084, 11402, 11758, 12759, 14367, 19230, 24914, 25808,
+            4483, 2453, 6084, 11402, 11758, 12759, 14367, 19230, 24914, 25808,
             26972, 27663, 29085, 34752, 35647, 36786, 4483, 8981, 14382, 20607, 21301
     };
 
@@ -74,6 +71,12 @@ public final class Bank {
         logger.info("Clicking bank");
         //String originalProperty = Context.getProperty("interaction.walkTo");
         //Context.setProperty("interaction.walkTo", "false");
+        if(bank instanceof RSNPC && !((RSNPC)bank).isOnScreen()) {
+            Walking.walkToLocal(((RSNPC)bank).getLocation());
+        } else if(bank instanceof RSObject && !((RSObject)bank).isOnScreen()) {
+            Walking.walkToLocal(((RSObject)bank).getLocation());
+        }
+
         Camera.setAngle(Calculations.getAngleTo(((Locatable)bank).getLocation()));
         bank.applyAction("Bank(.*)Bank");
         //Context.setProperty("interaction.walkTo", originalProperty);
