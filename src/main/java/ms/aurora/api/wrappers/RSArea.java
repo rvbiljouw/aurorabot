@@ -17,7 +17,7 @@ public class RSArea {
 
     private final Polygon area;
 
-    public RSArea(RSTile... tiles) {
+    public RSArea(RSTile[] tiles) {
         this.area = new Polygon();
         for (RSTile tile: tiles) {
             this.area.addPoint(tile.getX(), tile.getY());
@@ -25,7 +25,7 @@ public class RSArea {
     }
 
     public RSArea(RSTile ne, RSTile sw) {
-        this(ne, new RSTile(ne.getX(), sw.getY()), sw, new RSTile(sw.getX(), ne.getY()));
+        this(new RSTile[] { ne, new RSTile(ne.getX(), sw.getY()), sw, new RSTile(sw.getX(), ne.getY()) });
     }
 
     public RSArea(int x1, int y1, int x2, int y2) {
@@ -61,6 +61,18 @@ public class RSArea {
     public RSTile getRandomTile() {
         RSTile[] tiles = getAllTiles();
         return tiles[Utilities.random(0, tiles.length - 1)];
+    }
+
+    public RSTile getCenter() {
+        RSTile[] points = getAllTiles();
+        int x = 0, y = 0;
+        for (int i = 0; i < points.length; i++) {
+            x += points[i].getX();
+            y += points[i].getY();
+        }
+        x /= points.length;
+        y /= points.length;
+        return new RSTile(x, y);
     }
 
     public boolean contains(int x, int y) {
