@@ -17,7 +17,7 @@ public class RSArea {
 
     private final Polygon area;
 
-    public RSArea(RSTile... tiles) {
+    public RSArea(RSTile[] tiles) {
         this.area = new Polygon();
         for (RSTile tile: tiles) {
             this.area.addPoint(tile.getX(), tile.getY());
@@ -25,7 +25,7 @@ public class RSArea {
     }
 
     public RSArea(RSTile ne, RSTile sw) {
-        this(ne, new RSTile(ne.getX(), sw.getY()), sw, new RSTile(sw.getX(), ne.getY()));
+        this(new RSTile[] { ne, new RSTile(ne.getX(), sw.getY()), sw, new RSTile(sw.getX(), ne.getY()) });
     }
 
     public RSArea(int x1, int y1, int x2, int y2) {
