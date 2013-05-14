@@ -173,8 +173,8 @@ public final class Application {
     }
 
     private static Class<?>[] BEAN_CLASSES = {
-            Account.class, PluginConfig.class,
-            PluginSource.class, ScriptSource.class,
-            Property.class
+            AbstractModel.class, Account.class,
+            PluginConfig.class, PluginSource.class,
+            ScriptSource.class, Property.class
     };
 }
