@@ -26,8 +26,7 @@ public class UpdatePacketHandler implements PacketHandler {
                 break;
 
             case 1:
-                JOptionPane.showMessageDialog(null, "This release is disabled.\nA new release is available from http://www.aurora.ms !");
-                System.exit(0);
+                JOptionPane.showMessageDialog(null, "This release is old.\nA new release is available from http://www.aurora.ms !");
                 break;
         }
     }

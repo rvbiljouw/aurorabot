@@ -3,6 +3,7 @@ package ms.aurora.core.model;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -10,6 +11,7 @@ import javax.persistence.Persistence;
 /**
  * @author Rick
  */
+@Entity
 public class AbstractModel {
 
     public final void save() {
