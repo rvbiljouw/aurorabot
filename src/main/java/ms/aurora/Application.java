@@ -122,6 +122,7 @@ public final class Application {
     private static void newDatabase() {
         ServerConfig config = new ServerConfig();
         config.setName("default");
+        config.addJar(Versioning.PATH);
 
         DataSourceConfig dataSource = new DataSourceConfig();
         dataSource.setDriver("org.h2.Driver");
@@ -145,6 +146,7 @@ public final class Application {
     private static void loadDatabase() {
         ServerConfig config = new ServerConfig();
         config.setName("default");
+        config.addJar(Versioning.PATH);
 
         DataSourceConfig dataSource = new DataSourceConfig();
         dataSource.setDriver("org.h2.Driver");
