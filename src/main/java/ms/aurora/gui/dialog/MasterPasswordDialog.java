@@ -95,8 +95,6 @@ public class MasterPasswordDialog extends AnchorPane {
     void onPasswordKeyReleased(KeyEvent event) {
         if (property != null && event.getCode() == KeyCode.ENTER) {
             authenticateAction(null);
-        } else if (event.getCode() == KeyCode.ENTER) {
-            txtVerifyPassword.requestFocus();
         }
     }
 
