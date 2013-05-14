@@ -58,16 +58,10 @@ public final class Menu {
      */
     public static boolean click(String action) {
         VirtualKeyboard.holdControl();
-        int itemIndex;
-        int tries = 0;
-        while((itemIndex = getIndex(action)) == -1 && tries < 12 &&
-                !Thread.currentThread().isInterrupted()) {
-            tries++;
-            sleepNoException(50);
-        }
+        int itemIndex = getIndex(action);
         if (itemIndex != -1) {
             logger.info("Menu index for " + action + " detected as " + itemIndex);
-            if (itemIndex == 0) {
+            if (itemIndex == 0 || getHoverAction().equals(action)) {
                 logger.info("First entry, left clicking.");
                 VirtualMouse.clickMouse(true);
                 return true;
@@ -82,6 +76,7 @@ public final class Menu {
                     int menuOptionY = Context.getClient().getMenuY() + (21 + (15 * itemIndex));
                     VirtualMouse.clickMouse(menuOptionX, menuOptionY, true);
                     logger.info("Clicking item at " + menuOptionX + "," + menuOptionY);
+                    logger.info("Uptext: " + getHoverAction());
                     VirtualKeyboard.releaseControl();
                     return true;
                 }
@@ -108,7 +103,7 @@ public final class Menu {
      *
      * @return hover action
      */
-    public String getHoverAction() {
+    public static String getHoverAction() {
         return getMenuContent().get(0);
     }
 
