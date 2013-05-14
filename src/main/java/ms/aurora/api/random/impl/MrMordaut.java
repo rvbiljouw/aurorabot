@@ -3,6 +3,7 @@ package ms.aurora.api.random.impl;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSObject;
@@ -15,6 +16,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 /**
  * @author rvbiljouw
  */
+@AfterLogin
 public class MrMordaut extends Random {
     private static final int MR_MORDAUT_ID = 6117;
 
@@ -289,7 +291,7 @@ public class MrMordaut extends Random {
             return random(800, 1200);
         }
         if (door != null) {
-            if (door.applyAction("Open")) {
+            if (!door.applyAction("Open")) {
                 Camera.setAngle(random(0, 359));
                 return random(800, 1200);
             }

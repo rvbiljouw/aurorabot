@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSNPC;
@@ -12,12 +13,9 @@ import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.api.wrappers.RSWidget;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tobiewarburton
- * Date: 31/03/13
- * Time: 22:41
- * To change this template use File | Settings | File Templates.
+ * @author tobiewarburton
  */
+@AfterLogin
 public class Certer extends Random {
     private final int[] MODEL_IDS = {2807, 8828, 8829, 8832, 8833, 8834, 8835, 8836, 8837};
     private final int[] bookPiles = {42352, 42354};
@@ -28,7 +26,6 @@ public class Certer extends Random {
 
     @Override
     public boolean activate() {
-        if(!Context.isLoggedIn()) return false;
         return Objects.get(ObjectFilters.ID(bookPiles)) != null;
     }
 

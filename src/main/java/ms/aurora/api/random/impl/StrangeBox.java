@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.methods.tabs.Options;
+import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSWidget;
 
@@ -11,13 +12,13 @@ import static ms.aurora.api.util.Utilities.random;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
+ * Solves the strange box random.
  * @author tobiewarburton
  */
+@AfterLogin
 public class StrangeBox extends Random {
     @Override
     public boolean activate() {
-        if(!Context.isLoggedIn()) return false;
-
         return Inventory.contains(3062);
     }
 

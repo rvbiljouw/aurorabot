@@ -1,12 +1,14 @@
 package ms.aurora.api.script.task.impl;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
 import org.apache.log4j.Logger;
 
+import static java.lang.Thread.currentThread;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -17,12 +19,12 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 public class Randoms extends PassiveTask {
     private final Logger logger = Logger.getLogger(Randoms.class);
     private final Random[] RANDOMS = {
-            new AutoLogin(), new AxeHandler(),
-            new BeehiveSolver(), new CapnArnav(),
-            new ScapeRuneIsland(), new Talker(),
+            new AutoLogin(), new Talker(),
             new Teleother(), new WelcomeScreen(),
             new StrangeBox(), new Pinball(),
             new MrMordaut(), new FrogCave(),
+            new Mime(), new Ent(),
+            new Swarm()
     };
 
     @Override
@@ -34,8 +36,11 @@ public class Randoms extends PassiveTask {
     public int execute() {
         for (Random random : RANDOMS) {
             random.setSession(Context.get().getSession());
+            if (random.getClass().getAnnotation(AfterLogin.class) != null &&
+                    !Context.isLoggedIn()) continue;
+
             try {
-                while (random.activate() && !Thread.currentThread().isInterrupted()) {
+                while (random.activate() && !currentThread().isInterrupted()) {
                     if (Context.get().getSession().getScriptManager().getState() == ScriptState.STOP) {
                         return -1;
                     }

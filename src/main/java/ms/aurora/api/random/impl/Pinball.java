@@ -1,8 +1,10 @@
 package ms.aurora.api.random.impl;
 
+import ms.aurora.api.methods.Camera;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.input.VirtualKeyboard;
@@ -14,29 +16,33 @@ import static ms.aurora.api.util.Utilities.random;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
+ * Solves the pinball random event
+ *
  * @author rvbiljouw
  */
+@AfterLogin
 public class Pinball extends Random {
-    private final int POST_G[] = {15000, 15004, 15006, 15008, 15002};
-    private final int POST_NG[] = {15007, 15005, 15003, 15009, 15001};
+    private final int POST_VALID[] = {15000, 15002, 15004, 15006, 15008};
+    private final int POST_INVALID[] = {15001, 15003, 15005, 15007, 15009};
+    private static final int DOOR_ID = 15010;
 
     @Override
     public boolean activate() {
-        return Objects.get(ID(POST_NG)) != null;
+        return Objects.get(ID(POST_INVALID)) != null;
     }
 
     @Override
     public int loop() {
         if (!idle()) return random(1000, 2000);
+        RSObject exit = Objects.get(ID(DOOR_ID));
+        RSObject validPost = Objects.get(ID(POST_VALID));
 
-        RSObject exit = Objects.get(ID(15010));
-        if (Objects.get(ID(POST_NG)) != null) {
-            RSObject post = Objects.get(ID(POST_G));
-            if (post != null && post.isOnScreen()) {
-                if(post.applyAction("Tag")) {
-                    return random(2000, 3000);
-                }
-                return random(1, 2);
+        if (validPost != null) {
+            if (validPost.isOnScreen() && validPost.applyAction("Tag")) {
+                return random(2000, 3000);
+            } else {
+                Camera.turnTo(validPost);
+                return random(100, 200);
             }
         }
 
@@ -46,15 +52,12 @@ public class Pinball extends Random {
         }
 
         if (exit != null) {
-            VirtualKeyboard.holdKey((char)KeyEvent.VK_DOWN);
-            VirtualKeyboard.holdKey((char)KeyEvent.VK_LEFT);
-            long time = System.currentTimeMillis();
-            while(!exit.isOnScreen() && (System.currentTimeMillis() - time) < 5000) {
-                sleepNoException(30);
+            if (exit.isOnScreen() && exit.applyAction("Exit")) {
+                return random(2000, 3000);
+            } else {
+                Camera.turnTo(exit);
+                return random(100, 200);
             }
-            VirtualKeyboard.releaseKey((char)KeyEvent.VK_LEFT);
-            exit.applyAction("Exit");
-            return random(600, 1200);
         }
         return -1;
     }

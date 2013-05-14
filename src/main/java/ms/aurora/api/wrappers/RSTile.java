@@ -1,6 +1,10 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.util.Utilities;
+
+import static ms.aurora.api.util.Utilities.random;
 
 /**
  * @author Rick
@@ -67,5 +71,18 @@ public final class RSTile {
     @Override
     public String toString() {
         return "[x=" + x + ",y=" + y + ",z=" + z + ']';
+    }
+
+    /**
+     * Generates a randomized tile.
+     *
+     * @param tile       Tile to randomize
+     * @param deviationX Maximum difference in X
+     * @param deviationY Maximum difference in Y
+     * @return deviated <b>copy</b> of the tile.
+     */
+    public static RSTile randomize(RSTile tile, int deviationX, int deviationY) {
+        return new RSTile(random(-deviationX, deviationX) + tile.getX(),
+                random(-deviationY, deviationY) + tile.getY());
     }
 }

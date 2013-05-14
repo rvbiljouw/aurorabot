@@ -3,6 +3,7 @@ package ms.aurora.api.random.impl;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
+import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.wrappers.RSNPC;
 
@@ -11,6 +12,7 @@ import static ms.aurora.api.util.Utilities.random;
 /**
  * @author tobiewarburton
  */
+@AfterLogin
 public class FrogCave extends Random {
 
     private RSNPC frog;
