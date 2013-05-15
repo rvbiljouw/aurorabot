@@ -51,7 +51,7 @@ public final class Application {
         try {
             loadDatabase();
             Property.getAll();
-        } catch(Exception e) {
+        } catch (Exception e) {
             newDatabase();
         }
 
@@ -122,7 +122,7 @@ public final class Application {
         ServerConfig config = new ServerConfig();
         config.setName("default");
         config.addJar(Versioning.PATH);
-        for(Class<?> clazz : BEAN_CLASSES) {
+        for (Class<?> clazz : BEAN_CLASSES) {
             config.addClass(clazz);
         }
 
@@ -149,7 +149,7 @@ public final class Application {
         ServerConfig config = new ServerConfig();
         config.setName("default");
         config.addJar(Versioning.PATH);
-        for(Class<?> clazz : BEAN_CLASSES) {
+        for (Class<?> clazz : BEAN_CLASSES) {
             config.addClass(clazz);
         }
 
@@ -175,6 +175,7 @@ public final class Application {
     private static Class<?>[] BEAN_CLASSES = {
             AbstractModel.class, Account.class,
             PluginConfig.class, PluginSource.class,
-            ScriptSource.class, Property.class
+            PluginSource.class, ScriptSource.class,
+            Property.class
     };
 }
