@@ -50,7 +50,12 @@ public final class Application {
     public static void boot() {
         try {
             loadDatabase();
-            Property.getAll();
+            for(Class<?> beanClass : BEAN_CLASSES) {
+                if(beanClass.isAssignableFrom(AbstractModel.class)) {
+                    AbstractModel instance = (AbstractModel)beanClass.newInstance();
+                    instance.test();
+                }
+            }
         } catch (Exception e) {
             newDatabase();
         }

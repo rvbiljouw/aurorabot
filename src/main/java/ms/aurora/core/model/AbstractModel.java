@@ -27,6 +27,10 @@ public class AbstractModel {
         Ebean.refresh(this);
     }
 
+    public void test() {
+        Ebean.find(getClass()).findList();
+    }
+
     public static <T> Query<T> finder(Class<T> t) {
         return Ebean.find(t);
     }
