@@ -1,18 +1,21 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.methods.Viewport;
+import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Model;
 
 import java.awt.*;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 
+import static ms.aurora.api.methods.Menu.contains;
 import static ms.aurora.api.util.Utilities.random;
 
 /**
  * @author Rick
  */
 public final class RSModel {
+    private Model wrapped;
     private int[] trianglesX,
             trianglesY,
             trianglesZ,
@@ -27,6 +30,7 @@ public final class RSModel {
 
 
     public RSModel(Model wrapped, int localX, int localY, int orientation) {
+        this.wrapped = wrapped;
         this.trianglesX = wrapped.getTrianglesX();
         this.trianglesY = wrapped.getTrianglesY();
         this.trianglesZ = wrapped.getTrianglesZ();
@@ -93,6 +97,26 @@ public final class RSModel {
             }
         }
         return new Point(-1, -1);
+    }
+
+    protected boolean moveAction(String action) {
+        Polygon[] polys = getPolygons();
+        if (polys != null && polys.length > 0) {
+            Polygon random = polys[random(0, polys.length - 1)];
+            PathIterator iter = random.getPathIterator(null);
+            int tries = 0;
+            while (wrapped != null && !iter.isDone() && !contains(action) && tries++ < 20) {
+                iter.next();
+                double[] coords = new double[2];
+                iter.currentSegment(coords);
+                Point pos = new Point((int) coords[0], (int) coords[1]);
+                if (pos.x != -1 && pos.y != -1) {
+                    VirtualMouse.moveMouse(pos);
+                }
+            }
+            return contains(action);
+        }
+        return false;
     }
 
     public void cleanup() {
