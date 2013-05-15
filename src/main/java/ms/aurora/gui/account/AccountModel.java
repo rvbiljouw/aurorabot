@@ -43,7 +43,7 @@ public class AccountModel {
     }
 
     public void setPassword(String password) {
-        getAccount().setPassword(password);
+        getAccount().setPassword(Account.encrypt(password));
         this.password.set(password);
     }
 

@@ -56,8 +56,7 @@ public class Account extends AbstractModel {
 
 
     public void setPassword(String password) {
-        if (password == null) this.password = null;
-        this.password = encrypt(password);
+        this.password = password;
     }
 
 
@@ -82,7 +81,7 @@ public class Account extends AbstractModel {
     /*
      * CRYPTO FUNCTIONS
      */
-    private static String encrypt(String input) {
+    public static String encrypt(String input) {
         byte[] crypted = null;
         try {
             SecretKeySpec key = new SecretKeySpec(pad(getKey()), "AES");

@@ -132,7 +132,7 @@ public final class Application {
         dataSource.setDriver("org.h2.Driver");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
-        dataSource.setUrl("jdbc:h2:~/.aurora.db");
+        dataSource.setUrl("jdbc:h2:~/.aurora.db;Recover=1");
 
         config.setDataSourceConfig(dataSource);
         config.setDdlGenerate(true);
@@ -159,7 +159,7 @@ public final class Application {
         dataSource.setDriver("org.h2.Driver");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
-        dataSource.setUrl("jdbc:h2:~/.aurora.db");
+        dataSource.setUrl("jdbc:h2:~/.aurora.db;Recover=1");
 
         config.setDataSourceConfig(dataSource);
         config.setDdlGenerate(false);
