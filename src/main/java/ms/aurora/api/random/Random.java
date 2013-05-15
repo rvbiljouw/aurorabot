@@ -21,4 +21,12 @@ public abstract class Random extends Context {
     public void error(String message) {
         logger.error(message);
     }
+
+    public final boolean validate() {
+        return getManifest() != null;
+    }
+
+    public final RandomManfiest getManifest() {
+        return getClass().getAnnotation(RandomManfiest.class);
+    }
 }

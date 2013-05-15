@@ -3,10 +3,15 @@ package ms.aurora.api.script.task.impl;
 import ms.aurora.api.Context;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
+import ms.aurora.api.random.RandomManfiest;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
+import ms.aurora.core.random.RandomLoader;
 import org.apache.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Thread.currentThread;
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -18,6 +23,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  */
 public class Randoms extends PassiveTask {
     private final Logger logger = Logger.getLogger(Randoms.class);
+
     private final Random[] RANDOMS = {
             new AutoLogin(), new Talker(),
             new Teleother(), new WelcomeScreen(),
@@ -34,6 +40,8 @@ public class Randoms extends PassiveTask {
 
     @Override
     public int execute() {
+        List<Random> allRandoms = RandomLoader.getRandoms();
+        allRandoms.addAll(Arrays.asList(RANDOMS));
         for (Random random : RANDOMS) {
             random.setSession(Context.get().getSession());
             if (random.getClass().getAnnotation(AfterLogin.class) != null &&
@@ -46,8 +54,9 @@ public class Randoms extends PassiveTask {
                     }
 
                     queue.getOwner().setState(ScriptState.PAUSED);
-                    String name = random.getClass().getSimpleName();
-                    logger.info("Random  '" + name + "' triggered..");
+                    RandomManfiest manfiest = random.getManifest();
+                    logger.info("Random  '" + manfiest.name() + " - " + manfiest.version()
+                            + "' by '" + manfiest.author() + "' triggered..");
                     int time = random.loop();
                     if (time == -1) break;
                     sleepNoException(time);

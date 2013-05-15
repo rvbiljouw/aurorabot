@@ -5,6 +5,7 @@ import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
+import ms.aurora.api.random.RandomManfiest;
 import ms.aurora.api.wrappers.RSNPC;
 
 import static ms.aurora.api.util.Utilities.random;
@@ -13,6 +14,7 @@ import static ms.aurora.api.util.Utilities.random;
  * @author tobiewarburton
  */
 @AfterLogin
+@RandomManfiest(name = "Frog Cave", version = 1.0)
 public class FrogCave extends Random {
 
     private RSNPC frog;

@@ -4,17 +4,17 @@ import ms.aurora.api.Context;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Walking;
 import ms.aurora.api.random.Random;
+import ms.aurora.api.random.RandomManfiest;
 import ms.aurora.api.wrappers.RSCharacter;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSTile;
-
-import java.util.Arrays;
 
 import static ms.aurora.api.util.Utilities.random;
 
 /**
  * @author rvbiljouw
  */
+@RandomManfiest(name = "Swarm", version = 1.0)
 public class Swarm extends Random {
     @Override
     public boolean activate() {
@@ -37,7 +37,7 @@ public class Swarm extends Random {
 
     @Override
     public int loop() {
-        if(!activate()) {
+        if (!activate()) {
             return -1;
         }
 

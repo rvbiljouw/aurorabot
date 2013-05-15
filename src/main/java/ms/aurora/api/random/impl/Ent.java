@@ -4,6 +4,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Walking;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
+import ms.aurora.api.random.RandomManfiest;
 import ms.aurora.api.wrappers.RSCharacter;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSTile;
@@ -14,9 +15,11 @@ import static ms.aurora.api.util.Utilities.random;
 
 /**
  * Solver for ents
+ *
  * @author rvbiljouw
  */
 @AfterLogin
+@RandomManfiest(name = "Ent", version = 1.0)
 public class Ent extends Random {
     private static final int[] ENT_IDS = {
             1740, 1731, 1735,
@@ -27,14 +30,14 @@ public class Ent extends Random {
     @Override
     public boolean activate() {
         RSCharacter interacting = Players.getLocal().getInteracting();
-        if(interacting == null) {
+        if (interacting == null) {
             return false;
         }
 
-        if(interacting instanceof RSNPC) {
-            RSNPC npc = (RSNPC)interacting;
+        if (interacting instanceof RSNPC) {
+            RSNPC npc = (RSNPC) interacting;
             Arrays.sort(ENT_IDS);
-            if(Arrays.binarySearch(ENT_IDS, npc.getId()) > 0) {
+            if (Arrays.binarySearch(ENT_IDS, npc.getId()) > 0) {
                 return true;
             }
         }
@@ -43,7 +46,7 @@ public class Ent extends Random {
 
     @Override
     public int loop() {
-        if(!activate()) {
+        if (!activate()) {
             return -1;
         }
 
