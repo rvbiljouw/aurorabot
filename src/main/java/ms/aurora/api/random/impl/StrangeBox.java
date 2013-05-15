@@ -19,6 +19,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 @AfterLogin
 @RandomManfiest(name = "Strange Box", version = 1.0)
 public class StrangeBox extends Random {
+
     @Override
     public boolean activate() {
         return Inventory.contains(3062);
@@ -38,4 +39,5 @@ public class StrangeBox extends Random {
         }
         return random(400, 600);
     }
+
 }

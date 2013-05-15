@@ -7,6 +7,7 @@ import ms.aurora.rt3.Model;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -108,13 +109,21 @@ public final class RSModel {
         return hull;
     }
 
-    /**
-     * wot lolol
-     *
-     * @return
-     */
+    // TODO: See if this fixes the freezing..
     public Point getRandomPoint() {
-        return getRandomHullPoint();
+        Polygon[] polys = getPolygons();
+        if (polys != null && polys.length > 0) {
+            Polygon random = polys[random(0, polys.length - 1)];
+            PathIterator iter = random.getPathIterator(null);
+            if (!iter.isDone()) {
+                iter.next();
+                double[] coords = new double[2];
+                iter.currentSegment(coords);
+                return new Point((int) coords[0], (int) coords[1]);
+            }
+        }
+        return new Point(-1, -1);
+        //return getRandomHullPoint();
     }
 
     public Point getRandomHullPoint() {

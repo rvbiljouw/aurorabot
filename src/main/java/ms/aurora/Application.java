@@ -52,11 +52,11 @@ public final class Application {
             loadDatabase();
             for(Class<?> beanClass : BEAN_CLASSES) {
                 if(beanClass.isAssignableFrom(AbstractModel.class)) {
-                    AbstractModel instance = (AbstractModel)beanClass.newInstance();
-                    instance.test();
+                    AbstractModel.test(beanClass);
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             newDatabase();
         }
 
