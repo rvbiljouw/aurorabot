@@ -6,6 +6,8 @@ import ms.aurora.api.pathfinding.impl.RSRegion;
 import ms.aurora.api.script.ScriptState;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,17 +17,13 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class AStarPathFinder {
-
+    private Map<Long, Node> indexedNodeMap = new HashMap<Long, Node>();
     private ArrayList closed = new ArrayList();
     private SortedList open = new SortedList();
+    private TileBasedMap map;
     int stackDepth = 0;
 
-    private TileBasedMap map;
-
     private int maxSearchDistance;
-
-
-    private Node[][] nodes;
 
     private boolean allowDiagMovement;
 
@@ -56,7 +54,6 @@ public class AStarPathFinder {
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
-        nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
         stackDepth = 0;
     }
 
@@ -79,7 +76,7 @@ public class AStarPathFinder {
 
                     if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
                         if (!map.solid(mX, mY)) {
-                            System.out.println("Picking " + mX + ","+ mY + " as a starting tile.");
+                            System.out.println("Picking " + mX + "," + mY + " as a starting tile.");
                             return findPath(mX, mY, tx, ty, full);
                         }
                     }
@@ -97,7 +94,7 @@ public class AStarPathFinder {
 
                     if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
                         if (!map.solid(mX, mY)) {
-                            System.out.println("Picking " + mX + ","+ mY + " as a destination tile.");
+                            System.out.println("Picking " + mX + "," + mY + " as a destination tile.");
                             return findPath(sx, sy, mX, mY, full);
                         }
                     }
@@ -108,19 +105,19 @@ public class AStarPathFinder {
         if (!(sx < map.getWidthInTiles() && sx > 0 && sy < map.getHeightInTiles() && sy > 0)) {
             return null;
         }
-        nodes[sx][sy] = new Node((short) sx, (short) sy);
-        nodes[tx][ty] = new Node((short) tx, (short) ty);
+        nodes(sx, sy, new Node((short) sx, (short) sy));
+        nodes(tx, ty, new Node((short) tx, (short) ty));
 
         // initial state for A*. The closed group is empty. Only the starting
 
         // tile is in the open list and it'e're already there
-        nodes[sx][sy].cost = 0;
-        nodes[sx][sy].depth = 0;
+        nodes(sx, sy).cost = 0;
+        nodes(sx, sy).depth = 0;
         closed.clear();
         open.clear();
-        open.add(nodes[sx][sy]);
+        open.add(nodes(sx, sy));
 
-        nodes[tx][ty].parent = null;
+        nodes(tx, ty).parent = null;
 
         // while we haven'n't exceeded our max search depth
         //System.out.println("Starting the search.");
@@ -134,7 +131,7 @@ public class AStarPathFinder {
             // be the most likely to be the next step based on our heuristic
 
             Node current = getFirstInOpen();
-            if (current == nodes[tx][ty]) {
+            if (current == nodes(tx, ty)) {
                 break;
             }
 
@@ -183,10 +180,10 @@ public class AStarPathFinder {
                             // in the sorted open list
 
                             float nextStepCost = current.cost + getMovementCost(current.x, current.y, xp, yp);
-                            if (nodes[xp][yp] == null) {
-                                nodes[xp][yp] = new Node((short) xp, (short) yp);
+                            if (nodes(xp, yp) == null) {
+                                nodes(xp, yp, new Node((short) xp, (short) yp));
                             }
-                            Node neighbour = nodes[xp][yp];
+                            Node neighbour = nodes(xp, yp);
                             map.pathFinderVisited(xp, yp);
 
                             // if the new cost we've determined for this node is lower than
@@ -228,11 +225,11 @@ public class AStarPathFinder {
         // since we'e've processData out of search
         // there was no path. Just return null
         // rvbiljouw: might be possible we're already on the tile
-        if(tx == sx && ty == sy) {
-            nodes[tx][ty].parent = nodes[sx][sy];
+        if (tx == sx && ty == sy) {
+            nodes(tx, ty).parent = nodes(sx, sy);
         }
 
-        if (nodes[tx][ty].parent == null) {
+        if (nodes(tx, ty).parent == null) {
             return null;
         }
 
@@ -247,24 +244,15 @@ public class AStarPathFinder {
             path = new Path(true);
         }
 
-        Node target = nodes[tx][ty];
-        while (target != nodes[sx][sy]) {
+        Node target = nodes(tx, ty);
+        while (target != nodes(sx, sy)) {
             path.prependStep(target.x, target.y);
             target = target.parent;
         }
         path.prependStep(sx, sy);
 
         // deallocate all the bullshit
-        for (int i = 0; i < nodes.length; i++) {
-            for (int j = 0; j < nodes[i].length; j++) {
-                if (nodes[i][j] != null) {
-                    nodes[i][j].parent = null; // unlink the nodes..
-                }
-                nodes[i][j] = null;
-            }
-            nodes[i] = null;
-        }
-        nodes = null;
+        indexedNodeMap.clear();
 
         // thats it, we have our path
         closed.clear();
@@ -381,5 +369,23 @@ public class AStarPathFinder {
     public float getHeuristicCost(int x, int y, int tx, int ty) {
         return heuristic.getCost(map, x, y, tx, ty);
     }
+
+    public Node nodes(int x, int y) {
+        return indexedNodeMap.get(hash(x, y));
+    }
+
+    private Node nodes(int sx, int sy, Node node) {
+        indexedNodeMap.put(hash(sx, sy), node);
+        return node;
+    }
+
+
+    public static long hash(int a, int b) {
+        long A = (long) (a >= 0 ? 2 * (long) a : -2 * (long) a - 1);
+        long B = (long) (b >= 0 ? 2 * (long) b : -2 * (long) b - 1);
+        long C = (long) ((A >= B ? A * A + A + B : A + B * B) / 2);
+        return a < 0 && b < 0 || a >= 0 && b >= 0 ? C : -C - 1;
+    }
+
 
 }
