@@ -7,10 +7,7 @@ import com.avaje.ebean.config.ServerConfig;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.core.model.AbstractModel;
-import ms.aurora.core.model.Account;
-import ms.aurora.core.model.PluginConfig;
-import ms.aurora.core.model.Property;
+import ms.aurora.core.model.*;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -51,7 +48,7 @@ public final class Application {
         try {
             loadDatabase();
             for(Class<?> beanClass : BEAN_CLASSES) {
-                if(beanClass.isAssignableFrom(AbstractModel.class)) {
+                if(AbstractModel.class.isAssignableFrom(beanClass)) {
                     AbstractModel.test(beanClass);
                 }
             }
@@ -180,6 +177,6 @@ public final class Application {
     private static Class<?>[] BEAN_CLASSES = {
             AbstractModel.class, Account.class,
             PluginConfig.class, ms.aurora.core.model.Source.class,
-            Property.class
+            Property.class, MapTile.class
     };
 }

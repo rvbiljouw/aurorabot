@@ -25,9 +25,6 @@ public class WallDecorationPaint implements PaintListener {
             Point loc = object.getScreenLocation();
             graphics.setColor(Color.BLUE);
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
-            try {
-                graphics.drawPolygon(object.getModel().getHull());
-            } catch (Exception ignored) {}
         }
     }
 

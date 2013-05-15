@@ -189,7 +189,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final RSModel getModel() {
         Model model = _getModel();
         if (model != null) {
-            return new RSModel(ctx, model, getLocalX(), getLocalY(), getTurnDirection());
+            return new RSModel(model, getLocalX(), getLocalY(), getTurnDirection());
         }
         return null;
     }

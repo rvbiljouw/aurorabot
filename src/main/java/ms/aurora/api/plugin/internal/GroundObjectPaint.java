@@ -24,8 +24,6 @@ public class GroundObjectPaint implements PaintListener {
             graphics.setColor(Color.GREEN);
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
             try {
-                Polygon hull = object.getModel().getHull();
-                graphics.draw(hull);
                 /*graphics.setColor(Color.RED);
                 graphics.draw(RSModel.scaleHull(hull, 0.5));*/
             } catch (Exception ignored) {

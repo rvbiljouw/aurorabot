@@ -153,7 +153,7 @@ public final class RSObject implements Locatable, Interactable {
     public RSModel getModel() {
         if (wrapped.getModel() != null && wrapped.getModel() instanceof Model) {
             if (cachedModel == null)
-                cachedModel = new RSModel(ctx, (Model) wrapped.getModel(), getLocalX(), getLocalY(), 0);
+                cachedModel = new RSModel((Model) wrapped.getModel(), getLocalX(), getLocalY(), 0);
             return cachedModel;
         }
         return null;

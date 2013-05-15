@@ -2,6 +2,7 @@ package ms.aurora.core.model;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
+import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
  */
 @MappedSuperclass
 public class AbstractModel {
+    private static final Logger logger = Logger.getLogger(AbstractModel.class);
 
     public final void save() {
         Ebean.save(this);
@@ -30,6 +32,9 @@ public class AbstractModel {
     public static <T> void test(Class<T> clazz) {
         if (clazz.getAnnotation(Entity.class) != null) {
             Ebean.find(clazz).findList();
+            logger.info("Tested "+ clazz.getCanonicalName());
+        } else {
+            logger.info("Didn't test " + clazz.getCanonicalName() + " because it doesn't have an Entity annotation.");
         }
     }
 

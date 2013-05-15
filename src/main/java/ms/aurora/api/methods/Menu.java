@@ -118,9 +118,9 @@ public final class Menu {
         String[] targets = Context.getClient().getMenuTargets();
         List<String> menuContent = new ArrayList<String>();
 
-        for (int index = targets.length; index > 0; index--) {
-            if (actions[index] != null && targets[index] != null) {
-                menuContent.add(removeFormatting(targets[index] + " " + actions[index]).toLowerCase());
+        for (int i = targets.length - 1; i >= 0; i--) {
+            if (actions[i] != null && targets[i] != null) {
+                menuContent.add(removeFormatting(targets[i] + " " + actions[i]).toLowerCase());
             }
         }
         return menuContent.subList(menuContent.size() - Context.getClient().getMenuCount(),

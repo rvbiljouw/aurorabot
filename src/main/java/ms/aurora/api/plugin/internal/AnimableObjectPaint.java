@@ -25,9 +25,6 @@ public class AnimableObjectPaint implements PaintListener {
             Point loc = object.getScreenLocation();
             graphics.setColor(Color.YELLOW);
             graphics.drawString(String.valueOf(object.getId()), loc.x, loc.y);
-            try {
-                graphics.drawPolygon(object.getModel().getHull());
-            } catch (Exception ignored) {}
         }
     }
 
