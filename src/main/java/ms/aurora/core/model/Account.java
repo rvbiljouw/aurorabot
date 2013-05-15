@@ -56,7 +56,8 @@ public class Account extends AbstractModel {
 
 
     public void setPassword(String password) {
-        this.password = password;
+        if (password == null) this.password = null;
+        this.password = encrypt(password);
     }
 
 
@@ -100,8 +101,8 @@ public class Account extends AbstractModel {
             SecretKeySpec key = new SecretKeySpec(pad(getKey()), "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, key);
-           // output = cipher.doFinal(Base64.decodeBase64(input.getBytes()));
-             output = cipher.doFinal(Base64.decode(input));
+            // output = cipher.doFinal(Base64.decodeBase64(input.getBytes()));
+            output = cipher.doFinal(Base64.decode(input));
 
         } catch (Exception ignored) {
             // password is wrong...

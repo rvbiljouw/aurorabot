@@ -43,8 +43,8 @@ public class AccountModel {
     }
 
     public void setPassword(String password) {
-        getAccount().setPassword(Account.encrypt(password));
-        this.password.set(password);
+        getAccount().setPassword(password);
+        this.password.setValue(password);
     }
 
     public String getBankPin() {

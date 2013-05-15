@@ -48,7 +48,8 @@ public final class Application {
         try {
             loadDatabase();
             for(Class<?> beanClass : BEAN_CLASSES) {
-                if(AbstractModel.class.isAssignableFrom(beanClass)) {
+                if(AbstractModel.class.isAssignableFrom(beanClass)
+                        && !beanClass.equals(Account.class)) {
                     AbstractModel.test(beanClass);
                 }
             }
