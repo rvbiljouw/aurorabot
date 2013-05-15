@@ -13,8 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import ms.aurora.Messages;
-import ms.aurora.core.model.PluginSource;
-import ms.aurora.core.model.ScriptSource;
+import ms.aurora.core.model.Source;
 import ms.aurora.gui.util.FXUtils;
 import ms.aurora.input.ClientCanvas;
 
@@ -40,10 +39,7 @@ public class Properties extends AnchorPane {
     private Button btnRemoveScriptSource;
 
     @FXML
-    private ListView<PluginSource> lstPluginSources;
-
-    @FXML
-    private ListView<ScriptSource> lstScriptSources;
+    private ListView<Source> lstSources;
 
     @FXML
     private Slider sldPaintDelay;
@@ -64,27 +60,15 @@ public class Properties extends AnchorPane {
     }
 
     @FXML
-    void onAddPluginSource(ActionEvent event) {
+    void onAddSource(ActionEvent event) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(Messages.getString("properties.selectFolder"));
         File file = chooser.showDialog(currentStage);
-        if(file != null && file.exists()) {
-            PluginSource source = new PluginSource(file.getAbsolutePath(), false);
+        if (file != null && file.exists()) {
+            Source source = new Source(file.getAbsolutePath(), false);
             source.save();
         }
-        loadPluginSources();
-    }
-
-    @FXML
-    void onAddScriptSource(ActionEvent event) {
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle(Messages.getString("properties.selectFolder"));
-        File file = chooser.showDialog(currentStage);
-        if(file != null && file.exists()) {
-            ScriptSource source = new ScriptSource(file.getAbsolutePath(), false);
-            source.save();
-        }
-        loadScriptSources();
+        loadSources();
     }
 
     @FXML
@@ -93,29 +77,19 @@ public class Properties extends AnchorPane {
     }
 
     @FXML
-    void onRemovePluginSource(ActionEvent event) {
-        ObservableList<PluginSource> selection = lstPluginSources.getSelectionModel().getSelectedItems();
-        for(PluginSource source : selection) {
+    void onRemoveSource(ActionEvent event) {
+        ObservableList<Source> selection = lstSources.getSelectionModel().getSelectedItems();
+        for (Source source : selection) {
             source.remove();
         }
-        loadPluginSources();
-    }
-
-    @FXML
-    void onRemoveScriptSource(ActionEvent event) {
-        ObservableList<ScriptSource> selection = lstScriptSources.getSelectionModel().getSelectedItems();
-        for(ScriptSource source : selection) {
-            source.remove();
-        }
-        loadScriptSources();
+        loadSources();
     }
 
     @FXML
     void initialize() {
         assert btnAddScriptSource != null : "fx:id=\"btnAddScriptSource\" was not injected: check your FXML file 'Properties.fxml'.";
         assert btnRemoveScriptSource != null : "fx:id=\"btnRemoveScriptSource\" was not injected: check your FXML file 'Properties.fxml'.";
-        assert lstPluginSources != null : "fx:id=\"lstPluginSources\" was not injected: check your FXML file 'Properties.fxml'.";
-        assert lstScriptSources != null : "fx:id=\"lstScriptSources\" was not injected: check your FXML file 'Properties.fxml'.";
+        assert lstSources != null : "fx:id=\"lstSources\" was not injected: check your FXML file 'Properties.fxml'.";
         assert sldPaintDelay != null : "fx:id=\"sldPaintDelay\" was not injected: check your FXML file 'Properties.fxml'.";
 
         sldPaintDelay.setValue(ClientCanvas.PAINT_DELAY);
@@ -125,23 +99,14 @@ public class Properties extends AnchorPane {
                 ClientCanvas.PAINT_DELAY = number2.intValue();
             }
         });
-        loadScriptSources();
-        loadPluginSources();
+        loadSources();
     }
 
-    private void loadScriptSources() {
-        lstScriptSources.getItems().clear();
-        List<ScriptSource> sources = ScriptSource.getAll();
-        for(ScriptSource source : sources) {
-            lstScriptSources.getItems().add(source);
-        }
-    }
-    
-    private void loadPluginSources() {
-        lstPluginSources.getItems().clear();
-        List<PluginSource> sources = PluginSource.getAll();
-        for(PluginSource source : sources) {
-            lstPluginSources.getItems().add(source);
+    private void loadSources() {
+        lstSources.getItems().clear();
+        List<Source> sources = Source.getAll();
+        for (Source source : sources) {
+            lstSources.getItems().add(source);
         }
     }
 

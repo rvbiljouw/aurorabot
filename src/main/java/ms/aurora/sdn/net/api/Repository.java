@@ -1,12 +1,12 @@
 package ms.aurora.sdn.net.api;
 
 
-import ms.aurora.core.script.ScriptLoader;
 import ms.aurora.sdn.net.packet.PluginRequest;
 import ms.aurora.sdn.net.packet.ScriptCountRequest;
 import ms.aurora.sdn.net.packet.ScriptRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.JarInputStream;
 
 import static ms.aurora.sdn.SDNConnection.instance;
@@ -19,6 +19,9 @@ public class Repository {
     public static final Object script_count_lock = new Object();
     public static final Object plugin_lock = new Object();
     public static int REMOTE_SCRIPT_COUNT = -1;
+
+    public static List<JarInputStream> remoteScriptStreams = new ArrayList<JarInputStream>();
+    public static List<JarInputStream> remotePluginStreams = new ArrayList<JarInputStream>();
 
     public static void loadScripts() {
         synchronized (script_count_lock) {
@@ -33,7 +36,7 @@ public class Repository {
                 throw new IllegalStateException();
             }
 
-            ScriptLoader.remoteStreams = new ArrayList<JarInputStream>();
+            remoteScriptStreams = new ArrayList<JarInputStream>();
             for (int i = 0; i < REMOTE_SCRIPT_COUNT; i++) {
                 synchronized (script_lock) {
                     instance.writePacket(new ScriptRequest(i));

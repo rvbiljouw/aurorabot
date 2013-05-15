@@ -1,6 +1,5 @@
 package ms.aurora;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.DataSourceConfig;
@@ -8,7 +7,10 @@ import com.avaje.ebean.config.ServerConfig;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.core.model.*;
+import ms.aurora.core.model.AbstractModel;
+import ms.aurora.core.model.Account;
+import ms.aurora.core.model.PluginConfig;
+import ms.aurora.core.model.Property;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
@@ -20,10 +22,8 @@ import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -174,8 +174,7 @@ public final class Application {
 
     private static Class<?>[] BEAN_CLASSES = {
             AbstractModel.class, Account.class,
-            PluginConfig.class, PluginSource.class,
-            PluginSource.class, ScriptSource.class,
+            PluginConfig.class, ms.aurora.core.model.Source.class,
             Property.class
     };
 }

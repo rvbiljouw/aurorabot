@@ -4,9 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import ms.aurora.api.plugin.Plugin;
+import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.model.PluginConfig;
-import ms.aurora.core.plugin.PluginLoader;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
@@ -58,7 +58,7 @@ public final class Session implements Runnable {
     }
 
     public void refreshPlugins() {
-        for (Plugin plugin : PluginLoader.getPlugins()) {
+        for (Plugin plugin : EntityLoader.pluginEntityLoader.getEntitys()) {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
             pluginManager.stop(plugin.getClass());
@@ -132,7 +132,7 @@ public final class Session implements Runnable {
     public void destroy() {
         try {
             scriptManager.stop();
-            for (Plugin plugin : PluginLoader.getPlugins()) {
+            for (Plugin plugin : EntityLoader.pluginEntityLoader.getEntitys()) {
                 pluginManager.stop(plugin.getClass());
             }
         } catch (Exception e) {

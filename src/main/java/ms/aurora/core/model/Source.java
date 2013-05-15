@@ -8,11 +8,10 @@ import javax.persistence.Id;
 import java.util.List;
 
 /**
- * A database entry for directories from which randoms may be loaded.
- * @author Rick
+ * @author tobiewarburton
  */
 @Entity
-public class RandomSource extends AbstractModel {
+public class Source extends AbstractModel {
 
     @Id
     @GeneratedValue
@@ -20,12 +19,12 @@ public class RandomSource extends AbstractModel {
     private String source;
     private boolean devMode;
 
-    public RandomSource(String source, boolean devMode) {
+    public Source(String source, boolean devMode) {
         this.source = source;
         this.devMode = devMode;
     }
 
-    public RandomSource() {
+    public Source() {
 
     }
 
@@ -58,11 +57,12 @@ public class RandomSource extends AbstractModel {
         return source;
     }
 
-    public static List<RandomSource> getAll() {
-        return Ebean.find(RandomSource.class).findList();
+    public static List<Source> getAll() {
+        return Ebean.find(Source.class).findList();
     }
 
-    public static List<RandomSource> getBySource(String source) {
-        return Ebean.find(RandomSource.class).where().eq("source", source).findList();
+    public static List<Source> getBySource(String source) {
+        return Ebean.find(Source.class).where().eq("source", source).findList();
     }
 }
+

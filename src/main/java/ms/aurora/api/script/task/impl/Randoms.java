@@ -7,7 +7,7 @@ import ms.aurora.api.random.RandomManfiest;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
-import ms.aurora.core.random.RandomLoader;
+import ms.aurora.core.entity.EntityLoader;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class Randoms extends PassiveTask {
 
     @Override
     public int execute() {
-        List<Random> allRandoms = RandomLoader.getRandoms();
+        List<Random> allRandoms = EntityLoader.randomEntityLoader.getEntitys();
         allRandoms.addAll(Arrays.asList(RANDOMS));
         for (Random random : RANDOMS) {
             random.setSession(Context.get().getSession());

@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.Session;
+import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.core.model.PluginConfig;
 
 import java.io.IOException;
@@ -24,7 +25,6 @@ import java.util.ResourceBundle;
 import static javafx.collections.FXCollections.observableArrayList;
 import static ms.aurora.core.SessionRepository.getAll;
 import static ms.aurora.core.model.PluginConfig.getByName;
-import static ms.aurora.core.plugin.PluginLoader.getPlugins;
 
 /**
  * Created with IntelliJ IDEA.
@@ -134,7 +134,7 @@ public class PluginOverview extends AnchorPane {
     }
 
     private ObservableList<PluginModel> rebuild() {
-        List<Plugin> plugins = getPlugins();
+        List<Plugin> plugins = EntityLoader.pluginEntityLoader.getEntitys();
         ObservableList<PluginModel> pluginModelList = observableArrayList();
         String filterName = txtName.getText().toLowerCase();
         for (Plugin plugin : plugins) {
@@ -154,7 +154,7 @@ public class PluginOverview extends AnchorPane {
         colAuthor.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("author"));
         colState.setCellValueFactory(new PropertyValueFactory<PluginModel, Boolean>("state"));
 
-        List<Plugin> plugins = getPlugins();
+        List<Plugin> plugins = EntityLoader.pluginEntityLoader.getEntitys();
         ObservableList<PluginModel> pluginModelList = observableArrayList();
 
         for (Plugin plugin : plugins) {

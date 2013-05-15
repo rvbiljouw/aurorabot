@@ -1,7 +1,5 @@
 package ms.aurora.sdn.net.impl;
 
-import ms.aurora.core.plugin.PluginLoader;
-import ms.aurora.core.script.ScriptLoader;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.PacketHandler;
 import ms.aurora.sdn.net.api.Repository;
@@ -34,7 +32,7 @@ public class PluginPacketHandler implements PacketHandler {
             int res = in.read(bytes); // todo maybe add a crc
             streams.add(new JarInputStream(new ByteArrayInputStream(bytes)));
         }
-        PluginLoader.remoteStreams = streams;
+        Repository.remotePluginStreams = streams;
         synchronized (Repository.plugin_lock) {
             Repository.plugin_lock.notifyAll();
         }

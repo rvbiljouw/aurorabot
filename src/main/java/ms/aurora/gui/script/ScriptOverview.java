@@ -16,7 +16,7 @@ import ms.aurora.Messages;
 import ms.aurora.api.script.Script;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
-import ms.aurora.core.script.ScriptLoader;
+import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.gui.dialog.AccountSelectDialog;
 import ms.aurora.gui.dialog.Callback;
 
@@ -98,7 +98,7 @@ public class ScriptOverview extends AnchorPane {
 
     @FXML
     void onSearch(ActionEvent event) {
-        List<Script> scripts = ScriptLoader.getScripts();
+        List<Script> scripts = EntityLoader.scriptEntityLoader.getEntitys();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
         String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
         String filterName = txtName.getText().toLowerCase();
@@ -127,7 +127,7 @@ public class ScriptOverview extends AnchorPane {
         ObservableList<String> categoryList = FXCollections.observableArrayList();
         categoryList.add(Messages.getString("scriptOverview.all"));
 
-        List<Script> scripts = ScriptLoader.getScripts();
+        List<Script> scripts = EntityLoader.scriptEntityLoader.getEntitys();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
         for (Script script : scripts) {
             if (!categoryList.contains(script.getManifest().category())) {

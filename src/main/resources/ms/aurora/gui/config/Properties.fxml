@@ -22,42 +22,22 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab text="%properties.scripts">
+        <Tab text="%properties.sources">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="pane">
               <children>
-                <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="%properties.scripts.folders" />
+                <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="%properties.sources.folders" />
                 <ScrollPane layoutX="33.0" layoutY="66.0" prefHeight="294.0" prefWidth="694.0">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="673.0">
                       <children>
-                        <ListView fx:id="lstScriptSources" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="293.0" prefWidth="693.0" />
+                        <ListView fx:id="lstSources" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="293.0" prefWidth="693.0" />
                       </children>
                     </AnchorPane>
                   </content>
                 </ScrollPane>
-                <Button fx:id="btnAddScriptSource" layoutX="33.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAddScriptSource" text="%properties.scripts.addFolder" />
-                <Button fx:id="btnRemoveScriptSource" layoutX="66.0" layoutY="360.0" mnemonicParsing="false" onAction="#onRemoveScriptSource" text="%properties.scripts.removeFolder" />
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="%properties.plugins">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="pane">
-              <children>
-                <Label layoutX="14.0" layoutY="14.0" styleClass="big-label" text="%properties.plugins.folders" />
-                <ScrollPane layoutX="33.0" layoutY="66.0" prefHeight="294.0" prefWidth="694.0">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="673.0">
-                      <children>
-                        <ListView id="lstScriptSources" fx:id="lstPluginSources" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="293.0" prefWidth="693.0" />
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </ScrollPane>
-                <Button id="btnAddScriptSource" layoutX="33.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAddPluginSource" text="%properties.plugins.addFolder" />
-                <Button id="btnRemoveScriptSource" layoutX="66.0" layoutY="360.0" mnemonicParsing="false" onAction="#onRemovePluginSource" text="%properties.plugins.removeFolder" />
+                <Button fx:id="btnAddScriptSource" layoutX="33.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAddSource" text="%properties.sources.addFolder" />
+                <Button fx:id="btnRemoveScriptSource" layoutX="66.0" layoutY="360.0" mnemonicParsing="false" onAction="#onRemoveSource" text="%properties.sources.removeFolder" />
               </children>
             </AnchorPane>
           </content>
