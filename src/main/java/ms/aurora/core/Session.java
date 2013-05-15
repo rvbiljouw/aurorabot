@@ -140,6 +140,6 @@ public final class Session implements Runnable {
         }
         applet.stop();
         applet.destroy();
-        System.gc();
+        //System.gc();
     }
 }

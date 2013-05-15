@@ -116,7 +116,7 @@ public final class RSObject implements Locatable, Interactable {
         boolean success = contains(actionName) && Menu.click(actionName);
         if(success) {
             cachedModel.cleanup();
-            System.gc();
+            //System.gc();
         }
         return success;
     }

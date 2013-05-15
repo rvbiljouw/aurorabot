@@ -230,6 +230,7 @@ public class AStarPathFinder {
         }
 
         if (nodes(tx, ty).parent == null) {
+            indexedNodeMap.clear();
             return null;
         }
 
@@ -257,7 +258,7 @@ public class AStarPathFinder {
         // thats it, we have our path
         closed.clear();
         open.clear();
-        System.gc();
+        //System.gc();
         return path;
     }
 
