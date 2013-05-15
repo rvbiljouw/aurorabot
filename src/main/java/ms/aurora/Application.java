@@ -177,6 +177,6 @@ public final class Application {
     private static Class<?>[] BEAN_CLASSES = {
             AbstractModel.class, Account.class,
             PluginConfig.class, ms.aurora.core.model.Source.class,
-            Property.class, MapTile.class
+            Property.class
     };
 }
