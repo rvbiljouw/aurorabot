@@ -5,6 +5,7 @@ import ms.aurora.api.util.StatePredicate;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -117,13 +118,13 @@ public final class Menu {
         String[] targets = Context.getClient().getMenuTargets();
         List<String> menuContent = new ArrayList<String>();
 
-        for (int index = 0; index < Context.getClient().getMenuCount(); index++) {
+        for (int index = targets.length; index > 0; index--) {
             if (actions[index] != null && targets[index] != null) {
                 menuContent.add(removeFormatting(targets[index] + " " + actions[index]).toLowerCase());
             }
         }
-        Collections.reverse(menuContent);
-        return menuContent;
+        return menuContent.subList(menuContent.size() - Context.getClient().getMenuCount(),
+                menuContent.size());
     }
 
     private static String removeFormatting(String in) {
