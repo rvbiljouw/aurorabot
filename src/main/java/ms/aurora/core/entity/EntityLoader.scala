@@ -74,12 +74,13 @@ class EntityLoader(recursive: Boolean) {
       logger.info("Malformed class: " + clazz.getName)
     } else {
       clazz.getSuperclass match {
-        case s if s.eq(classOf[Script]) => {
+        case s if classOf[Script].isAssignableFrom(clazz) => {
           val i = clazz.newInstance
           if (i != null) {
             scripts.add(i.asInstanceOf[Script])
           }
         }
+
         case r if r.eq(classOf[Random]) => {
           val i = clazz.newInstance
           if (i != null) {
