@@ -61,18 +61,18 @@
 }
 
 .menu-bar {
-    -fx-background-color: linear-gradient(#EFEFEF 0%, #F0F0F0 50%, #F4F4F4 100%);
+    -fx-background-color: #FFFFFF;
 }
 
 .menu .label:hover, .menu .label:selected {
-    -fx-text-fill: #EFEFEF;
+    -fx-text-fill: #3D0000;
     -fx-color: #AB3737;
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
 }
 
 .menu .label {
     -fx-text-fill: #316EA3;
-    -fx-background-color: linear-gradient(#EFEFEF 0%, #F0F0F0 50%, #F4F4F4 100%);
+    -fx-background-color: #FFFFFF;
     -fx-opacity: 1.0;
     -fx-font-size: 14pt;
 }
