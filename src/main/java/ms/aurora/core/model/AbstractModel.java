@@ -18,12 +18,10 @@ public class AbstractModel {
     }
 
     public final void update() {
-        Ebean.refresh(this);
         Ebean.update(this);
     }
 
     public final void remove() {
-        Ebean.refresh(this);
         Ebean.delete(this);
     }
 

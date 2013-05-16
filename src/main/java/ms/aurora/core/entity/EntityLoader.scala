@@ -11,6 +11,7 @@ import org.apache.log4j.Logger
 import java.util.jar.JarFile
 import scala.collection.JavaConversions.JEnumerationWrapper
 import java.net.URLClassLoader
+import ms.aurora.api.plugin.internal.{TileUtilities, PathMaker, InterfacePlugin, PaintDebug}
 
 /**
  * Loads classes from database-specified source folders
@@ -34,6 +35,11 @@ class EntityLoader(recursive: Boolean) {
       logger.info("Scanning source " + source.getSource)
       traverse(new File(source.getSource))
     })
+
+    logger.info("Initializing defaults")
+    plugins.add(new PaintDebug())
+    plugins.add(new TileUtilities())
+    plugins.add(new InterfacePlugin())
   }
 
   private def traverse(root: File) {

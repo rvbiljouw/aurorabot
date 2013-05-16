@@ -16,6 +16,7 @@ import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.Session;
 import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.core.model.PluginConfig;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,6 +35,8 @@ import static ms.aurora.core.model.PluginConfig.getByName;
  * To change this template use File | Settings | File Templates.
  */
 public class PluginOverview extends AnchorPane {
+    private static final Logger logger = Logger.getLogger(PluginOverview.class);
+
     @FXML
     private ResourceBundle resources;
 

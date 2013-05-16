@@ -25,8 +25,8 @@ import static ms.aurora.gui.ApplicationGUI.update;
 public final class Session implements Runnable {
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
     private final PaintManager paintManager = new PaintManager(this);
+    private final EntityLoader entityLoader = new EntityLoader(true);
     private final ThreadGroup threadGroup;
-    private EntityLoader entityLoader;
     private ScriptManager scriptManager;
     private PluginManager pluginManager;
     private AppletWidget container;
