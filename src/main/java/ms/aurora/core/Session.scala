@@ -26,13 +26,15 @@ class Session(group: ThreadGroup, ui: AppletWidget) extends Runnable {
   var active = false
 
   override def run() {
+    if (clientManager.start()) {
+      SessionRepository.set(clientManager.getApplet.hashCode, this)
+      ui.setApplet(clientManager.getApplet)
+    }
+
     scriptSupervisor = actorSystem.actorOf(
       Props(classOf[ScriptSupervisor], this))
     sessionBridge = actorSystem.actorOf(
       Props(classOf[SessionBridge], this))
-    if (clientManager.start()) {
-      ui.setApplet(clientManager.getApplet)
-    }
   }
 
   def receive: Actor.Receive = {

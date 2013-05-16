@@ -15,12 +15,19 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
+import ms.aurora.core.Session;
+import ms.aurora.core.SessionRepository;
 import ms.aurora.core.entity.EntityLoader;
+import ms.aurora.core.script.StartEvent;
+import ms.aurora.gui.dialog.AccountSelectDialog;
+import ms.aurora.gui.dialog.Callback;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static ms.aurora.gui.ApplicationGUI.getSelectedApplet;
 
 /**
  * @author Rick
@@ -73,22 +80,22 @@ public class ScriptOverview extends AnchorPane {
 
     @FXML
     void onOk(ActionEvent event) {
-        /*final ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
+        final ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
         final Session session = SessionRepository.get(getSelectedApplet().hashCode());
         if (session != null && model != null) {
             final AccountSelectDialog selector = new AccountSelectDialog();
             selector.setCallback(new Callback() {
                 @Override
                 public void call() {
-                    session.setAccount(selector.get());
-                    session.getScriptManager().start(model.script);
+                    session.getScriptSupervisor().tell(new StartEvent(model.script),
+                            session.getSessionBridge());
                     getScene().getWindow().hide();
                 }
             });
             selector.show();
         } else {
             getScene().getWindow().hide();
-        }*/
+        }
     }
 
     @FXML
@@ -104,7 +111,8 @@ public class ScriptOverview extends AnchorPane {
 
         for (Class<? extends Script> script : scripts) {
             ScriptManifest manifest = script.getAnnotation(ScriptManifest.class);
-            if (selectedCategory.equals(Messages.getString("scriptOverview.all")) || selectedCategory.equals(manifest.category())) {
+            if(manifest == null) continue;
+            if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all")) || selectedCategory.equals(manifest.category())) {
                 if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
                     scriptModelList.add(new ScriptModel(script, manifest));
                 }

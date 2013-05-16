@@ -103,6 +103,9 @@ object EntityLoader {
 
   private val instance = new EntityLoader(true)
 
-  def get = instance
+  def get = {
+    instance.reload
+    instance
+  }
 
 }
