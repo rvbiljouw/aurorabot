@@ -16,11 +16,14 @@ class ClientStub(config: ClientConfig) extends AppletStub {
     this.active = active
   }
 
-  def getDocumentBase: URL = ???
+  def getDocumentBase: URL =
+    new URL(config.getDocumentBase)
 
-  def getCodeBase: URL = ???
+  def getCodeBase: URL =
+    new URL(config.getDocumentBase)
 
-  def getParameter(name: String): String = ???
+  def getParameter(name: String): String =
+    config.getParam(name)
 
   def getAppletContext: AppletContext = ???
 

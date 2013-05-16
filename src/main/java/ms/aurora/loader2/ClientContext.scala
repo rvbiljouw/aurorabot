@@ -1,54 +1,34 @@
 package ms.aurora.loader2
 
-import ms.aurora.browser.Browser
-import ms.aurora.browser.ContextBuilder.get
-import ms.aurora.Messages.getString
-import scala.beans.BeanProperty
-import java.applet.Applet
-import ms.aurora.rt3.Client
-import org.apache.log4j.Logger
+import java.applet.{AudioClip, Applet, AppletContext}
+import java.util
+import java.io.InputStream
+import java.net.URL
+import java.awt.Image
 
 /**
- * The context of the game client, which acts
- * as some sort of wrapper around the client applet
- * and the loaders / configurations used.
  * @author rvbiljouw
  */
-class ClientContext {
-  private val logger = Logger.getLogger(classOf[ClientContext])
-  @BeanProperty val browserBaseURL = getString("runescape.url")
-  @BeanProperty val browserContext = get.domain(browserBaseURL).build
-  @BeanProperty val browser = new Browser(browserContext)
-  @BeanProperty val config = new ClientConfig(browser)
-  @BeanProperty val loader = new ClientLoader(config)
+class ClientContext extends AppletContext {
 
-  def getClient: Client = {
-    loader.getApplet.asInstanceOf[Client]
-  }
+  def getAudioClip(url: URL): AudioClip = ???
 
-  def getApplet: Applet = {
-    loader.getApplet
-  }
+  def getImage(url: URL): Image = ???
 
-  def start(): Boolean = {
-    config.visit()
-    loader.start()
-    logger.info("Applet started")
-    loader.isLoaded
-  }
+  def getApplet(name: String): Applet = ???
 
-  def restart() {
-    if (stop() && start()) {
-      logger.info("Applet restarted")
-    } else {
-      logger.error("Applet reload failed")
-    }
-  }
+  def getApplets: util.Enumeration[Applet] = ???
 
-  def stop(): Boolean = {
-    loader.stop()
-    logger.info("Applet stopped")
-    !loader.isLoaded
-  }
+  def showDocument(url: URL) {}
+
+  def showDocument(url: URL, target: String) {}
+
+  def showStatus(status: String) {}
+
+  def setStream(key: String, stream: InputStream) {}
+
+  def getStream(key: String): InputStream = ???
+
+  def getStreamKeys: util.Iterator[String] = ???
 
 }
