@@ -16,6 +16,7 @@ public final class GroundItemFilters {
 
     /**
      * Filters a ground item out by checking if it's ID matches any of the ones specified.
+     *
      * @param ids A list of IDs that are accepted by the filter.
      * @return predicate
      */
@@ -23,8 +24,8 @@ public final class GroundItemFilters {
         return new Predicate<RSGroundItem>() {
             @Override
             public boolean apply(RSGroundItem object) {
-                for(int id : ids) {
-                    if(object.getId() == id) {
+                for (int id : ids) {
+                    if (object.getId() == id) {
                         return true;
                     }
                 }
