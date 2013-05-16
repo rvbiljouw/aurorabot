@@ -42,7 +42,6 @@ class EntityLoader(recursive: Boolean) {
       file.isDirectory match {
         case true => if (recursive) traverse(file)
         case false => loadJar(file)
-        case _ => logger.error("Undefined state.")
       }
     })
   }
