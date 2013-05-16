@@ -4,7 +4,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Walking;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.wrappers.RSCharacter;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSTile;
@@ -19,7 +19,7 @@ import static ms.aurora.api.util.Utilities.random;
  * @author rvbiljouw
  */
 @AfterLogin
-@RandomManfiest(name = "Ent", version = 1.0)
+@RandomManifest(name = "Ent", version = 1.0)
 public class Ent extends Random {
     private static final int[] ENT_IDS = {
             1740, 1731, 1735,

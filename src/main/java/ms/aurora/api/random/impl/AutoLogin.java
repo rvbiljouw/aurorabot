@@ -1,7 +1,7 @@
 package ms.aurora.api.random.impl;
 
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.input.VirtualKeyboard;
 
 import java.awt.*;
@@ -12,7 +12,7 @@ import static ms.aurora.input.VirtualMouse.clickMouse;
 /**
  * @author tobiewarburton
  */
-@RandomManfiest(name = "Auto Login", version = 1.0)
+@RandomManifest(name = "Auto Login", version = 1.0)
 public class AutoLogin extends Random {
     private Rectangle userRect = new Rectangle(398, 278, 129, 12);
 

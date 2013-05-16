@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author Rick
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RandomManfiest {
+public @interface RandomManifest {
 
     String name();
 

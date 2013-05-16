@@ -26,6 +26,7 @@ public final class Session implements Runnable {
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
     private final PaintManager paintManager = new PaintManager(this);
     private final ThreadGroup threadGroup;
+    private EntityLoader entityLoader;
     private ScriptManager scriptManager;
     private PluginManager pluginManager;
     private AppletWidget container;
@@ -58,7 +59,7 @@ public final class Session implements Runnable {
     }
 
     public void refreshPlugins() {
-        for (Plugin plugin : EntityLoader.pluginEntityLoader.getEntitys()) {
+        for (Plugin plugin : entityLoader.getPlugins()) {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
             pluginManager.stop(plugin.getClass());
@@ -132,7 +133,7 @@ public final class Session implements Runnable {
     public void destroy() {
         try {
             scriptManager.stop();
-            for (Plugin plugin : EntityLoader.pluginEntityLoader.getEntitys()) {
+            for (Plugin plugin : entityLoader.getPlugins()) {
                 pluginManager.stop(plugin.getClass());
             }
         } catch (Exception e) {
@@ -141,5 +142,9 @@ public final class Session implements Runnable {
         applet.stop();
         applet.destroy();
         //System.gc();
+    }
+
+    public EntityLoader getEntityLoader() {
+        return entityLoader;
     }
 }

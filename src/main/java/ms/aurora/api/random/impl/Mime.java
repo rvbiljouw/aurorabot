@@ -5,7 +5,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSNPC;
@@ -20,7 +20,7 @@ import static ms.aurora.api.util.Utilities.random;
  * @author Rick, iJava
  */
 @AfterLogin
-@RandomManfiest(name = "Mime", version = 1.0)
+@RandomManifest(name = "Mime", version = 1.0)
 public class Mime extends Random {
     private static final int WIDGET_PARENT_ID = 188;
     private static final int MIME_ID = 1056;

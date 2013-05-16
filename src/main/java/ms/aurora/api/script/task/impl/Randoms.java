@@ -3,7 +3,7 @@ package ms.aurora.api.script.task.impl;
 import ms.aurora.api.Context;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
@@ -54,7 +54,7 @@ public class Randoms extends PassiveTask {
                     }
 
                     queue.getOwner().setState(ScriptState.PAUSED);
-                    RandomManfiest manfiest = random.getManifest();
+                    RandomManifest manfiest = random.getManifest();
                     logger.info("Random  '" + manfiest.name() + " - " + manfiest.version()
                             + "' by '" + manfiest.author() + "' triggered..");
                     int time = random.loop();

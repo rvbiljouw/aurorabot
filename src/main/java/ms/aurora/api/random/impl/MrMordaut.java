@@ -5,7 +5,7 @@ import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.api.wrappers.RSWidget;
@@ -18,7 +18,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  * @author rvbiljouw
  */
 @AfterLogin
-@RandomManfiest(name = "Mr Morduat", version = 1.0)
+@RandomManifest(name = "Mr Morduat", version = 1.0)
 public class MrMordaut extends Random {
     private static final int MR_MORDAUT_ID = 6117;
 

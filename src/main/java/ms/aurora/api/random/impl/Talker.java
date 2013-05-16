@@ -5,7 +5,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.RSNPC;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author tobiewarburton
  */
 @AfterLogin
-@RandomManfiest(name = "Talker", version = 1.0)
+@RandomManifest(name = "Talker", version = 1.0)
 public class Talker extends Random {
     public static final List<String> TALKERS = Arrays.asList("Mysterious Old Man", "Drunken Dwarf", "Genie",
             "Security Guard", "Rick Turpentine", "Dr Jekyll", "Cap'n Hand");

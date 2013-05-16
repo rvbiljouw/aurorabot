@@ -4,14 +4,14 @@ import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.methods.tabs.Options;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.wrappers.RSWidget;
 
 /**
  * @author tobiewarburton
  */
 @AfterLogin
-@RandomManfiest(name = "Teleother", version = 1.0)
+@RandomManifest(name = "Teleother", version = 1.0)
 public class Teleother extends Random {
     @Override
     public boolean activate() {

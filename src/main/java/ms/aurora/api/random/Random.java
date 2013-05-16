@@ -26,7 +26,7 @@ public abstract class Random extends Context {
         return getManifest() != null;
     }
 
-    public final RandomManfiest getManifest() {
-        return getClass().getAnnotation(RandomManfiest.class);
+    public final RandomManifest getManifest() {
+        return getClass().getAnnotation(RandomManifest.class);
     }
 }

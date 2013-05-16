@@ -12,12 +12,12 @@ import java.util.zip.ZipEntry;
 /**
  * @author tobiewarburton
  */
-public class JarInputStreamClassLoader extends ClassLoader {
+public class JarClassLoader extends ClassLoader {
     private List<JarInputStream> streams;
 
     private Map<String, byte[]> classByteMap = new HashMap<String, byte[]>();
 
-    public JarInputStreamClassLoader(ClassLoader parentClassLoader, List<JarInputStream> streams) {
+    public JarClassLoader(ClassLoader parentClassLoader, List<JarInputStream> streams) {
         super(parentClassLoader);
         this.streams = streams;
 

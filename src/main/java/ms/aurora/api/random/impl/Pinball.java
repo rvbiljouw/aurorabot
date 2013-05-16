@@ -6,7 +6,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
-import ms.aurora.api.random.RandomManfiest;
+import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.wrappers.RSObject;
 
 import static ms.aurora.api.methods.filters.ObjectFilters.ID;
@@ -18,7 +18,7 @@ import static ms.aurora.api.util.Utilities.random;
  * @author rvbiljouw
  */
 @AfterLogin
-@RandomManfiest(name = "Pinball", version = 1.0)
+@RandomManifest(name = "Pinball", version = 1.0)
 public class Pinball extends Random {
     private final int POST_VALID[] = {15000, 15002, 15004, 15006, 15008};
     private final int POST_INVALID[] = {15001, 15003, 15005, 15007, 15009};
