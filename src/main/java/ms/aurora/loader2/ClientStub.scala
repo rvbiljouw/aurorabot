@@ -4,9 +4,10 @@ import java.applet.{AppletContext, AppletStub}
 import java.net.URL
 
 /**
+ * Applet stub provided to the game applet.
  * @author rvbiljouw
  */
-class ClientStub(params: Map[String, String]) extends AppletStub {
+class ClientStub(config: ClientConfig) extends AppletStub {
   private var active = false
 
   def isActive: Boolean = active
