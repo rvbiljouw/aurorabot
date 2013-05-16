@@ -16,7 +16,8 @@ public final class Settings {
      * @return setting value
      */
     public static int getSetting(int index) {
-        return Context.get().getClient().getWidgetSettings()[index];
+        int[] settings = Context.get().getClient().getWidgetSettings();
+        return settings != null && index < settings.length ? settings[index] : -1;
     }
 
 }

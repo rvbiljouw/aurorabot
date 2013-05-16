@@ -15,7 +15,7 @@ public final class Combat {
     private final static Logger logger = Logger.getLogger(Combat.class);
 
     private static RSWidgetGroup getCombatGroup() {
-        return Widgets.getWidgets(92);
+        return Widgets.getWidgetGroup(92);
     }
 
     /**

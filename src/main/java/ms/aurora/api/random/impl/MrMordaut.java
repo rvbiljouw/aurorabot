@@ -312,7 +312,7 @@ public class MrMordaut extends Random {
             }
         }
 
-        nextObjectInterface = Widgets.getWidgets(103);
+        nextObjectInterface = Widgets.getWidgetGroup(103);
         if (nextObjectInterface != null && nextObjectInterface.isValid()) {
             info("Question type: Next object");
             if (nextObjectQuestion.getObjects()) {
@@ -325,7 +325,7 @@ public class MrMordaut extends Random {
             }
         }
 
-        relatedCardsInterface = Widgets.getWidgets(559);
+        relatedCardsInterface = Widgets.getWidgetGroup(559);
         if (relatedCardsInterface != null && relatedCardsInterface.isValid()) {
             info("Question type: Similar objects");
             for (SimilarObjectQuestion obj : simObjects) {

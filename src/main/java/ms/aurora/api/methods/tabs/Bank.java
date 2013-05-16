@@ -3,6 +3,7 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.methods.filters.WidgetItemFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.*;
@@ -23,7 +24,7 @@ public final class Bank {
     private static final int BANK_PANE_ID = 89;
     private static final int BANK_CLOSE_ID = 104;
 
-    private static final int[] BANK_NPCS = {56, 56, 494, 495, 496};
+    private static final int[] BANK_NPCS = {56, 494, 495, 496};
     private static final int[] BANK_OBJECTS =  {782, 2012, 2015, 2213,
             4483, 2453, 6084, 11402, 11758, 12759, 14367, 19230, 24914, 25808,
             26972, 27663, 29085, 34752, 35647, 36786, 4483, 8981, 14382, 20607, 21301
@@ -105,25 +106,10 @@ public final class Bank {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
+    public static RSWidgetItem get(final Predicate<RSWidgetItem>... predicate) {
         RSWidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
-        }
-        return null;
-    }
-
-    /**
-     * Retrieves the first item that matches the specified ID.
-     *
-     * @param id RSWidgetItem ID to look for
-     * @return item if it was found, otherwise null.
-     */
-    public static RSWidgetItem get(int id) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                return item;
-            }
         }
         return null;
     }
@@ -134,24 +120,8 @@ public final class Bank {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem> predicate) {
+    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem>... predicate) {
         return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
-    }
-
-    /**
-     * Retrieves all items that match the specified ID.
-     *
-     * @param id RSWidgetItem ID to look for
-     * @return list of items found, which can be empty.
-     */
-    public static RSWidgetItem[] getAll(int id) {
-        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                items.add(item);
-            }
-        }
-        return items.toArray(new RSWidgetItem[items.size()]);
     }
 
     /**
@@ -181,76 +151,22 @@ public final class Bank {
     /**
      * Checks if the Bank contains a specific item
      *
-     * @param id RSWidgetItem to look for
+     * @param predicates RSWidgetItem to look for
      * @return true if found, otherwise false.
      */
-    public static boolean contains(int id) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the Bank contains at least the specified amount of the
-     * specified item,
-     *
-     * @param id     RSWidgetItem to count
-     * @param amount Minimum amount to pass.
-     * @return true if the Bank contains at least the amount specified.
-     */
-    public static boolean containsMinimum(int id, int amount) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id && item.getStackSize() >= amount) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the Bank contains at most the specified amount of the specified
-     * item,
-     *
-     * @param id     RSWidgetItem to count
-     * @param amount Maximum amount to pass.
-     * @return true if the Bank contains at most the amount specified.
-     */
-    public static boolean containsMaximum(int id, int amount) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id && item.getStackSize() <= amount) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the Bank contains at least one of the specified items
-     *
-     * @param ids A var-args list of item IDs.
-     * @return true if found, otherwise false.
-     */
-    public static boolean containsAny(int... ids) {
-        for (int id : ids) {
-            if (contains(id)) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean contains(Predicate<RSWidgetItem>... predicates) {
+        return getAll(predicates).length > 0;
     }
 
     /**
      * Checks if the Bank contains all of the specified items
      *
-     * @param ids A var-args list of item IDs.
+     * @param predicates A var-args list of Predicates.
      * @return true if all the items were found, false otherwise.
      */
-    public static boolean containsAll(int... ids) {
-        for (int id : ids) {
-            if (!contains(id)) {
+    public static boolean containsAll(Predicate<RSWidgetItem>... predicates) {
+        for (Predicate<RSWidgetItem> predicate : predicates) {
+            if (!contains(predicate)) {
                 return false;
             }
         }
@@ -258,17 +174,15 @@ public final class Bank {
     }
 
     /**
-     * Counts all the items matching the specified ID.
+     * Counts all the items matching the specified predicates.
      *
-     * @param id RSWidgetItem ID of the items to count
+     * @param predicates RSWidgetItem predicate of the items to count
      * @return total amount of items matching id in Bank.
      */
-    public static int count(int id) {
+    public static int count(Predicate<RSWidgetItem>... predicates) {
         int count = 0;
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                count += item.getStackSize();
-            }
+        for (RSWidgetItem item : getAll(predicates)) {
+            count += item.getStackSize();
         }
         return count;
     }
@@ -278,13 +192,13 @@ public final class Bank {
      *
      * @param ids set of IDs to deposit.
      */
-    public static void depositAll(int... ids) {
-        RSWidgetItem item = Inventory.get(ids);
+    public static void depositAll(Predicate<RSWidgetItem>... predicates) {
+        RSWidgetItem item = Inventory.get(predicates);
         if (item != null && item.applyAction("Store All")) {
             sleepNoException(500, 1000);
         }
-        if (Inventory.get(ids) != null) {
-            depositAll(ids);
+        if (Inventory.get(predicates) != null) {
+            depositAll(predicates);
         }
     }
 
@@ -293,13 +207,13 @@ public final class Bank {
      *
      * @param ids set of IDs to deposit.
      */
-    public static void depositAllExcept(final int... ids) {
+    public static void depositAllExcept(final Predicate<RSWidgetItem>... predicates) {
         Predicate<RSWidgetItem> not = new Predicate<RSWidgetItem>() {
             @Override
             public boolean apply(RSWidgetItem object) {
                 boolean match = false;
-                for (int id : ids) {
-                    if (object.getId() == id) match = true;
+                for (Predicate<RSWidgetItem> predicate: predicates) {
+                    if (predicate.apply(object)) match = true;
                 }
                 return !match;
             }
@@ -310,7 +224,7 @@ public final class Bank {
             sleepNoException(500, 1000);
         }
         if (Inventory.get(not) != null) {
-            depositAllExcept(ids);
+            depositAllExcept(predicates);
         }
     }
 
@@ -319,8 +233,8 @@ public final class Bank {
      *
      * @param id ID of the item to deposit.
      */
-    public static void deposit(int id) {
-        RSWidgetItem item = Inventory.get(id);
+    public static void deposit(Predicate<RSWidgetItem>... predicates) {
+        RSWidgetItem item = Inventory.get(predicates);
         if (item != null) {
             item.click(true);
         }

@@ -2,6 +2,7 @@ package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.methods.filters.WidgetItemFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
@@ -55,42 +56,10 @@ public final class Inventory {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
+    public static RSWidgetItem get(final Predicate<RSWidgetItem>... predicate) {
         RSWidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
-        }
-        return null;
-    }
-
-    /**
-     * Retrieves the first item that matches the specified ID.
-     *
-     * @param id RSWidgetItem ID to look for
-     * @return item if it was found, otherwise null.
-     */
-    public static RSWidgetItem get(int id) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Retrieves the first item that matches one od the specified Ids.
-     *
-     * @param ids RSWidgetItem ID to look for
-     * @return item if it was found, otherwise null.
-     */
-    public static RSWidgetItem get(int... ids) {
-        for (RSWidgetItem item : getAll()) {
-            for (int id : ids) {
-                if (item.getId() == id) {
-                    return item;
-                }
-            }
         }
         return null;
     }
@@ -101,46 +70,14 @@ public final class Inventory {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
+    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem>... predicate) {
+        List<RSWidgetItem> filter = ArrayUtils.filter(getAll(), predicate);
+        return filter.toArray(new RSWidgetItem[filter.size()]);
     }
 
-    /**
-     * Retrieves all items that match the specified ID.
-     *
-     * @param id RSWidgetItem ID to look for
-     * @return list of items found, which can be empty.
-     */
-    public static RSWidgetItem[] getAll(int id) {
-        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                items.add(item);
-            }
-        }
-        return items.toArray(new RSWidgetItem[items.size()]);
-    }
-
-    /**
-     * Retrieves all items that match the specified IDs.
-     *
-     * @param ids RSWidgetItem IDs to look for
-     * @return list of items found, which can be empty.
-     */
-    public static RSWidgetItem[] getAll(int... ids) {
-        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
-        for (RSWidgetItem item : getAll()) {
-            for (int id : ids) {
-                if (item.getId() == id) {
-                    items.add(item);
-                }
-            }
-        }
-        return items.toArray(new RSWidgetItem[items.size()]);
-    }
 
     public static RSWidgetItem getItemAt(int slot) {
-        return _getAll()[slot - 1]; // -1 because java arrays start at 0!
+        return _getAll()[slot - 1];
     }
 
     /**
@@ -183,77 +120,22 @@ public final class Inventory {
     /**
      * Checks if the inventory contains a specific item
      *
-     * @param id RSWidgetItem to look for
+     * @param predicates RSWidgetItem to look for
      * @return true if found, otherwise false.
      */
-    public static boolean contains(int id) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the inventory contains at least the
-     * specified amount of the specified item,
-     *
-     * @param id     RSWidgetItem to count
-     * @param amount Minimum amount to pass.
-     * @return true if the inventory contains at least the amount specified.
-     */
-    public static boolean containsMinimum(int id, int amount) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id && item.getStackSize() >= amount) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the inventory contains at most the
-     * specified amount of the specified item,
-     *
-     * @param id     RSWidgetItem to count
-     * @param amount Maximum amount to pass.
-     * @return true if the inventory contains at most the amount specified.
-     */
-    public static boolean containsMaximum(int id, int amount) {
-        for (RSWidgetItem item : getAll()) {
-            if (item.getId() == id && item.getStackSize() <= amount) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the inventory contains at least one
-     * of the specified items
-     *
-     * @param ids A var-args list of item IDs.
-     * @return true if found, otherwise false.
-     */
-    public static boolean containsAny(int... ids) {
-        for (int id : ids) {
-            if (contains(id)) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean contains(Predicate<RSWidgetItem>... predicates) {
+        return getAll(predicates).length > 0;
     }
 
     /**
      * Checks if the inventory contains all of the specified items
      *
-     * @param ids A var-args list of item IDs.
+     * @param predicates A var-args list of item predicates.
      * @return true if all the items were found, false otherwise.
      */
-    public static boolean containsAll(int... ids) {
-        for (int id : ids) {
-            if (!contains(id)) {
+    public static boolean containsAll(Predicate<RSWidgetItem>... predicates) {
+        for (Predicate<RSWidgetItem> predicate : predicates) {
+            if (!contains(predicate)) {
                 return false;
             }
         }
@@ -263,17 +145,13 @@ public final class Inventory {
     /**
      * Counts all the items matching the specified ID.
      *
-     * @param ids RSWidgetItem ids of the items to count
+     * @param predicates RSWidgetItem predicates of the items to count
      * @return total amount of items matching id in inventory.
      */
-    public static int count(int... ids) {
+    public static int count(Predicate<RSWidgetItem>... predicates) {
         int count = 0;
-        for (RSWidgetItem item : getAll()) {
-            for (int id : ids) {
-                if (item.getId() == id) {
-                    count += item.getStackSize();
-                }
-            }
+        for (RSWidgetItem item : getAll(predicates)) {
+            count += item.getStackSize();
         }
         return count;
     }
@@ -281,10 +159,10 @@ public final class Inventory {
     /**
      * Drops one item with the specified ID.
      *
-     * @param id ID of the item to drop.
+     * @param predicates Predicates of the item to drop.
      */
-    public static void dropItem(int id) {
-        RSWidgetItem firstMatch = get(id);
+    public static void dropItem(Predicate<RSWidgetItem>... predicates) {
+        RSWidgetItem firstMatch = get(predicates);
         if (firstMatch != null) {
             firstMatch.applyAction("Drop");
         }
@@ -293,20 +171,19 @@ public final class Inventory {
     /**
      * Drops all items matching any of the IDs specified.
      *
-     * @param ids A var-args list of IDs to drop.
+     * @param predicates A var-args list of predicates to drop.
      */
-    public static void dropAll(int... ids) {
+    public static void dropAll(Predicate<RSWidgetItem>... predicates) {
         for (int i = 1; i < 29 && !Thread.currentThread().isInterrupted();) {
             RSWidgetItem item = getItemAt(i);
             boolean drop = false;
-            for (int id : ids) {
-                if (item != null && item.getId() == id) {
+            for (Predicate<RSWidgetItem> predicate: predicates) {
+                if (item != null && predicate.apply(item)) {
                     drop = true;
                 }
             }
             if (item == null || !drop) {
                 i++;
-                continue;
             } else {
                 if (item.applyAction("Drop")) {
                     if (Utilities.sleepUntil(EMPTY(i), 2000)) {
@@ -320,20 +197,19 @@ public final class Inventory {
     /**
      * Drops all the items NOT matching any of the IDs specified
      *
-     * @param ids A var-args list of items to exclude from dropping.
+     * @param predicates A var-args list of items to exclude from dropping.
      */
-    public static void dropAllExcept(int... ids) {
+    public static void dropAllExcept(Predicate<RSWidgetItem>... predicates) {
         for (int i = 1; i < 29 && !Thread.currentThread().isInterrupted();) {
             RSWidgetItem item = getItemAt(i);
             boolean drop = true;
-            for (int id : ids) {
-                if (item != null && item.getId() == id) {
+            for (Predicate<RSWidgetItem> predicate: predicates) {
+                if (item != null && predicate.apply(item)) {
                     drop = false;
                 }
             }
             if (item == null || !drop) {
                 i++;
-                continue;
             } else {
                 if (item.applyAction("Drop")) {
                     if (Utilities.sleepUntil(EMPTY(i), 2000)) {
@@ -350,10 +226,10 @@ public final class Inventory {
      * @param id       ID of the main item
      * @param targetId ID of the target item
      */
-    public static void useItemOnAll(int id, int targetId) {
-        RSWidgetItem main = get(id);
+    public static void useItemOnAll(int id, int targetId) { // TODO - switch to predicates
+        RSWidgetItem main = get(WidgetItemFilters.ID(id));
         if (main != null) {
-            RSWidgetItem[] targets = getAll(targetId);
+            RSWidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
             for (RSWidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
@@ -373,10 +249,10 @@ public final class Inventory {
      * @param id       ID of the main item
      * @param targetId ID of the target item
      */
-    public static void useItemOn(int id, int targetId) {
-        RSWidgetItem main = get(id);
+    public static void useItemOn(int id, int targetId) {  // TODO - switch to predicates
+        RSWidgetItem main = get(WidgetItemFilters.ID(id));
         if (main != null) {
-            RSWidgetItem[] targets = getAll(targetId);
+            RSWidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
             for (RSWidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
@@ -392,19 +268,18 @@ public final class Inventory {
     }
 
 
-    public static void dropAllByColumn(int... ids) {
+    public static void dropAllByColumn(Predicate<RSWidgetItem>... predicates) {
         for (int column = 1; column < 5 && !Thread.currentThread().isInterrupted(); column++) {
             for (int slot = 0; (slot + column) < 29 && !Thread.currentThread().isInterrupted();) {
                 RSWidgetItem item = getItemAt(slot + column);
                 boolean drop = false;
-                for (int id : ids) {
-                    if (item != null && item.getId() == id) {
+                for (Predicate<RSWidgetItem> predicate: predicates) {
+                    if (item != null && predicate.apply(item)) {
                         drop = true;
                     }
                 }
                 if (item == null || !drop) {
                     slot += 4;
-                    continue;
                 } else {
                     if (item.applyAction("Drop")) {
                         if (Utilities.sleepUntil(EMPTY(slot + column), 2000)) {
@@ -415,6 +290,7 @@ public final class Inventory {
             }
         }
     }
+
     private static StatePredicate EMPTY(final int slot) {
         return new StatePredicate() {
             @Override
