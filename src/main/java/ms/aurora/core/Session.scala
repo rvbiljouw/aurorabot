@@ -4,8 +4,8 @@ import ms.aurora.gui.widget.AppletWidget
 import scala.beans.BeanProperty
 import ms.aurora.loader.ClientManager
 import org.apache.log4j.Logger
-import akka.actor.{Props, ActorSystem}
-import ms.aurora.core.script.{TickEvent, ScriptSupervisor}
+import akka.actor.{ActorSystem, Actor, ActorRef, Props}
+import ms.aurora.core.script.{StateTransition, TickEvent, ScriptSupervisor}
 import ms.aurora.gui.ApplicationGUI
 import ms.aurora.event.PaintManager
 import javafx.scene.control.Menu
@@ -17,30 +17,27 @@ import ms.aurora.core.model.Account
  */
 class Session(group: ThreadGroup, ui: AppletWidget) extends Runnable {
   private val logger = Logger.getLogger(classOf[Session])
-  @BeanProperty val actorSystem = ActorSystem("Session")
-  @BeanProperty val scriptSupervisor = actorSystem.actorOf(
-    Props(classOf[ScriptSupervisor], this), name = "scriptSupervisor")
+  private val actorSystem = ActorSystem("sessionsystem")
   @BeanProperty val clientManager = new ClientManager()
   @BeanProperty val paintManager = new PaintManager()
+  @BeanProperty var sessionBridge: ActorRef = null
+  @BeanProperty var scriptSupervisor: ActorRef = null
   @BeanProperty val account: Account = null
   var active = false
 
   override def run() {
-    while (!Thread.currentThread().isInterrupted) {
-
-      if (clientManager.getApplet == null) {
-        if (clientManager.start()) {
-          ui.setApplet(clientManager.getApplet)
-        } else {
-          logger.error("Failed to initialize applet, killing..")
-          Thread.currentThread().interrupt()
-        }
-      } else {
-        scriptSupervisor ! TickEvent()
-        Thread.sleep(250)
-      }
-
+    scriptSupervisor = actorSystem.actorOf(
+      Props(classOf[ScriptSupervisor], this))
+    sessionBridge = actorSystem.actorOf(
+      Props(classOf[SessionBridge], this))
+    if (clientManager.start()) {
+      ui.setApplet(clientManager.getApplet)
     }
+  }
+
+  def receive: Actor.Receive = {
+    case StateTransition(state, reason) =>
+      println("State transition: " + state + " Reason: " + reason)
   }
 
   def getThreadGroup = group
@@ -72,4 +69,7 @@ class Session(group: ThreadGroup, ui: AppletWidget) extends Runnable {
   def deregisterMenu(menu: Menu) {
     logger.info("Deregistering plugin menus temporarily disabled")
   }
+
+  def getActorSystem: ActorSystem = actorSystem
+
 }

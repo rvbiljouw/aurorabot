@@ -1,8 +1,7 @@
 package ms.aurora.core.script
 
 /**
- * Enum for supervisor state.
- * Note: dont move this down or i'll shoot you
+ * Enum for state transition responses
  */
 object ScriptResult extends scala.Enumeration {
   type ScriptResult = Value
@@ -126,8 +125,7 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
    *         tick should placed.
    */
   def tick(): TickResult = {
-    println("tick")
-    var timeUntilNextRun = 0
+    var timeUntilNextRun = 100 // Base time
     active.foreach(entry =>
       timeUntilNextRun += entry._2.tick())
     TickResult(timeUntilNextRun)
