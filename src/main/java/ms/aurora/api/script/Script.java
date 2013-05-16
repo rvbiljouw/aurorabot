@@ -16,7 +16,7 @@ public abstract class Script extends Context implements Runnable {
     private final TaskQueue taskQueue = new TaskQueue(this);
     private Thread taskQueueThread = new Thread(taskQueue);
     private ScriptState state = ScriptState.START;
-    private Randoms randoms = new Randoms();
+    private Randoms randoms;
 
     public Script() {
     }
@@ -118,6 +118,7 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private void init() {
+        randoms = new Randoms();
         if (!taskQueueThread.isAlive()) {
             if (this instanceof PaintListener) {
                 getSession().getPaintManager().register((PaintListener) this);

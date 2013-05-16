@@ -13,7 +13,7 @@ public class Magic {
     private final static Logger logger = Logger.getLogger(Magic.class);
 
     private static RSWidgetGroup getSpellGroup() {
-        return Widgets.getWidgets(192);
+        return Widgets.getWidgetGroup(192);
     }
 
     /**

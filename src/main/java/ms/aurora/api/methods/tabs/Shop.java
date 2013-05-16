@@ -1,16 +1,11 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.methods.filters.ShopFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
-import ms.aurora.api.wrappers.Interactable;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetItem;
-import ms.aurora.input.VirtualMouse;
-import ms.aurora.rt3.Mouse;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -87,8 +82,9 @@ public class Shop {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem> predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
+    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem>... predicate) {
+        List<RSWidgetItem> filter = ArrayUtils.filter(getAll(), predicate);
+        return filter.toArray(new RSWidgetItem[filter.size()]);
     }
 
     /**
@@ -97,7 +93,7 @@ public class Shop {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static RSWidgetItem get(final Predicate<RSWidgetItem> predicate) {
+    public static RSWidgetItem get(final Predicate<RSWidgetItem>... predicate) {
         RSWidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
@@ -111,7 +107,7 @@ public class Shop {
      * @param predicate predicate of item to buy.
      * @param amount amount to buy.
      */
-    public static void buy(Predicate<RSWidgetItem> predicate, Amount amount) {
+    public static void buy(Predicate<RSWidgetItem>[] predicate, Amount amount) {
         RSWidgetItem item = get(predicate);
         if (item == null || !isOpen()) {
             return;
