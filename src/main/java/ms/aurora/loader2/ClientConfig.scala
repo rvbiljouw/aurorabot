@@ -25,21 +25,25 @@ class ClientConfig extends ResponseHandler {
 
   def handleResponse(inputStream: InputStream) {
     val plaintext = Plaintext.fromStream(inputStream)
-    plaintext.setText(plaintext.getText.replaceAll("param=", "").replaceAll("msg=", ""))
+    plaintext.setText(normalize(plaintext.getText))
     val lines: Array[String] = plaintext.getText.split("\n")
-    for (line <- lines) {
-      params += extractKVPair(line)
-    }
-
+    lines.foreach(line => params += extractKVPair(line))
+    mainClass = getParam("initial_class").dropRight(5)
     documentBase = getParam("codebase")
     archiveName = getParam("initial_jar")
-    mainClass = getParam("initial_class").replace(".class", "")
+  }
+
+  private def normalize(string: String): String = {
+    string
+      .replaceAllLiterally("param=", "")
+      .replaceAllLiterally("msg=", "")
   }
 
   private def extractKVPair(string: String): (String, String) = {
     val len = string.length
     val idx = string.indexOf('=')
-    (string.substring(0,idx) -> string.substring(idx + 1, len))
+    (string.substring(0,idx) ->
+      string.substring(idx + 1, len))
   }
 
   private def formulateRequest: GetRequest = {
