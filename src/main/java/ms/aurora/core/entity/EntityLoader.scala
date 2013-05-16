@@ -8,7 +8,7 @@ import ms.aurora.api.random.{RandomManifest, Random}
 import scala.collection.JavaConversions._
 import ms.aurora.core.model.Source
 import org.apache.log4j.Logger
-import java.util.jar.JarFile
+import java.util.jar.{JarEntry, JarFile}
 import scala.collection.JavaConversions.JEnumerationWrapper
 import java.net.URLClassLoader
 import ms.aurora.api.plugin.internal.{TileUtilities, InterfacePlugin, PaintDebug}
@@ -63,7 +63,7 @@ class EntityLoader(recursive: Boolean) {
       Array(rawFile.toURI.toURL))
 
     val enum = new JEnumerationWrapper(file.entries)
-    enum.foreach(clazzFile => {
+    enum.filter(NAME_SUFFIX_FILTER(".class")).foreach(clazzFile => {
       val name = clazzFile.getName
       if (name.endsWith(".class")) {
         val strip = formatClassName(name)
@@ -92,7 +92,10 @@ class EntityLoader(recursive: Boolean) {
   }
 
   private def formatClassName(name: String): String =
-    name.replaceAll("/", "\\.").replace(".class", "")
+    name.replaceAllLiterally("/", ".").dropRight(6)
+
+  private val NAME_SUFFIX_FILTER =
+    (suffix: String) => (entry: JarEntry) => entry.getName.endsWith(suffix)
 
 }
 
