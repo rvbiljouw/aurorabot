@@ -44,22 +44,6 @@ public final class NpcFilters {
     /**
      * a predicate which tests if the ID of the {@link RSNPC} matches the specified.
      *
-     * @param id the id of the {@link RSNPC} you want to match
-     * @return true the id of the {@link RSNPC} matches the specified else false
-     * @see ms.aurora.api.wrappers.RSNPC#getId()
-     */
-    public static Predicate<RSNPC> ID(final int id) {
-        return new Predicate<RSNPC>() {
-            @Override
-            public boolean apply(RSNPC object) {
-                return object.getId() == id;
-            }
-        };
-    }
-
-    /**
-     * a predicate which tests if the ID of the {@link RSNPC} matches the specified.
-     *
      * @param ids the id array of the {@link RSNPC} you want to match
      * @return true the id of the {@link RSNPC} matches the specified else false
      * @see ms.aurora.api.wrappers.RSNPC#getId()

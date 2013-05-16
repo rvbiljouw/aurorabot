@@ -29,7 +29,7 @@ public final class Widgets {
 
         List<RSWidgetGroup> groups = new ArrayList<RSWidgetGroup>();
         for (int i = 0; i < cache.length; i++) {
-            RSWidgetGroup group = getWidgets(i);
+            RSWidgetGroup group = getWidgetGroup(i);
             if (group != null) {
                 groups.add(group);
             }
@@ -45,7 +45,7 @@ public final class Widgets {
      * @return widget or null
      */
     public static RSWidget getWidget(int parent, int child) {
-        RSWidgetGroup group = getWidgets(parent);
+        RSWidgetGroup group = getWidgetGroup(parent);
         if (group != null && group.getWidgets()[child] != null) {
             return group.getWidgets()[child];
         }
@@ -58,7 +58,7 @@ public final class Widgets {
      * @param parent widget group index
      * @return widget group or null
      */
-    public static RSWidgetGroup getWidgets(int parent) {
+    public static RSWidgetGroup getWidgetGroup(int parent) {
         if (getClient().getWidgetCache()[parent] != null) {
             return new RSWidgetGroup(Context.get(), getClient().getWidgetCache()[parent], parent);
         }

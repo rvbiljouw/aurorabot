@@ -1,8 +1,12 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.util.ArrayUtils;
+import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.RSWidgetItem;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,16 +34,16 @@ public class Equipment {
      * Gets all equipped items.
      * @return array of equipped items.
      */
-    public static Item[] getItems() {
-        List<Item> items = new ArrayList<Item>();
+    public static RSWidgetItem[] getItems() {
+        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
         RSWidget widget = getEquipmentWidget();
         int[] ids = widget.getInventoryItems();
         int[] amounts = widget.getInventoryStackSizes();
         for (int slot = 0; slot < ids.length; slot++) {
-            Item item = new Item(ids[slot], amounts[slot]);
+            RSWidgetItem item = new RSWidgetItem(new Rectangle(), ids[slot], amounts[slot]); // TODO - work out rectangles
             items.add(item);
         }
-        return items.toArray(new Item[items.size()]);
+        return items.toArray(new RSWidgetItem[items.size()]);
     }
 
     /**
@@ -47,50 +51,12 @@ public class Equipment {
      * @param ids array of ids to check.
      * @return true if there is a match else false.
      */
-    public static boolean isEquipped(int... ids) {
-        for (Item item : getItems()) {
-            for (int id : ids)
-                if (item.getId() == id) return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks whether the item with the corresponding id is equipped.
-     * and that there is the specified amount equipped.
-     * @param id id of item to check.
-     * @param amount amount of item equipped.
-     * @return true if item is equipped else false.
-     */
-    public static boolean isEquipped(int id, int amount) {
-        for (Item item : getItems()) {
-            if (item.getId() == id && item.getStackSize() >= amount) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean isEquipped(Predicate<RSWidgetItem>... predicates) {
+        return ArrayUtils.filter(getItems(), predicates).size() > 0;
     }
 
     public static RSWidget getSlot(int id) {
         return Widgets.getWidget(387, id);
-    }
-
-    public static class Item {
-        private final int id;
-        private final int stackSize;
-
-        public Item(int id, int stackSize) {
-            this.id = id - 1;
-            this.stackSize = stackSize;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public int getStackSize() {
-            return stackSize;
-        }
     }
 
 }

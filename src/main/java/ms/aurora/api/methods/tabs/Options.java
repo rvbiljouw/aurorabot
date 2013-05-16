@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.tabs;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Settings;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidgetGroup;
@@ -15,13 +14,7 @@ public class Options {
     private final int runIndex = 173; // stolen rofl
 
     private static RSWidgetGroup getSettingsGroup() {
-        return Widgets.getWidgets(261);
-    }
-
-    // TODO - whats this?
-    public static int get(int index) {
-        int[] settings = Context.get().getClient().getWidgetSettings();
-        return settings != null && index < settings.length ? settings[index] : -1;
+        return Widgets.getWidgetGroup(261);
     }
 
     /**

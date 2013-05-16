@@ -1,17 +1,17 @@
 package ms.aurora.core.entity
 
-import java.util
 import java.io._
-import ms.aurora.api.script.{ScriptManifest, Script}
+import java.net.URLClassLoader
+import java.util
+import java.util.jar.{JarEntry, JarFile}
+import ms.aurora.api.plugin.internal.{TileUtilities, InterfacePlugin, PaintDebug}
 import ms.aurora.api.plugin.{PluginManifest, Plugin}
 import ms.aurora.api.random.{RandomManifest, Random}
-import scala.collection.JavaConversions._
+import ms.aurora.api.script.{ScriptManifest, Script}
 import ms.aurora.core.model.Source
 import org.apache.log4j.Logger
-import java.util.jar.JarFile
-import scala.collection.JavaConversions.JEnumerationWrapper
-import java.net.URLClassLoader
-import ms.aurora.api.plugin.internal.{TileUtilities, PathMaker, InterfacePlugin, PaintDebug}
+import scala.beans.BeanProperty
+import scala.collection.JavaConversions._
 
 /**
  * Loads classes from database-specified source folders
@@ -20,9 +20,9 @@ import ms.aurora.api.plugin.internal.{TileUtilities, PathMaker, InterfacePlugin,
  */
 class EntityLoader(recursive: Boolean) {
   val logger = Logger.getLogger(classOf[EntityLoader])
-  val randoms = new util.ArrayList[Random]
-  val scripts = new util.ArrayList[Script]
-  val plugins = new util.ArrayList[Plugin]
+  @BeanProperty val randoms = new util.ArrayList[Random]
+  @BeanProperty val scripts = new util.ArrayList[Script]
+  @BeanProperty val plugins = new util.ArrayList[Plugin]
 
   def clear() {
     randoms.clear()
@@ -56,16 +56,11 @@ class EntityLoader(recursive: Boolean) {
 
   private def loadJar(rawFile: File) {
     val file = new JarFile(rawFile)
-    val loader = new URLClassLoader(
-      Array(rawFile.toURI.toURL))
-
+    val loader = new URLClassLoader(Array(rawFile.toURI.toURL))
     val enum = new JEnumerationWrapper(file.entries)
-    enum.foreach(clazzFile => {
-      val name = clazzFile.getName
-      if (name.endsWith(".class")) {
-        val strip = formatClassName(name)
-        loadClass(loader.loadClass(strip))
-      }
+    enum.filter(NAME_SUFFIX_FILTER(".class")).foreach(clazzFile => {
+      val strip = formatClassName(clazzFile.getName)
+      loadClass(loader.loadClass(strip))
     })
   }
 
@@ -107,10 +102,6 @@ class EntityLoader(recursive: Boolean) {
   private def formatClassName(name: String): String =
     name.replaceAll("/", "\\.").replace(".class", "")
 
-  def getPlugins = plugins
-
-  def getScripts = scripts
-
-  def getRandoms = randoms
-
+  private val NAME_SUFFIX_FILTER =
+    (suffix: String) => (entry: JarEntry) => entry.getName.endsWith(suffix)
 }
