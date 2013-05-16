@@ -99,7 +99,7 @@ class EntityLoader(recursive: Boolean) {
   }
 
   private def formatClassName(name: String): String =
-    name.replaceAll("/", "\\.").replace(".class", "")
+    name.replaceAllLiterally("/", ".").replace(".class", "")
 
   private val NAME_SUFFIX_FILTER =
     (suffix: String) => (entry: JarEntry) => entry.getName.endsWith(suffix)
