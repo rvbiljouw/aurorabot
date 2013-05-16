@@ -3,10 +3,8 @@ package ms.aurora.core;
 import javafx.application.Platform;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import ms.aurora.api.plugin.Plugin;
 import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.core.model.Account;
-import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
@@ -61,7 +59,7 @@ public final class Session implements Runnable {
     }
 
     public void refreshPlugins() {
-        entityLoader.load();
+        /*entityLoader.load();
         for (Plugin plugin : entityLoader.getPlugins()) {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
@@ -71,7 +69,7 @@ public final class Session implements Runnable {
             } else {
                 pluginManager.stop(plugin.getClass());
             }
-        }
+        }*/
     }
 
     public void registerMenu(final Menu menu) {
@@ -137,9 +135,9 @@ public final class Session implements Runnable {
         try {
             scriptManager.stop();
             entityLoader.load();
-            for (Plugin plugin : entityLoader.getPlugins()) {
+            /*for (Plugin plugin : entityLoader.getPlugins()) {
                 pluginManager.stop(plugin.getClass());
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,7 +11,7 @@ import org.apache.log4j.Logger
 import java.util.jar.JarFile
 import scala.collection.JavaConversions.JEnumerationWrapper
 import java.net.URLClassLoader
-import ms.aurora.api.plugin.internal.{TileUtilities, PathMaker, InterfacePlugin, PaintDebug}
+import ms.aurora.api.plugin.internal.{TileUtilities, InterfacePlugin, PaintDebug}
 
 /**
  * Loads classes from database-specified source folders
@@ -20,9 +20,9 @@ import ms.aurora.api.plugin.internal.{TileUtilities, PathMaker, InterfacePlugin,
  */
 class EntityLoader(recursive: Boolean) {
   val logger = Logger.getLogger(classOf[EntityLoader])
-  val randoms = new util.ArrayList[Random]
-  val scripts = new util.ArrayList[Script]
-  val plugins = new util.ArrayList[Plugin]
+  val randoms = new util.ArrayList[Class[_ <: Random]]
+  val scripts = new util.ArrayList[Class[_ <: Script]]
+  val plugins = new util.ArrayList[Class[_ <: Plugin]]
 
   def clear() {
     randoms.clear()
@@ -31,17 +31,20 @@ class EntityLoader(recursive: Boolean) {
   }
 
   def load() {
-    clear()
-
     Source.getAll.foreach(source => {
       logger.info("Scanning source " + source.getSource)
       traverse(new File(source.getSource))
     })
 
     logger.info("Initializing defaults")
-    plugins.add(new PaintDebug())
-    plugins.add(new TileUtilities())
-    plugins.add(new InterfacePlugin())
+    plugins.add(classOf[PaintDebug])
+    plugins.add(classOf[InterfacePlugin])
+    plugins.add(classOf[TileUtilities])
+  }
+
+  def reload() {
+    clear()
+    load()
   }
 
   private def traverse(root: File) {
@@ -74,25 +77,9 @@ class EntityLoader(recursive: Boolean) {
       logger.info("Malformed class: " + clazz.getName)
     } else {
       clazz.getSuperclass match {
-        case s if classOf[Script].isAssignableFrom(clazz) => {
-          val i = clazz.newInstance
-          if (i != null) {
-            scripts.add(i.asInstanceOf[Script])
-          }
-        }
-
-        case r if r.eq(classOf[Random]) => {
-          val i = clazz.newInstance
-          if (i != null) {
-            randoms.add(i.asInstanceOf[Random])
-          }
-        }
-        case p if p.eq(classOf[Plugin]) => {
-          val i = clazz.newInstance
-          if (i != null) {
-            plugins.add(i.asInstanceOf[Plugin])
-          }
-        }
+        case s if classOf[Script].isAssignableFrom(clazz) => scripts.add(clazz.asSubclass(classOf[Script]))
+        case r if r.eq(classOf[Random]) => randoms.add(clazz.asSubclass(classOf[Random]))
+        case p if p.eq(classOf[Plugin]) => plugins.add(clazz.asSubclass(classOf[Plugin]))
         case _ => logger.info("Unknown superclass in " + clazz.getName)
       }
     }
@@ -107,12 +94,12 @@ class EntityLoader(recursive: Boolean) {
   private def formatClassName(name: String): String =
     name.replaceAll("/", "\\.").replace(".class", "")
 
-  def getPlugins = plugins
-
-  def getScripts = scripts
-
-  def getRandoms = randoms
-
 }
 
-o
+object EntityLoader {
+
+  private val instance = new EntityLoader(true)
+
+  def get = instance
+
+}

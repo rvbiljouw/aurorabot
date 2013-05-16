@@ -14,8 +14,8 @@ import org.apache.log4j.Logger
  * and the loaders / configurations used.
  * @author rvbiljouw
  */
-class ClientWrapper {
-  private val logger = Logger.getLogger(classOf[ClientWrapper])
+class ClientManager {
+  private val logger = Logger.getLogger(classOf[ClientManager])
   @BeanProperty val browserBaseURL = getString("runescape.url")
   @BeanProperty val browserContext = get.domain(browserBaseURL).build
   @BeanProperty val browser = new Browser(browserContext)
@@ -37,11 +37,13 @@ class ClientWrapper {
     loader.isLoaded
   }
 
-  def restart() {
+  def restart(): Boolean = {
     if (stop() && start()) {
       logger.info("Applet restarted")
+      true
     } else {
       logger.error("Applet reload failed")
+      false
     }
   }
 

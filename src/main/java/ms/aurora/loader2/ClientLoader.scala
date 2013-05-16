@@ -48,7 +48,7 @@ class ClientLoader(config: ClientConfig) {
    * @return true when loaded and active
    */
   def isLoaded: Boolean = {
-    applet != null && applet.isActive
+    applet != null
   }
 
   /**
@@ -60,7 +60,7 @@ class ClientLoader(config: ClientConfig) {
   private def establishJarConnection(config: ClientConfig): JarURLConnection = {
     val docBase = config.getDocumentBase
     val archive = config.getArchiveName
-    new URL("jar:" + docBase + "/" + archive + "!/")
+    new URL("jar:" + docBase + archive + "!/")
       .openConnection().asInstanceOf[JarURLConnection]
   }
 

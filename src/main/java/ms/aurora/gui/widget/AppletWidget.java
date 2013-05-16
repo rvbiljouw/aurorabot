@@ -84,9 +84,11 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     }
 
     public void setApplet(final Applet applet) {
+        if(this.applet != null) {
+            Application.mainFrame.remove(this.applet);
+        }
         Application.mainFrame.add(applet);
         this.applet = applet;
-
         tab.setClosable(true);
         update();
     }

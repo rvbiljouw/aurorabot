@@ -5,19 +5,27 @@ import java.util
 import java.io.InputStream
 import java.net.URL
 import java.awt.Image
+import ms.aurora.loader2.impl.ClientAudioClip
+import javax.imageio.ImageIO
 
 /**
  * @author rvbiljouw
  */
 class ClientContext extends AppletContext {
 
-  def getAudioClip(url: URL): AudioClip = ???
+  def getAudioClip(url: URL): AudioClip = new ClientAudioClip(url)
 
-  def getImage(url: URL): Image = ???
+  def getImage(url: URL): Image = ImageIO.read(url)
 
-  def getApplet(name: String): Applet = ???
+  def getApplet(name: String): Applet = {
+    println("getApplet(): " + name)
+    null
+  }
 
-  def getApplets: util.Enumeration[Applet] = ???
+  def getApplets: util.Enumeration[Applet] = {
+    println("getApplets()");
+    null
+  }
 
   def showDocument(url: URL) {}
 

@@ -24,7 +24,7 @@ class ClientConfig(browser: Browser) extends ResponseHandler {
     plaintext.setText(normalize(plaintext.getText))
     val lines: Array[String] = plaintext.getText.split("\n")
     lines.foreach(line => params += extractKVPair(line))
-    mainClass = getParam("initial_class").dropRight(5)
+    mainClass = getParam("initial_class").dropRight(6)
     documentBase = getParam("codebase")
     archiveName = getParam("initial_jar")
   }

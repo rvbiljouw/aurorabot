@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
+import ms.aurora.core.ScalaSession;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.core.model.Property;
@@ -85,7 +86,7 @@ public class ApplicationGUI extends AnchorPane {
     void onNewSession(ActionEvent event) {
         AppletWidget widget = new AppletWidget(this);
         ThreadGroup threadGroup = new ThreadGroup(String.valueOf(tabPane.getTabs().size() + 1));
-        Session session = new Session(threadGroup, widget);
+        ScalaSession session = new ScalaSession(widget);
         Thread thread = new Thread(threadGroup, session);
         thread.start();
         tabPane.getTabs().add(widget.getTab());

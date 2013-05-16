@@ -25,7 +25,8 @@ class ClientStub(config: ClientConfig) extends AppletStub {
   def getParameter(name: String): String =
     config.getParam(name)
 
-  def getAppletContext: AppletContext = ???
+  def getAppletContext: AppletContext =
+    new ClientContext()
 
   def appletResize(width: Int, height: Int) {}
 }
