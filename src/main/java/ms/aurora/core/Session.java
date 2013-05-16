@@ -12,6 +12,7 @@ import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
 import ms.aurora.gui.widget.AppletWidget;
 import ms.aurora.loader.AppletLoader;
+import org.apache.log4j.Logger;
 
 import java.applet.Applet;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,6 +25,7 @@ import static ms.aurora.gui.ApplicationGUI.update;
  */
 public final class Session implements Runnable {
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
+    private final Logger logger = Logger.getLogger(Session.class);
     private final PaintManager paintManager = new PaintManager(this);
     private final EntityLoader entityLoader = new EntityLoader(true);
     private final ThreadGroup threadGroup;
@@ -59,6 +61,7 @@ public final class Session implements Runnable {
     }
 
     public void refreshPlugins() {
+        entityLoader.load();
         for (Plugin plugin : entityLoader.getPlugins()) {
             PluginConfig config = PluginConfig.getByName(
                     plugin.getClass().getName());
@@ -133,6 +136,7 @@ public final class Session implements Runnable {
     public void destroy() {
         try {
             scriptManager.stop();
+            entityLoader.load();
             for (Plugin plugin : entityLoader.getPlugins()) {
                 pluginManager.stop(plugin.getClass());
             }

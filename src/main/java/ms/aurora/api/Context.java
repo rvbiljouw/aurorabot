@@ -20,8 +20,8 @@ public class Context {
     private ThreadGroup threadGroup;
     private Session session;
 
-    public static Session getSession() {
-        return get().session;
+    public Session getSession() {
+        return session;
     }
 
     public final void setSession(Session session) {
@@ -101,6 +101,6 @@ public class Context {
     }
 
     public static boolean isActive() {
-        return getSession().getScriptManager().getState() != ScriptState.STOP;
+        return get().getSession().getScriptManager().getState() != ScriptState.STOP;
     }
 }

@@ -31,6 +31,8 @@ class EntityLoader(recursive: Boolean) {
   }
 
   def load() {
+    clear()
+
     Source.getAll.foreach(source => {
       logger.info("Scanning source " + source.getSource)
       traverse(new File(source.getSource))
