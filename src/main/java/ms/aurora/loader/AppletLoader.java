@@ -8,12 +8,11 @@ import ms.aurora.browser.ContextBuilder;
 import ms.aurora.loader.exception.AppletInitialisationException;
 import ms.aurora.loader.web.ClientConfig;
 import ms.aurora.sdn.net.api.Hooks;
-import ms.aurora.transform.TransformingClassLoader;
+import ms.aurora.transform.ClientClassLoader;
 
 import java.applet.Applet;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.ResourceBundle;
 
 public final class AppletLoader implements Runnable {
     private final Context browserContext;
@@ -49,7 +48,7 @@ public final class AppletLoader implements Runnable {
             URL jarURL = new URL("jar:" + clientConfig.getDocumentBase()
                     + clientConfig.getArchiveName() + "!/");
             JarURLConnection jarConnection = (JarURLConnection) jarURL.openConnection();
-            final ClassLoader classLoader = new TransformingClassLoader(
+            final ClassLoader classLoader = new ClientClassLoader(
                     Hooks.getHooks(), jarConnection.getJarFile());
 
             Class<?> appletClass = classLoader.loadClass(clientConfig

@@ -4,6 +4,7 @@ import ms.aurora.browser.Browser
 import ms.aurora.browser.ContextBuilder.get
 import ms.aurora.Messages.getString
 import scala.beans.BeanProperty
+import java.applet.Applet
 
 /**
  * The context of the game client, which acts
@@ -17,4 +18,22 @@ class ClientContext {
   @BeanProperty val browser = new Browser(browserContext)
   @BeanProperty val config = new ClientConfig(browser)
   @BeanProperty val loader = new ClientLoader()
+
+  def getApplet: Applet = {
+    loader.getApplet
+  }
+
+  def start() {
+
+  }
+
+  def restart() {
+    stop()
+    start()
+  }
+
+  def stop() {
+
+  }
+
 }

@@ -21,13 +21,13 @@ import java.util.jar.JarFile;
 /**
  * @author Rick
  */
-public final class TransformingClassLoader extends ClassLoader {
-    private final Logger logger = Logger.getLogger(TransformingClassLoader.class);
+public final class ClientClassLoader extends ClassLoader {
+    private final Logger logger = Logger.getLogger(ClientClassLoader.class);
     private final Map<String, byte[]> classMap = new HashMap<String, byte[]>();
     private final ClientDefinition clientDef;
 
-    public TransformingClassLoader(ClientDefinition clientDef, JarFile file) throws IOException {
-        super(TransformingClassLoader.class.getClassLoader());
+    public ClientClassLoader(ClientDefinition clientDef, JarFile file) throws IOException {
+        super(ClientClassLoader.class.getClassLoader());
         this.clientDef = clientDef;
 
         Enumeration<JarEntry> entries = file.entries();
