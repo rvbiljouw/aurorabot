@@ -34,7 +34,7 @@ public final class ObjectFilters {
     }
 
     /**
-     * a predictae which tests the location of the {@link ms.aurora.api.wrappers.RSObject} matches specified.
+     * a predicate which tests the location of the {@link ms.aurora.api.wrappers.RSObject} matches specified.
      *
      * @param location location that the {@link ms.aurora.api.wrappers.RSObject} should be on.
      * @return true if the location matches the {@link ms.aurora.api.wrappers.RSObject} location.
