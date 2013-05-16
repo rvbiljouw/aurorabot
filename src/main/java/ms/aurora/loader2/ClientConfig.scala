@@ -11,17 +11,13 @@ import ms.aurora.browser.wrapper.Plaintext
  * Client configuration file
  * @author rvbiljouw
  */
-class ClientConfig extends ResponseHandler {
+class ClientConfig(browser: Browser) extends ResponseHandler {
   private val params = new mutable.HashMap[String, String]
   @BeanProperty var documentBase: String = null
   @BeanProperty var archiveName: String = null
   @BeanProperty var mainClass: String = null
 
   def getParam(key: String) = params(key)
-
-  def visit(browser: Browser) {
-    browser.doRequest(formulateRequest, this)
-  }
 
   def handleResponse(inputStream: InputStream) {
     val plaintext = Plaintext.fromStream(inputStream)
@@ -50,6 +46,10 @@ class ClientConfig extends ResponseHandler {
     val request = new GetRequest()
     request.setPage(ClientConfig.CONFIG_URL)
     request
+  }
+
+  def visit() {
+    browser.doRequest(formulateRequest, this)
   }
 }
 
