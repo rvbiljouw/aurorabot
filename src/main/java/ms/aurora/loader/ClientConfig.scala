@@ -1,4 +1,4 @@
-package ms.aurora.loader2
+package ms.aurora.loader
 
 import scala.collection.mutable
 import ms.aurora.browser.{Browser, ResponseHandler}

@@ -2,7 +2,7 @@ package ms.aurora.core
 
 import ms.aurora.gui.widget.AppletWidget
 import scala.beans.BeanProperty
-import ms.aurora.loader2.ClientManager
+import ms.aurora.loader.ClientManager
 import org.apache.log4j.Logger
 import akka.actor.{Props, ActorSystem}
 import ms.aurora.core.script.{TickEvent, ScriptSupervisor}
@@ -19,7 +19,7 @@ class Session(group: ThreadGroup, ui: AppletWidget) extends Runnable {
   private val logger = Logger.getLogger(classOf[Session])
   @BeanProperty val actorSystem = ActorSystem("Session")
   @BeanProperty val scriptSupervisor = actorSystem.actorOf(
-    Props[ScriptSupervisor], name = "scriptSupervisor")
+    Props(classOf[ScriptSupervisor], this), name = "scriptSupervisor")
   @BeanProperty val clientManager = new ClientManager()
   @BeanProperty val paintManager = new PaintManager()
   @BeanProperty val account: Account = null

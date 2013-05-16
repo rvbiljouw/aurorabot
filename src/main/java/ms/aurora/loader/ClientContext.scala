@@ -1,11 +1,11 @@
-package ms.aurora.loader2
+package ms.aurora.loader
 
 import java.applet.{AudioClip, Applet, AppletContext}
 import java.util
 import java.io.InputStream
 import java.net.URL
 import java.awt.Image
-import ms.aurora.loader2.impl.ClientAudioClip
+import ms.aurora.loader.impl.ClientAudioClip
 import javax.imageio.ImageIO
 
 /**

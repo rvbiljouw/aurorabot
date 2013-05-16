@@ -1,4 +1,4 @@
-package ms.aurora.loader2
+package ms.aurora.loader
 
 /**
  * @author rvbiljouw

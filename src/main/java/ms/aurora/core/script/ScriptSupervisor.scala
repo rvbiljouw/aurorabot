@@ -31,8 +31,7 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
     case PauseEvent(clazz) => sender ! pauseScript(clazz)
     case ResumeEvent(clazz) => sender ! resumeScript(clazz)
     case StopEvent(clazz) => sender ! stopScript(clazz)
-    case TickEvent => sender ! tick()
-    case _ => println("Received unknown message")
+    case TickEvent() => sender ! tick()
       parent.active = isActive
   }
 
@@ -127,6 +126,7 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
    *         tick should placed.
    */
   def tick(): TickResult = {
+    println("tick")
     var timeUntilNextRun = 0
     active.foreach(entry =>
       timeUntilNextRun += entry._2.tick())
