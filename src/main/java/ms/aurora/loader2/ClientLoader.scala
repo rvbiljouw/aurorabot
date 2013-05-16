@@ -12,20 +12,19 @@ import ms.aurora.sdn.net.api.Hooks.getHooks
  * based on a ClientConfiguration.
  * @author rvbiljouw
  */
-class ClientLoader {
+class ClientLoader(config: ClientConfig) {
   val logger = Logger.getLogger(classOf[ClientLoader])
   @BeanProperty var applet: Applet = null
 
   /**
    * Loads the game applet based on the information
    * obtained from the client configuration.
-   * @param configuration Client configuration
    */
-  def start(configuration: ClientConfig) {
+  def start() {
     if (!isLoaded) {
       logger.info("Starting new applet")
-      val stub = new ClientStub(configuration)
-      prepareApplet(configuration)
+      val stub = new ClientStub(config)
+      prepareApplet(config)
       applet.setStub(stub)
       applet.init()
       applet.start()

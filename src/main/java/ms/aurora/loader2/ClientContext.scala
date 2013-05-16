@@ -5,6 +5,8 @@ import ms.aurora.browser.ContextBuilder.get
 import ms.aurora.Messages.getString
 import scala.beans.BeanProperty
 import java.applet.Applet
+import ms.aurora.rt3.Client
+import org.apache.log4j.Logger
 
 /**
  * The context of the game client, which acts
@@ -13,27 +15,40 @@ import java.applet.Applet
  * @author rvbiljouw
  */
 class ClientContext {
+  private val logger = Logger.getLogger(classOf[ClientContext])
   @BeanProperty val browserBaseURL = getString("runescape.url")
   @BeanProperty val browserContext = get.domain(browserBaseURL).build
   @BeanProperty val browser = new Browser(browserContext)
   @BeanProperty val config = new ClientConfig(browser)
-  @BeanProperty val loader = new ClientLoader()
+  @BeanProperty val loader = new ClientLoader(config)
+
+  def getClient: Client = {
+    loader.getApplet.asInstanceOf[Client]
+  }
 
   def getApplet: Applet = {
     loader.getApplet
   }
 
-  def start() {
-
+  def start(): Boolean = {
+    config.visit()
+    loader.start()
+    logger.info("Applet started")
+    loader.isLoaded
   }
 
   def restart() {
-    stop()
-    start()
+    if (stop() && start()) {
+      logger.info("Applet restarted")
+    } else {
+      logger.error("Applet reload failed")
+    }
   }
 
-  def stop() {
-
+  def stop(): Boolean = {
+    loader.stop()
+    logger.info("Applet stopped")
+    !loader.isLoaded
   }
 
 }
