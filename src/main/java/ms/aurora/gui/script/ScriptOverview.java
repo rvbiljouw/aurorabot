@@ -98,7 +98,14 @@ public class ScriptOverview extends AnchorPane {
 
     @FXML
     void onSearch(ActionEvent event) {
-        List<Script> scripts = EntityLoader.scriptEntityLoader.getEntitys();
+        tblScripts.setItems(rebuild());
+    }
+
+    private ObservableList<ScriptModel> rebuild() {
+        EntityLoader loader = new EntityLoader(true);
+        loader.load();
+
+        List<Script> scripts = loader.getScripts();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
         String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
         String filterName = txtName.getText().toLowerCase();
@@ -110,7 +117,7 @@ public class ScriptOverview extends AnchorPane {
                 }
             }
         }
-        tblScripts.setItems(scriptModelList);
+        return scriptModelList;
     }
 
     @FXML
@@ -127,15 +134,8 @@ public class ScriptOverview extends AnchorPane {
         ObservableList<String> categoryList = FXCollections.observableArrayList();
         categoryList.add(Messages.getString("scriptOverview.all"));
 
-        List<Script> scripts = EntityLoader.scriptEntityLoader.getEntitys();
-        ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
-        for (Script script : scripts) {
-            if (!categoryList.contains(script.getManifest().category())) {
-                categoryList.add(script.getManifest().category());
-            }
-            scriptModelList.add(new ScriptModel(script));
-        }
-        tblScripts.setItems(scriptModelList);
+
+        tblScripts.setItems(rebuild());
         cbxCategory.setItems(categoryList);
         cbxCategory.getSelectionModel().selectFirst();
     }

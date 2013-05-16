@@ -8,6 +8,6 @@ import java.lang.annotation.RetentionPolicy;
  * should be processed before or after login.
  * @author rvbiljouw
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface AfterLogin {
 }

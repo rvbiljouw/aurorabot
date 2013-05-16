@@ -10,10 +10,12 @@ import ms.aurora.api.script.task.PassiveTask;
 import ms.aurora.core.entity.EntityLoader;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Thread.currentThread;
+import static ms.aurora.api.Context.getSession;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -23,7 +25,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  */
 public class Randoms extends PassiveTask {
     private final Logger logger = Logger.getLogger(Randoms.class);
-
+    private final List<Random> randoms = new ArrayList<Random>();
     private final Random[] RANDOMS = {
             new AutoLogin(), new Talker(),
             new Teleother(), new WelcomeScreen(),
@@ -33,6 +35,11 @@ public class Randoms extends PassiveTask {
             new Swarm()
     };
 
+    public Randoms () {
+        randoms.addAll(getSession().getEntityLoader().getRandoms());
+        randoms.addAll(Arrays.asList(RANDOMS));
+    }
+
     @Override
     public boolean canRun() {
         return true; // Can always run
@@ -40,23 +47,23 @@ public class Randoms extends PassiveTask {
 
     @Override
     public int execute() {
-        List<Random> allRandoms = EntityLoader.randomEntityLoader.getEntitys();
-        allRandoms.addAll(Arrays.asList(RANDOMS));
-        for (Random random : RANDOMS) {
-            random.setSession(Context.get().getSession());
+        for (Random random : randoms) {
+
+            random.setSession(getSession());
             if (random.getClass().getAnnotation(AfterLogin.class) != null &&
                     !Context.isLoggedIn()) continue;
 
+
             try {
                 while (random.activate() && !currentThread().isInterrupted()) {
-                    if (Context.get().getSession().getScriptManager().getState() == ScriptState.STOP) {
+                    if (!Context.isActive()) {
                         return -1;
                     }
 
                     queue.getOwner().setState(ScriptState.PAUSED);
-                    RandomManifest manfiest = random.getManifest();
-                    logger.info("Random  '" + manfiest.name() + " - " + manfiest.version()
-                            + "' by '" + manfiest.author() + "' triggered..");
+                    RandomManifest manifest = random.getManifest();
+                    logger.info("Random  '" + manifest.name() + " - " + manifest.version()
+                            + "' by '" + manifest.author() + "' triggered..");
                     int time = random.loop();
                     if (time == -1) break;
                     sleepNoException(time);
@@ -65,7 +72,6 @@ public class Randoms extends PassiveTask {
                 logger.error("Random has failed.", e);
                 return -1;
             }
-            // rvbiljouw: Make sure the state always gets set back to running..
             queue.getOwner().setState(ScriptState.RUNNING);
         }
         return 5000;

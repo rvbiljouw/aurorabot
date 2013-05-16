@@ -1,5 +1,6 @@
 package ms.aurora.api;
 
+import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
 import org.apache.log4j.Logger;
@@ -19,8 +20,8 @@ public class Context {
     private ThreadGroup threadGroup;
     private Session session;
 
-    public final Session getSession() {
-        return session;
+    public static Session getSession() {
+        return get().session;
     }
 
     public final void setSession(Session session) {
@@ -97,5 +98,9 @@ public class Context {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isActive() {
+        return getSession().getScriptManager().getState() != ScriptState.STOP;
     }
 }

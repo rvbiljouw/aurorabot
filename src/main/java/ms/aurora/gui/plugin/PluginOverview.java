@@ -134,7 +134,10 @@ public class PluginOverview extends AnchorPane {
     }
 
     private ObservableList<PluginModel> rebuild() {
-        List<Plugin> plugins = EntityLoader.pluginEntityLoader.getEntitys();
+        EntityLoader loader = new EntityLoader(true);
+        loader.load();
+
+        List<Plugin> plugins = loader.getPlugins();
         ObservableList<PluginModel> pluginModelList = observableArrayList();
         String filterName = txtName.getText().toLowerCase();
         for (Plugin plugin : plugins) {
@@ -154,14 +157,7 @@ public class PluginOverview extends AnchorPane {
         colAuthor.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("author"));
         colState.setCellValueFactory(new PropertyValueFactory<PluginModel, Boolean>("state"));
 
-        List<Plugin> plugins = EntityLoader.pluginEntityLoader.getEntitys();
-        ObservableList<PluginModel> pluginModelList = observableArrayList();
-
-        for (Plugin plugin : plugins) {
-            pluginModelList.add(new PluginModel(plugin));
-        }
-
-        tblPlugins.setItems(pluginModelList);
+        tblPlugins.setItems(rebuild());
     }
 
     public static class PluginModel {

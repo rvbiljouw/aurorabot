@@ -14,7 +14,7 @@ import java.net.URLClassLoader
 
 /**
  * Loads classes from database-specified source folders
- * Recursion
+ * Optionally recursive.
  * @author rvbiljouw
  */
 class EntityLoader(recursive: Boolean) {
