@@ -1,9 +1,9 @@
 package ms.aurora.api;
 
-import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
 import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +36,8 @@ public class Context {
     }
 
     public static Client getClient() {
-        if (get() != null && get().session.getApplet() != null) {
-            return (Client) get().session.getApplet();
+        if (get() != null && get().session.getClientManager().getApplet() != null) {
+            return get().session.getClientManager().getClient();
         }
         return null;
     }
@@ -101,6 +101,6 @@ public class Context {
     }
 
     public static boolean isActive() {
-        return get().getSession().getScriptManager().getState() != ScriptState.STOP;
+        return get().getSession().active();
     }
 }

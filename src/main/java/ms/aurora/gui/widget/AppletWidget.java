@@ -2,14 +2,11 @@ package ms.aurora.gui.widget;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
@@ -24,7 +21,6 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static ms.aurora.core.SessionRepository.get;
 
@@ -59,7 +55,8 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
             public void handle(Event event) {
                 Session mySession = SessionRepository.get(applet.hashCode());
                 if (mySession != null) {
-                    mySession.destroy();
+                    // TODO
+                    //mySession.
                 }
             }
         });
@@ -162,14 +159,15 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     public void onMenuOpening() {
         if (applet != null) {
             final Session session = get(applet.hashCode());
-            CopyOnWriteArrayList<MenuItem> pluginMenu = session.getPluginMenu();
+           /* CopyOnWriteArrayList<MenuItem> pluginMenu = session.getPluginMenu();
             ObservableList<MenuItem> items = FXCollections.observableArrayList();
             for (MenuItem pluginItem : pluginMenu) {
                 items.add(pluginItem);
             }
             parent.getPluginsMenu().getItems().clear();
             parent.getPluginsMenu().getItems().add(parent.getPluginOverview());
-            parent.getPluginsMenu().getItems().addAll(items);
+            parent.getPluginsMenu().getItems().addAll(items);   */
+            // TODO
         }
     }
 }

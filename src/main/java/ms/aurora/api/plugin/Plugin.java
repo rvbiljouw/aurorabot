@@ -78,10 +78,10 @@ public abstract class Plugin extends Context {
     }
 
     public void registerMenu(Menu menu) {
-        getSession().registerMenu(menu);
+        //getSession().registerMenu(menu);
     }
 
     public void deregisterMenu(Menu menu) {
-        getSession().deregisterMenu(menu);
+        //getSession().deregisterMenu(menu);
     }
 }

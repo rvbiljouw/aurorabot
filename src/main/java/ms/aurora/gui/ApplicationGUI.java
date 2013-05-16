@@ -14,10 +14,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
-import ms.aurora.core.ScalaSession;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.core.model.Property;
+import ms.aurora.core.script.PauseEvent;
+import ms.aurora.core.script.StopEvent;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.config.Properties;
@@ -86,7 +87,7 @@ public class ApplicationGUI extends AnchorPane {
     void onNewSession(ActionEvent event) {
         AppletWidget widget = new AppletWidget(this);
         ThreadGroup threadGroup = new ThreadGroup(String.valueOf(tabPane.getTabs().size() + 1));
-        ScalaSession session = new ScalaSession(widget);
+        Session session = new Session(threadGroup, widget); // TODO
         Thread thread = new Thread(threadGroup, session);
         thread.start();
         tabPane.getTabs().add(widget.getTab());
@@ -96,15 +97,7 @@ public class ApplicationGUI extends AnchorPane {
     void onPauseScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            switch (session.getScriptManager().getState()) {
-                case RUNNING:
-                    session.getScriptManager().pause();
-                    break;
-
-                case PAUSED:
-                    session.getScriptManager().resume();
-                    break;
-            }
+            session.getScriptSupervisor().tell(new PauseEvent(null));
         }
         update();
     }
@@ -129,17 +122,10 @@ public class ApplicationGUI extends AnchorPane {
     void onStartScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             final Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            switch (session.getScriptManager().getState()) {
-                case RUNNING:
-                case PAUSED:
-                    session.getScriptManager().stop();
-                    break;
-
-                case STOP:
-                    FXUtils.showModalDialog(Messages.getString("scriptOverview.title"), new ScriptOverview());
-                    break;
-
-
+            if (session.getActive()) {
+                session.getScriptSupervisor().tell(new StopEvent(null));
+            } else {
+                FXUtils.showModalDialog(Messages.getString("scriptOverview.title"), new ScriptOverview());
             }
         }
     }
@@ -214,30 +200,16 @@ public class ApplicationGUI extends AnchorPane {
             public void run() {
                 Session session = getSelectedSession();
                 if (session != null) {
-                    switch (session.getScriptManager().getState()) {
-
-                        case STOP:
-                            self.btnPause.setText(Messages.getString("mainWindow.script.pause"));
-                            self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-                            self.btnPlay.setText(Messages.getString("mainWindow.script.start"));
-                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
-                            break;
-
-                        case RUNNING:
-                            self.btnPause.setText(Messages.getString("mainWindow.script.pause"));
-                            self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-                            self.btnPlay.setText(Messages.getString("mainWindow.script.stop"));
-                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
-                            break;
-
-                        case PAUSED:
-                            self.btnPause.setText(Messages.getString("mainWindow.script.resume"));
-                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
-                            //self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/resume.png"))));
-                            self.btnPlay.setText(Messages.getString("mainWindow.script.stop"));
-                            self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
-                            break;
-
+                    if (!session.getActive()) {
+                        self.btnPause.setText(Messages.getString("mainWindow.script.pause"));
+                        self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
+                        self.btnPlay.setText(Messages.getString("mainWindow.script.start"));
+                        self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
+                    } else {
+                        self.btnPause.setText(Messages.getString("mainWindow.script.pause"));
+                        self.btnPause.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
+                        self.btnPlay.setText(Messages.getString("mainWindow.script.stop"));
+                        self.btnPlay.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/stop.png"))));
                     }
                 }
             }
@@ -261,7 +233,7 @@ public class ApplicationGUI extends AnchorPane {
         return pluginOverview;
     }
 
-    public static void setInputEnabled(boolean enabled) {
+    public static void setInput(boolean enabled) {
         self.btnToggleInput.setSelected(!enabled);
         self.onToggleInput(null);
     }

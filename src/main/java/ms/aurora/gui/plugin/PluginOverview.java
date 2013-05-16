@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
 import ms.aurora.api.plugin.Plugin;
+import ms.aurora.api.plugin.PluginManifest;
 import ms.aurora.core.Session;
 import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.core.model.PluginConfig;
@@ -91,8 +92,8 @@ public class PluginOverview extends AnchorPane {
         ObservableList<PluginModel> selected = tblPlugins.getSelectionModel().getSelectedItems();
         for (PluginModel select : selected) {
             if (select != null) {
-                Plugin plugin = select.plugin;
-                PluginConfig config = getByName(plugin.getClass().getName());
+                Class<? extends Plugin> plugin = select.plugin;
+                PluginConfig config = getByName(plugin.getName());
                 config.setEnabled(true);
                 if (config.getId() == null) {
                     config.save();
@@ -111,8 +112,8 @@ public class PluginOverview extends AnchorPane {
         ObservableList<PluginModel> selected = tblPlugins.getSelectionModel().getSelectedItems();
         for (PluginModel select : selected) {
             if (select != null) {
-                Plugin plugin = select.plugin;
-                PluginConfig config = getByName(plugin.getClass().getName());
+                Class<? extends Plugin> plugin = select.plugin;
+                PluginConfig config = getByName(plugin.getName());
                 config.setEnabled(false);
                 if (config.getId() == null) {
                     config.save();
@@ -127,7 +128,8 @@ public class PluginOverview extends AnchorPane {
 
     private static void refreshAllPlugins() {
         for (Session session : getAll()) {
-            session.refreshPlugins();
+            // TODO:
+           // session.refreshPlugins();
         }
     }
 
@@ -137,15 +139,13 @@ public class PluginOverview extends AnchorPane {
     }
 
     private ObservableList<PluginModel> rebuild() {
-        EntityLoader loader = new EntityLoader(true);
-        loader.load();
-
-        List<Plugin> plugins = loader.getPlugins();
+        List<Class<? extends Plugin>> plugins = EntityLoader.get().plugins();
         ObservableList<PluginModel> pluginModelList = observableArrayList();
         String filterName = txtName.getText().toLowerCase();
-        for (Plugin plugin : plugins) {
-            if (filterName.length() == 0 || plugin.getManifest().name().toLowerCase().contains(filterName)) {
-                pluginModelList.add(new PluginModel(plugin));
+        for (Class<? extends Plugin> plugin : plugins) {
+            PluginManifest manifest = plugin.getAnnotation(PluginManifest.class);
+            if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
+                pluginModelList.add(new PluginModel(plugin, manifest));
             }
         }
         return pluginModelList;
@@ -164,19 +164,21 @@ public class PluginOverview extends AnchorPane {
     }
 
     public static class PluginModel {
-        protected final Plugin plugin;
+        protected final Class<? extends Plugin> plugin;
+        protected final PluginManifest manifest;
         private SimpleStringProperty name;
         private SimpleStringProperty shortDesc;
         private SimpleStringProperty author;
         private SimpleBooleanProperty state;
 
-        public PluginModel(Plugin plugin) {
-            PluginConfig config = getByName(plugin.getClass().getName());
+        public PluginModel(Class<? extends Plugin> plugin, PluginManifest manifest) {
+            PluginConfig config = getByName(plugin.getName());
 
+            this.manifest = manifest;
             this.plugin = plugin;
-            this.name = new SimpleStringProperty(plugin.getManifest().name());
-            this.shortDesc = new SimpleStringProperty(plugin.getManifest().shortDescription());
-            this.author = new SimpleStringProperty(plugin.getManifest().author());
+            this.name = new SimpleStringProperty(manifest.name());
+            this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
+            this.author = new SimpleStringProperty(manifest.author());
             this.state = new SimpleBooleanProperty(config.isEnabled());
         }
 

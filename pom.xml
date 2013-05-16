@@ -8,14 +8,6 @@
     <artifactId>aurorabot</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <repositories>
-        <repository>
-            <id>repository.jboss.org-public</id>
-            <name>JBoss.org Maven repository</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
-
     <organization>
         <name>Aurora</name>
     </organization>
@@ -76,6 +68,15 @@
             <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
             <scope>system</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.10</artifactId>
+            <version>2.2-M3</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
