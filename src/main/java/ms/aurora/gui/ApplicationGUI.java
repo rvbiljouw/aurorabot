@@ -14,8 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
+import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.core.SessionRepository;
 import ms.aurora.core.model.Property;
 import ms.aurora.core.actor.ScriptEvent.Pause;
 import ms.aurora.core.actor.ScriptEvent.Stop;
@@ -96,7 +96,7 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onPauseScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
-            Session session = SessionRepository.get(getSelectedApplet().hashCode());
+            Session session = Repository.get(getSelectedApplet().hashCode());
             session.getScriptSupervisor().tell(new Pause(null));
         }
         update();
@@ -121,7 +121,7 @@ public class ApplicationGUI extends AnchorPane {
     @FXML
     void onStartScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
-            final Session session = SessionRepository.get(getSelectedApplet().hashCode());
+            final Session session = Repository.get(getSelectedApplet().hashCode());
             if (session.getActive()) {
                 session.getScriptSupervisor().tell(new Stop(null));
             } else {
@@ -220,7 +220,7 @@ public class ApplicationGUI extends AnchorPane {
         Tab tab = self.tabPane.getSelectionModel().getSelectedItem();
         if (tab != null && tab.getContent() instanceof AppletWidget) {
             if (((AppletWidget) tab.getContent()).getApplet() != null)
-                return SessionRepository.get(((AppletWidget) tab.getContent()).getApplet().hashCode());
+                return Repository.get(((AppletWidget) tab.getContent()).getApplet().hashCode());
         }
         return null;
     }

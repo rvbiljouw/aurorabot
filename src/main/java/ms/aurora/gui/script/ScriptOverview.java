@@ -15,8 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.Messages;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
+import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.core.SessionRepository;
 import ms.aurora.core.actor.ScriptEvent;
 import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.gui.dialog.AccountSelectDialog;
@@ -81,7 +81,7 @@ public class ScriptOverview extends AnchorPane {
     @FXML
     void onOk(ActionEvent event) {
         final ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
-        final Session session = SessionRepository.get(getSelectedApplet().hashCode());
+        final Session session = Repository.get(getSelectedApplet().hashCode());
         if (session != null && model != null) {
             final AccountSelectDialog selector = new AccountSelectDialog();
             selector.setCallback(new Callback() {

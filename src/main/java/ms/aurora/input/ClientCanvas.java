@@ -2,8 +2,8 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.core.SessionRepository;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -50,7 +50,7 @@ public class ClientCanvas extends Canvas {
 
     private void dispatchEvent(Graphics g) {
         if (session == null) {
-            session = SessionRepository.get(getParent().hashCode());
+            session = Repository.get(getParent().hashCode());
         } else {
             session.getPaintManager().onRepaint(g);
         }

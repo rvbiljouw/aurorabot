@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
-import static ms.aurora.core.SessionRepository.getAll;
+import static ms.aurora.core.Repository.getAll;
 import static ms.aurora.core.model.PluginConfig.getByName;
 
 /**

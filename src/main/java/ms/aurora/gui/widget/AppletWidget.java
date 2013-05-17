@@ -12,8 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
 import ms.aurora.Messages;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.core.SessionRepository;
 import ms.aurora.gui.ApplicationGUI;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static ms.aurora.core.SessionRepository.get;
+import static ms.aurora.core.Repository.get;
 
 /**
  * @author Rick
@@ -53,7 +53,7 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         getTab().setOnClosed(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                Session mySession = SessionRepository.get(applet.hashCode());
+                Session mySession = Repository.get(applet.hashCode());
                 if (mySession != null) {
                     // TODO
                     //mySession.
@@ -132,7 +132,7 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     public void update() {
         if(applet == null) return;
 
-        Session session = SessionRepository.get(applet.hashCode());
+        Session session = Repository.get(applet.hashCode());
         if (session != null && session.getAccount() != null) {
             getTab().setText(session.getName());
         }
