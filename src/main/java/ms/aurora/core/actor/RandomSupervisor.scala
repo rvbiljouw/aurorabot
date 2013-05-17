@@ -6,6 +6,7 @@ import ms.aurora.api.random.Random
 import ms.aurora.core.entity.EntityLoader.get
 import scala.collection.JavaConversions._
 import org.apache.log4j.Logger
+import ms.aurora.core.actor.RandomEvent.TickEvent
 
 /**
  * Actor responsible for dealing with random events
@@ -34,4 +35,8 @@ class RandomSupervisor(parent: Session) extends Actor {
   }
 }
 
-case class TickEvent()
+object RandomEvent {
+
+  case class TickEvent()
+
+}

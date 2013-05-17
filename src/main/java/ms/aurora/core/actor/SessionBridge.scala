@@ -4,7 +4,6 @@ import akka.actor.Actor
 
 import scala.concurrent.duration._
 import org.apache.log4j.Logger
-import ms.aurora.core.actor.TickEvent
 import ms.aurora.core.Session
 
 /**
@@ -25,13 +24,13 @@ class SessionBridge(session: Session) extends Actor {
   }
 
   def receive: Actor.Receive = {
-    case TickResult(time) => lastDelay = time
+    case ScriptEvent.TickResult(time) => lastDelay = time
     case Heartbeat() => heartbeat()
   }
 
   def heartbeat() {
     if ((System.currentTimeMillis() - lastTick) >= lastDelay) {
-      session.getScriptSupervisor ! TickEvent()
+      session.getScriptSupervisor ! ScriptEvent.Tick()
       lastTick = System.currentTimeMillis()
     }
   }

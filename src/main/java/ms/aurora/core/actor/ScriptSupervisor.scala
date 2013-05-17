@@ -16,6 +16,7 @@ import scala.collection.mutable
 import ms.aurora.api.script.ScriptState._
 import ms.aurora.api.script.ScriptState
 import ms.aurora.core.Session
+import ms.aurora.core.actor.ScriptEvent._
 
 /**
  * An Akka supervisor for all script tasks.
@@ -26,12 +27,12 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
   var running = false
 
   def receive = {
-    case StartEvent(clazz) => sender ! startScript(clazz)
-    case PauseEvent(clazz) => sender ! pauseScript(clazz)
-    case ResumeEvent(clazz) => sender ! resumeScript(clazz)
-    case StopEvent(clazz) => sender ! stopScript(clazz)
-    case TickEvent() => sender ! tick()
-      parent.active = isActive
+    case Start(clazz) => sender ! startScript(clazz)
+    case Pause(clazz) => sender ! pauseScript(clazz)
+    case Resume(clazz) => sender ! resumeScript(clazz)
+    case Stop(clazz) => sender ! stopScript(clazz)
+    case Tick() => sender ! tick()
+    parent.active = isActive
   }
 
   /**
@@ -137,16 +138,21 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
 
 }
 
-case class StateTransition(state: ScriptResult, reason: String = "")
 
-case class StartEvent(scriptClass: Class[_ <: Script])
+object ScriptEvent {
 
-case class PauseEvent(scriptClass: Class[_ <: Script])
+  case class StateTransition(state: ScriptResult, reason: String = "")
 
-case class StopEvent(scriptClass: Class[_ <: Script])
+  case class Start(scriptClass: Class[_ <: Script])
 
-case class ResumeEvent(ScriptClass: Class[_ <: Script])
+  case class Pause(scriptClass: Class[_ <: Script])
 
-case class TickResult(until: Int)
+  case class Stop(scriptClass: Class[_ <: Script])
 
-case class TickEvent()
+  case class Resume(ScriptClass: Class[_ <: Script])
+
+  case class TickResult(until: Int)
+
+  case class Tick()
+
+}
