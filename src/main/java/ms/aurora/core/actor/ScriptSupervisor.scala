@@ -90,7 +90,6 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
       StateTransition(Failed, "Non-running scripts " +
         "cannot be resumed")
     } else {
-
       val instance = active(scriptClass)
       instance.setState(RUNNING)
       StateTransition(Resumed)
@@ -126,10 +125,9 @@ class ScriptSupervisor(parent: Session) extends Actor with ActorLogging {
    *         tick should placed.
    */
   def tick(): TickResult = {
-    var timeUntilNextRun = 100 // Base time
-    active.foreach(entry =>
-      timeUntilNextRun += entry._2.tick())
-    TickResult(timeUntilNextRun)
+    val baseTime = 100 // Base time
+    val timeUntilNextRun = active.map(e => e._2.tick()).sum
+    TickResult(baseTime + timeUntilNextRun)
   }
 
   def isActive: Boolean = {
