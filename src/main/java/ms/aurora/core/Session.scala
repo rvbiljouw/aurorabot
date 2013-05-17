@@ -5,11 +5,11 @@ import scala.beans.BeanProperty
 import ms.aurora.loader.ClientManager
 import org.apache.log4j.Logger
 import akka.actor.{ActorSystem, Actor, ActorRef, Props}
-import ms.aurora.core.script.{StateTransition, TickEvent, ScriptSupervisor}
 import ms.aurora.gui.ApplicationGUI
 import ms.aurora.event.PaintManager
 import javafx.scene.control.Menu
 import ms.aurora.core.model.Account
+import ms.aurora.core.actor.{SessionBridge, ScriptSupervisor}
 
 /**
  * Represents one client session

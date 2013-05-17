@@ -1,11 +1,16 @@
-package ms.aurora.core
+package ms.aurora.core.actor
 
 import akka.actor.Actor
-import ms.aurora.core.script.{TickEvent, TickResult}
 
 import scala.concurrent.duration._
 import org.apache.log4j.Logger
+import ms.aurora.core.actor.TickEvent
+import ms.aurora.core.Session
+
 /**
+ * An actor responsible for managing the extensions of a Session
+ * Things like script ticks and randoms are handled here.
+ * The default interval for processing is 250ms.
  * @author rvbiljouw
  */
 class SessionBridge(session: Session) extends Actor {
@@ -30,7 +35,6 @@ class SessionBridge(session: Session) extends Actor {
       lastTick = System.currentTimeMillis()
     }
   }
-
 }
 
 case class Heartbeat()

@@ -1,4 +1,4 @@
-package ms.aurora.core.script
+package ms.aurora.core.actor
 
 /**
  * Enum for state transition responses
