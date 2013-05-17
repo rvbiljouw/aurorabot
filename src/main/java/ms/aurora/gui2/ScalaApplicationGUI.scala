@@ -7,7 +7,6 @@ import javafx.scene.control.{ToggleButton, TabPane}
 import ms.aurora.event.GlobalEventQueue.blocking
 import ms.aurora.core.{Repository, Session}
 import ms.aurora.gui.widget.AppletWidget
-import ms.aurora.gui2.widget.ScalaAppletWidget
 
 /**
  * The main application GUI controller
@@ -19,8 +18,9 @@ class ScalaApplicationGUI extends AnchorPane {
   @FXML var tabPane: TabPane = null
 
   def onNewSession() {
-    val widget = new ScalaAppletWidget(this)
-    val group = new ThreadGroup("group")
+    val session = new Session(new ThreadGroup("group"),
+      new AppletWidget(this))
+    new Thread(session).start()
   }
 
   def onStartScript() {
