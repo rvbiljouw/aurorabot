@@ -17,8 +17,8 @@ import ms.aurora.Messages;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
 import ms.aurora.core.model.Property;
-import ms.aurora.core.script.PauseEvent;
-import ms.aurora.core.script.StopEvent;
+import ms.aurora.core.actor.ScriptEvent.Pause;
+import ms.aurora.core.actor.ScriptEvent.Stop;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.config.Properties;
@@ -97,7 +97,7 @@ public class ApplicationGUI extends AnchorPane {
     void onPauseScript(ActionEvent evt) {
         if (getSelectedApplet() != null) {
             Session session = SessionRepository.get(getSelectedApplet().hashCode());
-            session.getScriptSupervisor().tell(new PauseEvent(null));
+            session.getScriptSupervisor().tell(new Pause(null));
         }
         update();
     }
@@ -123,7 +123,7 @@ public class ApplicationGUI extends AnchorPane {
         if (getSelectedApplet() != null) {
             final Session session = SessionRepository.get(getSelectedApplet().hashCode());
             if (session.getActive()) {
-                session.getScriptSupervisor().tell(new StopEvent(null));
+                session.getScriptSupervisor().tell(new Stop(null));
             } else {
                 FXUtils.showModalDialog(Messages.getString("scriptOverview.title"), new ScriptOverview());
             }

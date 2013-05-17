@@ -17,8 +17,8 @@ import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.core.Session;
 import ms.aurora.core.SessionRepository;
+import ms.aurora.core.actor.ScriptEvent;
 import ms.aurora.core.entity.EntityLoader;
-import ms.aurora.core.script.StartEvent;
 import ms.aurora.gui.dialog.AccountSelectDialog;
 import ms.aurora.gui.dialog.Callback;
 
@@ -87,7 +87,7 @@ public class ScriptOverview extends AnchorPane {
             selector.setCallback(new Callback() {
                 @Override
                 public void call() {
-                    session.getScriptSupervisor().tell(new StartEvent(model.script),
+                    session.getScriptSupervisor().tell(new ScriptEvent.Start(model.script),
                             session.getSessionBridge());
                     getScene().getWindow().hide();
                 }
