@@ -37,11 +37,6 @@ class Session(group: ThreadGroup, ui: AppletWidget) extends Runnable {
       Props(classOf[SessionBridge], this))
   }
 
-  def receive: Actor.Receive = {
-    case StateTransition(state, reason) =>
-      println("State transition: " + state + " Reason: " + reason)
-  }
-
   def getThreadGroup = group
 
   def getActive = active
