@@ -14,6 +14,7 @@ import ms.aurora.core.model.Property;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.ApplicationGUI;
 import ms.aurora.gui.sdn.LoginWindow;
+import ms.aurora.gui2.ScalaApplicationGUI;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.sdn.net.api.Hooks;
 import ms.aurora.sdn.net.api.Maps;
@@ -86,7 +87,7 @@ public final class Application {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        Scene scene = new Scene(new ApplicationGUI());
+                        Scene scene = new Scene(new ScalaApplicationGUI());
                         scene.getStylesheets().add(Messages.getString("gui.theme"));
                         panel.setScene(scene);
                         synchronized (initialisation_lock) {

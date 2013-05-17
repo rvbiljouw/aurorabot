@@ -1,6 +1,7 @@
 package ms.aurora.core
 
 import scala.collection.mutable
+import java.lang.Thread.currentThread
 
 
 /**
@@ -15,8 +16,14 @@ object Repository {
 
   def get(threadGroup: ThreadGroup): Session = instancesPerGroup(threadGroup)
 
-  def set(hashCode: Int, instance: Session) { instancesPerHash += (hashCode -> instance) }
+  def set(group: ThreadGroup, instance: Session) = instancesPerGroup += (group -> instance)
 
-  def set(group: ThreadGroup, instance: Session) { instancesPerGroup += (group -> instance) }
+  def set(hashCode: Int, instance: Session) {
+    val group = currentThread().getThreadGroup
+    instancesPerHash += (hashCode -> instance)
+    instancesPerGroup += (group -> instance)
+  }
+
+  def all(): Iterable[Session] = instancesPerHash.values
 
 }

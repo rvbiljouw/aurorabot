@@ -1,12 +1,16 @@
 package ms.aurora.gui.util;
 
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.Messages;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author rvbiljouw
@@ -49,6 +53,17 @@ public class FXUtils {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    public static void load(URL resource, Parent object) {
+        FXMLLoader fxmlLoader = new FXMLLoader(resource, Messages.getBundle());
+        fxmlLoader.setRoot(object);
+        fxmlLoader.setController(object);
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException("Loading failed", e);
+        }
     }
 
 }
