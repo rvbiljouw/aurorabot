@@ -102,16 +102,13 @@ public class ScriptOverview extends AnchorPane {
     }
 
     private ObservableList<ScriptModel> rebuild() {
-        EntityLoader loader = new EntityLoader(true);
-        loader.load();
-
-        List<Script> scripts = loader.getScripts();
+        List<Script> scripts = EntityLoader.get().getScripts();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
         String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
         String filterName = txtName.getText().toLowerCase();
 
         for (Script script : scripts) {
-            if (selectedCategory.equals(Messages.getString("scriptOverview.all")) || selectedCategory.equals(script.getManifest().category())) {
+            if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all")) || selectedCategory.equals(script.getManifest().category())) {
                 if (filterName.length() == 0 || script.getManifest().name().toLowerCase().contains(filterName)) {
                     scriptModelList.add(new ScriptModel(script));
                 }

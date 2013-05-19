@@ -1,4 +1,4 @@
-package ms.aurora.loader2.impl
+package ms.aurora.loader.impl
 
 import org.apache.log4j.Logger
 import java.net.URL

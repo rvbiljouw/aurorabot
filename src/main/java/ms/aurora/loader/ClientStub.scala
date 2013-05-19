@@ -1,4 +1,4 @@
-package ms.aurora.loader2
+package ms.aurora.loader
 
 import java.applet.{AppletContext, AppletStub}
 import java.net.URL

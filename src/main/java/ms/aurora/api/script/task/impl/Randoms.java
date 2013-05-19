@@ -7,7 +7,6 @@ import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
-import ms.aurora.core.entity.EntityLoader;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Thread.currentThread;
-import static ms.aurora.api.Context.getSession;
+import static ms.aurora.api.Context.get;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -36,7 +35,7 @@ public class Randoms extends PassiveTask {
     };
 
     public Randoms () {
-        randoms.addAll(getSession().getEntityLoader().getRandoms());
+        randoms.addAll(get().getSession().getEntityLoader().getRandoms());
         randoms.addAll(Arrays.asList(RANDOMS));
     }
 
@@ -49,7 +48,7 @@ public class Randoms extends PassiveTask {
     public int execute() {
         for (Random random : randoms) {
 
-            random.setSession(getSession());
+            random.setSession(get().getSession());
             if (random.getClass().getAnnotation(AfterLogin.class) != null &&
                     !Context.isLoggedIn()) continue;
 

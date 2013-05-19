@@ -20,8 +20,8 @@ public class Context {
     private ThreadGroup threadGroup;
     private Session session;
 
-    public static Session getSession() {
-        return get().session;
+    public Session getSession() {
+        return session;
     }
 
     public final void setSession(Session session) {
@@ -65,6 +65,7 @@ public class Context {
         if (contextMap.containsKey(tg)) {
             return contextMap.get(tg);
         }
+        logger.info("ThreadGroup not registered " + tg.getName());
         return null;
     }
 
@@ -101,6 +102,6 @@ public class Context {
     }
 
     public static boolean isActive() {
-        return getSession().getScriptManager().getState() != ScriptState.STOP;
+        return get().getSession().getScriptManager().getState() != ScriptState.STOP;
     }
 }

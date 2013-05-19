@@ -1,4 +1,4 @@
-package ms.aurora.loader2
+package ms.aurora.loader
 
 import ms.aurora.browser.Browser
 import ms.aurora.browser.ContextBuilder.get

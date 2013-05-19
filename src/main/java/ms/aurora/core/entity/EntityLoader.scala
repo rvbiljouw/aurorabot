@@ -11,6 +11,8 @@ import org.apache.log4j.Logger
 import java.util.jar.JarFile
 import scala.collection.JavaConversions.JEnumerationWrapper
 import java.net.URLClassLoader
+import ms.aurora.api.plugin.internal.{InterfacePlugin, TileUtilities, PaintDebug}
+import scala.beans.BeanProperty
 
 /**
  * Loads classes from database-specified source folders
@@ -27,6 +29,10 @@ class EntityLoader(recursive: Boolean) {
     randoms.clear()
     plugins.clear()
     scripts.clear()
+
+    plugins.add(new PaintDebug())
+    plugins.add(new TileUtilities())
+    plugins.add(new InterfacePlugin())
   }
 
   def load() {
@@ -66,7 +72,7 @@ class EntityLoader(recursive: Boolean) {
       logger.info("Malformed class: " + clazz.getName)
     } else {
       clazz.getSuperclass match {
-        case s if s.eq(classOf[Script]) => {
+        case s if classOf[Script].isAssignableFrom(clazz) => {
           val i = clazz.newInstance
           if (i != null) {
             scripts.add(i.asInstanceOf[Script])
@@ -103,5 +109,16 @@ class EntityLoader(recursive: Boolean) {
   def getScripts = scripts
 
   def getRandoms = randoms
+
+}
+
+object EntityLoader {
+  private val instance = new EntityLoader(true)
+
+  def get: EntityLoader = {
+    instance.clear()
+    instance.load()
+    instance
+  }
 
 }

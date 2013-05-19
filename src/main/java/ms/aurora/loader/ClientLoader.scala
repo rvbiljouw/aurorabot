@@ -1,4 +1,4 @@
-package ms.aurora.loader2
+package ms.aurora.loader
 
 import java.applet.Applet
 import scala.beans.BeanProperty
@@ -60,7 +60,7 @@ class ClientLoader(config: ClientConfig) {
   private def establishJarConnection(config: ClientConfig): JarURLConnection = {
     val docBase = config.getDocumentBase
     val archive = config.getArchiveName
-    new URL("jar:" + docBase + "/" + archive + "!/")
+    new URL("jar:" + docBase + archive + "!/")
       .openConnection().asInstanceOf[JarURLConnection]
   }
 

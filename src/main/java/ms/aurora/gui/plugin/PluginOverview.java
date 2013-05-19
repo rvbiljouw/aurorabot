@@ -134,15 +134,14 @@ public class PluginOverview extends AnchorPane {
     }
 
     private ObservableList<PluginModel> rebuild() {
-        EntityLoader loader = new EntityLoader(true);
-        loader.load();
-
-        List<Plugin> plugins = loader.getPlugins();
+        List<Plugin> plugins = EntityLoader.get().getPlugins();
         ObservableList<PluginModel> pluginModelList = observableArrayList();
         String filterName = txtName.getText().toLowerCase();
         for (Plugin plugin : plugins) {
             if (filterName.length() == 0 || plugin.getManifest().name().toLowerCase().contains(filterName)) {
                 pluginModelList.add(new PluginModel(plugin));
+            } else {
+                System.out.println("wot yo nigger");
             }
         }
         return pluginModelList;

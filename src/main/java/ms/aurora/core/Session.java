@@ -11,7 +11,7 @@ import ms.aurora.core.plugin.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
 import ms.aurora.gui.widget.AppletWidget;
-import ms.aurora.loader.AppletLoader;
+import ms.aurora.loader.ClientWrapper;
 
 import java.applet.Applet;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,8 +25,9 @@ import static ms.aurora.gui.ApplicationGUI.update;
 public final class Session implements Runnable {
     private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
     private final PaintManager paintManager = new PaintManager(this);
+    private final ClientWrapper wrapper = new ClientWrapper();
     private final ThreadGroup threadGroup;
-    private EntityLoader entityLoader;
+    private EntityLoader entityLoader = EntityLoader.get();
     private ScriptManager scriptManager;
     private PluginManager pluginManager;
     private AppletWidget container;
@@ -40,11 +41,9 @@ public final class Session implements Runnable {
 
     @Override
     public void run() {
-        AppletLoader loader = new AppletLoader();
-        loader.run();
-
-        if (loader.getApplet() != null) {
-            applet = loader.getApplet();
+        wrapper.start();
+        if (wrapper.getApplet() != null) {
+            applet = wrapper.getApplet();
             set(applet.hashCode(), this);
             container.setApplet(applet);
             initComponents();
@@ -59,16 +58,21 @@ public final class Session implements Runnable {
     }
 
     public void refreshPlugins() {
-        for (Plugin plugin : entityLoader.getPlugins()) {
-            PluginConfig config = PluginConfig.getByName(
-                    plugin.getClass().getName());
-            pluginManager.stop(plugin.getClass());
-            if (config.isEnabled()) {
-                pluginManager.start(plugin.getClass());
-            } else {
-                pluginManager.stop(plugin.getClass());
+        invoke(new Runnable() {
+            @Override
+            public void run() {
+                for (Plugin plugin : entityLoader.getPlugins()) {
+                    PluginConfig config = PluginConfig.getByName(
+                            plugin.getClass().getName());
+                    pluginManager.stop(plugin.getClass());
+                    if (config.isEnabled()) {
+                        pluginManager.start(plugin.getClass());
+                    } else {
+                        pluginManager.stop(plugin.getClass());
+                    }
+                }
             }
-        }
+        });
     }
 
     public void registerMenu(final Menu menu) {
@@ -146,5 +150,9 @@ public final class Session implements Runnable {
 
     public EntityLoader getEntityLoader() {
         return entityLoader;
+    }
+
+    private void invoke(Runnable runnable) {
+        new Thread(threadGroup, runnable).start();
     }
 }
