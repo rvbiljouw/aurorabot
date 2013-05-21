@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?scenebuilder-stylesheet ../../../../soft-responsive.css?>
+<?scenebuilder-stylesheet ../../../../modena2.css?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.net.URL?>
@@ -23,10 +23,10 @@
       </Label>
     </children>
     <stylesheets>
-      <URL value="@../../../../soft-responsive.css" />
+      <URL value="@../../../../modena2.css" />
     </stylesheets>
   </AnchorPane>
   <stylesheets>
-    <URL value="@../../../../soft-responsive.css" />
+    <URL value="@../../../../modena2.css" />
   </stylesheets>
 </fx:root>

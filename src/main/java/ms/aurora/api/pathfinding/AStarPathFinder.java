@@ -3,7 +3,6 @@ package ms.aurora.api.pathfinding;
 import ms.aurora.api.Context;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
 import ms.aurora.api.pathfinding.impl.RSRegion;
-import ms.aurora.api.script.ScriptState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +57,7 @@ public class AStarPathFinder {
     }
 
     public Path findPath(int sx, int sy, int tx, int ty, int full) {
-        if (Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
+        if (!Context.isActive()) {
             System.out.println("Stack dropped...");
             for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
                 System.out.println(element.getClassName() + "." + element.getMethodName() + " " + element.getLineNumber());
@@ -123,7 +122,7 @@ public class AStarPathFinder {
         //System.out.println("Starting the search.");
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
-            if (Context.get().getSession().getScriptManager().getState() != ScriptState.RUNNING) {
+            if (!Context.isActive()) {
                 break;
             }
 

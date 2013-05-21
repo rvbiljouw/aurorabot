@@ -10,12 +10,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import ms.aurora.Messages;
 import ms.aurora.api.plugin.Plugin;
+import ms.aurora.api.plugin.PluginManifest;
 import ms.aurora.core.Session;
-import ms.aurora.core.entity.EntityLoader;
 import ms.aurora.core.model.PluginConfig;
+import ms.aurora.core.script.EntityLoader;
+import ms.aurora.gui.Dialog;
+import ms.aurora.gui.Messages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
-import static ms.aurora.core.SessionRepository.getAll;
+import static ms.aurora.core.Repository.getAll;
 import static ms.aurora.core.model.PluginConfig.getByName;
 
 /**
@@ -33,28 +34,21 @@ import static ms.aurora.core.model.PluginConfig.getByName;
  * Time: 10:56
  * To change this template use File | Settings | File Templates.
  */
-public class PluginOverview extends AnchorPane {
+public class PluginOverview extends Dialog {
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private TableView<PluginModel> tblPlugins;
-
     @FXML
     private TableColumn<PluginModel, String> colAuthor;
-
     @FXML
     private TableColumn<PluginModel, String> colName;
-
     @FXML
     private TableColumn<PluginModel, String> colShortDesc;
-
     @FXML
     private TableColumn<PluginModel, Boolean> colState;
-
     @FXML
     private TextField txtName;
 
@@ -68,6 +62,12 @@ public class PluginOverview extends AnchorPane {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
+        }
+    }
+
+    private static void refreshAllPlugins() {
+        for (Session session : getAll()) {
+            session.getPluginManager().refresh();
         }
     }
 
@@ -88,8 +88,8 @@ public class PluginOverview extends AnchorPane {
         ObservableList<PluginModel> selected = tblPlugins.getSelectionModel().getSelectedItems();
         for (PluginModel select : selected) {
             if (select != null) {
-                Plugin plugin = select.plugin;
-                PluginConfig config = getByName(plugin.getClass().getName());
+                Class<? extends Plugin> plugin = select.plugin;
+                PluginConfig config = getByName(plugin.getName());
                 config.setEnabled(true);
                 if (config.getId() == null) {
                     config.save();
@@ -102,14 +102,13 @@ public class PluginOverview extends AnchorPane {
         tblPlugins.setItems(rebuild());
     }
 
-
     @FXML
     void disableAction(ActionEvent event) {
         ObservableList<PluginModel> selected = tblPlugins.getSelectionModel().getSelectedItems();
         for (PluginModel select : selected) {
             if (select != null) {
-                Plugin plugin = select.plugin;
-                PluginConfig config = getByName(plugin.getClass().getName());
+                Class<? extends Plugin> plugin = select.plugin;
+                PluginConfig config = getByName(plugin.getName());
                 config.setEnabled(false);
                 if (config.getId() == null) {
                     config.save();
@@ -122,24 +121,19 @@ public class PluginOverview extends AnchorPane {
         tblPlugins.setItems(rebuild());
     }
 
-    private static void refreshAllPlugins() {
-        for (Session session : getAll()) {
-            session.refreshPlugins();
-        }
-    }
-
     @FXML
     void onSearch(ActionEvent event) {
         tblPlugins.setItems(rebuild());
     }
 
     private ObservableList<PluginModel> rebuild() {
-        List<Plugin> plugins = EntityLoader.get().getPlugins();
+        List<Class<? extends Plugin>> plugins = EntityLoader.getPlugins();
         ObservableList<PluginModel> pluginModelList = observableArrayList();
         String filterName = txtName.getText().toLowerCase();
-        for (Plugin plugin : plugins) {
-            if (filterName.length() == 0 || plugin.getManifest().name().toLowerCase().contains(filterName)) {
-                pluginModelList.add(new PluginModel(plugin));
+        for (Class<? extends Plugin> plugin : plugins) {
+            PluginManifest manifest = plugin.getAnnotation(PluginManifest.class);
+            if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
+                pluginModelList.add(new PluginModel(plugin, manifest));
             } else {
                 System.out.println("wot yo nigger");
             }
@@ -149,8 +143,6 @@ public class PluginOverview extends AnchorPane {
 
     @FXML
     void initialize() {
-        assert tblPlugins != null : "fx:id=\"tblPlugins\" was not injected: check your FXML file 'ScriptOverview.fxml'.";
-        assert txtName != null : "fx:id=\"txtName\" was not injected: check your FXML file 'ScriptOverview.fxml'.";
         colName.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("name"));
         colShortDesc.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("shortDesc"));
         colAuthor.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("author"));
@@ -159,20 +151,28 @@ public class PluginOverview extends AnchorPane {
         tblPlugins.setItems(rebuild());
     }
 
+    @Override
+    public String getTitle() {
+        return Messages.getString("pluginOverview.title");
+    }
+
     public static class PluginModel {
-        protected final Plugin plugin;
+        protected final Class<? extends Plugin> plugin;
+        protected final PluginManifest manifest;
         private SimpleStringProperty name;
         private SimpleStringProperty shortDesc;
         private SimpleStringProperty author;
         private SimpleBooleanProperty state;
 
-        public PluginModel(Plugin plugin) {
+        public PluginModel(Class<? extends Plugin> plugin, PluginManifest manifest) {
             PluginConfig config = getByName(plugin.getClass().getName());
 
             this.plugin = plugin;
-            this.name = new SimpleStringProperty(plugin.getManifest().name());
-            this.shortDesc = new SimpleStringProperty(plugin.getManifest().shortDescription());
-            this.author = new SimpleStringProperty(plugin.getManifest().author());
+            this.manifest = manifest;
+
+            this.name = new SimpleStringProperty(manifest.name());
+            this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
+            this.author = new SimpleStringProperty(manifest.author());
             this.state = new SimpleBooleanProperty(config.isEnabled());
         }
 

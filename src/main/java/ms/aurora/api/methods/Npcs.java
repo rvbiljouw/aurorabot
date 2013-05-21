@@ -1,6 +1,5 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSNPC;
@@ -52,7 +51,7 @@ public final class Npcs {
         List<RSNPC> validNPCs = new ArrayList<RSNPC>();
         for(Npc npc : getClient().getAllNpcs()) {
             if(npc != null) {
-                validNPCs.add(new RSNPC(Context.get(), npc));
+                validNPCs.add(new RSNPC(npc));
             }
         }
         return validNPCs.toArray(new RSNPC[validNPCs.size()]);

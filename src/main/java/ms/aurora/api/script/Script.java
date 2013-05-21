@@ -14,7 +14,7 @@ public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
     private final EventBus eventBus = new EventBus();
     private final TaskQueue taskQueue = new TaskQueue(this);
-    private Thread taskQueueThread = new Thread(taskQueue);
+    private Thread taskQueueThread;
     private ScriptState state = ScriptState.START;
     private Randoms randoms;
 
@@ -39,6 +39,10 @@ public abstract class Script extends Context implements Runnable {
         logger.error(message, t);
     }
 
+    public final synchronized ScriptState getState() {
+        return this.state;
+    }
+
     public final synchronized void setState(ScriptState state) {
         switch (state) {
             case PAUSED:
@@ -53,10 +57,6 @@ public abstract class Script extends Context implements Runnable {
                 break;
         }
         this.state = state;
-    }
-
-    public final synchronized ScriptState getState() {
-        return this.state;
     }
 
     public void onPause() {
@@ -118,7 +118,8 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private void init() {
-        if (!taskQueueThread.isAlive()) {
+        if (taskQueueThread == null || !taskQueueThread.isAlive()) {
+            taskQueueThread = new Thread(getSession().getThreadGroup(), taskQueue);
             if (this instanceof PaintListener) {
                 getSession().getPaintManager().register((PaintListener) this);
             }
@@ -131,6 +132,7 @@ public abstract class Script extends Context implements Runnable {
     private void cleanup() {
         if (this instanceof PaintListener) {
             getSession().getPaintManager().deregister((PaintListener) this);
+            getSession().getScriptManager().stop();
         }
         taskQueue.remove(randoms);
         taskQueue.destruct();

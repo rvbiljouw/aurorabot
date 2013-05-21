@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Thread.currentThread;
-import static ms.aurora.api.Context.get;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -35,7 +34,6 @@ public class Randoms extends PassiveTask {
     };
 
     public Randoms () {
-        randoms.addAll(get().getSession().getEntityLoader().getRandoms());
         randoms.addAll(Arrays.asList(RANDOMS));
     }
 
@@ -47,11 +45,8 @@ public class Randoms extends PassiveTask {
     @Override
     public int execute() {
         for (Random random : randoms) {
-
-            random.setSession(get().getSession());
             if (random.getClass().getAnnotation(AfterLogin.class) != null &&
                     !Context.isLoggedIn()) continue;
-
 
             try {
                 while (random.activate() && !currentThread().isInterrupted()) {

@@ -1,6 +1,5 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.Context;
 import ms.aurora.rt3.Npc;
 
 /**
@@ -9,8 +8,8 @@ import ms.aurora.rt3.Npc;
 public final class RSNPC extends RSCharacter {
     private final Npc wrapped;
 
-    public RSNPC(Context context, ms.aurora.rt3.Npc wrapped) {
-        super(context, wrapped);
+    public RSNPC(Npc wrapped) {
+        super(wrapped);
         this.wrapped = wrapped;
     }
 

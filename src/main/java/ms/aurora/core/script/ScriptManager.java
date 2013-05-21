@@ -5,7 +5,7 @@ import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
 import ms.aurora.core.script.exception.NoScriptRunningException;
 import ms.aurora.core.script.exception.ScriptAlreadyRunningException;
-import ms.aurora.gui.ApplicationGUI;
+import ms.aurora.gui.Main;
 
 public final class ScriptManager {
     private final Session session;
@@ -16,16 +16,19 @@ public final class ScriptManager {
         this.session = session;
     }
 
-    public void start(Script script) {
+    public void start(Class<? extends Script> scriptClass) {
         if (!hasScript()) {
-            currentThread = new Thread(session.getThreadGroup(), script);
-            currentScript = script;
-            currentScript.setSession(session);
-            currentScript.setState(ScriptState.START);
-            currentThread.start();
+            try {
+                Script script = scriptClass.newInstance();
+                currentThread = new Thread(session.getThreadGroup(), script);
+                currentScript = script;
+                currentScript.setState(ScriptState.START);
+                currentThread.start();
 
-            ApplicationGUI.setInputEnabled(false);
-            ApplicationGUI.update();
+                Main.setInputEnabled(false);
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         } else {
             throw new ScriptAlreadyRunningException(currentScript);
         }
@@ -35,8 +38,7 @@ public final class ScriptManager {
         if (hasScript()) {
             currentScript.setState(ScriptState.PAUSED);
 
-            ApplicationGUI.setInputEnabled(true);
-            ApplicationGUI.update();
+            Main.setInputEnabled(true);
         } else {
             throw new NoScriptRunningException();
         }
@@ -46,8 +48,7 @@ public final class ScriptManager {
         if (hasScript()) {
             currentScript.setState(ScriptState.RUNNING);
 
-            ApplicationGUI.setInputEnabled(false);
-            ApplicationGUI.update();
+            Main.setInputEnabled(false);
         } else {
             throw new NoScriptRunningException();
         }
@@ -63,8 +64,7 @@ public final class ScriptManager {
         currentThread = null;
         currentScript = null;
 
-        ApplicationGUI.setInputEnabled(true);
-        ApplicationGUI.update();
+        Main.setInputEnabled(true);
     }
 
     private boolean hasScript() {

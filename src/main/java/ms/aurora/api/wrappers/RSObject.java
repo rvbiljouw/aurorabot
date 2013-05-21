@@ -21,18 +21,13 @@ import static ms.aurora.api.methods.Menu.containsPred;
  */
 public final class RSObject implements Locatable, Interactable {
     private static final Logger logger = Logger.getLogger(RSObject.class);
-    private final Context ctx;
     private final GameObject wrapped;
-
     private ObjectType objectType = ObjectType.NULL;
     private RSModel cachedModel;
     private int localX;
     private int localY;
 
-    public static enum ObjectType {GROUND_DECORATION, WALL_DECORATION, WALL_OBJECT, ANIMABLE, NULL}
-
-    public RSObject(Context ctx, GameObject wrapped, int localX, int localY) {
-        this.ctx = ctx;
+    public RSObject(GameObject wrapped, int localX, int localY) {
         this.wrapped = wrapped;
         this.localX = localX;
         this.localY = localY;
@@ -171,4 +166,6 @@ public final class RSObject implements Locatable, Interactable {
     public String toString() {
         return getId() + " | " + (wrapped instanceof GroundDecoration ? 0 : wrapped.getOrientation());
     }
+
+    public static enum ObjectType {GROUND_DECORATION, WALL_DECORATION, WALL_OBJECT, ANIMABLE, NULL}
 }

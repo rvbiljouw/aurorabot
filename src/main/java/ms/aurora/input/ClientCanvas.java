@@ -2,13 +2,14 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
+import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.core.SessionRepository;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static ms.aurora.api.Context.get;
+import static ms.aurora.api.Context.getSession;
+
 
 /**
  * A canvas that will be extended by the RuneScape client.
@@ -20,13 +21,11 @@ import static ms.aurora.api.Context.get;
  */
 public class ClientCanvas extends Canvas {
     private static final long serialVersionUID = 4392449009242794406L;
+    public static int PAINT_DELAY = 10;
     private final BufferedImage backBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
-
-    public static int PAINT_DELAY = 10;
-
     private Session session;
 
     public ClientCanvas() {
@@ -50,7 +49,7 @@ public class ClientCanvas extends Canvas {
 
     private void dispatchEvent(Graphics g) {
         if (session == null) {
-            session = SessionRepository.get(getParent().hashCode());
+            session = Repository.get(getParent().hashCode());
         } else {
             session.getPaintManager().onRepaint(g);
         }
@@ -62,7 +61,7 @@ public class ClientCanvas extends Canvas {
     }
 
     private void drawMouse(Graphics2D g) {
-        if (get() != null) {
+        if (getSession() != null) {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
             g.setColor(new Color(49, 110, 163, 150));

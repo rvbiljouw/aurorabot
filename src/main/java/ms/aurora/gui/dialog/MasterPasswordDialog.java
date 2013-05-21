@@ -14,13 +14,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import ms.aurora.Messages;
+import ms.aurora.gui.Messages;
 import ms.aurora.core.model.Property;
 import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**

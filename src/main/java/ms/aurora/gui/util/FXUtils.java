@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import ms.aurora.Messages;
+import ms.aurora.gui.Messages;
 
 /**
  * @author rvbiljouw

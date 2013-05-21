@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import ms.aurora.Messages;
+import ms.aurora.gui.Messages;
 import ms.aurora.core.model.Account;
 
 import java.io.IOException;

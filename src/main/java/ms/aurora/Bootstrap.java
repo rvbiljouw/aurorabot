@@ -634,13 +634,8 @@ public class Bootstrap {
 
     private static void showFallback(boolean jreError) {
         if (jreError) {
-            // Rvbiljouw: This couldn't be reverse engineered, so lets just make our own?
-            JFrame frame = new JFrame("Woops!");
-            NoJavaFXFallback fallback = new NoJavaFXFallback(true, true, "2.1+");
-            frame.add(fallback);
-            frame.pack();
-            frame.setVisible(true);
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            throw new IllegalArgumentException("No JavaFX found.. Please install the latest Java" +
+                    " version from http://java.oracle.com");
         }
     }
 

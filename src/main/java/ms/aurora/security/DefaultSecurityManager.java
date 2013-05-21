@@ -1,20 +1,10 @@
 package ms.aurora.security;
 
-import ms.aurora.api.random.impl.AutoLogin;
-import ms.aurora.core.model.Account;
-import ms.aurora.core.plugin.PluginManager;
-import ms.aurora.core.script.ScriptManager;
-import ms.aurora.gui.ApplicationGUI;
-import ms.aurora.gui.account.AccountOverview;
-import ms.aurora.gui.plugin.PluginOverview;
-import ms.aurora.gui.script.ScriptOverview;
 import org.apache.log4j.Logger;
 
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author rvbiljouw

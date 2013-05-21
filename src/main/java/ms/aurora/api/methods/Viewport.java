@@ -1,10 +1,10 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.wrappers.RSTile;
-import ms.aurora.rt3.Client;
 
 import java.awt.*;
+
+import static ms.aurora.api.Context.getClient;
 
 /**
  * Viewport related functions
@@ -115,15 +115,6 @@ public final class Viewport {
                 * (128 - _x2) + _x2
                 * getClient().getTileHeights()[_plane][1 + _x][_y + 1]) >> 7);
         return (128 - _y2) * i_30_ + _y2 * i_31_ >> 7;
-    }
-
-    /**
-     * INTERNAL: Retrieves a client from the current context.
-     *
-     * @return client
-     */
-    private static Client getClient() {
-        return Context.get().getClient();
     }
 
     /**

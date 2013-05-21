@@ -19,6 +19,6 @@
     <CheckBox fx:id="cbxRemember" focusTraversable="false" layoutX="360.0" layoutY="189.0" mnemonicParsing="false" selected="true" text="Remember" />
   </children>
   <stylesheets>
-    <URL value="@../../../../soft-responsive.css" />
+    <URL value="@../../../../modena2.css" />
   </stylesheets>
 </fx:root>

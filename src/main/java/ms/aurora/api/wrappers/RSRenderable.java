@@ -1,6 +1,5 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.Context;
 import ms.aurora.rt3.Model;
 import ms.aurora.rt3.Renderable;
 
@@ -11,11 +10,9 @@ import java.lang.reflect.Method;
  * @author Rick
  */
 public class RSRenderable {
-    public final Context ctx;
     private final Renderable wrapped;
 
-    public RSRenderable(Context ctx, Renderable wrapped) {
-        this.ctx = ctx;
+    public RSRenderable(Renderable wrapped) {
         this.wrapped = wrapped;
     }
 
@@ -34,10 +31,8 @@ public class RSRenderable {
                         if (result != null && result instanceof Model) {
                             return (Model) result;
                         }
-                    } catch (IllegalAccessException e) {
-                       // e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    } catch (InvocationTargetException e) {
-                       // e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                       // e.printStackTrace();
                     }
                 }
             }

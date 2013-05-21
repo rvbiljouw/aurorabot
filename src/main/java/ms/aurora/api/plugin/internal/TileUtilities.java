@@ -43,8 +43,7 @@ public class TileUtilities extends Plugin {
         });
 
         menu.getItems().add(pathMakerCheckbox);
-
-        getSession().registerMenu(menu);
+        registerMenu(menu);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class TileUtilities extends Plugin {
         if (pathMakerStage != null) {
             pathMakerStage.hide();
         }
-        getSession().deregisterMenu(menu);
+        deregisterMenu(menu);
     }
 
     class PathMakerStage extends Stage {

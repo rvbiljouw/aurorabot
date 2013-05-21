@@ -1,6 +1,6 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
+import static ms.aurora.api.Context.getClient;
 
 /**
  * Setting related functions
@@ -16,7 +16,7 @@ public final class Settings {
      * @return setting value
      */
     public static int getSetting(int index) {
-        int[] settings = Context.get().getClient().getWidgetSettings();
+        int[] settings = getClient().getWidgetSettings();
         return settings != null && index < settings.length ? settings[index] : -1;
     }
 

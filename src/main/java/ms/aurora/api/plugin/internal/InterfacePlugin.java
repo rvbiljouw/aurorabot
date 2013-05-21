@@ -45,7 +45,7 @@ public class InterfacePlugin extends Plugin {
 
         menu.getItems().add(explorerToggleCheckbox);
 
-        getSession().registerMenu(menu);
+        registerMenu(menu);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class InterfacePlugin extends Plugin {
         if (interfaceExplorerStage != null) {
             interfaceExplorerStage.hide();
         }
-        getSession().deregisterMenu(menu);
+        deregisterMenu(menu);
     }
 
     class InterfaceExplorerStage extends Stage {

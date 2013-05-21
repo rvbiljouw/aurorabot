@@ -10,8 +10,8 @@ import ms.aurora.rt3.Player;
 public final class RSPlayer extends RSCharacter {
     private final Player wrapped;
 
-    public RSPlayer(Context contextContext, Player wrapped) {
-        super(contextContext, wrapped);
+    public RSPlayer(Player wrapped) {
+        super(wrapped);
         this.wrapped = wrapped;
     }
 

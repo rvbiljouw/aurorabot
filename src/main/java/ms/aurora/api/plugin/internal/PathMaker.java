@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
-import static ms.aurora.api.util.Utilities.sleepNoException;
 
 
 /**
@@ -97,7 +96,7 @@ public class PathMaker extends AnchorPane {
 
     public void start() {
         clear();
-        thread = new Thread(plugin.getThreadGroup(), new Recorder());
+        thread = new Thread(new Recorder());
         thread.start();
     }
 

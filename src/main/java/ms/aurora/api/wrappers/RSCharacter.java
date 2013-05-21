@@ -1,6 +1,5 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.pathfinding.Path;
@@ -12,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 
+import static ms.aurora.api.Context.getClient;
 import static ms.aurora.api.methods.Menu.contains;
 import static ms.aurora.api.methods.Menu.containsPred;
 import static ms.aurora.input.VirtualMouse.moveMouse;
@@ -24,9 +24,8 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     private static Logger logger = Logger.getLogger(RSCharacter.class);
     private final ms.aurora.rt3.Character wrapped;
 
-    public RSCharacter(Context context,
-                       ms.aurora.rt3.Character wrapped) {
-        super(context, wrapped);
+    public RSCharacter(ms.aurora.rt3.Character wrapped) {
+        super(wrapped);
         this.wrapped = wrapped;
     }
 
@@ -61,11 +60,11 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final int getX() {
-        return Context.getClient().getBaseX() + (getLocalX() >> 7);
+        return getClient().getBaseX() + (getLocalX() >> 7);
     }
 
     public final int getY() {
-        return Context.getClient().getBaseY() + (getLocalY() >> 7);
+        return getClient().getBaseY() + (getLocalY() >> 7);
     }
 
     public final int getLocalX() {
@@ -85,12 +84,10 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         if (interacting == -1) {
             return null;
         } else if (interacting < 32767) {
-            return new RSNPC(ctx,
-                    Context.getClient().getAllNpcs()[interacting]);
+            return new RSNPC(getClient().getAllNpcs()[interacting]);
         } else if (interacting >= 32767) {
             int index = (interacting - 32767);
-            return new RSPlayer(ctx,
-                    Context.getClient().getAllPlayers()[index]);
+            return new RSPlayer(getClient().getAllPlayers()[index]);
         }
         return null;
     }
@@ -99,7 +96,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return if the current character is in combat
      */
     public final boolean isInCombat() {
-        return Context.getClient().getLoopCycle() < getLoopCycleStatus();
+        return getClient().getLoopCycle() < getLoopCycleStatus();
     }
 
     /**
