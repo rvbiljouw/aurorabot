@@ -1,11 +1,9 @@
 package ms.aurora.gui.script;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,7 +20,6 @@ import ms.aurora.gui.dialog.AccountSelectDialog;
 import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.util.FXUtils;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -57,11 +54,6 @@ public class ScriptOverview extends Dialog {
     }
 
     @FXML
-    void onCancel(ActionEvent event) {
-        getScene().getWindow().hide();
-    }
-
-    @FXML
     void onOk(ActionEvent event) {
         final ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
         final Session session = Repository.get(getSelectedApplet().hashCode());
@@ -82,27 +74,13 @@ public class ScriptOverview extends Dialog {
     }
 
     @FXML
-    void onSearch(ActionEvent event) {
-        tblScripts.setItems(rebuild());
+    void onCancel() {
+        getScene().getWindow().hide();
     }
 
-    private ObservableList<ScriptModel> rebuild() {
-        List<Class<? extends Script>> scripts = EntityLoader.getScripts();
-        ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
-        String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
-        String filterName = txtName.getText().toLowerCase();
-
-        for (Class<? extends Script> script : scripts) {
-            ScriptManifest manifest = script.getAnnotation(ScriptManifest.class);
-            if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all"))
-                    || selectedCategory.equals(manifest.category())) {
-
-                if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
-                    scriptModelList.add(new ScriptModel(script, manifest));
-                }
-            }
-        }
-        return scriptModelList;
+    @FXML
+    void onSearch() {
+        tblScripts.setItems(rebuild());
     }
 
     @FXML
@@ -125,38 +103,27 @@ public class ScriptOverview extends Dialog {
         return Messages.getString("scriptOverview.title");
     }
 
-    public static class ScriptModel {
-        protected final ScriptManifest manifest;
-        protected final Class<? extends Script> script;
-        private SimpleStringProperty name;
-        private SimpleStringProperty shortDesc;
-        private SimpleStringProperty category;
-        private SimpleStringProperty author;
+    /**
+     * Reloads the entire script table contents
+     *
+     * @return list of items for the script table.
+     */
+    private ObservableList<ScriptModel> rebuild() {
+        List<Class<? extends Script>> scripts = EntityLoader.getScripts();
+        ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
+        String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
+        String filterName = txtName.getText().toLowerCase();
 
-        public ScriptModel(Class<? extends Script> script, ScriptManifest manifest) {
-            this.script = script;
-            this.manifest = manifest;
+        for (Class<? extends Script> script : scripts) {
+            ScriptManifest manifest = script.getAnnotation(ScriptManifest.class);
+            if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all"))
+                    || selectedCategory.equals(manifest.category())) {
 
-            this.name = new SimpleStringProperty(manifest.name());
-            this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
-            this.category = new SimpleStringProperty(manifest.category());
-            this.author = new SimpleStringProperty(manifest.author());
+                if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
+                    scriptModelList.add(new ScriptModel(script, manifest));
+                }
+            }
         }
-
-        public String getName() {
-            return name.getValue();
-        }
-
-        public String getShortDesc() {
-            return shortDesc.getValue();
-        }
-
-        public String getCategory() {
-            return category.getValue();
-        }
-
-        public String getAuthor() {
-            return author.getValue();
-        }
+        return scriptModelList;
     }
 }
