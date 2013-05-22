@@ -34,12 +34,6 @@ import static ms.aurora.core.Repository.get;
 public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> {
     private final Tab tab = new Tab();
     private final Main parent;
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
-    @FXML
-    private AnchorPane appletPane;
     private Applet applet;
 
     public AppletWidget(final Main parent) {
@@ -75,7 +69,6 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
 
     @FXML
     void initialize() {
-        assert appletPane != null : "fx:id=\"appletPane\" was not injected: check your FXML file 'AppletWidget.fxml'.";
     }
 
     @Override
