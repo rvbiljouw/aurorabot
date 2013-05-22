@@ -20,6 +20,7 @@ import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
 import ms.aurora.gui.dialog.AccountSelectDialog;
 import ms.aurora.gui.dialog.Callback;
+import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,16 +53,7 @@ public class ScriptOverview extends Dialog {
     private TextField txtName;
 
     public ScriptOverview() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ScriptOverview.fxml"), Messages.getBundle());
-
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        FXUtils.load(getClass().getResource("ScriptOverview.fxml"), this);
     }
 
     @FXML
@@ -102,7 +94,9 @@ public class ScriptOverview extends Dialog {
 
         for (Class<? extends Script> script : scripts) {
             ScriptManifest manifest = script.getAnnotation(ScriptManifest.class);
-            if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all")) || selectedCategory.equals(manifest.category())) {
+            if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all"))
+                    || selectedCategory.equals(manifest.category())) {
+
                 if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
                     scriptModelList.add(new ScriptModel(script, manifest));
                 }
@@ -117,8 +111,6 @@ public class ScriptOverview extends Dialog {
         colShortDesc.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("shortDesc"));
         colCategory.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("category"));
         colAuthor.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("author"));
-
-
         ObservableList<String> categoryList = FXCollections.observableArrayList();
         categoryList.add(Messages.getString("scriptOverview.all"));
 
