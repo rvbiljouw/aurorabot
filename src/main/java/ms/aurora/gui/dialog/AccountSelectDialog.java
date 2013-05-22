@@ -11,7 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import ms.aurora.Messages;
+import ms.aurora.gui.Messages;
 import ms.aurora.core.model.Account;
 import ms.aurora.gui.util.FXUtils;
 

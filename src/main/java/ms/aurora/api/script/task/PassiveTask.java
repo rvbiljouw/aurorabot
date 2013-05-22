@@ -1,5 +1,7 @@
 package ms.aurora.api.script.task;
 
+import static ms.aurora.api.Context.getSession;
+
 /**
  * @author rvbiljouw
  */
@@ -19,7 +21,7 @@ public abstract class PassiveTask implements Task {
 
     public void run() {
         if(lastExecution == null || !lastExecution.isAlive()) {
-            lastExecution = new Thread(queue.getOwner().getSession().getThreadGroup(), body);
+            lastExecution = new Thread(getSession().getThreadGroup(), body);
             lastExecution.setName(getClass().getSimpleName());
             lastExecution.start();
         }

@@ -9,10 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.WindowEvent;
-import ms.aurora.Messages;
 import ms.aurora.core.model.Account;
+import ms.aurora.gui.Dialog;
+import ms.aurora.gui.Messages;
 import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
@@ -22,25 +22,25 @@ import java.util.ResourceBundle;
 /**
  * @author Rick
  */
-public class AccountOverview extends AnchorPane {
+public class AccountOverview extends Dialog {
 
     private final ObservableList<AccountModel> accounts = FXCollections.observableArrayList();
-
+    private final EventHandler<WindowEvent> closeHandler = new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent windowEvent) {
+            initializeTable();
+        }
+    };
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private TableColumn<AccountModel, String> colBankPin;
-
     @FXML
     private TableColumn<AccountModel, String> colPassword;
-
     @FXML
     private TableColumn<AccountModel, String> colUsername;
-
     @FXML
     private TableView<AccountModel> tblAccounts;
 
@@ -86,17 +86,13 @@ public class AccountOverview extends AnchorPane {
     void onEditSelected(ActionEvent event) {
         AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
-            FXUtils.showModalDialog(Messages.getString("editAccount.title"), new EditAccount(selectedAccount), closeHandler);
+            FXUtils.showModalDialog(Messages.getString("editAccount.title"),
+                    new EditAccount(selectedAccount), closeHandler);
         }
     }
 
     @FXML
     void initialize() {
-        assert colBankPin != null : "fx:id=\"colBankPin\" was not injected: check your FXML file 'AccountOverview.fxml'.";
-        assert colPassword != null : "fx:id=\"colPassword\" was not injected: check your FXML file 'AccountOverview.fxml'.";
-        assert colUsername != null : "fx:id=\"colUsername\" was not injected: check your FXML file 'AccountOverview.fxml'.";
-        assert tblAccounts != null : "fx:id=\"tblAccounts\" was not injected: check your FXML file 'AccountOverview.fxml'.";
-
         colUsername.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("username"));
         colPassword.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("password"));
         colBankPin.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("bankPin"));
@@ -113,10 +109,8 @@ public class AccountOverview extends AnchorPane {
         tblAccounts.setItems(accounts);
     }
 
-    private final EventHandler<WindowEvent> closeHandler = new EventHandler<WindowEvent>() {
-        @Override
-        public void handle(WindowEvent windowEvent) {
-            initializeTable();
-        }
-    };
+    @Override
+    public String getTitle() {
+        return Messages.getString("accountOverview.title");
+    }
 }

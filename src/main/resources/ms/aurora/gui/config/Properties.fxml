@@ -48,6 +48,6 @@
     <Button layoutX="707.0" layoutY="456.0" mnemonicParsing="false" onAction="#onOk" text="%MessageBox.OK" />
   </children>
   <stylesheets>
-    <URL value="@../../../../soft-responsive.css" />
+    <URL value="@../../../../modena2.css" />
   </stylesheets>
 </fx:root>

@@ -60,7 +60,7 @@ public final class Widgets {
      */
     public static RSWidgetGroup getWidgetGroup(int parent) {
         if (getClient().getWidgetCache()[parent] != null) {
-            return new RSWidgetGroup(Context.get(), getClient().getWidgetCache()[parent], parent);
+            return new RSWidgetGroup(getClient().getWidgetCache()[parent], parent);
         }
         return null;
     }

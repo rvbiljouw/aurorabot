@@ -13,10 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jfx.messagebox.MessageBox;
-import ms.aurora.Messages;
+import ms.aurora.gui.Messages;
 import ms.aurora.core.model.Property;
-import ms.aurora.gui.dialog.Callback;
-import ms.aurora.gui.dialog.MasterPasswordDialog;
 import ms.aurora.sdn.net.api.Authentication;
 import ms.aurora.sdn.net.encode.Base64;
 

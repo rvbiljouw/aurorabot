@@ -1,11 +1,10 @@
 package ms.aurora.api;
 
+import ms.aurora.api.script.ScriptState;
+import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
 import org.apache.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.lang.Thread.currentThread;
 import static ms.aurora.api.methods.Widgets.getWidget;
@@ -14,93 +13,41 @@ import static ms.aurora.api.methods.Widgets.getWidget;
  * @author Rick
  */
 public class Context {
-    private static final Map<ThreadGroup, Context> contextMap = new HashMap<ThreadGroup, Context>();
     private static final Logger logger = Logger.getLogger(Context.class);
-    private final Map<String, String> properties = new HashMap<String, String>();
-    private ThreadGroup threadGroup;
-    private Session session;
+    private static final ThreadLocal<Session> session = new ThreadLocal<>();
 
-    public Session getSession() {
-        return session;
-    }
-
-    public final void setSession(Session session) {
-        threadGroup = session.getThreadGroup();
-        contextMap.put(session.getThreadGroup(), this);
-        this.session = session;
-        setDefaults();
-    }
-
-    private void setDefaults() {
-        properties.put("interaction.walkTo", "true");
+    public static Session getSession() {
+        if(session.get() == null) {
+            Session group = Repository.get(currentThread().getThreadGroup());
+            if(group != null) {
+                session.set(group);
+            }
+        }
+        return session.get();
     }
 
     public static Client getClient() {
-        if (get() != null && get().session.getClientManager().getApplet() != null) {
-            return get().session.getClientManager().getClient();
-        }
-        return null;
+        return (Client) getSession().getApplet();
     }
 
-    public static boolean isLoggedIn() {
-        if (get() == null) {
-            logger.error("Context not set, cannot check logged in state!");
-        }
-        return get() != null && get().isLoggedInInternal();
-    }
-
-    private boolean isLoggedInInternal() {
-        if (getClient().getLoginIndex() != 30) {
-            logger.debug("Login index: " + getClient().getLoginIndex());
-        }
-
-        if (getWidget(378, 6) != null) {
-            logger.debug("Welcome screen is set.");
-        }
-        return getClient().getLoginIndex() >= 25 && getWidget(378, 6) == null;
-    }
-
-    public static Context get() {
-        ThreadGroup tg = currentThread().getThreadGroup();
-        if (contextMap.containsKey(tg)) {
-            return contextMap.get(tg);
-        }
-        return null;
-    }
-
-    public static void setProperty(String key, Object value) {
-        Context instance = get();
-        if (instance.properties.containsKey(key)) {
-            instance.properties.remove(key);
-        }
-        instance.properties.put(key, value.toString());
+    public static void setProperty(String key, String value) {
+        getSession().getProperties().setProperty(key, value);
     }
 
     public static String getProperty(String key) {
-        Context instance = get();
-        return instance.properties.get(key);
-    }
-
-    public ThreadGroup getThreadGroup() {
-        return threadGroup;
-    }
-
-    public void invokeLater(Runnable runnable) {
-        Thread thread = new Thread(getThreadGroup(), runnable);
-        thread.start();
-    }
-
-    public void invokeAndWait(Runnable runnable) {
-        try {
-            Thread thread = new Thread(getThreadGroup(), runnable);
-            thread.start();
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        return getSession().getProperties().getProperty(key);
     }
 
     public static boolean isActive() {
-        return get().getSession().active();
+        return getSession().getScriptManager().getState() != ScriptState.STOP;
+    }
+
+    public static boolean isLoggedIn() {
+        return getClient().getLoginIndex() == 30 && getWidget(378, 6) == null;
+    }
+
+    public static void invokeLater(Runnable runnable) {
+        Thread thread = new Thread(getSession().getThreadGroup(), runnable);
+        thread.start();
     }
 }

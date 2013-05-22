@@ -102,7 +102,7 @@ public final class GroundItems {
             while (deque.hasNext()) {
                 Item item = (Item) deque.next();
                 if (item != null)
-                    items.add(new RSGroundItem(Context.get(), item, x, y, z));
+                    items.add(new RSGroundItem(item, x, y, z));
             }
         }
         return items;

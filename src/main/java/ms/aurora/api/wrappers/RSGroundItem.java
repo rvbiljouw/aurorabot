@@ -19,14 +19,12 @@ import static ms.aurora.api.Context.getProperty;
  * @author tobiewarburton
  */
 public final class RSGroundItem implements Locatable, Interactable {
-    private Context ctx;
     private Item item;
     private int localX;
     private int localY;
     private int z;
 
-    public RSGroundItem(Context ctx, Item item, int localX, int localY, int z) {
-        this.ctx = ctx;
+    public RSGroundItem(Item item, int localX, int localY, int z) {
         this.item = item;
         this.localX = localX;
         this.localY = localY;
@@ -69,7 +67,6 @@ public final class RSGroundItem implements Locatable, Interactable {
     public boolean isOnScreen() {
         return Viewport.tileOnScreen(getLocation());
     }
-
 
     @Override
     public boolean canReach() {

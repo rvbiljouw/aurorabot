@@ -45,11 +45,8 @@ public class Randoms extends PassiveTask {
     @Override
     public int execute() {
         for (Random random : randoms) {
-
-            random.setSession(queue.getOwner().getSession());
             if (random.getClass().getAnnotation(AfterLogin.class) != null &&
                     !Context.isLoggedIn()) continue;
-
 
             try {
                 while (random.activate() && !currentThread().isInterrupted()) {

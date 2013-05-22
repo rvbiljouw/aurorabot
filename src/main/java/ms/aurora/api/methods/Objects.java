@@ -1,6 +1,5 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.RSObject;
@@ -115,20 +114,20 @@ public final class Objects {
         if (ground != null) {
             try {
                 if (ground.getGroundDecoration() != null) {
-                    objects.add(new RSObject(Context.get(), ground.getGroundDecoration(), x, y));
+                    objects.add(new RSObject(ground.getGroundDecoration(), x, y));
                 }
 
                 if (ground.getWallDecoration() != null) {
-                    objects.add(new RSObject(Context.get(), ground.getWallDecoration(), x, y));
+                    objects.add(new RSObject(ground.getWallDecoration(), x, y));
                 }
 
                 if (ground.getWallObject() != null) {
-                    objects.add(new RSObject(Context.get(), ground.getWallObject(), x, y));
+                    objects.add(new RSObject(ground.getWallObject(), x, y));
                 }
 
                 if (ground.getAnimableObjects() != null) {
                     for (AnimableObject object : ground.getAnimableObjects()) {
-                        RSObject wrapped = new RSObject(Context.get(), object, x, y);
+                        RSObject wrapped = new RSObject(object, x, y);
                         if (object != null && wrapped.getId() != 0) {
                             objects.add(wrapped);
                         }

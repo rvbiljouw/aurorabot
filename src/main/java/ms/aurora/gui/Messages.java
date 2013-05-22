@@ -40,7 +40,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package ms.aurora;
+package ms.aurora.gui;
 
 import java.util.Locale;
 import java.util.MissingResourceException;

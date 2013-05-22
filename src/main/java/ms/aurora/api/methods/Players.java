@@ -9,6 +9,8 @@ import ms.aurora.rt3.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ms.aurora.api.Context.getClient;
+
 /**
  * Player related functions
  *
@@ -22,8 +24,7 @@ public final class Players {
      * @return the local {@link RSPlayer}
      */
     public static RSPlayer getLocal() {
-        Context ctx = Context.get();
-        return new RSPlayer(ctx, ctx.getClient().getLocalPlayer());
+        return new RSPlayer(getClient().getLocalPlayer());
     }
 
     /**
@@ -56,9 +57,9 @@ public final class Players {
      */
     public static RSPlayer[] getAll() {
         List<RSPlayer> players = new ArrayList<RSPlayer>();
-        for (Player player: Context.getClient().getAllPlayers()) {
+        for (Player player: getClient().getAllPlayers()) {
             if (player != null) {
-                players.add(new RSPlayer(Context.get(), player));
+                players.add(new RSPlayer(player));
             }
         }
         return players.toArray(new RSPlayer[players.size()]);

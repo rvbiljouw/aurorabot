@@ -8,6 +8,14 @@
     <artifactId>aurorabot</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>repository.jboss.org-public</id>
+            <name>JBoss.org Maven repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
     <organization>
         <name>Aurora</name>
     </organization>
@@ -56,63 +64,21 @@
         </dependency>
 
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.10.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>javafx</artifactId>
             <version>2.2</version>
             <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
             <scope>system</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.10</artifactId>
-            <version>2.2-M3</version>
-        </dependency>
-
-
-
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <executions>
-
-                    <execution>
-                        <id>compile</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>compile</phase>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <phase>test-compile</phase>
-                    </execution>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>

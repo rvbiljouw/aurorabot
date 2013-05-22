@@ -2,25 +2,29 @@ package ms.aurora.gui.widget;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.Application;
-import ms.aurora.Messages;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.gui.ApplicationGUI;
+import ms.aurora.gui.Main;
+import ms.aurora.gui.Messages;
 
 import javax.swing.*;
 import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static ms.aurora.core.Repository.get;
 
@@ -29,21 +33,16 @@ import static ms.aurora.core.Repository.get;
  */
 public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> {
     private final Tab tab = new Tab();
-    private final ApplicationGUI parent;
-
+    private final Main parent;
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private AnchorPane appletPane;
-
-
     private Applet applet;
 
-    public AppletWidget(final ApplicationGUI parent) {
+    public AppletWidget(final Main parent) {
         this.parent = parent;
         this.loadFace();
         getTab().setContent(this);
@@ -55,8 +54,7 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
             public void handle(Event event) {
                 Session mySession = Repository.get(applet.hashCode());
                 if (mySession != null) {
-                    // TODO
-                    //mySession.
+                    mySession.destroy();
                 }
             }
         });
@@ -78,16 +76,6 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     @FXML
     void initialize() {
         assert appletPane != null : "fx:id=\"appletPane\" was not injected: check your FXML file 'AppletWidget.fxml'.";
-    }
-
-    public void setApplet(final Applet applet) {
-        if(this.applet != null) {
-            Application.mainFrame.remove(this.applet);
-        }
-        Application.mainFrame.add(applet);
-        this.applet = applet;
-        tab.setClosable(true);
-        update();
     }
 
     @Override
@@ -125,21 +113,23 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         return applet;
     }
 
+    public void setApplet(final Applet applet) {
+        Application.mainFrame.add(applet);
+        this.applet = applet;
+
+        tab.setClosable(true);
+        update();
+    }
+
     public Tab getTab() {
         return tab;
     }
 
     public void update() {
-        if(applet == null) return;
-
-        Session session = Repository.get(applet.hashCode());
-        if (session != null && session.getAccount() != null) {
-            getTab().setText(session.getName());
-        }
-
+        if (applet == null) return;
         int relX = calculateRelX();
         int relY = calculateRelY();
-        if(relX < 0 || relY < 0) {
+        if (relX < 0 || relY < 0) {
             return;
         }
 
@@ -159,15 +149,14 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
     public void onMenuOpening() {
         if (applet != null) {
             final Session session = get(applet.hashCode());
-           /* CopyOnWriteArrayList<MenuItem> pluginMenu = session.getPluginMenu();
+            CopyOnWriteArrayList<MenuItem> pluginMenu = session.getUI().getPluginMenu();
             ObservableList<MenuItem> items = FXCollections.observableArrayList();
             for (MenuItem pluginItem : pluginMenu) {
                 items.add(pluginItem);
             }
             parent.getPluginsMenu().getItems().clear();
             parent.getPluginsMenu().getItems().add(parent.getPluginOverview());
-            parent.getPluginsMenu().getItems().addAll(items);   */
-            // TODO
+            parent.getPluginsMenu().getItems().addAll(items);
         }
     }
 }

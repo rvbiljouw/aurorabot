@@ -9,12 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import ms.aurora.Messages;
 import ms.aurora.core.model.Source;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.gui.Dialog;
+import ms.aurora.gui.Messages;
 import ms.aurora.input.ClientCanvas;
 
 import java.io.File;
@@ -24,30 +23,25 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class Properties extends AnchorPane {
+public class Properties extends Dialog {
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Button btnAddScriptSource;
-
     @FXML
     private Button btnRemoveScriptSource;
-
     @FXML
     private ListView<Source> lstSources;
-
     @FXML
     private Slider sldPaintDelay;
-
     private Stage currentStage;
 
     public Properties() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"), Messages.getBundle());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"),
+                Messages.getBundle());
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -87,11 +81,6 @@ public class Properties extends AnchorPane {
 
     @FXML
     void initialize() {
-        assert btnAddScriptSource != null : "fx:id=\"btnAddScriptSource\" was not injected: check your FXML file 'Properties.fxml'.";
-        assert btnRemoveScriptSource != null : "fx:id=\"btnRemoveScriptSource\" was not injected: check your FXML file 'Properties.fxml'.";
-        assert lstSources != null : "fx:id=\"lstSources\" was not injected: check your FXML file 'Properties.fxml'.";
-        assert sldPaintDelay != null : "fx:id=\"sldPaintDelay\" was not injected: check your FXML file 'Properties.fxml'.";
-
         sldPaintDelay.setValue(ClientCanvas.PAINT_DELAY);
         sldPaintDelay.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -110,9 +99,8 @@ public class Properties extends AnchorPane {
         }
     }
 
-    public void open() {
-        currentStage = FXUtils.createModalStage(Messages.getString("properties.title"), this);
-        currentStage.show();
+    @Override
+    public String getTitle() {
+        return Messages.getString("properties.title");
     }
-
 }
