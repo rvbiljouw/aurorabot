@@ -17,6 +17,7 @@ import static ms.aurora.core.model.Property.getByName;
 /**
  * @author tobiewarburton
  */
+@SuppressWarnings("unused")
 public class MasterPasswordDialog extends Dialog {
 
     @FXML
@@ -40,7 +41,7 @@ public class MasterPasswordDialog extends Dialog {
     }
 
     @FXML
-    void authenticateAction() {
+    void onAuthenticate() {
         if (authenticated()) {
             String password = txtPassword.getText();
             if (property == null) {
@@ -64,14 +65,14 @@ public class MasterPasswordDialog extends Dialog {
     @FXML
     void onPasswordKeyReleased(KeyEvent event) {
         if (property != null && event.getCode() == KeyCode.ENTER) {
-            authenticateAction();
+            onAuthenticate();
         }
     }
 
     @FXML
     void onPasswordRepeatKeyReleased(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            authenticateAction();
+            onAuthenticate();
         }
     }
 
