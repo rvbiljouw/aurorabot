@@ -8,7 +8,7 @@ import ms.aurora.gui.util.FXUtils;
  * @author rvbiljouw
  */
 public abstract class Dialog extends AnchorPane {
-    private Stage currentStage = null;
+    protected Stage currentStage = null;
 
     public abstract String getTitle();
 
