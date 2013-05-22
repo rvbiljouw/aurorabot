@@ -34,4 +34,10 @@ public final class Repository {
     public static Collection<Session> getAll() {
         return sessionMap.values();
     }
+
+    public static void foreach(SessionVisitor visitor) {
+        for(Session session : getAll()) {
+            visitor.visit(session);
+        }
+    }
 }
