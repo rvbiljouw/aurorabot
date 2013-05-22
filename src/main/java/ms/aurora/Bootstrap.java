@@ -1,7 +1,5 @@
 package ms.aurora;
 
-import sun.misc.BASE64Decoder;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +15,8 @@ import java.util.LinkedList;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
+import static ms.aurora.sdn.net.encode.Base64.decodeString;
 
 public class Bootstrap {
     private static boolean verbose = true;
@@ -296,40 +296,29 @@ public class Bootstrap {
         }
     }
 
-    private static String decodeBase64(String inp) throws IOException {
-        BASE64Decoder decoder = new BASE64Decoder();
-        byte[] decodedBytes = decoder.decodeBuffer(inp);
-        return new String(decodedBytes);
-    }
-
     private static String[] getAppArguments(Attributes attrs) {
         LinkedList args = new LinkedList();
 
-        try {
-            int ioe = 1;
-            // rvbiljouw: Basic fix for non-attributed shit
-            if (attrs == null) return new String[0];
+        int ioe = 1;
+        // rvbiljouw: Basic fix for non-attributed shit
+        if (attrs == null) return new String[0];
 
 
-            for (String argNamePrefix = "JavaFX-Argument-"; attrs.getValue(argNamePrefix + ioe) != null; ++ioe) {
-                args.add(decodeBase64(attrs.getValue(argNamePrefix + ioe)));
+        for (String argNamePrefix = "JavaFX-Argument-"; attrs.getValue(argNamePrefix + ioe) != null; ++ioe) {
+            args.add(decodeString(attrs.getValue(argNamePrefix + ioe)));
+        }
+
+        String paramNamePrefix = "JavaFX-Parameter-Name-";
+        String paramValuePrefix = "JavaFX-Parameter-Value-";
+
+        for (ioe = 1; attrs.getValue(paramNamePrefix + ioe) != null; ++ioe) {
+            String k = decodeString(attrs.getValue(paramNamePrefix + ioe));
+            String v = null;
+            if (attrs.getValue(paramValuePrefix + ioe) != null) {
+                v = decodeString(attrs.getValue(paramValuePrefix + ioe));
             }
 
-            String paramNamePrefix = "JavaFX-Parameter-Name-";
-            String paramValuePrefix = "JavaFX-Parameter-Value-";
-
-            for (ioe = 1; attrs.getValue(paramNamePrefix + ioe) != null; ++ioe) {
-                String k = decodeBase64(attrs.getValue(paramNamePrefix + ioe));
-                String v = null;
-                if (attrs.getValue(paramValuePrefix + ioe) != null) {
-                    v = decodeBase64(attrs.getValue(paramValuePrefix + ioe));
-                }
-
-                args.add("--" + k + "=" + (v != null ? v : ""));
-            }
-        } catch (IOException var8) {
-            System.err.println("Failed to extract application parameters");
-            var8.printStackTrace();
+            args.add("--" + k + "=" + (v != null ? v : ""));
         }
 
         return (String[]) ((String[]) args.toArray(new String[0]));

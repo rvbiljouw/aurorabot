@@ -3,7 +3,6 @@ package ms.aurora.core.model;
 import com.avaje.ebean.Ebean;
 import javafx.beans.property.StringProperty;
 import ms.aurora.gui.Dialog;
-import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.dialog.MasterPasswordDialog;
 import ms.aurora.sdn.net.encode.Base64;
 

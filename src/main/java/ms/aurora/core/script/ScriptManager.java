@@ -3,8 +3,6 @@ package ms.aurora.core.script;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
-import ms.aurora.core.script.exception.NoScriptRunningException;
-import ms.aurora.core.script.exception.ScriptAlreadyRunningException;
 import ms.aurora.gui.Main;
 
 public final class ScriptManager {
@@ -29,29 +27,17 @@ public final class ScriptManager {
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-        } else {
-            throw new ScriptAlreadyRunningException(currentScript);
         }
     }
 
     public void pause() {
-        if (hasScript()) {
-            currentScript.setState(ScriptState.PAUSED);
-
-            Main.setInputEnabled(true);
-        } else {
-            throw new NoScriptRunningException();
-        }
+        currentScript.setState(ScriptState.PAUSED);
+        Main.setInputEnabled(true);
     }
 
     public void resume() {
-        if (hasScript()) {
-            currentScript.setState(ScriptState.RUNNING);
-
-            Main.setInputEnabled(false);
-        } else {
-            throw new NoScriptRunningException();
-        }
+        currentScript.setState(ScriptState.RUNNING);
+        Main.setInputEnabled(false);
     }
 
     public void stop() {

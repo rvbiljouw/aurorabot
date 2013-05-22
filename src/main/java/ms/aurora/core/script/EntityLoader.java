@@ -26,7 +26,7 @@ import java.util.jar.JarFile;
  *
  * @author rvbiljouw
  */
-public class EntityLoader {
+public final class EntityLoader {
     private static final Logger logger = Logger.getLogger(EntityLoader.class);
     private static final List<Class<? extends Random>> randoms = new ArrayList<>();
     private static final List<Class<? extends Plugin>> plugins = new ArrayList<>();

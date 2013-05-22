@@ -17,7 +17,6 @@ import ms.aurora.core.script.EntityLoader;
 import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
 import ms.aurora.gui.account.AccountSelectDialog;
-import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.util.FXUtils;
 
 import java.net.URL;
@@ -59,17 +58,12 @@ public class ScriptOverview extends Dialog {
         final Session session = Repository.get(getSelectedApplet().hashCode());
         if (session != null && model != null) {
             final AccountSelectDialog selector = new AccountSelectDialog();
-            selector.setCallback(new Callback() {
-                @Override
-                public void call() {
-                    session.setAccount(selector.get());
-                    session.getScriptManager().start(model.script);
-                    getScene().getWindow().hide();
-                }
-            });
             selector.show();
+            session.setAccount(selector.get());
+            session.getScriptManager().start(model.script);
+            close();
         } else {
-            getScene().getWindow().hide();
+            close();
         }
     }
 

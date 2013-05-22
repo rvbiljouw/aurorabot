@@ -16,4 +16,7 @@ public class Base64 {
         return parseBase64Binary(data);
     }
 
+    public static String decodeString(String value) {
+        return new String(decode(value));
+    }
 }

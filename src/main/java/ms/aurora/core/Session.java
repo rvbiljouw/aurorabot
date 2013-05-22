@@ -14,7 +14,7 @@ import java.applet.Applet;
  */
 public final class Session implements Runnable {
     private final SessionProperties properties = new SessionProperties();
-    private final PaintManager paintManager = new PaintManager(this);
+    private final PaintManager paintManager = new PaintManager();
     private final ClientWrapper wrapper = new ClientWrapper();
     private final ThreadGroup threadGroup;
     private final SessionUI ui;
