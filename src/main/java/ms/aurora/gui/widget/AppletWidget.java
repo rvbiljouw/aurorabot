@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -21,29 +20,36 @@ import ms.aurora.gui.Messages;
 
 import javax.swing.*;
 import java.applet.Applet;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static ms.aurora.core.Repository.get;
+import static ms.aurora.gui.util.FXUtils.load;
 
 /**
  * @author Rick
  */
 public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> {
+    private static final String FXML = "AppletWidget.fxml";
+    private static final int WIDTH = 765;
+    private static final int HEIGHT = 503;
+    private static final int OOS_X = 1000;
+
     private final Tab tab = new Tab();
     private final Main parent;
     private Applet applet;
 
-    public AppletWidget(final Main parent) {
+    public AppletWidget(Main parent) {
+        load(getClass().getResource(FXML), this);
         this.parent = parent;
-        this.loadFace();
-        getTab().setContent(this);
-        getTab().setClosable(false);
-        getTab().setText(Messages.getString("appletWidget.noAccount"));
-        getTab().selectedProperty().addListener(this);
-        getTab().setOnClosed(new EventHandler<Event>() {
+    }
+
+    @FXML
+    void initialize() {
+        tab.setContent(this);
+        tab.setClosable(false);
+        tab.setText(Messages.getString("appletWidget.noAccount"));
+        tab.selectedProperty().addListener(this);
+        tab.setOnClosed(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
                 Session mySession = Repository.get(applet.hashCode());
@@ -54,25 +60,8 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         });
     }
 
-    private void loadFace() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AppletWidget.fxml"), Messages.getBundle());
-
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    @FXML
-    void initialize() {
-    }
-
     @Override
-    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
+    public void changed(ObservableValue prop, Boolean old, Boolean newValue) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -82,63 +71,36 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
         });
     }
 
-    private int calculateRelX() {
-        int x = 0;
-        Parent obj = this;
-        while (obj != null) {
-            x += obj.getLayoutX();
-            obj = obj.getParent();
-        }
-        return x;
-    }
-
-    private int calculateRelY() {
-        int y = 0;
-        Parent obj = this;
-        while (obj != null) {
-            y += obj.getLayoutY();
-            obj = obj.getParent();
-        }
-        return y;
-    }
-
-    public Applet getApplet() {
-        return applet;
-    }
-
-    public void setApplet(final Applet applet) {
-        Application.mainFrame.add(applet);
-        this.applet = applet;
-
-        tab.setClosable(true);
-        update();
-    }
-
-    public Tab getTab() {
-        return tab;
-    }
-
+    /**
+     * Updates the applet widget.
+     */
     public void update() {
         if (applet == null) return;
-        int relX = calculateRelX();
-        int relY = calculateRelY();
+        int relX = getRelativeX();
+        int relY = getRelativeY();
         if (relX < 0 || relY < 0) {
             return;
         }
 
-        if (tab.isSelected()) {
-            applet.setBounds(relX, relY, applet.getWidth(),
-                    applet.getHeight());
-            applet.setSize(765, 503);
-            applet.setVisible(true);
-        } else {
-            applet.setBounds(relX - 1000, relY,
-                    applet.getWidth(), applet.getHeight());
-            applet.setSize(765, 503);
-            applet.setVisible(false);
-        }
+        setInternal(relX + (tab.isSelected() ? 0 : OOS_X), relY);
     }
 
+    /**
+     * Sets the coordinates of the wrapper applets
+     * Goes out of bounds if the tab is not visible.
+     * @param relX Relative X
+     * @param relY Relative Y
+     */
+    private void setInternal(int relX, int relY) {
+        applet.setBounds(relX, relY, applet.getWidth(),
+                applet.getHeight());
+        applet.setSize(WIDTH, HEIGHT);
+        applet.setVisible(true);
+    }
+
+    /**
+     * Updates the plugin menu when it is opened.
+     */
     public void onMenuOpening() {
         if (applet != null) {
             final Session session = get(applet.hashCode());
@@ -151,5 +113,57 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
             parent.getPluginsMenu().getItems().add(parent.getPluginOverview());
             parent.getPluginsMenu().getItems().addAll(items);
         }
+    }
+
+    /**
+     * Calculates the relative X of this widget.
+     * @return relative X
+     */
+    private int getRelativeX() {
+        int x = 0;
+        Parent obj = this;
+        while (obj != null) {
+            x += obj.getLayoutX();
+            obj = obj.getParent();
+        }
+        return x;
+    }
+
+    /**
+     * Calculates the relative Y of this widget.
+     * @return relative Y
+     */
+    private int getRelativeY() {
+        int y = 0;
+        Parent obj = this;
+        while (obj != null) {
+            y += obj.getLayoutY();
+            obj = obj.getParent();
+        }
+        return y;
+    }
+
+    /**
+     * Returns the wrapped applet.
+     * @return wrapped applet.
+     */
+    public Applet getApplet() {
+        return applet;
+    }
+
+    /**
+     * Sets the wrapped applet
+     * @param applet applet
+     */
+    public void setApplet(Applet applet) {
+        Application.mainFrame.add(applet);
+        this.applet = applet;
+
+        tab.setClosable(true);
+        update();
+    }
+
+    public Tab getTab() {
+        return tab;
     }
 }
