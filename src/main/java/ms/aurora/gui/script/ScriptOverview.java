@@ -16,7 +16,7 @@ import ms.aurora.core.Session;
 import ms.aurora.core.script.EntityLoader;
 import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
-import ms.aurora.gui.dialog.AccountSelectDialog;
+import ms.aurora.gui.account.AccountSelectDialog;
 import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.util.FXUtils;
 

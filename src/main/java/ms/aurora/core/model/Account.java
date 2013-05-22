@@ -1,6 +1,8 @@
 package ms.aurora.core.model;
 
 import com.avaje.ebean.Ebean;
+import javafx.beans.property.StringProperty;
+import ms.aurora.gui.Dialog;
 import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.dialog.MasterPasswordDialog;
 import ms.aurora.sdn.net.encode.Base64;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 @Entity
 public class Account extends AbstractModel {
-    private static String masterPassword;
+    private static StringProperty masterPassword;
 
     @Id
     @GeneratedValue
@@ -92,7 +94,7 @@ public class Account extends AbstractModel {
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
-        return new String(Base64.encode(crypted));
+        return Base64.encode(crypted);
     }
 
     private static String decrypt(String input) {
@@ -130,17 +132,11 @@ public class Account extends AbstractModel {
     }
 
     private static String getKey() {
-        return masterPassword;
+        return masterPassword.getValue();
     }
 
     public static void init() {
-        final MasterPasswordDialog dialog = new MasterPasswordDialog();
-        dialog.setCallback(new Callback() {
-            @Override
-            public void call() {
-                masterPassword = dialog.get();
-            }
-        });
+        Dialog dialog = new MasterPasswordDialog(masterPassword);
         dialog.show();
     }
 }

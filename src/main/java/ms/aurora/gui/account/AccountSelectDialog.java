@@ -1,4 +1,4 @@
-package ms.aurora.gui.dialog;
+package ms.aurora.gui.account;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.gui.Messages;
 import ms.aurora.core.model.Account;
+import ms.aurora.gui.dialog.Callback;
 import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
