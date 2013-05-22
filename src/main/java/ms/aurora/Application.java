@@ -33,7 +33,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
-    public static final double VERSION = 12;
+    public static final double VERSION = 13;
     private static final Object initialisation_lock = new Object();
 
     public static LoginWindow LOGIN_WINDOW;
@@ -98,7 +98,7 @@ public final class Application {
                         initialisation_lock.wait();
                         String name = System.getProperty("os.name");
                         if (name.toLowerCase().contains("win")) {
-                            mainFrame.setSize(765, 620);
+                            mainFrame.setSize(765, 630);
                         } else {
                             mainFrame.pack();
                         }

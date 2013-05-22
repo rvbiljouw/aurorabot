@@ -81,6 +81,13 @@ public class MasterPasswordDialog extends Dialog {
         System.exit(0);
     }
 
+    @Override
+    public void onClose() {
+        if(!authenticated()) {
+            System.exit(0);
+        }
+    }
+
     @FXML
     void initialize() {
         caption.setText(property == null ? Messages.getString("masterPassword.create") :

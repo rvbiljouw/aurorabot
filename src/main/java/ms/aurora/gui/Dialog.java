@@ -12,6 +12,10 @@ public abstract class Dialog extends AnchorPane {
 
     public abstract String getTitle();
 
+    public void onClose() {
+
+    }
+
     public void show() {
         currentStage = FXUtils.createModalStage(getTitle(), this);
         currentStage.show();
@@ -23,6 +27,7 @@ public abstract class Dialog extends AnchorPane {
     }
 
     public void close() {
+        onClose();
         currentStage.close();
     }
 

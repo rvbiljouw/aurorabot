@@ -1,6 +1,7 @@
 package ms.aurora.core.model;
 
 import com.avaje.ebean.Ebean;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import ms.aurora.gui.Dialog;
 import ms.aurora.gui.dialog.MasterPasswordDialog;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Entity
 public class Account extends AbstractModel {
-    private static StringProperty masterPassword;
+    private static StringProperty masterPassword = new SimpleStringProperty();
 
     @Id
     @GeneratedValue
@@ -136,6 +137,6 @@ public class Account extends AbstractModel {
 
     public static void init() {
         Dialog dialog = new MasterPasswordDialog(masterPassword);
-        dialog.show();
+        dialog.showAndWait();
     }
 }
