@@ -5,6 +5,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import jfx.messagebox.MessageBox;
@@ -20,7 +23,9 @@ import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.widget.AppletWidget;
 
 import java.applet.Applet;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 
 import static java.lang.String.valueOf;
 
@@ -90,7 +95,6 @@ public class Main extends AnchorPane {
 
     @FXML
     void initialize() {
-        assert tabPane != null : "fx:id=\"tabPane\" was not injected: check your FXML file 'Application.fxml'.";
         mnPlugins.setOnShowing(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
@@ -135,6 +139,9 @@ public class Main extends AnchorPane {
         tabPane.getTabs().add(widget.getTab());
     }
 
+    /**
+     * Shows the script overview if there is none running and an applet is selected.
+     */
     public void onStart() {
         if (getSelectedApplet() != null) {
             EntityLoader.reload();
@@ -143,6 +150,9 @@ public class Main extends AnchorPane {
         }
     }
 
+    /**
+     * Stops a script if there is one running and an applet is selected.
+     */
     public void onStop() {
         if (getSelectedApplet() != null) {
             Session session = Repository.get(getSelectedApplet().hashCode());
@@ -150,6 +160,9 @@ public class Main extends AnchorPane {
         }
     }
 
+    /**
+     * Pauses a script if there is one running and an applet is selected.
+     */
     public void onPause() {
         if (getSelectedApplet() != null) {
             Session session = Repository.get(getSelectedApplet().hashCode());
@@ -157,6 +170,9 @@ public class Main extends AnchorPane {
         }
     }
 
+    /**
+     * Resumes a script if there is one running and an applet is selected.
+     */
     public void onResume() {
         if (getSelectedApplet() != null) {
             Session session = Repository.get(getSelectedApplet().hashCode());
@@ -164,30 +180,54 @@ public class Main extends AnchorPane {
         }
     }
 
+    /**
+     * Opens the plugin overview
+     */
     public void onPlugins() {
         EntityLoader.reload();
         Dialog dialog = new PluginOverview();
         dialog.show();
     }
 
+    /**
+     * Opens the account overview
+     */
     public void onAccounts() {
         Dialog dialog = new AccountOverview();
         dialog.show();
     }
 
+    /**
+     * Opens the settings / properties dialog
+     */
     public void onSettings() {
         Dialog dialog = new Properties();
         dialog.show();
     }
 
+    /**
+     * TODO: Should open the about dialog, which isn't made yet.
+     */
     public void onAbout() {
 
     }
 
+    /**
+     * Called when the forums menu item gets clicked
+     */
     public void onForums() {
-
+        try {
+            Desktop.getDesktop().browse(new URL("http://www.aurora.ms/community").toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Called by the unlink menu item.
+     * Removes the stored forum account, effectively
+     * disabling auto login.
+     */
     public void onUnlink() {
         Property property = Property.getByName("forumuser");
         if (property != null) {
@@ -205,6 +245,12 @@ public class Main extends AnchorPane {
         }
     }
 
+    /**
+     * Called by the input toggle button.
+     * Sets the global blocking var depending on selection state.
+     * <p/>
+     * The blocking will be activated for all applet widgets.
+     */
     public void onInput() {
         if (btnInput.isSelected()) {
             GlobalEventQueue.blocking = true;
@@ -215,11 +261,19 @@ public class Main extends AnchorPane {
         }
     }
 
+    /**
+     * Called by the Hide menu item
+     * TODO: Go to tray
+     */
     public void onHide() {
         MessageBox.show(getScene().getWindow(), "Not supported",
                 "Not supported", MessageBox.OK);
     }
 
+    /**
+     * Called by the Close menu item.
+     * TODO: Ask for confirmation
+     */
     public void onClose() {
         System.exit(0);
     }
