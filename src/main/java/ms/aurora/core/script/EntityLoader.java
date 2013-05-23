@@ -28,7 +28,7 @@ import java.util.jar.JarFile;
  */
 public final class EntityLoader {
     private static final Logger logger = Logger.getLogger(EntityLoader.class);
-    private static final List<Class<? extends Random>> randoms = new ArrayList<Class<?extends Random>>();
+    private static final List<Class<? extends Random>> randoms = new ArrayList<Class<? extends Random>>();
     private static final List<Class<? extends Plugin>> plugins = new ArrayList<Class<? extends Plugin>>();
     private static final List<Class<? extends Script>> scripts = new ArrayList<Class<? extends Script>>();
 
@@ -62,14 +62,12 @@ public final class EntityLoader {
         for (File file : files != null ? files : new File[0]) {
             if (file.isDirectory()) {
                 traverse(file);
-            } else if (!file.getName().endsWith(".jar")) {
-                continue;
-            }
-
-            try {
-                loadJar(file);
-            } catch (Exception e) {
-                logger.error("Failed to load jar " + file.getName(), e);
+            } else if (file.getName().endsWith(".jar")) {
+                try {
+                    loadJar(file);
+                } catch (Exception e) {
+                    logger.error("Failed to load jar " + file.getName(), e);
+                }
             }
         }
     }
@@ -97,11 +95,11 @@ public final class EntityLoader {
             logger.info("Class " + clazz.getSimpleName() +
                     " has no annotation and was ignored.");
         } else if (Script.class.isAssignableFrom(clazz)) {
-            scripts.add((Class<? extends Script>)clazz);
+            scripts.add((Class<? extends Script>) clazz);
         } else if (Random.class.isAssignableFrom(clazz)) {
-            randoms.add((Class<? extends Random>)clazz);
+            randoms.add((Class<? extends Random>) clazz);
         } else if (Plugin.class.isAssignableFrom(clazz)) {
-            plugins.add((Class<? extends Plugin>)clazz);
+            plugins.add((Class<? extends Plugin>) clazz);
         }
     }
 
