@@ -75,7 +75,8 @@ public final class EntityLoader {
     private static void loadJar(File rawFile) throws Exception {
         JarFile file = new JarFile(rawFile);
         URL[] classpathURLs = new URL[]{rawFile.toURI().toURL()};
-        ClassLoader loader = new URLClassLoader(classpathURLs);
+        ClassLoader loader = new URLClassLoader(classpathURLs,
+                Thread.currentThread().getContextClassLoader());
 
         Enumeration<JarEntry> entries = file.entries();
         while (entries.hasMoreElements()) {
