@@ -67,7 +67,7 @@ public class Properties extends Dialog {
 
     @FXML
     void onOk(ActionEvent event) {
-        currentStage.close();
+        close();
     }
 
     @FXML

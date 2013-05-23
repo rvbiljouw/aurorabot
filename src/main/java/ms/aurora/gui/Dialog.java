@@ -28,7 +28,10 @@ public abstract class Dialog extends AnchorPane {
 
     public void close() {
         onClose();
-        currentStage.close();
+
+        if (currentStage != null) {
+            currentStage.close();
+        }
     }
 
 }
