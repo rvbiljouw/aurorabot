@@ -34,8 +34,9 @@ public final class Session implements Runnable {
             scriptManager = new ScriptManager(this);
             pluginManager = new PluginManager(this);
             ui.getContainer().setApplet(wrapper.getApplet());
-
             Repository.set(wrapper.getApplet().hashCode(), this);
+
+            pluginManager.refresh();
         }
     }
 

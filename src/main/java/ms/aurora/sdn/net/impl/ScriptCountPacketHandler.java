@@ -22,7 +22,6 @@ public class ScriptCountPacketHandler implements PacketHandler {
     @Override
     public void handle(IncomingPacket incomingPacket) throws IOException {
         Repository.REMOTE_SCRIPT_COUNT = incomingPacket.getStream().readInt();
-        System.out.println("Expecting " + Repository.REMOTE_SCRIPT_COUNT + " scripts from client.");
         synchronized (Repository.script_count_lock) {
             Repository.script_count_lock.notifyAll();
         }

@@ -68,7 +68,6 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     }
 
     public final int getLocalX() {
-        System.out.println(wrapped);
         return wrapped.getLocalX();
     }
 

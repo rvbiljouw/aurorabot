@@ -33,7 +33,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
-    public static final double VERSION = 13;
+    public static final double VERSION = 14;
     private static final Object initialisation_lock = new Object();
 
     public static LoginWindow LOGIN_WINDOW;

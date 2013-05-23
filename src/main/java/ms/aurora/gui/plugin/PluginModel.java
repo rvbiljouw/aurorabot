@@ -27,7 +27,6 @@ public class PluginModel {
         this.name = new SimpleStringProperty(manifest.name());
         this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
         this.author = new SimpleStringProperty(manifest.author());
-        System.out.println(config.isEnabled());
         this.state = new SimpleBooleanProperty(config.isEnabled());
     }
 

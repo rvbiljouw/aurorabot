@@ -99,12 +99,9 @@ public class PluginOverview extends Dialog {
             if (select != null) {
                 Class<? extends Plugin> plugin = select.plugin;
                 PluginConfig config = getByName(plugin.getName());
-                System.out.println(plugin.getName() + " => " + enable);
                 config.setEnabled(enable);
                 select.setState(enable);
                 config.update();
-            } else {
-                System.out.println("lol irl...");
             }
         }
     }

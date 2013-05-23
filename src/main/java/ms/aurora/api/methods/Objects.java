@@ -98,17 +98,8 @@ public final class Objects {
     public static Collection<RSObject> getObjectsAtLocal(int x, int y) {
         List<RSObject> objects = new ArrayList<RSObject>();
         Client client = getClient();
-        if (client == null) {
-            System.out.println("Null Client");
-        }
         WorldController worldController = client.getWorld();
-        if (worldController == null) {
-            System.out.println("Null WorldController");
-        }
         Ground[][][] grounds = worldController.getGroundArray();
-        if (grounds == null) {
-            System.out.println("Null Ground[][][]");
-        }
         Ground ground = grounds[client.getPlane()][x][y];
 
         if (ground != null) {
