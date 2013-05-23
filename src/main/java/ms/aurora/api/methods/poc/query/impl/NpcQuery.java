@@ -21,8 +21,10 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
     @Override
     public RSNPC[] result() {
         List<RSNPC> rsnpcList = new ArrayList<>();
-        for (Npc npc: getClient().getAllNpcs()) {
-            rsnpcList.add(new RSNPC(npc));
+        for (Npc npc : getClient().getAllNpcs()) {
+            if (npc != null) {
+                rsnpcList.add(new RSNPC(npc));
+            }
         }
         RSNPC[] npcArray = filterResults(rsnpcList).toArray(new RSNPC[0]);
         if (this.comparator == null) {

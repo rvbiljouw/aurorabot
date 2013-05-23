@@ -60,7 +60,7 @@ public final class PluginManager {
             public void run() {
                 for (Class<? extends Plugin> plugin : EntityLoader.getPlugins()) {
                     PluginConfig config = PluginConfig.getByName(
-                            plugin.getClass().getName());
+                            plugin.getName());
                     stop(plugin);
                     if (config.isEnabled()) {
                         start(plugin);

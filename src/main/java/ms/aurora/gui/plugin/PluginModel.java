@@ -20,14 +20,14 @@ public class PluginModel {
     private SimpleBooleanProperty state;
 
     public PluginModel(Class<? extends Plugin> plugin, PluginManifest manifest) {
-        PluginConfig config = getByName(plugin.getClass().getName());
-
+        PluginConfig config = getByName(plugin.getName());
         this.plugin = plugin;
         this.manifest = manifest;
 
         this.name = new SimpleStringProperty(manifest.name());
         this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
         this.author = new SimpleStringProperty(manifest.author());
+        System.out.println(config.isEnabled());
         this.state = new SimpleBooleanProperty(config.isEnabled());
     }
 

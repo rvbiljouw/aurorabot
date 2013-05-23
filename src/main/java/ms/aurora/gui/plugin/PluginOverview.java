@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
-import ms.aurora.core.Repository;
 import ms.aurora.core.impl.PluginRefreshVisitor;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.script.EntityLoader;
@@ -17,9 +16,7 @@ import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
 import ms.aurora.gui.util.FXUtils;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
 import static ms.aurora.core.Repository.foreach;
@@ -93,6 +90,7 @@ public class PluginOverview extends Dialog {
 
     /**
      * Updates the selected state of a plugin.
+     *
      * @param enable true if plugin should be enabled
      */
     private void setSelectedState(boolean enable) {
@@ -101,19 +99,19 @@ public class PluginOverview extends Dialog {
             if (select != null) {
                 Class<? extends Plugin> plugin = select.plugin;
                 PluginConfig config = getByName(plugin.getName());
+                System.out.println(plugin.getName() + " => " + enable);
                 config.setEnabled(enable);
-                if (config.getId() == null) {
-                    config.save();
-                } else {
-                    config.update();
-                }
-                select.setState(true);
+                select.setState(enable);
+                config.update();
+            } else {
+                System.out.println("lol irl...");
             }
         }
     }
 
     /**
      * Rebuilds the plugin table
+     *
      * @return list of entries in the plugin table
      */
     private ObservableList<PluginModel> rebuild() {

@@ -36,6 +36,7 @@ public abstract class Query<RT, QT extends Query> {
                     valid = false;
                 }
             }
+
             if(valid) {
                 filtered.add(item);
             }
