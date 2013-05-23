@@ -52,8 +52,8 @@ public class LoginWindow extends Dialog {
     }
 
     /*
- * CRYPTO FUNCTIONS
- */
+     * CRYPTO FUNCTIONS
+     */
     private static String encrypt(String input) {
         byte[] crypted = null;
         try {
@@ -164,13 +164,13 @@ public class LoginWindow extends Dialog {
     }
 
     @Override
-    public void show() {
+    public void showAndWait() {
         Property user = Property.getByName("forumuser");
         if (user != null) {
             Property pwd = Property.getByName(user.getValue());
             Authentication.login(decrypt(pwd.getName()), decrypt(pwd.getValue()));
         } else {
-            super.show();
+            super.showAndWait();
         }
     }
 
