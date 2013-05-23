@@ -25,14 +25,13 @@ public class NpcQuery extends Query<Npc, RSNPC> {
         for (Npc npc: npcArray) {
             rsnpcList.add(new RSNPC(npc));
         }
-        Comparator comparator = null;
+        Comparator comparator;
         switch (sortType) {
-
             case DISTANCE:
-                comparator = Sort.DISTANCE();
+                comparator = Sort.DISTANCE;
                 break;
             default:
-                comparator = Sort.DEFAULT();
+                comparator = Sort.DEFAULT;
         }
         Collections.sort(rsnpcList, comparator);
         return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
