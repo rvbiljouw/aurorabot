@@ -19,19 +19,19 @@ public abstract class Query<RT, QT extends Query> {
         protected abstract boolean accept(RT type);
     }
 
-    private ArrayList<Conditional> executables = new ArrayList<>();
+    private ArrayList<Conditional> conditionals = new ArrayList<>();
     protected Sort.Type sortType = Sort.Type.DEFAULT;
     protected Comparator comparator;
 
-    protected void addExecutable(Conditional executable) {
-        this.executables.add(executable);
+    protected void addConditional(Conditional conditional) {
+        this.conditionals.add(conditional);
     }
 
     protected List<RT> filterResults(List<RT> items) {
         List<RT> filtered = new ArrayList();
         for (RT item: items) {
             boolean valid = true;
-            for (Conditional p : executables) {
+            for (Conditional p : conditionals) {
                 if (!p.accept(item)) {
                     valid = false;
                 }
@@ -55,7 +55,7 @@ public abstract class Query<RT, QT extends Query> {
     }
 
     public QT filter(Conditional conditional) {
-        this.executables.add(conditional);
+        this.conditionals.add(conditional);
         return (QT) this;
     }
 

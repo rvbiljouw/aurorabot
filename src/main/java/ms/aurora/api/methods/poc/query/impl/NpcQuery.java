@@ -1,10 +1,6 @@
 package ms.aurora.api.methods.poc.query.impl;
 
-import ms.aurora.api.methods.Calculations;
-import ms.aurora.api.methods.poc.query.Query;
 import ms.aurora.api.methods.poc.query.Sort;
-import ms.aurora.api.wrappers.Locatable;
-import ms.aurora.api.wrappers.RSCharacter;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.rt3.Npc;
 
@@ -43,10 +39,10 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
     }
 
     public NpcQuery named(final String... names) {
-        this.addExecutable(new Conditional() {
+        this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RSNPC type) {
-                for (String name: names) {
+                for (String name : names) {
                     if (type.getName().equals(name)) {
                         return true;
                     }
@@ -58,10 +54,10 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
     }
 
     public NpcQuery id(final int... ids) {
-        this.addExecutable(new Conditional() {
+        this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RSNPC type) {
-                for (int id: ids) {
+                for (int id : ids) {
                     if (type.getId() == id) {
                         return true;
                     }
