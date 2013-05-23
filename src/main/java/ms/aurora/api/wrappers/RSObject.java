@@ -164,7 +164,20 @@ public final class RSObject implements Locatable, Interactable {
 
     @Override
     public String toString() {
-        return getId() + " | " + (wrapped instanceof GroundDecoration ? 0 : wrapped.getOrientation());
+        return getId() + " | " + objectType.name();
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() * (getX() + getY());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof RSObject)) {
+            return false;
+        }
+        return obj.hashCode() == hashCode();
     }
 
     public static enum ObjectType {GROUND_DECORATION, WALL_DECORATION, WALL_OBJECT, ANIMABLE, NULL}

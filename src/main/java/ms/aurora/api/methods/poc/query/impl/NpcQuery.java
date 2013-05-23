@@ -4,6 +4,7 @@ import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.poc.query.Query;
 import ms.aurora.api.methods.poc.query.Sort;
 import ms.aurora.api.wrappers.Locatable;
+import ms.aurora.api.wrappers.RSCharacter;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.rt3.Npc;
 
@@ -19,15 +20,15 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public class NpcQuery extends Query<Npc, RSNPC, NpcQuery> {
+public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
 
     @Override
     public RSNPC[] result() {
-        Npc[] npcArray = filterResults(getClient().getAllNpcs()).toArray(new Npc[0]);
         List<RSNPC> rsnpcList = new ArrayList<>();
-        for (Npc npc: npcArray) {
+        for (Npc npc: getClient().getAllNpcs()) {
             rsnpcList.add(new RSNPC(npc));
         }
+        RSNPC[] npcArray = filterResults(rsnpcList).toArray(new RSNPC[0]);
         if (this.comparator == null) {
             switch (sortType) {
                 case DISTANCE:
@@ -41,12 +42,12 @@ public class NpcQuery extends Query<Npc, RSNPC, NpcQuery> {
         return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
     }
 
-    public NpcQuery name(final String... names) {
+    public NpcQuery named(final String... names) {
         this.addExecutable(new Conditional() {
             @Override
-            protected boolean accept(Npc type) {
+            protected boolean accept(RSNPC type) {
                 for (String name: names) {
-                    if (type.getComposite().getName().equals(name)) {
+                    if (type.getName().equals(name)) {
                         return true;
                     }
                 }
@@ -59,9 +60,9 @@ public class NpcQuery extends Query<Npc, RSNPC, NpcQuery> {
     public NpcQuery id(final int... ids) {
         this.addExecutable(new Conditional() {
             @Override
-            protected boolean accept(Npc type) {
+            protected boolean accept(RSNPC type) {
                 for (int id: ids) {
-                    if (type.getComposite().getId() == id) {
+                    if (type.getId() == id) {
                         return true;
                     }
                 }
@@ -70,36 +71,4 @@ public class NpcQuery extends Query<Npc, RSNPC, NpcQuery> {
         });
         return this;
     }
-
-    public NpcQuery distance(final int distance, final Locatable locatable) {
-        this.addExecutable(new Conditional() {
-            @Override
-            protected boolean accept(Npc type) {
-                int x = getClient().getBaseX() + (type.getLocalX() >> 7);
-                int y = getClient().getBaseY() + (type.getLocalY() >> 7);
-                return Calculations.distance(x, y, locatable.getX(), locatable.getY()) < distance;
-            }
-        });
-        return this;
-    }
-
-    public NpcQuery interacting(final boolean isInteracting) {
-        this.addExecutable(new Conditional() {
-            @Override
-            protected boolean accept(Npc type) {
-                int interacting = type.getInteractingEntity();
-                if (interacting == -1) {
-                    return !isInteracting;
-                } else if (interacting < 32767) {
-                    return (getClient().getAllNpcs()[interacting] != null) && isInteracting;
-                } else if (interacting >= 32767) {
-                    int index = (interacting - 32767);
-                    return getClient().getAllPlayers()[index] != null && isInteracting;
-                }
-                return !isInteracting;
-            }
-        });
-        return this;
-    }
-
 }

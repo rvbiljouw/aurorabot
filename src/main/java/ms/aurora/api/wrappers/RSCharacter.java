@@ -194,4 +194,17 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
     public final String dbgString() {
         return "Path: " + wrapped.getPathLength() + " IC: " + isInCombat();
     }
+
+    @Override
+    public int hashCode() {
+        return wrapped.getModelHeight() * (getX() + getY());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof RSCharacter)) {
+            return false;
+        }
+        return obj.hashCode() == hashCode();
+    }
 }

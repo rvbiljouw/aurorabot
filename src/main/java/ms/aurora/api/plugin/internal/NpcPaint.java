@@ -19,7 +19,6 @@ public class NpcPaint implements PaintListener {
     public void onRepaint(Graphics graphics) {
         //RSNPC[] npcs = Npcs.getAll(RSNPC_PREDICATE);
         RSNPC[] npcs = NpcsPOC.get().distance(10, Players.getLocal()).result();
-        RSNPC monk = NpcsPOC.get().name("Monk").sort(Sort.Type.DISTANCE).single();
         for (RSNPC npc : npcs) {
             Point loc = npc.getScreenLocation();
             String s = String.format("Name: %s | Id: %s | Anim: %s",

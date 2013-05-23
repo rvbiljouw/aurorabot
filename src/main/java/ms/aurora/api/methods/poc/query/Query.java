@@ -9,14 +9,14 @@ import java.util.List;
  * Time: 10:39
  *
  * @author A_C/Cov
- * BT = Base Type, eg Npc
+ *
  * RT = Return Type, eg RSNPC
  * QT = Query Type, eg NpcQuery
  */
-public abstract class Query<BT, RT, QT extends Query> {
+public abstract class Query<RT, QT extends Query> {
 
     public abstract class Conditional {
-        protected abstract boolean accept(BT type);
+        protected abstract boolean accept(RT type);
     }
 
     private ArrayList<Conditional> executables = new ArrayList<>();
@@ -27,17 +27,15 @@ public abstract class Query<BT, RT, QT extends Query> {
         this.executables.add(executable);
     }
 
-    protected List<BT> filterResults(BT[] items) {
-        List<BT> filtered = new ArrayList();
-        for (BT item: items) {
+    protected List<RT> filterResults(List<RT> items) {
+        List<RT> filtered = new ArrayList();
+        for (RT item: items) {
             boolean valid = true;
-
             for (Conditional p : executables) {
                 if (!p.accept(item)) {
                     valid = false;
                 }
             }
-
             if(valid) {
                 filtered.add(item);
             }
