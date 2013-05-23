@@ -16,6 +16,7 @@ public abstract class Query<T, R> {
     }
 
     private ArrayList<Executable> executables = new ArrayList<>();
+    protected Sort.Type sortType = Sort.Type.DEFAULT;
 
     protected void addExecutable(Executable executable) {
         this.executables.add(executable);
@@ -37,6 +38,11 @@ public abstract class Query<T, R> {
             }
         }
         return filtered;
+    }
+
+    public Query sort(Sort.Type type) {
+        this.sortType = type;
+        return this;
     }
 
     public R single() {

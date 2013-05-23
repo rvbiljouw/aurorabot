@@ -2,10 +2,13 @@ package ms.aurora.api.methods.poc.query.impl;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.poc.query.Query;
+import ms.aurora.api.methods.poc.query.Sort;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.rt3.Npc;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,6 +25,16 @@ public class NpcQuery extends Query<Npc, RSNPC> {
         for (Npc npc: npcArray) {
             rsnpcList.add(new RSNPC(npc));
         }
+        Comparator comparator = null;
+        switch (sortType) {
+
+            case DISTANCE:
+                comparator = Sort.DISTANCE();
+                break;
+            default:
+                comparator = Sort.DEFAULT();
+        }
+        Collections.sort(rsnpcList, comparator);
         return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
     }
 
