@@ -68,7 +68,7 @@ public final class Application {
             public void run() {
                 Account.init();
                 LOGIN_WINDOW = new LoginWindow();
-                LOGIN_WINDOW.display();
+                LOGIN_WINDOW.showAndWait();
             }
         });
     }
