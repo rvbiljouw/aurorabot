@@ -24,7 +24,9 @@ public final class ScriptManager {
                 currentThread.start();
 
                 Main.setInputEnabled(false);
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }

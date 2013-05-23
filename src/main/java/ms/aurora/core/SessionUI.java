@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author rvbiljouw
  */
 public class SessionUI {
-    private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<MenuItem> pluginMenu = new CopyOnWriteArrayList<MenuItem>();
 
     private final AppletWidget container;
     private final Session session;

@@ -19,7 +19,7 @@ public abstract class Query<RT, QT extends Query> {
         protected abstract boolean accept(RT type);
     }
 
-    private ArrayList<Conditional> conditionals = new ArrayList<>();
+    private ArrayList<Conditional> conditionals = new ArrayList<Conditional>();
     protected Sort.Type sortType = Sort.Type.DEFAULT;
     protected Comparator comparator;
 
@@ -28,7 +28,7 @@ public abstract class Query<RT, QT extends Query> {
     }
 
     protected List<RT> filterResults(List<RT> items) {
-        List<RT> filtered = new ArrayList();
+        List<RT> filtered = new ArrayList<RT>();
         for (RT item: items) {
             boolean valid = true;
             for (Conditional p : conditionals) {

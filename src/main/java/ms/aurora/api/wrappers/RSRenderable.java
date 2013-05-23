@@ -31,8 +31,10 @@ public class RSRenderable {
                         if (result != null && result instanceof Model) {
                             return (Model) result;
                         }
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                       // e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        // e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        // e.printStackTrace();
                     }
                 }
             }

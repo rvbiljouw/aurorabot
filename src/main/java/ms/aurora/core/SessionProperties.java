@@ -7,10 +7,10 @@ import java.util.Map;
  * @author rvbiljouw
  */
 public class SessionProperties {
-    private final Map<String, String> propertyMap = new HashMap<>();
+    private final Map<String, String> propertyMap = new HashMap<String, String>();
 
     public void setProperty(String property, String value) {
-        if(propertyMap.containsKey(property)) {
+        if (propertyMap.containsKey(property)) {
             propertyMap.remove(property);
         }
         propertyMap.put(property, value);

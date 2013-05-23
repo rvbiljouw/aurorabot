@@ -28,9 +28,9 @@ import java.util.jar.JarFile;
  */
 public final class EntityLoader {
     private static final Logger logger = Logger.getLogger(EntityLoader.class);
-    private static final List<Class<? extends Random>> randoms = new ArrayList<>();
-    private static final List<Class<? extends Plugin>> plugins = new ArrayList<>();
-    private static final List<Class<? extends Script>> scripts = new ArrayList<>();
+    private static final List<Class<? extends Random>> randoms = new ArrayList<Class<?extends Random>>();
+    private static final List<Class<? extends Plugin>> plugins = new ArrayList<Class<? extends Plugin>>();
+    private static final List<Class<? extends Script>> scripts = new ArrayList<Class<? extends Script>>();
 
     public static void clear() {
         randoms.clear();

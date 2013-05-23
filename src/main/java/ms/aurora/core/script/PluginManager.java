@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class PluginManager {
     private static final Logger logger = Logger.getLogger(PluginManager.class);
-    private final Map<String, Plugin> pluginMap = new HashMap<>();
+    private final Map<String, Plugin> pluginMap = new HashMap<String,Plugin>();
     private final Session session;
 
     public PluginManager(Session session) {

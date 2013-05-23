@@ -14,12 +14,12 @@ import static ms.aurora.api.methods.Widgets.getWidget;
  */
 public class Context {
     private static final Logger logger = Logger.getLogger(Context.class);
-    private static final ThreadLocal<Session> session = new ThreadLocal<>();
+    private static final ThreadLocal<Session> session = new ThreadLocal<Session>();
 
     public static Session getSession() {
-        if(session.get() == null) {
+        if (session.get() == null) {
             Session group = Repository.get(currentThread().getThreadGroup());
-            if(group != null) {
+            if (group != null) {
                 session.set(group);
             }
         }
