@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author A_C/Cov
  */
-public class GroundItemQuery extends LocatableQuery<RSGroundItem, GroundItemQuery> {
+public final class GroundItemQuery extends LocatableQuery<RSGroundItem, GroundItemQuery> {
 
     @Override
     public RSGroundItem[] result() {

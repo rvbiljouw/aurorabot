@@ -16,7 +16,7 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public class PlayerQuery extends CharacterQuery<RSPlayer, PlayerQuery> {
+public final class PlayerQuery extends CharacterQuery<RSPlayer, PlayerQuery> {
     @Override
     public RSPlayer[] result() {
         List<RSPlayer> rsPlayers = new ArrayList<RSPlayer>();

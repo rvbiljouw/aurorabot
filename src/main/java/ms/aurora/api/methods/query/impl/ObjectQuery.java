@@ -19,7 +19,7 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public class ObjectQuery extends LocatableQuery<RSObject, ObjectQuery> {
+public final class ObjectQuery extends LocatableQuery<RSObject, ObjectQuery> {
 
     @Override
     public RSObject[] result() {
