@@ -16,7 +16,7 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public final class NPCQuery extends CharacterQuery<RSNPC, NPCQuery> {
+public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
 
     @Override
     public RSNPC[] result() {
@@ -39,7 +39,7 @@ public final class NPCQuery extends CharacterQuery<RSNPC, NPCQuery> {
         return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
     }
 
-    public NPCQuery named(final String... names) {
+    public NpcQuery named(final String... names) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RSNPC type) {
@@ -54,7 +54,7 @@ public final class NPCQuery extends CharacterQuery<RSNPC, NPCQuery> {
         return this;
     }
 
-    public NPCQuery id(final int... ids) {
+    public NpcQuery id(final int... ids) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RSNPC type) {
