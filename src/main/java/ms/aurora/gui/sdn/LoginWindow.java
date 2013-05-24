@@ -15,12 +15,15 @@ import jfx.messagebox.MessageBox;
 import ms.aurora.core.model.Property;
 import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
+import ms.aurora.gui.util.FXUtils;
 import ms.aurora.sdn.net.api.Authentication;
 import ms.aurora.sdn.net.encode.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+
+import static ms.aurora.gui.util.FXUtils.load;
 
 /**
  * @author tobiewarburton
@@ -39,16 +42,7 @@ public class LoginWindow extends Dialog {
     private CheckBox cbxRemember;
 
     public LoginWindow() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginWindow.fxml"), Messages.getBundle());
-
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        load(getClass().getResource("LoginWindow.fxml"), this);
     }
 
     /*
@@ -64,7 +58,7 @@ public class LoginWindow extends Dialog {
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
-        return new String(Base64.encode(crypted));
+        return Base64.encode(crypted);
     }
 
     private static String decrypt(String input) {

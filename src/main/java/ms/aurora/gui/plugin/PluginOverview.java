@@ -45,6 +45,16 @@ public class PluginOverview extends Dialog {
     }
 
     @FXML
+    void initialize() {
+        colName.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("name"));
+        colShortDesc.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("shortDesc"));
+        colAuthor.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("author"));
+        colState.setCellValueFactory(new PropertyValueFactory<PluginModel, Boolean>("state"));
+
+        tblPlugins.setItems(rebuild());
+    }
+
+    @FXML
     void onCancel(ActionEvent event) {
         foreach(new PluginRefreshVisitor());
         close();
@@ -70,16 +80,6 @@ public class PluginOverview extends Dialog {
 
     @FXML
     void onSearch(ActionEvent event) {
-        tblPlugins.setItems(rebuild());
-    }
-
-    @FXML
-    void initialize() {
-        colName.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("name"));
-        colShortDesc.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("shortDesc"));
-        colAuthor.setCellValueFactory(new PropertyValueFactory<PluginModel, String>("author"));
-        colState.setCellValueFactory(new PropertyValueFactory<PluginModel, Boolean>("state"));
-
         tblPlugins.setItems(rebuild());
     }
 

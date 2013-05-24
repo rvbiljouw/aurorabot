@@ -5,7 +5,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -17,10 +16,11 @@ import ms.aurora.gui.Messages;
 import ms.aurora.input.ClientCanvas;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static ms.aurora.gui.util.FXUtils.load;
 
 
 public class Properties extends Dialog {
@@ -40,17 +40,19 @@ public class Properties extends Dialog {
     private Stage currentStage;
 
     public Properties() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"),
-                Messages.getBundle());
+        load(getClass().getResource("Properties.fxml"), this);
+    }
 
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+    @FXML
+    void initialize() {
+        sldPaintDelay.setValue(ClientCanvas.PAINT_DELAY);
+        sldPaintDelay.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+                ClientCanvas.PAINT_DELAY = number2.intValue();
+            }
+        });
+        loadSources();
     }
 
     @FXML
@@ -66,11 +68,6 @@ public class Properties extends Dialog {
     }
 
     @FXML
-    void onOk(ActionEvent event) {
-        close();
-    }
-
-    @FXML
     void onRemoveSource(ActionEvent event) {
         ObservableList<Source> selection = lstSources.getSelectionModel().getSelectedItems();
         for (Source source : selection) {
@@ -80,15 +77,8 @@ public class Properties extends Dialog {
     }
 
     @FXML
-    void initialize() {
-        sldPaintDelay.setValue(ClientCanvas.PAINT_DELAY);
-        sldPaintDelay.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-                ClientCanvas.PAINT_DELAY = number2.intValue();
-            }
-        });
-        loadSources();
+    void onOk(ActionEvent event) {
+        close();
     }
 
     private void loadSources() {
