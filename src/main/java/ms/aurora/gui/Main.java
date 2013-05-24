@@ -3,7 +3,6 @@ package ms.aurora.gui;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -20,12 +19,10 @@ import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.config.Properties;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
-import ms.aurora.gui.util.FXUtils;
 import ms.aurora.gui.widget.AppletWidget;
 
 import java.applet.Applet;
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
 
 import static java.lang.String.valueOf;
@@ -55,6 +52,7 @@ public class Main extends AnchorPane {
 
     public Main() {
         load(getClass().getResource("ApplicationGUI.fxml"), this);
+        self = this;
     }
 
     /**

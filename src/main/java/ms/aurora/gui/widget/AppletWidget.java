@@ -155,8 +155,14 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
      * Sets the wrapped applet
      * @param applet applet
      */
-    public void setApplet(Applet applet) {
-        Application.mainFrame.add(applet);
+    public void setApplet(final Applet applet) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Application.mainFrame.add(applet);
+            }
+        });
+
         this.applet = applet;
 
         tab.setClosable(true);

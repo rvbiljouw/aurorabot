@@ -78,8 +78,8 @@ public final class RSModel {
         int sin = SIN_TABLE[orientation];
         int cos = COS_TABLE[orientation];
         for (int i = 0; i < this.originalX.length; ++i) {
-            this.verticesX[i] = this.originalX[i] * cos + this.originalZ[i] * sin >> 15;
-            this.verticesZ[i] = this.originalZ[i] * cos - this.originalX[i] * sin >> 15;
+            this.verticesX[i] = this.originalX[i] * cos + this.originalZ[i] * sin >> 16;
+            this.verticesZ[i] = this.originalZ[i] * cos - this.originalX[i] * sin >> 16;
         }
 
     }
