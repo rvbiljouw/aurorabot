@@ -60,8 +60,13 @@ public abstract class Query<RT, QT extends Query> {
         return (QT) this;
     }
 
-    public RT single() {
+    public RT first() {
         return result()[0];
+    }
+
+    public RT last() {
+        RT[] result = result();
+        return result[result.length - 1];
     }
 
     public abstract RT[] result();
