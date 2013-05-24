@@ -69,13 +69,13 @@ public class ClientCanvas extends Canvas {
             int mouseY = Context.getClient().getMouse().getRealY();
 
             g.setColor(MOUSE_GREY);
-            g.drawLine(mouseX, 0, mouseX, mouseY - 5);
-            g.drawLine(mouseX, mouseY + 5, mouseX, 503);
-            g.drawLine(0, mouseY, mouseX - 5, mouseY);
-            g.drawLine(mouseX + 5, mouseY, 765, mouseY);
+            g.drawLine(mouseX, 0, mouseX, mouseY - 10);
+            g.drawLine(mouseX, mouseY + 10, mouseX, 503);
+            g.drawLine(0, mouseY, mouseX - 10, mouseY);
+            g.drawLine(mouseX + 10, mouseY, 765, mouseY);
 
             g.setColor(MOUSE_BLUE);
-            g.drawRect(mouseX - 5, mouseY - 5, 11, 11);
+            g.drawRect(mouseX - 10, mouseY - 10, 20, 20);
 
             g.setColor(MOUSE_GREY);
             g.drawRect(mouseX - 1, mouseY - 1, 3, 3);
