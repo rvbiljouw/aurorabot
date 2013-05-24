@@ -7,7 +7,10 @@ import com.avaje.ebean.config.ServerConfig;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.core.model.*;
+import ms.aurora.core.model.AbstractModel;
+import ms.aurora.core.model.Account;
+import ms.aurora.core.model.PluginConfig;
+import ms.aurora.core.model.Property;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.Main;
 import ms.aurora.gui.Messages;
@@ -18,6 +21,7 @@ import ms.aurora.sdn.net.api.Maps;
 import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.security.DefaultSecurityManager;
 import org.apache.log4j.Logger;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,9 +39,13 @@ public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
     public static final double VERSION = 14;
     private static final Object initialisation_lock = new Object();
-
     public static LoginWindow LOGIN_WINDOW;
     public static JFrame mainFrame;
+    private static Class<?>[] BEAN_CLASSES = {
+            AbstractModel.class, Account.class,
+            PluginConfig.class, ms.aurora.core.model.Source.class,
+            Property.class
+    };
 
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
@@ -48,8 +56,8 @@ public final class Application {
     public static void boot() {
         try {
             loadDatabase();
-            for(Class<?> beanClass : BEAN_CLASSES) {
-                if(AbstractModel.class.isAssignableFrom(beanClass)
+            for (Class<?> beanClass : BEAN_CLASSES) {
+                if (AbstractModel.class.isAssignableFrom(beanClass)
                         && !beanClass.equals(Account.class)) {
                     AbstractModel.test(beanClass);
                 }
@@ -77,6 +85,12 @@ public final class Application {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
+                    JFrame.setDefaultLookAndFeelDecorated(true);
+                } catch (UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
                 mainFrame = new JFrame(MessageFormat.format(Messages.getString("mainWindow.title"), VERSION));
                 mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 final JFXPanel panel = new JFXPanel();
@@ -97,11 +111,8 @@ public final class Application {
                     synchronized (initialisation_lock) {
                         initialisation_lock.wait();
                         String name = System.getProperty("os.name");
-                        if (name.toLowerCase().contains("win")) {
-                            mainFrame.setSize(765, 630);
-                        } else {
-                            mainFrame.pack();
-                        }
+
+                        mainFrame.pack();
                         mainFrame.setResizable(false);
                         Toolkit toolkit = Toolkit.getDefaultToolkit();
                         int centerX = (toolkit.getScreenSize().width / 2) - (mainFrame.getWidth() / 2);
@@ -175,10 +186,4 @@ public final class Application {
         logger.info("Database initialised for the first time!");
         logger.info("Next time we will use the properties file.");
     }
-
-    private static Class<?>[] BEAN_CLASSES = {
-            AbstractModel.class, Account.class,
-            PluginConfig.class, ms.aurora.core.model.Source.class,
-            Property.class
-    };
 }
