@@ -6,22 +6,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
+import ms.aurora.gui.util.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static ms.aurora.gui.Messages.getString;
+import static ms.aurora.gui.util.FXUtils.load;
+
 /**
  * @author Rick
  */
-public class EditAccount extends AnchorPane {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
+public class EditAccount extends Dialog {
 
     @FXML
     private TextField txtBankPin;
@@ -35,20 +34,13 @@ public class EditAccount extends AnchorPane {
     private final AccountModel accountModel;
 
     public EditAccount(AccountModel accountModel) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditAccount.fxml"), Messages.getBundle());
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            this.accountModel = accountModel;
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        load(getClass().getResource("EditAccount.fxml"), this);
+        this.accountModel = accountModel;
     }
 
     @FXML
     void onCancel(ActionEvent event) {
-        getScene().getWindow().hide();
+        close();
     }
 
     @FXML
@@ -57,17 +49,18 @@ public class EditAccount extends AnchorPane {
         accountModel.setPassword(txtPassword.getText());
         accountModel.setBankPin(txtBankPin.getText());
         accountModel.getAccount().update();
-        getScene().getWindow().hide();
+        close();
     }
 
     @FXML
     void initialize() {
-        assert txtBankPin != null : "fx:id=\"txtBankPin\" was not injected: check your FXML file 'EditAccount.fxml'.";
-        assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'EditAccount.fxml'.";
-        assert txtUsername != null : "fx:id=\"txtUsername\" was not injected: check your FXML file 'EditAccount.fxml'.";
         txtUsername.setText(accountModel.getUsername());
         txtPassword.setText(accountModel.getRealPassword());
         txtBankPin.setText(accountModel.getBankPin());
     }
 
+    @Override
+    public String getTitle() {
+        return getString("editAccount.title");
+    }
 }

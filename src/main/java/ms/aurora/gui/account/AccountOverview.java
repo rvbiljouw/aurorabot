@@ -9,10 +9,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.WindowEvent;
+import jfx.messagebox.MessageBox;
 import ms.aurora.core.model.Account;
 import ms.aurora.gui.Dialog;
 import ms.aurora.gui.util.FXUtils;
 
+import static jfx.messagebox.MessageBox.OK;
+import static jfx.messagebox.MessageBox.show;
 import static ms.aurora.gui.Messages.getString;
 import static ms.aurora.gui.util.FXUtils.showModalDialog;
 
@@ -21,12 +24,6 @@ import static ms.aurora.gui.util.FXUtils.showModalDialog;
  */
 public class AccountOverview extends Dialog {
     private final ObservableList<AccountModel> accounts = FXCollections.observableArrayList();
-    private final EventHandler<WindowEvent> closeHandler = new EventHandler<WindowEvent>() {
-        @Override
-        public void handle(WindowEvent windowEvent) {
-            rebuild();
-        }
-    };
 
     @FXML
     private TableColumn<AccountModel, String> colBankPin;
@@ -42,18 +39,18 @@ public class AccountOverview extends Dialog {
     }
 
     @FXML
-    void onCancel(ActionEvent event) {
-        close();
-    }
+    void initialize() {
+        colUsername.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("username"));
+        colPassword.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("password"));
+        colBankPin.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("bankPin"));
 
-    @FXML
-    void onOk() {
-        close();
+        rebuild();
     }
 
     @FXML
     void onNewAccount() {
-        showModalDialog(getString("newAccount.title"), new NewAccount(), closeHandler);
+        new NewAccount().showAndWait();
+        rebuild();
     }
 
     @FXML
@@ -70,19 +67,23 @@ public class AccountOverview extends Dialog {
     void onEditSelected() {
         AccountModel selectedAccount = tblAccounts.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
-            showModalDialog(getString("editAccount.title"),
-                    new EditAccount(selectedAccount), closeHandler);
+            new EditAccount(selectedAccount).showAndWait();
+            rebuild();
+        } else {
+            MessageBox.show(getScene().getWindow(), "No account selected", "No account selected", OK);
         }
     }
 
     @FXML
-    void initialize() {
-        colUsername.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("username"));
-        colPassword.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("password"));
-        colBankPin.setCellValueFactory(new PropertyValueFactory<AccountModel, String>("bankPin"));
-
-        rebuild();
+    void onCancel(ActionEvent event) {
+        close();
     }
+
+    @FXML
+    void onOk() {
+        close();
+    }
+
 
     /**
      * Rebuilds the account table

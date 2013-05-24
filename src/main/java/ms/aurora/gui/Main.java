@@ -20,6 +20,7 @@ import ms.aurora.gui.account.AccountOverview;
 import ms.aurora.gui.config.Properties;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
+import ms.aurora.gui.util.FXUtils;
 import ms.aurora.gui.widget.AppletWidget;
 
 import java.applet.Applet;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import static java.lang.String.valueOf;
+import static ms.aurora.gui.util.FXUtils.load;
 
 
 public class Main extends AnchorPane {
@@ -52,17 +54,7 @@ public class Main extends AnchorPane {
     private ToggleButton btnInput;
 
     public Main() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ApplicationGUI.fxml"),
-                Messages.getBundle());
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-            self = this;
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        load(getClass().getResource("ApplicationGUI.fxml"), this);
     }
 
     /**

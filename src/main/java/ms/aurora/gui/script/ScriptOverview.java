@@ -53,6 +53,21 @@ public class ScriptOverview extends Dialog {
     }
 
     @FXML
+    void initialize() {
+        colName.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("name"));
+        colShortDesc.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("shortDesc"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("category"));
+        colAuthor.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("author"));
+        ObservableList<String> categoryList = FXCollections.observableArrayList();
+        categoryList.add(Messages.getString("scriptOverview.all"));
+
+
+        tblScripts.setItems(rebuild());
+        cbxCategory.setItems(categoryList);
+        cbxCategory.getSelectionModel().selectFirst();
+    }
+
+    @FXML
     void onOk(ActionEvent event) {
         final ScriptModel model = tblScripts.getSelectionModel().selectedItemProperty().getValue();
         final Session session = Repository.get(getSelectedApplet().hashCode());
@@ -75,21 +90,6 @@ public class ScriptOverview extends Dialog {
     @FXML
     void onSearch() {
         tblScripts.setItems(rebuild());
-    }
-
-    @FXML
-    void initialize() {
-        colName.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("name"));
-        colShortDesc.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("shortDesc"));
-        colCategory.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("category"));
-        colAuthor.setCellValueFactory(new PropertyValueFactory<ScriptModel, String>("author"));
-        ObservableList<String> categoryList = FXCollections.observableArrayList();
-        categoryList.add(Messages.getString("scriptOverview.all"));
-
-
-        tblScripts.setItems(rebuild());
-        cbxCategory.setItems(categoryList);
-        cbxCategory.getSelectionModel().selectFirst();
     }
 
     @Override
