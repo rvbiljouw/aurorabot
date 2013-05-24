@@ -1,16 +1,9 @@
 package ms.aurora;
 
-import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.config.DataSourceConfig;
-import com.avaje.ebean.config.ServerConfig;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import ms.aurora.core.model.AbstractModel;
 import ms.aurora.core.model.Account;
-import ms.aurora.core.model.PluginConfig;
-import ms.aurora.core.model.Property;
 import ms.aurora.event.GlobalEventQueue;
 import ms.aurora.gui.Main;
 import ms.aurora.gui.Messages;
@@ -37,40 +30,21 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
-    public static final double VERSION = 14;
     private static final Object initialisation_lock = new Object();
+
+    public static final double VERSION = 14;
     public static LoginWindow LOGIN_WINDOW;
     public static JFrame mainFrame;
-    private static Class<?>[] BEAN_CLASSES = {
-            AbstractModel.class, Account.class,
-            PluginConfig.class, ms.aurora.core.model.Source.class,
-            Property.class
-    };
 
     public static void main(String[] args) {
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
-        boot();
-    }
 
-    public static void boot() {
-        try {
-            loadDatabase();
-            for (Class<?> beanClass : BEAN_CLASSES) {
-                if (AbstractModel.class.isAssignableFrom(beanClass)
-                        && !beanClass.equals(Account.class)) {
-                    AbstractModel.test(beanClass);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            newDatabase();
-        }
-
-        new JFXPanel();
+        Database.init();
         SDNConnection.getInstance().start();
         Versioning.checkForUpdates();
 
+        new JFXPanel();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -88,102 +62,50 @@ public final class Application {
                 try {
                     UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
                     JFrame.setDefaultLookAndFeelDecorated(true);
-                } catch (UnsupportedLookAndFeelException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-                mainFrame = new JFrame(MessageFormat.format(Messages.getString("mainWindow.title"), VERSION));
-                mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                final JFXPanel panel = new JFXPanel();
-                mainFrame.setContentPane(panel);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        Scene scene = new Scene(new Main());
-                        scene.getStylesheets().add(Messages.getString("gui.theme"));
-                        panel.setScene(scene);
-                        synchronized (initialisation_lock) {
-                            initialisation_lock.notifyAll();
-                        }
-                    }
-                });
+                    mainFrame = new JFrame(MessageFormat.format(Messages.getString("mainWindow.title"), VERSION));
+                    mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    JFXPanel panel = new JFXPanel();
+                    mainFrame.setContentPane(panel);
+                    initializeScene(panel);
 
-                try {
                     synchronized (initialisation_lock) {
                         initialisation_lock.wait();
-                        String name = System.getProperty("os.name");
-
-                        mainFrame.pack();
-                        mainFrame.setResizable(false);
-                        Toolkit toolkit = Toolkit.getDefaultToolkit();
-                        int centerX = (toolkit.getScreenSize().width / 2) - (mainFrame.getWidth() / 2);
-                        int centerY = (toolkit.getScreenSize().height / 2) - (mainFrame.getHeight() / 2);
-                        mainFrame.setLocation(centerX, centerY);
-                        mainFrame.setVisible(true);
-                        initialize();
+                        showFrame();
+                        onReady();
                     }
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    private static void initialize() {
+    private static void initializeScene(final JFXPanel panel) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Scene scene = new Scene(new Main());
+                scene.getStylesheets().add(Messages.getString("gui.theme"));
+                panel.setScene(scene);
+                synchronized (initialisation_lock) {
+                    initialisation_lock.notifyAll();
+                }
+            }
+        });
+    }
+
+    private static void showFrame() {
+        mainFrame.pack();
+        mainFrame.setResizable(false);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        int centerX = (toolkit.getScreenSize().width / 2) - (mainFrame.getWidth() / 2);
+        int centerY = (toolkit.getScreenSize().height / 2) - (mainFrame.getHeight() / 2);
+        mainFrame.setLocation(centerX, centerY);
+        mainFrame.setVisible(true);
+    }
+
+    private static void onReady() {
         Hooks.obtainHooks();
         Maps.obtainMap();
-    }
-
-    private static void newDatabase() {
-        ServerConfig config = new ServerConfig();
-        config.setName("default");
-        config.addJar(Versioning.PATH);
-        for (Class<?> clazz : BEAN_CLASSES) {
-            config.addClass(clazz);
-        }
-
-        DataSourceConfig dataSource = new DataSourceConfig();
-        dataSource.setDriver("org.h2.Driver");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
-        dataSource.setUrl("jdbc:h2:~/.aurora.db;Recover=1");
-
-        config.setDataSourceConfig(dataSource);
-        config.setDdlGenerate(true);
-        config.setDdlRun(true);
-
-        config.setDefaultServer(true);
-        config.setRegister(true);
-        EbeanServer server = EbeanServerFactory.create(config);
-        server.runCacheWarming();
-
-        logger.info("Database initialised for the first time!");
-        logger.info("Next time we will use the properties file.");
-    }
-
-    private static void loadDatabase() {
-        ServerConfig config = new ServerConfig();
-        config.setName("default");
-        config.addJar(Versioning.PATH);
-        for (Class<?> clazz : BEAN_CLASSES) {
-            config.addClass(clazz);
-        }
-
-        DataSourceConfig dataSource = new DataSourceConfig();
-        dataSource.setDriver("org.h2.Driver");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
-        dataSource.setUrl("jdbc:h2:~/.aurora.db;Recover=1");
-
-        config.setDataSourceConfig(dataSource);
-        config.setDdlGenerate(false);
-        config.setDdlRun(false);
-
-        config.setDefaultServer(true);
-        config.setRegister(true);
-        EbeanServer server = EbeanServerFactory.create(config);
-        server.runCacheWarming();
-
-        logger.info("Database initialised for the first time!");
-        logger.info("Next time we will use the properties file.");
     }
 }
