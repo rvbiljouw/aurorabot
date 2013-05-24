@@ -3,7 +3,6 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.methods.filters.ObjectFilters;
-import ms.aurora.api.methods.filters.WidgetItemFilters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.*;
@@ -23,9 +22,8 @@ public final class Bank {
     private static final int BANK_ID = 12;
     private static final int BANK_PANE_ID = 89;
     private static final int BANK_CLOSE_ID = 104;
-
     private static final int[] BANK_NPCS = {56, 494, 495, 496};
-    private static final int[] BANK_OBJECTS =  {782, 2012, 2015, 2213,
+    private static final int[] BANK_OBJECTS = {782, 2012, 2015, 2213,
             4483, 2453, 6084, 11402, 11758, 12759, 14367, 19230, 24914, 25808,
             26972, 27663, 29085, 34752, 35647, 36786, 4483, 8981, 14382, 20607, 21301
     };
@@ -59,28 +57,22 @@ public final class Bank {
             return true;
         }
 
-        logger.info("Finding bank booth");
         Interactable bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
         if (bank == null) {
-            logger.debug("Couldn't find bank booth");
             bank = Npcs.get(NpcFilters.NAMED("Banker"));
             if (bank == null) {
-                logger.debug("Couldn't find an object or NPC to bank at.");
                 return false;
             }
         }
-        logger.info("Clicking bank");
-        //String originalProperty = Context.getProperty("interaction.walkTo");
-        //Context.setProperty("interaction.walkTo", "false");
-        if(bank instanceof RSNPC && !((RSNPC)bank).isOnScreen()) {
-            Walking.walkToLocal(((RSNPC)bank).getLocation());
-        } else if(bank instanceof RSObject && !((RSObject)bank).isOnScreen()) {
-            Walking.walkToLocal(((RSObject)bank).getLocation());
+
+        if (bank instanceof RSNPC && !((RSNPC) bank).isOnScreen()) {
+            Walking.walkToLocal(((RSNPC) bank).getLocation());
+        } else if (bank instanceof RSObject && !((RSObject) bank).isOnScreen()) {
+            Walking.walkToLocal(((RSObject) bank).getLocation());
         }
 
-        Camera.setAngle(Calculations.getAngleTo(((Locatable)bank).getLocation()));
+        Camera.setAngle(((Locatable) bank).getLocation());
         bank.applyAction("Bank(.*)Bank");
-        //Context.setProperty("interaction.walkTo", originalProperty);
         return isOpen();
     }
 
@@ -212,7 +204,7 @@ public final class Bank {
             @Override
             public boolean apply(RSWidgetItem object) {
                 boolean match = false;
-                for (Predicate<RSWidgetItem> predicate: predicates) {
+                for (Predicate<RSWidgetItem> predicate : predicates) {
                     if (predicate.apply(object)) match = true;
                 }
                 return !match;

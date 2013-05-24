@@ -6,7 +6,6 @@ import ms.aurora.api.wrappers.Locatable;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 
-import javax.rmi.CORBA.Util;
 import java.awt.event.KeyEvent;
 
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -29,6 +28,10 @@ public final class Camera {
         return (int) mapAngle;
     }
 
+    public static void setAngle(RSTile tile) {
+        setAngle(getAngleTo(tile));
+    }
+
     /**
      * Retrieves the current camera pitch
      *
@@ -36,6 +39,30 @@ public final class Camera {
      */
     public static int getPitch() {
         return (int) ((Context.getClient().getCameraPitch() - 1024) / 20.48);
+    }
+
+    /**
+     * Sets the camera to the specified value.
+     *
+     * @param pitch pitch of the height.
+     */
+    public static void setPitch(int pitch) {
+        int direction = getPitch() > pitch ? KeyEvent.VK_DOWN : KeyEvent.VK_UP;
+        VirtualKeyboard.holdKey(direction);
+        int timeWaited = 0;
+        int turnTime = 0;
+        while ((getPitch() > pitch + 5 || getAngle() < pitch - 5) && turnTime < 6000) {
+            sleepNoException(10);
+            turnTime += 10;
+            timeWaited += 10;
+            if (timeWaited > 500) {
+                int time = timeWaited - 500;
+                if (time == 0 || time % 40 == 0) {
+                    VirtualKeyboard.holdKey(direction);
+                }
+            }
+        }
+        VirtualKeyboard.releaseKey(direction);
     }
 
     /**
@@ -113,30 +140,6 @@ public final class Camera {
         VirtualKeyboard.releaseKey(direction);
     }
 
-    /**
-     * Sets the camera to the specified value.
-     *
-     * @param pitch pitch of the height.
-     */
-    public static void setPitch(int pitch) {
-        int direction = getPitch() > pitch ? KeyEvent.VK_DOWN : KeyEvent.VK_UP;
-        VirtualKeyboard.holdKey(direction);
-        int timeWaited = 0;
-        int turnTime = 0;
-        while ((getPitch() > pitch + 5 || getAngle() < pitch - 5) && turnTime < 6000) {
-            sleepNoException(10);
-            turnTime += 10;
-            timeWaited += 10;
-            if (timeWaited > 500) {
-                int time = timeWaited - 500;
-                if (time == 0 || time % 40 == 0) {
-                    VirtualKeyboard.holdKey(direction);
-                }
-            }
-        }
-        VirtualKeyboard.releaseKey(direction);
-    }
-
     private static int getAngleTo(RSTile tile) {
         RSTile playerLocation = Players.getLocal().getLocation();
         int angle = ((int) Math.toDegrees(Math.atan2(tile.getY() - playerLocation.getY(),
@@ -150,7 +153,7 @@ public final class Camera {
     /**
      * Turns to the tile with the given deviation.
      *
-     * @param tile RSTile to turn camera to.
+     * @param tile      RSTile to turn camera to.
      * @param deviation degree of accuracy.
      */
     public static void turnTo(RSTile tile, int deviation) {
@@ -180,6 +183,7 @@ public final class Camera {
 
     /**
      * Turns to the given Locatable.
+     *
      * @param locatable Locatable to turn to.
      */
     public static void turnTo(Locatable locatable) {
