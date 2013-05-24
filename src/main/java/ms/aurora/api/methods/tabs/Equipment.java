@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author rvbiljouw
  */
-public class Equipment {
+public final class Equipment {
     public static final int EQUIPMENT_HEAD = 12;
     public static final int EQUIPMENT_CAPE = 13;
     public static final int EQUIPMENT_NECK = 14;

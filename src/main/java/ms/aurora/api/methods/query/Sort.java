@@ -12,7 +12,7 @@ import java.util.Comparator;
  *
  * @author A_C/Cov
  */
-public class Sort {
+public final class Sort {
 
     public enum Type {
         DEFAULT, DISTANCE
@@ -25,7 +25,7 @@ public class Sort {
         }
     };
 
-    public static Comparator<Locatable> DISTANCE = new Comparator<Locatable>() {
+    public final static Comparator<Locatable> DISTANCE = new Comparator<Locatable>() {
         @Override
         public int compare(Locatable o1, Locatable o2) {
             return (int) Calculations.distance(o1.getLocation(), Players.getLocal().getLocation())

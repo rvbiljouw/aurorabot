@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
  * @author Rick
  * @author tobiewarburton
  */
-public class Options {
+public final class Options {
     private final static Logger logger = Logger.getLogger(Options.class);
     private final int runIndex = 173; // stolen rofl
 

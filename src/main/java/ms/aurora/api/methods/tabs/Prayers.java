@@ -7,7 +7,7 @@ import ms.aurora.api.wrappers.RSWidget;
  * @author Matty Cov / A_C
  * @author Rick
  */
-public class Prayers {
+public final class Prayers {
 
     public interface Prayer {
 

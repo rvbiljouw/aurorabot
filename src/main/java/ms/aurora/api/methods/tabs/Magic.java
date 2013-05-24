@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
  * @author Rick
  * @author tobiewarburton
  */
-public class Magic {
+public final class Magic {
     private final static Logger logger = Logger.getLogger(Magic.class);
 
     private static RSWidgetGroup getSpellGroup() {

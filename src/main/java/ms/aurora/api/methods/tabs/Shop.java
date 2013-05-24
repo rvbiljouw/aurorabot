@@ -20,7 +20,7 @@ import static ms.aurora.api.util.Utilities.sleepUntil;
  *
  * @author A_C/Cov
  */
-public class Shop {
+public final class Shop {
     private static final Logger logger = Logger.getLogger(Shop.class);
 
     private static final int SHOP_WIDGET_GROUP_ID = 300;

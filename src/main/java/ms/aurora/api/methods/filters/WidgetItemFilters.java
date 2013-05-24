@@ -9,7 +9,7 @@ import ms.aurora.api.wrappers.RSWidgetItem;
  * @author Matty Cov
  * @author tobiewarburton
  */
-public class WidgetItemFilters {
+public final class WidgetItemFilters {
 
     private WidgetItemFilters() {
 

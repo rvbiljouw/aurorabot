@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author tobiewarburton
  */
-public class Tabs {
+public final class Tabs {
     /**
      * opens a tab
      *
