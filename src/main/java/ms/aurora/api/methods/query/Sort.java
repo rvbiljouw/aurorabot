@@ -1,4 +1,4 @@
-package ms.aurora.api.methods.poc.query;
+package ms.aurora.api.methods.query;
 
 import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Players;

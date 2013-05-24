@@ -1,7 +1,7 @@
-package ms.aurora.api.methods.poc.query.impl;
+package ms.aurora.api.methods.query.impl;
 
 import ms.aurora.api.methods.Calculations;
-import ms.aurora.api.methods.poc.query.Query;
+import ms.aurora.api.methods.query.Query;
 import ms.aurora.api.wrappers.Locatable;
 import ms.aurora.api.wrappers.RSArea;
 import ms.aurora.api.wrappers.RSCharacter;
@@ -12,7 +12,7 @@ import ms.aurora.api.wrappers.RSCharacter;
  *
  * @author A_C/Cov
  */
-public abstract class CharacterQuery<RT extends RSCharacter, QT extends CharacterQuery> extends Query<RT, QT> {
+public abstract class CharacterQuery<RT extends RSCharacter, QT extends CharacterQuery> extends LocatableQuery<RT, QT> {
 
     public QT distance(final int distance, final Locatable locatable) {
         this.addConditional(new Conditional() {
@@ -49,26 +49,6 @@ public abstract class CharacterQuery<RT extends RSCharacter, QT extends Characte
             @Override
             protected boolean accept(RT type) {
                 return type.isInCombat() && isMoving;
-            }
-        });
-        return (QT) this;
-    }
-
-    public QT onScreen() {
-        this.addConditional(new Conditional() {
-            @Override
-            protected boolean accept(RT type) {
-                return type.isOnScreen();
-            }
-        });
-        return (QT) this;
-    }
-
-    public QT area(final RSArea area) {
-        this.addConditional(new Conditional() {
-            @Override
-            protected boolean accept(RT type) {
-                return area.contains(type.getLocation());
             }
         });
         return (QT) this;

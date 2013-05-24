@@ -1,4 +1,4 @@
-package ms.aurora.api.methods.poc.query;
+package ms.aurora.api.methods.query;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author A_C/Cov
  *
  * RT = Return Type, eg RSNPC
- * QT = Query Type, eg NpcQuery
+ * QT = Query Type, eg NPCQuery
  */
 public abstract class Query<RT, QT extends Query> {
 

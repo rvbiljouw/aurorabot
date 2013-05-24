@@ -1,6 +1,5 @@
 package ms.aurora.api.wrappers;
 
-import ms.aurora.api.Context;
 import ms.aurora.api.methods.Skills;
 import ms.aurora.rt3.Player;
 

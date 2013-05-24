@@ -1,6 +1,6 @@
-package ms.aurora.api.methods.poc.query.impl;
+package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.methods.poc.query.Sort;
+import ms.aurora.api.methods.query.Sort;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.rt3.Npc;
 
@@ -16,7 +16,7 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
+public final class NPCQuery extends CharacterQuery<RSNPC, NPCQuery> {
 
     @Override
     public RSNPC[] result() {
@@ -26,7 +26,6 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
                 rsnpcList.add(new RSNPC(npc));
             }
         }
-        RSNPC[] npcArray = filterResults(rsnpcList).toArray(new RSNPC[0]);
         if (this.comparator == null) {
             switch (sortType) {
                 case DISTANCE:
@@ -36,11 +35,11 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
                     comparator = Sort.DEFAULT;
             }
         }
-        Collections.sort(rsnpcList, comparator);
+        Collections.sort(filterResults(rsnpcList), comparator);
         return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
     }
 
-    public NpcQuery named(final String... names) {
+    public NPCQuery named(final String... names) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RSNPC type) {
@@ -55,7 +54,7 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
         return this;
     }
 
-    public NpcQuery id(final int... ids) {
+    public NPCQuery id(final int... ids) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RSNPC type) {
