@@ -1,11 +1,14 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Mouse;
 
 import java.awt.*;
 
+import static ms.aurora.api.methods.Menu.contains;
+import static ms.aurora.api.methods.Menu.containsPred;
 import static ms.aurora.api.util.Utilities.random;
 
 /**
@@ -47,10 +50,11 @@ public class RSWidgetItem implements Interactable {
     }
 
     @Override
-    public boolean applyAction(String action) {
-        Point p = getRandomPoint();
-        VirtualMouse.moveMouse(p.x, p.y);
-        return ms.aurora.api.methods.Menu.click(action);
+    public boolean applyAction(String actionName) {
+        Point click = getRandomPoint();
+        VirtualMouse.moveMouse(click.x, click.y);
+        Utilities.sleepUntil(containsPred(actionName), 600);
+        return contains(actionName) && ms.aurora.api.methods.Menu.click(actionName);
     }
 
     @Override

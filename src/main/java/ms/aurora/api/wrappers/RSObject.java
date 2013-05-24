@@ -107,7 +107,7 @@ public final class RSObject implements Locatable, Interactable {
 
         Point click = getClickLocation();
         VirtualMouse.moveMouse(click.x, click.y);
-        Utilities.sleepUntil(containsPred(actionName), 150);
+        Utilities.sleepUntil(containsPred(actionName), 400);
         boolean success = contains(actionName) && Menu.click(actionName);
         if (success && cachedModel != null) {
             cachedModel.cleanup();
