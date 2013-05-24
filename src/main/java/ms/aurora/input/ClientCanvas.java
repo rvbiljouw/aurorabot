@@ -21,6 +21,9 @@ import static ms.aurora.api.Context.getSession;
  */
 public class ClientCanvas extends Canvas {
     private static final long serialVersionUID = 4392449009242794406L;
+    private static final Color MOUSE_BLUE = new Color(65, 169, 201);
+    private static final Color MOUSE_GREY = new Color(236, 236, 236);
+
     public static int PAINT_DELAY = 10;
     private final BufferedImage backBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
@@ -64,12 +67,18 @@ public class ClientCanvas extends Canvas {
         if (getSession() != null) {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
-            g.setColor(new Color(49, 110, 163, 150));
-            g.fillRoundRect(mouseX - 9, mouseY - 3, 18, 6, 4, 4);
-            g.fillRoundRect(mouseX - 3, mouseY - 9, 6, 18, 4, 4);
-            g.setColor(Color.BLACK);
-            g.drawRoundRect(mouseX - 9, mouseY - 3, 18, 6, 4, 4);
-            g.drawRoundRect(mouseX - 3, mouseY - 9, 6, 18, 4, 4);
+
+            g.setColor(MOUSE_GREY);
+            g.drawLine(mouseX, 0, mouseX, mouseY - 5);
+            g.drawLine(mouseX, mouseY + 5, mouseX, 503);
+            g.drawLine(0, mouseY, mouseX - 5, mouseY);
+            g.drawLine(mouseX + 5, mouseY, 765, mouseY);
+
+            g.setColor(MOUSE_BLUE);
+            g.drawRect(mouseX - 5, mouseY - 5, 11, 11);
+
+            g.setColor(MOUSE_GREY);
+            g.drawRect(mouseX - 1, mouseY - 1, 3, 3);
         }
     }
 }
