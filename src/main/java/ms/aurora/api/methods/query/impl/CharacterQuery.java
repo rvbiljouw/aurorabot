@@ -14,16 +14,6 @@ import ms.aurora.api.wrappers.RSCharacter;
  */
 public abstract class CharacterQuery<RT extends RSCharacter, QT extends CharacterQuery> extends LocatableQuery<RT, QT> {
 
-    public QT distance(final int distance, final Locatable locatable) {
-        this.addConditional(new Conditional() {
-            @Override
-            protected boolean accept(RT type) {
-                return Calculations.distance(type.getX(), type.getY(), locatable.getX(), locatable.getY()) < distance;
-            }
-        });
-        return (QT) this;
-    }
-
     public QT interacting(final RSCharacter character) {
         this.addConditional(new Conditional() {
             @Override

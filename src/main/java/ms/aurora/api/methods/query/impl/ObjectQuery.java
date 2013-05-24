@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.methods.query.Sort;
 import ms.aurora.api.wrappers.RSObject;
 import ms.aurora.rt3.AnimableObject;
 import ms.aurora.rt3.Client;
@@ -24,16 +23,8 @@ public final class ObjectQuery extends LocatableQuery<RSObject, ObjectQuery> {
     @Override
     public RSObject[] result() {
         List<RSObject> rsObjects = getAll();
-        if (this.comparator == null) {
-            switch (sortType) {
-                case DISTANCE:
-                    comparator = Sort.DISTANCE;
-                    break;
-                default:
-                    comparator = Sort.DEFAULT;
-            }
-        }
-        Collections.sort(filterResults(rsObjects), comparator);
+        rsObjects = filterResults(rsObjects);
+        Collections.sort(rsObjects, DISTANCE_COMPARATOR);
         return rsObjects.toArray(new RSObject[rsObjects.size()]);
     }
 

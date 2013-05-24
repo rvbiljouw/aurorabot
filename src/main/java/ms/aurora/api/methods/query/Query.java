@@ -1,5 +1,9 @@
 package ms.aurora.api.methods.query;
 
+import ms.aurora.api.methods.Calculations;
+import ms.aurora.api.methods.Players;
+import ms.aurora.api.wrappers.Locatable;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,8 +24,13 @@ public abstract class Query<RT, QT extends Query> {
     }
 
     private ArrayList<Conditional> conditionals = new ArrayList<Conditional>();
-    protected Sort.Type sortType = Sort.Type.DEFAULT;
-    protected Comparator comparator;
+    protected static final Comparator DISTANCE_COMPARATOR = new Comparator<Locatable>() {
+        @Override
+        public int compare(Locatable o1, Locatable o2) {
+            return (int) Calculations.distance(o1.getLocation(), Players.getLocal().getLocation())
+                    - (int)Calculations.distance(o2.getLocation(), Players.getLocal().getLocation());
+        }
+    };;
 
     protected void addConditional(Conditional conditional) {
         this.conditionals.add(conditional);
@@ -44,29 +53,8 @@ public abstract class Query<RT, QT extends Query> {
         return filtered;
     }
 
-    public QT sort(Sort.Type type) {
-        sortType = type;
-        return (QT) this;
-    }
-
-    public QT sort(Comparator comparator) {
-        this.sortType = Sort.Type.DEFAULT;
-        this.comparator = comparator;
-        return (QT) this;
-    }
-
-    public QT filter(Conditional conditional) {
-        this.conditionals.add(conditional);
-        return (QT) this;
-    }
-
-    public RT first() {
+    public RT single() {
         return result()[0];
-    }
-
-    public RT last() {
-        RT[] result = result();
-        return result[result.length - 1];
     }
 
     public abstract RT[] result();

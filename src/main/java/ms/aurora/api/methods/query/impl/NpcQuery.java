@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.methods.query.Sort;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.rt3.Npc;
 
@@ -26,16 +25,8 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
                 rsnpcList.add(new RSNPC(npc));
             }
         }
-        if (this.comparator == null) {
-            switch (sortType) {
-                case DISTANCE:
-                    comparator = Sort.DISTANCE;
-                    break;
-                default:
-                    comparator = Sort.DEFAULT;
-            }
-        }
-        Collections.sort(filterResults(rsnpcList), comparator);
+        rsnpcList = filterResults(rsnpcList);
+        Collections.sort(rsnpcList, DISTANCE_COMPARATOR);
         return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
     }
 

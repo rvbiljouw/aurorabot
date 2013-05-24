@@ -1,7 +1,6 @@
 package ms.aurora.api.methods.query.impl;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.query.Sort;
 import ms.aurora.api.wrappers.RSDeque;
 import ms.aurora.api.wrappers.RSGroundItem;
 import ms.aurora.rt3.Client;
@@ -23,16 +22,8 @@ public final class GroundItemQuery extends LocatableQuery<RSGroundItem, GroundIt
     @Override
     public RSGroundItem[] result() {
         List<RSGroundItem> rsGroundItems = getAll();
-        if (this.comparator == null) {
-            switch (sortType) {
-                case DISTANCE:
-                    comparator = Sort.DISTANCE;
-                    break;
-                default:
-                    comparator = Sort.DEFAULT;
-            }
-        }
-        Collections.sort(filterResults(rsGroundItems), comparator);
+        rsGroundItems =  filterResults(rsGroundItems);
+        Collections.sort(rsGroundItems, DISTANCE_COMPARATOR);
         return rsGroundItems.toArray(new RSGroundItem[rsGroundItems.size()]);
     }
 

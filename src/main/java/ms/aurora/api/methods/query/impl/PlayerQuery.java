@@ -1,6 +1,5 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.methods.query.Sort;
 import ms.aurora.api.wrappers.RSPlayer;
 import ms.aurora.rt3.Player;
 
@@ -25,16 +24,8 @@ public final class PlayerQuery extends CharacterQuery<RSPlayer, PlayerQuery> {
                 rsPlayers.add(new RSPlayer(player));
             }
         }
-        if (this.comparator == null) {
-            switch (sortType) {
-                case DISTANCE:
-                    comparator = Sort.DISTANCE;
-                    break;
-                default:
-                    comparator = Sort.DEFAULT;
-            }
-        }
-        Collections.sort(filterResults(rsPlayers), comparator);
+        rsPlayers = filterResults(rsPlayers);
+        Collections.sort(rsPlayers, DISTANCE_COMPARATOR);
         return rsPlayers.toArray(new RSPlayer[rsPlayers.size()]);
     }
 
