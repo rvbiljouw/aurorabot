@@ -30,7 +30,7 @@ public class Randoms extends PassiveTask {
             new StrangeBox(), new Pinball(),
             new MrMordaut(), new FrogCave(),
             new Mime(), new Ent(),
-            new Swarm()
+            new Swarm(), new DrillDemon()
     };
 
     public Randoms () {
