@@ -50,4 +50,9 @@ public class Context {
         Thread thread = new Thread(getSession().getThreadGroup(), runnable);
         thread.start();
     }
+
+    public static void invokeLater(ThreadGroup group,Runnable runnable) {
+        Thread thread = new Thread(group, runnable);
+        thread.start();
+    }
 }

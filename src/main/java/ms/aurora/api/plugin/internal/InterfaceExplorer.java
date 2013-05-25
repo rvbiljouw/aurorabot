@@ -1,7 +1,6 @@
 package ms.aurora.api.plugin.internal;
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,16 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
 import ms.aurora.event.listeners.PaintListener;
-import ms.aurora.gui.util.FXUtils;
 
 import java.awt.*;
 import java.io.IOException;
@@ -54,11 +52,11 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
     @FXML
     private TreeView<RSWidget> treeView;
 
-    private Plugin plugin;
+    private InterfacePlugin plugin;
 
     private int x, y, w, h;
 
-    public InterfaceExplorer(Plugin plugin) {
+    public InterfaceExplorer(InterfacePlugin plugin) {
         this.plugin = plugin;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InterfaceExplorer.fxml"));
@@ -74,7 +72,7 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
 
     @FXML
     void onReload(ActionEvent event) {
-        plugin.invokeLater(new Runnable() {
+        Context.invokeLater(plugin.session.getThreadGroup(), new Runnable() {
             @Override
             public void run() {
                 RSWidgetGroup[] all = Widgets.getAll();

@@ -1,5 +1,6 @@
 package ms.aurora.api.plugin.internal;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
+import ms.aurora.core.Session;
 
 /**
  * @author tobiewarburton
@@ -19,6 +21,7 @@ public class InterfacePlugin extends Plugin {
     private InterfaceExplorer interfaceExplorer = new InterfaceExplorer(this);
     private InterfaceExplorerStage interfaceExplorerStage;
     private CheckMenuItem explorerToggleCheckbox;
+    public Session session;
 
     @Override
     public void startup() {
@@ -32,19 +35,20 @@ public class InterfacePlugin extends Plugin {
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (interfaceExplorerStage != null && interfaceExplorerStage.isShowing()) {
                     interfaceExplorerStage.hide();
-                    getSession().getPaintManager().deregister(interfaceExplorer);
+                    session.getPaintManager().deregister(interfaceExplorer);
                 } else {
                     if (interfaceExplorerStage == null) {
                         interfaceExplorerStage = new InterfaceExplorerStage();
                     }
                     interfaceExplorerStage.show();
-                    getSession().getPaintManager().register(interfaceExplorer);
+                    session.getPaintManager().register(interfaceExplorer);
                 }
             }
         });
 
         menu.getItems().add(explorerToggleCheckbox);
 
+        session = getSession();
         registerMenu(menu);
     }
 
@@ -55,7 +59,12 @@ public class InterfacePlugin extends Plugin {
     @Override
     public void cleanup() {
         if (interfaceExplorerStage != null) {
-            interfaceExplorerStage.hide();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    interfaceExplorerStage.hide();
+                }
+            });
         }
         deregisterMenu(menu);
     }

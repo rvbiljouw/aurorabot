@@ -1,6 +1,5 @@
 package ms.aurora.api.plugin.internal;
 
-import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.query.impl.NpcQuery;
 import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.event.listeners.PaintListener;
@@ -12,7 +11,7 @@ import java.awt.*;
  */
 public class NpcPaint implements PaintListener {
 
-    private final NpcQuery query = new NpcQuery().distance(10, Players.getLocal());
+    private final NpcQuery query = new NpcQuery().distance(10);
 
     @Override
     public void onRepaint(Graphics graphics) {
