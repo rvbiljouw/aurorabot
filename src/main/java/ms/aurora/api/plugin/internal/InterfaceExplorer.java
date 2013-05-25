@@ -157,7 +157,7 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
         public void changed(ObservableValue<? extends TreeItem<RSWidget>> observableValue, TreeItem<RSWidget> oldValue, TreeItem<RSWidget> newValue) {
             if (newValue == null || newValue.getValue() == null) return;
             final RSWidget widget = newValue.getValue();
-            plugin.invokeLater(new Runnable() { // so context is set !
+            Context.invokeLater(plugin.session.getThreadGroup(), new Runnable() { // so context is set !
                 @Override
                 public void run() {
                     final ArrayList<InterfaceModel> props = new ArrayList<InterfaceModel>();
@@ -168,7 +168,7 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
                     props.add(new InterfaceModel("text", widget.getText()));
                     props.add(new InterfaceModel("type", widget.getType()));
                     props.add(new InterfaceModel("model", widget.getModelId()));
-                    if (widget.getChildren() != null ) {
+                    if (widget.getChildren() != null) {
                         props.add(new InterfaceModel("children count", widget.getChildren().length));
                     }
                     if (widget.getInventoryItems() != null) {
