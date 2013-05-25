@@ -4,9 +4,12 @@ import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
+import ms.aurora.gui.Icons;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static ms.aurora.api.Context.getSession;
 
@@ -29,10 +32,17 @@ public class ClientCanvas extends Canvas {
             BufferedImage.TYPE_INT_ARGB);
     private final BufferedImage botBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
+    private BufferedImage MOUSE_POINTER;
     private Session session;
 
     public ClientCanvas() {
         super();
+        try {
+            MOUSE_POINTER = ImageIO.read(Icons.class.getResourceAsStream("icons/mouse.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -68,7 +78,12 @@ public class ClientCanvas extends Canvas {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
 
-            g.setColor(MOUSE_GREY);
+            if(MOUSE_POINTER != null) {
+                g.drawImage(MOUSE_POINTER, mouseX, mouseY, null);
+            }
+
+
+            /*g.setColor(MOUSE_GREY);
             g.drawLine(mouseX, 0, mouseX, mouseY - 10);
             g.drawLine(mouseX, mouseY + 10, mouseX, 503);
             g.drawLine(0, mouseY, mouseX - 10, mouseY);
@@ -78,7 +93,7 @@ public class ClientCanvas extends Canvas {
             g.drawRect(mouseX - 10, mouseY - 10, 20, 20);
 
             g.setColor(MOUSE_GREY);
-            g.drawRect(mouseX - 1, mouseY - 1, 3, 3);
+            g.drawRect(mouseX - 1, mouseY - 1, 3, 3);   */
         }
     }
 }

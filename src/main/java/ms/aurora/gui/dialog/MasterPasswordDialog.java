@@ -30,14 +30,15 @@ public class MasterPasswordDialog extends Dialog {
     private Label caption;
     @FXML
     private Label warning;
-
     private StringProperty value;
     private Property property;
 
     public MasterPasswordDialog(StringProperty value) {
-        FXUtils.load(getClass().getResource("MasterPasswordDialog.fxml"), this);
         this.property = getByName("masterPassword");
         this.value = value;
+
+
+        FXUtils.load(getClass().getResource("MasterPasswordDialog.fxml"), this);
     }
 
     @FXML
@@ -83,7 +84,7 @@ public class MasterPasswordDialog extends Dialog {
 
     @Override
     public void onClose() {
-        if(!authenticated()) {
+        if (!authenticated()) {
             System.exit(0);
         }
     }
@@ -97,6 +98,7 @@ public class MasterPasswordDialog extends Dialog {
             lblVerifyPassword.setVisible(false);
             txtVerifyPassword.setVisible(false);
         }
+        System.out.println(property);
     }
 
     private void showWarning() {
