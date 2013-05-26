@@ -1,45 +1,58 @@
 package ms.aurora.util;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.jar.JarInputStream;
-import java.util.zip.ZipEntry;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * @author tobiewarburton
  */
 public class JarInputStreamClassLoader extends ClassLoader {
-    private JarInputStream stream;
-
+    private InputStream stream;
     private Map<String, byte[]> classByteMap = new HashMap<String, byte[]>();
 
-    public JarInputStreamClassLoader(ClassLoader parentClassLoader, JarInputStream stream) {
+    public JarInputStreamClassLoader(ClassLoader parentClassLoader, InputStream stream) {
         super(parentClassLoader);
         this.stream = stream;
-
         populate();
     }
 
     private void populate() {
         try {
-            ZipEntry current = null;
+            File tempFile = File.createTempFile("wut", "lefux");
+            tempFile.deleteOnExit();
 
-            while ((current = stream.getNextEntry()) != null) {
-                if (current.getName().endsWith(".class")) {
-                    byte[] b = new byte[2048];
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    int len;
-                    while ((len = stream.read(b)) > 0) {
-                        out.write(b, 0, len);
-                    }
-                    byte[] bs = out.toByteArray();
-                    System.out.println(current.getName() + " len=" + bs.length);
-                    classByteMap.put(current.getName().replaceAll("/", "\\.").replace(".class", ""), bs);
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            byte[] buffer = new byte[2048];
+            int read;
+            while ((read = stream.read(buffer, 0, 2048)) != -1) {
+                fos.write(buffer, 0, read);
+                fos.flush();
+            }
+            fos.close();
+
+            JarFile file = new JarFile(tempFile);
+            Enumeration<JarEntry> entries = file.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                if (entry.getName().endsWith(".class")) {
+                    byte[] classBytes = new byte[(int) entry.getSize()];
+                    InputStream io = file.getInputStream(entry);
+                    io.read(classBytes);
+                    classByteMap.put(entry.getName().replaceAll("/", ".").replace(".class", ""), classBytes);
+                    io.close();
                 }
+            }
+
+            if (!tempFile.delete()) {
+                System.exit(0);
             }
         } catch (IOException e) {
             e.printStackTrace();

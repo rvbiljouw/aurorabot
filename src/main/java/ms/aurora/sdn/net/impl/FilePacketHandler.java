@@ -28,7 +28,7 @@ public class FilePacketHandler implements PacketHandler {
             case 0:
                 int len = in.readInt();
                 byte[] bytes = new byte[len];
-                int result = in.read(bytes);
+                in.readFully(bytes);
                 Repository.store = bytes;
                 break;
             case 1:

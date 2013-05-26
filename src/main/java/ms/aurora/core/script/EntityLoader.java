@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
 
 /**
  * A jar loader for all scriptable entities supported by Aurora.
@@ -164,7 +162,7 @@ public final class EntityLoader {
         for (RemoteScript remote : Repository.REMOTE_SCRIPT_LIST) {
             if (remote.equals(manifest)) {
                 byte[] data = remote.get();
-                JarInputStream jis = getJarInputStream(data);
+                ByteArrayInputStream jis = getJarInputStream(data);
                 Class<?> script = loadRemoteClass(ScriptManifest.class, Script.class, jis);
                 return (Class<? extends Script>) script;
             }
@@ -181,7 +179,7 @@ public final class EntityLoader {
         for (RemotePlugin remote : Repository.REMOTE_PLUGIN_LIST) {
             if (remote.equals(manifest)) {
                 byte[] data = remote.get();
-                JarInputStream jis = getJarInputStream(data);
+                ByteArrayInputStream jis = getJarInputStream(data);
                 Class<?> plugin = loadRemoteClass(PluginManifest.class, Plugin.class, jis);
                 return (Class<? extends Plugin>) plugin;
             }
@@ -189,19 +187,15 @@ public final class EntityLoader {
         return null;
     }
 
-    private static Class<?> loadRemoteClass(Class<?> manifest, Class<?> supe, JarInputStream stream) {
+    private static Class<?> loadRemoteClass(Class<?> manifest, Class<?> supe, ByteArrayInputStream stream) {
         JarInputStreamClassLoader cl = new JarInputStreamClassLoader(
                 Thread.currentThread().getContextClassLoader(),
                 stream);
         return cl.loadClassWithManifest(manifest, supe);
     }
 
-    private static JarInputStream getJarInputStream(byte[] bytes) {
-        try {
-            return new JarInputStream(new ByteArrayInputStream(bytes));
-        } catch (IOException e) {
-            return null;
-        }
+    private static ByteArrayInputStream getJarInputStream(byte[] bytes) {
+        return new ByteArrayInputStream(bytes);
     }
 
     static {
