@@ -64,9 +64,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.java.net.substance</groupId>
-            <artifactId>substance</artifactId>
-            <version>6.0</version>
+            <groupId>com.github.insubstantial</groupId>
+            <artifactId>substance-swingx</artifactId>
+            <version>7.2.1</version>
         </dependency>
 
         <dependency>
