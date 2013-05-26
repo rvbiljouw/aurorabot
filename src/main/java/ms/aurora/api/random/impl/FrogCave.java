@@ -40,6 +40,11 @@ public class FrogCave extends Random {
                 Widgets.clickContinue();
                 return random(600, 800);
             }
+
+            if(Widgets.getWidget(228, 1) != null && Widgets.getWidget(228, 1).click(true)) {
+                return random(1000, 2000);
+            }
+
             if (Players.getLocal().isMoving()) {
                 return random(600, 800);
             }
