@@ -1,7 +1,6 @@
 package ms.aurora.gui.script;
 
 import javafx.beans.property.SimpleStringProperty;
-import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
 
 /**
@@ -9,16 +8,13 @@ import ms.aurora.api.script.ScriptManifest;
  */
 public class ScriptModel {
     protected final ScriptManifest manifest;
-    protected final Class<? extends Script> script;
     private SimpleStringProperty name;
     private SimpleStringProperty shortDesc;
     private SimpleStringProperty category;
     private SimpleStringProperty author;
 
-    public ScriptModel(Class<? extends Script> script, ScriptManifest manifest) {
-        this.script = script;
+    public ScriptModel(ScriptManifest manifest) {
         this.manifest = manifest;
-
         this.name = new SimpleStringProperty(manifest.name());
         this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
         this.category = new SimpleStringProperty(manifest.category());

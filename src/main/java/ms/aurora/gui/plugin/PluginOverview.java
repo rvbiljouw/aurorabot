@@ -97,7 +97,7 @@ public class PluginOverview extends Dialog {
         ObservableList<PluginModel> selected = tblPlugins.getSelectionModel().getSelectedItems();
         for (PluginModel select : selected) {
             if (select != null) {
-                Class<? extends Plugin> plugin = select.plugin;
+                Class<? extends Plugin> plugin = EntityLoader.getPluginFromManifest(select.manifest);
                 PluginConfig config = getByName(plugin.getName());
                 config.setEnabled(enable);
                 select.setState(enable);
@@ -118,7 +118,7 @@ public class PluginOverview extends Dialog {
         for (Class<? extends Plugin> plugin : plugins) {
             PluginManifest manifest = plugin.getAnnotation(PluginManifest.class);
             if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
-                pluginModelList.add(new PluginModel(plugin, manifest));
+                pluginModelList.add(new PluginModel(manifest));
             }
         }
         return pluginModelList;

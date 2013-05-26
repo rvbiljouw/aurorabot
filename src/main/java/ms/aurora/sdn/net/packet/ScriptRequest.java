@@ -8,20 +8,14 @@ import java.io.IOException;
  * @author tobiewarburton
  */
 public class ScriptRequest extends OutgoingPacket {
-    private int idx;
-
-    public ScriptRequest(int idx) {
-        this.idx = idx;
-    }
 
     @Override
     public int getOpcode() {
-        return 7;
+        return 5;
     }
 
     @Override
     public void prepare() throws IOException {
-        getStream().writeInt(idx);
         getStream().flush();
         getStream().close();
     }

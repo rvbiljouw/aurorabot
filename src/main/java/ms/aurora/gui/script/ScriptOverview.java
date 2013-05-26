@@ -18,6 +18,7 @@ import ms.aurora.gui.Dialog;
 import ms.aurora.gui.Messages;
 import ms.aurora.gui.dialog.AccountSelectDialog;
 import ms.aurora.gui.util.FXUtils;
+import ms.aurora.sdn.net.api.repository.RemoteScript;
 
 import java.net.URL;
 import java.util.List;
@@ -75,7 +76,7 @@ public class ScriptOverview extends Dialog {
             final AccountSelectDialog selector = new AccountSelectDialog();
             selector.showAndWait();
             session.setAccount(selector.get());
-            session.getScriptManager().start(model.script);
+            session.getScriptManager().start(EntityLoader.getScriptFromManifest(model.manifest));
             close();
         } else {
             close();
@@ -114,9 +115,12 @@ public class ScriptOverview extends Dialog {
                     || selectedCategory.equals(manifest.category())) {
 
                 if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
-                    scriptModelList.add(new ScriptModel(script, manifest));
+                    scriptModelList.add(new ScriptModel(manifest));
                 }
             }
+        }
+        for (RemoteScript remote : ms.aurora.sdn.net.api.Repository.REMOTE_SCRIPT_LIST) {
+            scriptModelList.add(new ScriptModel(remote));
         }
         return scriptModelList;
     }

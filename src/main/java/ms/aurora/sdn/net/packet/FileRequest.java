@@ -6,19 +6,29 @@ import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
- * User: rvbiljouw
- * Date: 13-5-13
- * Time: 0:59
+ * User: tobiewarburton
+ * Date: 24/05/13
+ * Time: 22:51
  * To change this template use File | Settings | File Templates.
  */
-public class ScriptCountRequest extends OutgoingPacket {
+public class FileRequest extends OutgoingPacket {
+    private byte type;
+    private long id;
+
+    public FileRequest(byte type, long id) {
+        this.type = type;
+        this.id = id;
+    }
+
     @Override
     public int getOpcode() {
-        return 5;
+        return 7;
     }
 
     @Override
     public void prepare() throws IOException {
+        getStream().writeByte(type);
+        getStream().writeLong(id);
         getStream().flush();
         getStream().close();
     }

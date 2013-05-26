@@ -3,12 +3,11 @@ package ms.aurora.sdn.net.impl;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.PacketHandler;
 import ms.aurora.sdn.net.api.Repository;
+import ms.aurora.sdn.net.api.repository.RemoteScript;
 import org.apache.log4j.Logger;
 
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.jar.JarInputStream;
 
 /**
  * @author tobiewarburton
@@ -18,16 +17,18 @@ public class ScriptPacketHandler implements PacketHandler {
 
     @Override
     public int getOpcode() {
-        return 7;
+        return 5;
     }
 
     @Override
     public void handle(IncomingPacket incomingPacket) throws IOException {
+        Repository.REMOTE_SCRIPT_LIST.clear();
         DataInputStream in = incomingPacket.getStream();
-        int len = in.readInt();
-        byte[] bytes = new byte[len];
-        int res = in.read(bytes); // todo maybe add a crc
-        Repository.remoteScriptStreams.add(new JarInputStream(new ByteArrayInputStream(bytes)));
+        int count = in.readInt();
+        for (int i = 0; i < count; i++) {
+            RemoteScript ent = new RemoteScript(in.readLong(), in.readUTF(), in.readUTF());
+            Repository.REMOTE_SCRIPT_LIST.add(ent);
+        }
         synchronized (Repository.script_lock) {
             Repository.script_lock.notifyAll();
         }
