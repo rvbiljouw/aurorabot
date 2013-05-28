@@ -65,7 +65,7 @@ public class ClientConfig implements ResponseHandler {
             }
 
             setMainClass(params.get("initial_class").replace(".class", ""));
-            setDocumentBase(params.get("codebase"));
+            setDocumentBase("http://oldschool67.runescape.com/");
             setArchiveName(params.get("initial_jar"));
         } catch (ParsingException e) {
             e.printStackTrace();
