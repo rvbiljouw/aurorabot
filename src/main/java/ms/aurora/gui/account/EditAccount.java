@@ -34,8 +34,8 @@ public class EditAccount extends Dialog {
     private final AccountModel accountModel;
 
     public EditAccount(AccountModel accountModel) {
-        load(getClass().getResource("EditAccount.fxml"), this);
         this.accountModel = accountModel;
+        load(getClass().getResource("EditAccount.fxml"), this);
     }
 
     @FXML

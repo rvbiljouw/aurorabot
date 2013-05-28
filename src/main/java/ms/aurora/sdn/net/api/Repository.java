@@ -27,7 +27,7 @@ public class Repository {
         synchronized (script_lock) {
             instance.writePacket(new ScriptRequest());
             try {
-                script_lock.wait();
+                script_lock.wait(15000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

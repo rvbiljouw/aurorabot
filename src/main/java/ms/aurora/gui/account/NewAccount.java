@@ -25,8 +25,8 @@ public class NewAccount extends Dialog {
     private TextField txtUsername;
 
     public NewAccount() {
-        load(getClass().getResource("NewAccount.fxml"), this);
         accountModel = new AccountModel(new Account());
+        load(getClass().getResource("NewAccount.fxml"), this);
     }
 
     @FXML

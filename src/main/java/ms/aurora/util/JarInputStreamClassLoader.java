@@ -51,9 +51,7 @@ public class JarInputStreamClassLoader extends ClassLoader {
                 }
             }
 
-            if (!tempFile.delete()) {
-                System.exit(0);
-            }
+            tempFile.delete();
         } catch (IOException e) {
             e.printStackTrace();
         }
