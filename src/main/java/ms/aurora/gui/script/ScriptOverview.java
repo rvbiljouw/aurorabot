@@ -104,23 +104,18 @@ public class ScriptOverview extends Dialog {
      * @return list of items for the script table.
      */
     private ObservableList<ScriptModel> rebuild() {
-        List<Class<? extends Script>> scripts = EntityLoader.getScripts();
+        ms.aurora.sdn.net.api.Repository.loadScripts(); // reload SDN scripts
+        List<ScriptManifest> manifestList = EntityLoader.getAllScripts();
         ObservableList<ScriptModel> scriptModelList = FXCollections.observableArrayList();
         String selectedCategory = cbxCategory.getSelectionModel().getSelectedItem();
         String filterName = txtName.getText().toLowerCase();
-
-        for (Class<? extends Script> script : scripts) {
-            ScriptManifest manifest = script.getAnnotation(ScriptManifest.class);
+        for (ScriptManifest manifest : manifestList) {
             if (selectedCategory == null || selectedCategory.equals(Messages.getString("scriptOverview.all"))
                     || selectedCategory.equals(manifest.category())) {
-
                 if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
                     scriptModelList.add(new ScriptModel(manifest));
                 }
             }
-        }
-        for (RemoteScript remote : ms.aurora.sdn.net.api.Repository.REMOTE_SCRIPT_LIST) {
-            scriptModelList.add(new ScriptModel(remote));
         }
         return scriptModelList;
     }
