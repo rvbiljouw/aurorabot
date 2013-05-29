@@ -63,9 +63,8 @@ public class ClientConfig implements ResponseHandler {
             for (String line : lines) {
                 extractKVPairInto(params, line);
             }
-
             setMainClass(params.get("initial_class").replace(".class", ""));
-            setDocumentBase("http://oldschool67.runescape.com/");
+            setDocumentBase(params.get("codebase"));
             setArchiveName(params.get("initial_jar"));
         } catch (ParsingException e) {
             e.printStackTrace();

@@ -29,7 +29,7 @@ public class RemoteScript extends Requestable implements ScriptManifest {
 
     @Override
     public String shortDescription() {
-        return null;
+        return "Remote";
     }
 
     @Override

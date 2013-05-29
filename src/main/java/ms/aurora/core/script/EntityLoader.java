@@ -198,10 +198,14 @@ public final class EntityLoader {
         return new ByteArrayInputStream(bytes);
     }
 
-    static {
+    private static void loadRepository() {
         Repository.loadScripts();
         Repository.loadPlugins();
+    }
+
+    static {
         clear();
         load();
+        loadRepository();
     }
 }
