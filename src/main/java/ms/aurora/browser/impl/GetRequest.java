@@ -15,6 +15,14 @@ public final class GetRequest implements Request {
     private String url;
     private String page;
 
+    public GetRequest() {
+
+    }
+
+    public GetRequest(String page) {
+        this.page = page;
+    }
+
     @Override
     public void setPage(String page) {
         this.page = page;
