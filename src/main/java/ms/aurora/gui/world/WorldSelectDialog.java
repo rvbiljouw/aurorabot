@@ -20,12 +20,12 @@ import java.util.regex.Matcher;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
+import static javafx.collections.FXCollections.observableArrayList;
 
 /**
  * @author rvbiljouw
  */
 public class WorldSelectDialog extends Dialog {
-    private final ObservableList<WorldModel> worldModels = FXCollections.observableArrayList();
     @FXML
     private TableColumn<WorldModel, String> colCountry;
     @FXML
@@ -47,41 +47,8 @@ public class WorldSelectDialog extends Dialog {
         colMembers.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("members"));
         colName.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("name"));
         colPlayers.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("players"));
-        tblWorlds.setItems(worldModels);
-
-        Browser browser = new Browser(new ContextBuilder().domain("oldschool.runescape.com").build());
-        GetRequest request = new GetRequest("/slu");
-        browser.doRequest(request, new ResponseHandler() {
-            @Override
-            public void handleResponse(InputStream inputStream) {
-                try {
-                    Plaintext text = Plaintext.fromStream(inputStream);
-                  //  e(306,true,0,"oldschool6",274,"United States","US","Old School 6");
-                    Matcher m = text.regex(".\\((.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)\\);");
-                    while(m.find()) {
-                        int worldNumber = Integer.parseInt(m.group(1));
-                        boolean members = parseBoolean(m.group(2));
-                        String worldIdent = m.group(4).replaceAll("\"", "");
-                        int players = parseInt(m.group(5));
-                        String country = m.group(6).replaceAll("\"", "");
-                        String worldName = m.group(8).replaceAll("\"", "");
-
-                        WorldModel model = new WorldModel();
-                        model.setName(worldName + " (" + worldNumber + ")");
-                        model.setCountry(country);
-                        model.setMembers(members);
-                        model.setWorldNo(worldNumber);
-                        model.setPlayers(players);
-                        model.setIdent(worldIdent);
-
-                        worldModels.add(model);
-                    }
-                    tblWorlds.setItems(worldModels);
-                } catch (ParsingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        WorldModel.load();
+        tblWorlds.setItems(observableArrayList(WorldModel.WORLDS));
     }
 
     @FXML
