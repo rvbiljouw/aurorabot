@@ -42,9 +42,11 @@ public class ClientLoader {
     }
 
     public void stop() {
-        applet.stop();
-        applet.destroy();
-        applet = null;
+        if (applet != null) {
+            applet.stop();
+            applet.destroy();
+            applet = null;
+        }
         System.gc();
     }
 

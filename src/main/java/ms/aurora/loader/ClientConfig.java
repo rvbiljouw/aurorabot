@@ -16,14 +16,29 @@ import java.util.Map;
  * @author rvbiljouw
  */
 public class ClientConfig implements ResponseHandler {
+    private static final String CONFIG_URL = "/jav_config.ws";
     private final Map<String, String> params = new HashMap<String, String>();
     private final Browser browser;
+    private ClientWrapper wrapper;
     private String documentBase;
     private String archiveName;
     private String mainClass;
 
-    public ClientConfig(Browser browser) {
+    public ClientConfig(ClientWrapper wrapper, Browser browser) {
+        this.wrapper = wrapper;
         this.browser = browser;
+    }
+
+    private static String normalize(String string) {
+        return string.replaceAll("param=", "")
+                .replaceAll("msg=", "");
+    }
+
+    private static void extractKVPairInto(Map<String, String> into, String input) {
+        int len = input.length();
+        int idx = input.indexOf('=');
+        into.put(input.substring(0, idx),
+                input.substring(idx + 1, len));
     }
 
     public String getParam(String param) {
@@ -64,7 +79,11 @@ public class ClientConfig implements ResponseHandler {
                 extractKVPairInto(params, line);
             }
             setMainClass(params.get("initial_class").replace(".class", ""));
-            setDocumentBase(params.get("codebase"));
+            if (wrapper.getWorld() != null) {
+                setDocumentBase("http://" + wrapper.getWorld().getIdent() + ".runescape.com/");
+            } else {
+                setDocumentBase(params.get("codebase"));
+            }
             setArchiveName(params.get("initial_jar"));
         } catch (ParsingException e) {
             e.printStackTrace();
@@ -77,17 +96,7 @@ public class ClientConfig implements ResponseHandler {
         browser.doRequest(request, this);
     }
 
-    private static String normalize(String string) {
-        return string.replaceAll("param=", "")
-                .replaceAll("msg=", "");
+    public ClientWrapper getWrapper() {
+        return wrapper;
     }
-
-    private static void extractKVPairInto(Map<String, String> into, String input) {
-        int len = input.length();
-        int idx = input.indexOf('=');
-        into.put(input.substring(0, idx),
-                input.substring(idx + 1, len));
-    }
-
-    private static final String CONFIG_URL = "/jav_config.ws";
 }

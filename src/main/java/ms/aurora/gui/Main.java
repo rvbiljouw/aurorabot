@@ -20,6 +20,7 @@ import ms.aurora.gui.config.Properties;
 import ms.aurora.gui.plugin.PluginOverview;
 import ms.aurora.gui.script.ScriptOverview;
 import ms.aurora.gui.widget.AppletWidget;
+import ms.aurora.gui.world.WorldSelectDialog;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -121,12 +122,19 @@ public class Main extends AnchorPane {
 
     public void onNewSession() {
         AppletWidget widget = new AppletWidget(this);
+        tabPane.getTabs().add(widget.getTab());
+        tabPane.getSelectionModel().select(widget.getTab());
+
         String ident = valueOf(tabPane.getTabs().size() + 1);
         ThreadGroup threadGroup = new ThreadGroup(ident);
         Session session = new Session(threadGroup, widget);
+
+        WorldSelectDialog dialog = new WorldSelectDialog();
+        dialog.showAndWait();
+        session.setWorld(dialog.getSelected());
+
         Thread thread = new Thread(threadGroup, session);
         thread.start();
-        tabPane.getTabs().add(widget.getTab());
     }
 
     /**

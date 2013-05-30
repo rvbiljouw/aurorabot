@@ -37,7 +37,6 @@ public class WorldSelectDialog extends Dialog {
     @FXML
     private TableView<WorldModel> tblWorlds;
 
-
     public WorldSelectDialog() {
         FXUtils.load(getClass().getResource("WorldSelectDialog.fxml"), this);
     }
@@ -68,7 +67,7 @@ public class WorldSelectDialog extends Dialog {
                         String worldName = m.group(8).replaceAll("\"", "");
 
                         WorldModel model = new WorldModel();
-                        model.setName(worldName);
+                        model.setName(worldName + " (" + worldNumber + ")");
                         model.setCountry(country);
                         model.setMembers(members);
                         model.setWorldNo(worldNumber);
@@ -83,6 +82,15 @@ public class WorldSelectDialog extends Dialog {
                 }
             }
         });
+    }
+
+    @FXML
+    void onOk() {
+        close();
+    }
+
+    public WorldModel getSelected() {
+        return tblWorlds.getSelectionModel().getSelectedItem();
     }
 
     @Override

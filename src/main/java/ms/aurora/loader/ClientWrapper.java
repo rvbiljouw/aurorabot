@@ -2,13 +2,14 @@ package ms.aurora.loader;
 
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
+import ms.aurora.gui.world.WorldModel;
 import ms.aurora.rt3.Client;
 import org.apache.log4j.Logger;
 
 import java.applet.Applet;
 
-import static ms.aurora.gui.Messages.getString;
 import static ms.aurora.browser.ContextBuilder.get;
+import static ms.aurora.gui.Messages.getString;
 
 /**
  * @author rvbiljouw
@@ -18,8 +19,9 @@ public class ClientWrapper {
     private final String browserBaseURL = getString("runescape.url");
     private final Context browserContext = get().domain(browserBaseURL).build();
     private final Browser browser = new Browser(browserContext);
-    private final ClientConfig config = new ClientConfig(browser);
+    private final ClientConfig config = new ClientConfig(this, browser);
     private final ClientLoader loader = new ClientLoader(config);
+    private WorldModel world;
 
     public Client getClient() {
         return (Client) loader.getApplet();
@@ -45,6 +47,18 @@ public class ClientWrapper {
             logger.info("Applet restarted");
         } else {
             logger.error("Applet reload failed.");
+        }
+    }
+
+    public WorldModel getWorld() {
+        return world;
+    }
+
+    public void setWorld(WorldModel world) {
+        this.world = world;
+
+        if (loader.isLoaded()) {
+            restart();
         }
     }
 }

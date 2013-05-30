@@ -5,6 +5,7 @@ import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
 import ms.aurora.gui.widget.AppletWidget;
+import ms.aurora.gui.world.WorldModel;
 import ms.aurora.loader.ClientWrapper;
 
 import java.applet.Applet;
@@ -35,7 +36,6 @@ public final class Session implements Runnable {
             pluginManager = new PluginManager(this);
             ui.getContainer().setApplet(wrapper.getApplet());
             Repository.set(wrapper.getApplet().hashCode(), this);
-
             pluginManager.refresh();
         }
     }
@@ -85,5 +85,9 @@ public final class Session implements Runnable {
     public void setAccount(Account account) {
         this.account = account;
         this.ui.update();
+    }
+
+    public void setWorld(WorldModel world) {
+        wrapper.setWorld(world);
     }
 }
