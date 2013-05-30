@@ -29,7 +29,7 @@ public final class PaintManager implements PaintListener {
             try {
                 listener.onRepaint(g);
             } catch (Exception e) {
-                logger.error("PaintListener threw exception", e);
+                logger.debug("PaintListener threw exception", e);
             }
         }
     }
