@@ -55,6 +55,14 @@ public final class RSTile {
         return minX >= 0 && minX < 104 && minY >= 0 && minY < 104;
     }
 
+    public int distance(RSTile other) {
+        return (int) Calculations.distance(this, other);
+    }
+
+    public int distance(Locatable locatable) {
+        return distance(locatable.getLocation());
+    }
+
     public int hashCode() {
         return (this.x * this.y) >> 7;
     }
