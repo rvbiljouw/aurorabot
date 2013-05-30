@@ -8,9 +8,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import ms.aurora.core.model.Property;
-import ms.aurora.gui.Dialog;
+import ms.aurora.api.javafx.Dialog;
 import ms.aurora.gui.Messages;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.api.javafx.FXUtils;
 
 import static ms.aurora.core.model.Property.getByName;
 

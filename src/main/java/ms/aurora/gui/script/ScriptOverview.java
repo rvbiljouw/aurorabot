@@ -9,16 +9,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptManifest;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
 import ms.aurora.core.script.EntityLoader;
-import ms.aurora.gui.Dialog;
+import ms.aurora.api.javafx.Dialog;
 import ms.aurora.gui.Messages;
 import ms.aurora.gui.dialog.AccountSelectDialog;
-import ms.aurora.gui.util.FXUtils;
-import ms.aurora.sdn.net.api.repository.RemoteScript;
+import ms.aurora.api.javafx.FXUtils;
 
 import java.net.URL;
 import java.util.List;

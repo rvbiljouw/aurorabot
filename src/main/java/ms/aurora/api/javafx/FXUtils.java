@@ -1,4 +1,4 @@
-package ms.aurora.gui.util;
+package ms.aurora.api.javafx;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

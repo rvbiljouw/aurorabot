@@ -2,20 +2,12 @@ package ms.aurora.gui.account;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import ms.aurora.gui.Dialog;
-import ms.aurora.gui.Messages;
-import ms.aurora.gui.util.FXUtils;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import ms.aurora.api.javafx.Dialog;
 
 import static ms.aurora.gui.Messages.getString;
-import static ms.aurora.gui.util.FXUtils.load;
+import static ms.aurora.api.javafx.FXUtils.load;
 
 /**
  * @author Rick

@@ -3,21 +3,18 @@ package ms.aurora.gui.account;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.WindowEvent;
 import jfx.messagebox.MessageBox;
 import ms.aurora.core.model.Account;
-import ms.aurora.gui.Dialog;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.api.javafx.Dialog;
+import ms.aurora.api.javafx.FXUtils;
 
 import static jfx.messagebox.MessageBox.OK;
-import static jfx.messagebox.MessageBox.show;
 import static ms.aurora.gui.Messages.getString;
-import static ms.aurora.gui.util.FXUtils.showModalDialog;
+import static ms.aurora.api.javafx.FXUtils.showModalDialog;
 
 /**
  * @author Rick

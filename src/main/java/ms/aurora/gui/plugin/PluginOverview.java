@@ -12,9 +12,9 @@ import ms.aurora.api.plugin.PluginManifest;
 import ms.aurora.core.impl.PluginRefreshVisitor;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.script.EntityLoader;
-import ms.aurora.gui.Dialog;
+import ms.aurora.api.javafx.Dialog;
 import ms.aurora.gui.Messages;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.api.javafx.FXUtils;
 
 import java.util.List;
 

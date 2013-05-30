@@ -27,7 +27,7 @@ import java.awt.*;
 import java.net.URL;
 
 import static java.lang.String.valueOf;
-import static ms.aurora.gui.util.FXUtils.load;
+import static ms.aurora.api.javafx.FXUtils.load;
 
 
 public class Main extends AnchorPane {
@@ -143,7 +143,7 @@ public class Main extends AnchorPane {
     public void onStart() {
         if (getSelectedApplet() != null) {
             EntityLoader.reload();
-            Dialog dialog = new ScriptOverview();
+            ms.aurora.api.javafx.Dialog dialog = new ScriptOverview();
             dialog.show();
         }
     }
@@ -183,7 +183,7 @@ public class Main extends AnchorPane {
      */
     public void onPlugins() {
         EntityLoader.reload();
-        Dialog dialog = new PluginOverview();
+        ms.aurora.api.javafx.Dialog dialog = new PluginOverview();
         dialog.show();
     }
 
@@ -191,7 +191,7 @@ public class Main extends AnchorPane {
      * Opens the account overview
      */
     public void onAccounts() {
-        Dialog dialog = new AccountOverview();
+        ms.aurora.api.javafx.Dialog dialog = new AccountOverview();
         dialog.show();
     }
 
@@ -199,7 +199,7 @@ public class Main extends AnchorPane {
      * Opens the settings / properties dialog
      */
     public void onSettings() {
-        Dialog dialog = new Properties();
+        ms.aurora.api.javafx.Dialog dialog = new Properties();
         dialog.show();
     }
 

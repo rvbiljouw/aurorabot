@@ -5,11 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ms.aurora.core.model.Account;
-import ms.aurora.gui.Dialog;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.api.javafx.Dialog;
 
 import static ms.aurora.gui.Messages.getString;
-import static ms.aurora.gui.util.FXUtils.load;
+import static ms.aurora.api.javafx.FXUtils.load;
 
 /**
  * @author Rick

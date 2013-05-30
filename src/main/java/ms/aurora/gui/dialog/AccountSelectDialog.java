@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import ms.aurora.core.model.Account;
 import ms.aurora.gui.Messages;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.api.javafx.FXUtils;
 
 import java.io.IOException;
 import java.net.URL;

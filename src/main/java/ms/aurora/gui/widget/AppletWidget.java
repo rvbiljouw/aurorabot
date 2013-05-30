@@ -23,7 +23,7 @@ import java.applet.Applet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static ms.aurora.core.Repository.get;
-import static ms.aurora.gui.util.FXUtils.load;
+import static ms.aurora.api.javafx.FXUtils.load;
 
 /**
  * @author Rick

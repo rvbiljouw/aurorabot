@@ -11,7 +11,7 @@ import javafx.scene.control.Slider;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import ms.aurora.core.model.Source;
-import ms.aurora.gui.Dialog;
+import ms.aurora.api.javafx.Dialog;
 import ms.aurora.gui.Messages;
 import ms.aurora.input.ClientCanvas;
 
@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static ms.aurora.gui.util.FXUtils.load;
+import static ms.aurora.api.javafx.FXUtils.load;
 
 
 public class Properties extends Dialog {

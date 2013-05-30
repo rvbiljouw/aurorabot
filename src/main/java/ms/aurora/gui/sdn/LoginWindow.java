@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -13,17 +12,15 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jfx.messagebox.MessageBox;
 import ms.aurora.core.model.Property;
-import ms.aurora.gui.Dialog;
+import ms.aurora.api.javafx.Dialog;
 import ms.aurora.gui.Messages;
-import ms.aurora.gui.util.FXUtils;
 import ms.aurora.sdn.net.api.Authentication;
 import ms.aurora.sdn.net.encode.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
 
-import static ms.aurora.gui.util.FXUtils.load;
+import static ms.aurora.api.javafx.FXUtils.load;
 
 /**
  * @author tobiewarburton

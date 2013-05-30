@@ -1,8 +1,8 @@
-package ms.aurora.gui;
+package ms.aurora.api.javafx;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import ms.aurora.gui.util.FXUtils;
+import ms.aurora.api.javafx.FXUtils;
 
 /**
  * @author rvbiljouw
