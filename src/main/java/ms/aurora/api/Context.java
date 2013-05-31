@@ -39,7 +39,7 @@ public class Context {
     }
 
     public static boolean isActive() {
-        return getSession().getScriptManager().getState() != ScriptState.STOP;
+        return getSession().getScriptManager().getState() == ScriptState.RUNNING;
     }
 
     public static boolean isLoggedIn() {

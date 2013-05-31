@@ -3,6 +3,7 @@ package ms.aurora.loader;
 import ms.aurora.api.methods.web.model.World;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
+import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
 import org.apache.log4j.Logger;
 
@@ -54,11 +55,16 @@ public class ClientWrapper {
         return world;
     }
 
-    public void setWorld(World world) {
+    public boolean setWorld(Session session, World world) {
         this.world = world;
 
         if (loader.isLoaded()) {
+            session.getScriptManager().pause();
             restart();
+            session.update();
+            session.getScriptManager().resume();
+            return true;
         }
+        return false;
     }
 }

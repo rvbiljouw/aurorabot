@@ -5,6 +5,7 @@ import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.random.impl.*;
+import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.PassiveTask;
 import org.apache.log4j.Logger;
@@ -39,7 +40,7 @@ public class Randoms extends PassiveTask {
 
     @Override
     public boolean canRun() {
-        return true; // Can always run
+        return Script.isActive(); // Can always run
     }
 
     @Override
@@ -49,7 +50,7 @@ public class Randoms extends PassiveTask {
                     !Context.isLoggedIn()) continue;
 
             try {
-                while (random.activate() && !currentThread().isInterrupted()) {
+                while (Script.isActive() && random.activate() && !currentThread().isInterrupted()) {
                     if (!Context.isActive()) {
                         return -1;
                     }

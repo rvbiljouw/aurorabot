@@ -20,7 +20,7 @@ public abstract class PassiveTask implements Task {
     public abstract int execute();
 
     public void run() {
-        if(lastExecution == null || !lastExecution.isAlive()) {
+        if (lastExecution == null || !lastExecution.isAlive()) {
             lastExecution = new Thread(getSession().getThreadGroup(), body);
             lastExecution.setName(getClass().getSimpleName());
             lastExecution.start();
@@ -34,10 +34,14 @@ public abstract class PassiveTask implements Task {
     private Runnable body = new Runnable() {
         @Override
         public void run() {
-            if(canRun()) {
+            if (canRun()) {
                 int sleep = execute();
                 try {
-                    Thread.sleep(sleep);
+                    if (sleep > 0) {
+                        Thread.sleep(sleep);
+                    } else {
+                        Thread.sleep(100);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

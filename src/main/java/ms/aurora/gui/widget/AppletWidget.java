@@ -156,9 +156,13 @@ public class AppletWidget extends AnchorPane implements ChangeListener<Boolean> 
      * @param applet applet
      */
     public void setApplet(final Applet applet) {
+        final Applet old = this.applet;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if(old != null) {
+                    Application.mainFrame.remove(old);
+                }
                 Application.mainFrame.add(applet);
             }
         });

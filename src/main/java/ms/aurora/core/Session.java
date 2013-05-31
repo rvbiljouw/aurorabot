@@ -34,11 +34,10 @@ public final class Session implements Runnable {
         if (wrapper.getApplet() != null) {
             scriptManager = new ScriptManager(this);
             pluginManager = new PluginManager(this);
-            ui.getContainer().setApplet(wrapper.getApplet());
-            Repository.set(wrapper.getApplet().hashCode(), this);
-            pluginManager.refresh();
+            update();
         }
     }
+
 
     public void destroy() {
         try {
@@ -56,6 +55,12 @@ public final class Session implements Runnable {
 
     public Applet getApplet() {
         return wrapper.getApplet();
+    }
+
+    public void update() {
+        ui.getContainer().setApplet(wrapper.getApplet());
+        Repository.set(wrapper.getApplet().hashCode(), this);
+        pluginManager.refresh();
     }
 
     public SessionProperties getProperties() {
@@ -88,6 +93,8 @@ public final class Session implements Runnable {
     }
 
     public void setWorld(World world) {
-        wrapper.setWorld(world);
+        if(wrapper.setWorld(this, world)) {
+            ui.getContainer().setApplet(wrapper.getApplet());
+        }
     }
 }

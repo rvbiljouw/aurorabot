@@ -54,7 +54,8 @@ public abstract class Query<RT, QT extends Query> {
     }
 
     public RT single() {
-        return result()[0];
+        RT[] result = result();
+        return result.length > 0 ? result[0] : null;
     }
 
     public abstract RT[] result();

@@ -1,5 +1,6 @@
 package ms.aurora.core.script;
 
+import javafx.application.Platform;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 import ms.aurora.core.Session;
@@ -33,13 +34,27 @@ public final class ScriptManager {
     }
 
     public void pause() {
-        currentScript.setState(ScriptState.PAUSED);
-        Main.setInputEnabled(true);
+        if (currentScript != null) {
+            currentScript.setState(ScriptState.PAUSED);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Main.setInputEnabled(true);
+                }
+            });
+        }
     }
 
     public void resume() {
-        currentScript.setState(ScriptState.RUNNING);
-        Main.setInputEnabled(false);
+        if (currentScript != null) {
+            currentScript.setState(ScriptState.RUNNING);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Main.setInputEnabled(false);
+                }
+            });
+        }
     }
 
     public void stop() {
@@ -52,7 +67,12 @@ public final class ScriptManager {
         currentThread = null;
         currentScript = null;
 
-        Main.setInputEnabled(true);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Main.setInputEnabled(true);
+            }
+        });
     }
 
     private boolean hasScript() {
