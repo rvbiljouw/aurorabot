@@ -83,7 +83,7 @@ public class AStarPathFinder {
             }
         }
 
-        // easy first check, if the destination is blocked, we can't get there, find an adjacent tile instead
+        // easy first check, if the destination is blocked, we can't getAll there, find an adjacent tile instead
         if (map.solid(tx, ty)) {
             System.out.println("Destination tile has a blockade.. ( " + tx + ", " + ty + " )");
             for (int x = -3; x <= 3; x++) {
@@ -172,7 +172,7 @@ public class AStarPathFinder {
                         }
 
                         if (isValid) {
-                            // the cost to get to this node is cost the current plus the movement
+                            // the cost to getAll to this node is cost the current plus the movement
 
                             // cost to reach this node. Note that the heursitic value is only used
 
@@ -188,7 +188,7 @@ public class AStarPathFinder {
                             // if the new cost we've determined for this node is lower than
 
                             // it has been previously makes sure the node hasn'e've
-                            // determined that there might have been a better path to get to
+                            // determined that there might have been a better path to getAll to
 
                             // this node so it needs to be re-evaluated
 

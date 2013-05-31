@@ -107,7 +107,7 @@ public final class Shop {
      * @param predicate predicate of item to buy.
      * @param amount amount to buy.
      */
-    public static void buy(Predicate<RSWidgetItem>[] predicate, Amount amount) {
+    public static void buy(Predicate<RSWidgetItem> predicate, Amount amount) {
         RSWidgetItem item = get(predicate);
         if (item == null || !isOpen()) {
             return;

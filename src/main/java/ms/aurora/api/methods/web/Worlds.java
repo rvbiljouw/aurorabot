@@ -1,6 +1,9 @@
-package ms.aurora.gui.world;
+package ms.aurora.api.methods.web;
 
-import javafx.beans.property.StringProperty;
+import ms.aurora.api.Context;
+import ms.aurora.api.methods.web.model.World;
+import ms.aurora.api.util.ArrayUtils;
+import ms.aurora.api.util.Predicate;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.ContextBuilder;
 import ms.aurora.browser.ResponseHandler;
@@ -10,75 +13,57 @@ import ms.aurora.browser.wrapper.Plaintext;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
+import static java.util.Collections.sort;
+import static ms.aurora.api.util.Utilities.random;
 
 /**
  * @author rvbiljouw
  */
-public class WorldModel {
-    public static final List<WorldModel> WORLDS = new ArrayList<WorldModel>();
+public class Worlds {
 
-    private String name;
-    private String country;
-    private int worldNo;
-    private int players;
-    private boolean members;
-    private String ident;
-
-    public String getName() {
-        return name;
+    public static World getEmptiest() {
+        List<World> worlds = getAll();
+        sort(worlds, new Comparator<World>() {
+            @Override
+            public int compare(World o1, World o2) {
+                return o1.getPlayers() - o2.getPlayers();
+            }
+        });
+        return worlds.size() > 0 ? worlds.get(0) : null;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static World getBusiest() {
+        List<World> worlds = getAll();
+        sort(worlds, new Comparator<World>() {
+            @Override
+            public int compare(World o1, World o2) {
+                return o2.getPlayers() - o1.getPlayers();
+            }
+        });
+        return worlds.size() > 0 ? worlds.get(0) : null;
     }
 
-    public String getCountry() {
-        return country;
+    public static List<World> getFiltered(Predicate<World>... preds) {
+        return ArrayUtils.filter(getAll().toArray(new World[0]), preds);
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public static World getAny() {
+        List<World> worlds = getAll();
+        return (worlds.size() > 0) ? worlds.get(random(0, worlds.size() - 1)) : null;
     }
 
-    public int getWorldNo() {
-        return worldNo;
+    public static void switchTo(World world) {
+        Context.getSession().setWorld(world);
     }
 
-    public void setWorldNo(int worldNo) {
-        this.worldNo = worldNo;
-    }
-
-    public int getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(int players) {
-        this.players = players;
-    }
-
-    public boolean isMembers() {
-        return members;
-    }
-
-    public void setMembers(boolean members) {
-        this.members = members;
-    }
-
-    public String getIdent() {
-        return ident;
-    }
-
-    public void setIdent(String ident) {
-        this.ident = ident;
-    }
-
-    public static void load() {
-        WORLDS.clear();
+    public static List<World> getAll() {
+        final List<World> worlds = new ArrayList<World>();
         Browser browser = new Browser(new ContextBuilder().domain("oldschool.runescape.com").build());
         GetRequest request = new GetRequest("/slu");
         browser.doRequest(request, new ResponseHandler() {
@@ -88,7 +73,7 @@ public class WorldModel {
                     Plaintext text = Plaintext.fromStream(inputStream);
                     //  e(306,true,0,"oldschool6",274,"United States","US","Old School 6");
                     Matcher m = text.regex(".\\((.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)\\);");
-                    while(m.find()) {
+                    while (m.find()) {
                         int worldNumber = Integer.parseInt(m.group(1));
                         boolean members = parseBoolean(m.group(2));
                         String worldIdent = m.group(4).replaceAll("\"", "");
@@ -96,7 +81,7 @@ public class WorldModel {
                         String country = m.group(6).replaceAll("\"", "");
                         String worldName = m.group(8).replaceAll("\"", "");
 
-                        WorldModel model = new WorldModel();
+                        World model = new World();
                         model.setName(worldName + " (" + worldNumber + ")");
                         model.setCountry(country);
                         model.setMembers(members);
@@ -104,12 +89,14 @@ public class WorldModel {
                         model.setPlayers(players);
                         model.setIdent(worldIdent);
 
-                        WORLDS.add(model);
+                        worlds.add(model);
                     }
                 } catch (ParsingException e) {
                     e.printStackTrace();
                 }
             }
         });
+        return worlds;
     }
+
 }

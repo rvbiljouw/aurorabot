@@ -117,7 +117,7 @@ public final class VirtualKeyboard {
      * @return A KeyEvent array for you to dispatch to the component.
      */
     private static KeyEvent[] createKeyClick(Component target, char c) {
-        //takes about 2x as long to get to another key than to release a key?
+        //takes about 2x as long to getAll to another key than to release a key?
 
         Character newChar = specialChars.get(c);
         int keyCode = (int) Character.toUpperCase((newChar == null) ? c : newChar);

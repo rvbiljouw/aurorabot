@@ -1,11 +1,11 @@
 package ms.aurora.core;
 
+import ms.aurora.api.methods.web.model.World;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.event.PaintManager;
 import ms.aurora.gui.widget.AppletWidget;
-import ms.aurora.gui.world.WorldModel;
 import ms.aurora.loader.ClientWrapper;
 
 import java.applet.Applet;
@@ -87,7 +87,7 @@ public final class Session implements Runnable {
         this.ui.update();
     }
 
-    public void setWorld(WorldModel world) {
+    public void setWorld(World world) {
         wrapper.setWorld(world);
     }
 }

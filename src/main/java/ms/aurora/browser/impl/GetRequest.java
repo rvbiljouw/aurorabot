@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Wraps data for an HTTP get request.
+ * Wraps data for an HTTP getAll request.
  * @author Rick
  */
 public final class GetRequest implements Request {

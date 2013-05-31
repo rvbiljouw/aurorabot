@@ -1,8 +1,8 @@
 package ms.aurora.loader;
 
+import ms.aurora.api.methods.web.model.World;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
-import ms.aurora.gui.world.WorldModel;
 import ms.aurora.rt3.Client;
 import org.apache.log4j.Logger;
 
@@ -21,7 +21,7 @@ public class ClientWrapper {
     private final Browser browser = new Browser(browserContext);
     private final ClientConfig config = new ClientConfig(this, browser);
     private final ClientLoader loader = new ClientLoader(config);
-    private WorldModel world;
+    private World world;
 
     public Client getClient() {
         return (Client) loader.getApplet();
@@ -50,11 +50,11 @@ public class ClientWrapper {
         }
     }
 
-    public WorldModel getWorld() {
+    public World getWorld() {
         return world;
     }
 
-    public void setWorld(WorldModel world) {
+    public void setWorld(World world) {
         this.world = world;
 
         if (loader.isLoaded()) {

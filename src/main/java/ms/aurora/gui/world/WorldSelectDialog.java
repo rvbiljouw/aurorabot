@@ -6,6 +6,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ms.aurora.api.javafx.Dialog;
 import ms.aurora.api.javafx.FXUtils;
+import ms.aurora.api.methods.web.Worlds;
+import ms.aurora.api.methods.web.model.World;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -14,15 +16,15 @@ import static javafx.collections.FXCollections.observableArrayList;
  */
 public class WorldSelectDialog extends Dialog {
     @FXML
-    private TableColumn<WorldModel, String> colCountry;
+    private TableColumn<World, String> colCountry;
     @FXML
-    private TableColumn<WorldModel, String> colMembers;
+    private TableColumn<World, String> colMembers;
     @FXML
-    private TableColumn<WorldModel, String> colName;
+    private TableColumn<World, String> colName;
     @FXML
-    private TableColumn<WorldModel, String> colPlayers;
+    private TableColumn<World, String> colPlayers;
     @FXML
-    private TableView<WorldModel> tblWorlds;
+    private TableView<World> tblWorlds;
 
     public WorldSelectDialog() {
         FXUtils.load(getClass().getResource("WorldSelectDialog.fxml"), this);
@@ -30,12 +32,11 @@ public class WorldSelectDialog extends Dialog {
 
     @FXML
     public void initialize() {
-        colCountry.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("country"));
-        colMembers.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("members"));
-        colName.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("name"));
-        colPlayers.setCellValueFactory(new PropertyValueFactory<WorldModel, String>("players"));
-        WorldModel.load();
-        tblWorlds.setItems(observableArrayList(WorldModel.WORLDS));
+        colCountry.setCellValueFactory(new PropertyValueFactory<World, String>("country"));
+        colMembers.setCellValueFactory(new PropertyValueFactory<World, String>("members"));
+        colName.setCellValueFactory(new PropertyValueFactory<World, String>("name"));
+        colPlayers.setCellValueFactory(new PropertyValueFactory<World, String>("players"));
+        tblWorlds.setItems(observableArrayList(Worlds.getAll()));
     }
 
     @FXML
@@ -43,7 +44,7 @@ public class WorldSelectDialog extends Dialog {
         close();
     }
 
-    public WorldModel getSelected() {
+    public World getSelected() {
         return tblWorlds.getSelectionModel().getSelectedItem();
     }
 

@@ -1,11 +1,12 @@
 package ms.aurora.loader;
 
+import ms.aurora.api.methods.web.Worlds;
+import ms.aurora.api.methods.web.model.World;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.ResponseHandler;
 import ms.aurora.browser.exception.ParsingException;
 import ms.aurora.browser.impl.GetRequest;
 import ms.aurora.browser.wrapper.Plaintext;
-import ms.aurora.gui.world.WorldModel;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -82,7 +83,7 @@ public class ClientConfig implements ResponseHandler {
             setMainClass(params.get("initial_class").replace(".class", ""));
             if (wrapper.getWorld() != null) {
                 setDocumentBase("http://" + wrapper.getWorld().getIdent() + ".runescape.com/");
-                for(WorldModel world : WorldModel.WORLDS) {
+                for(World world : Worlds.getAll()) {
                     if(params.get("codebase").contains(world.getIdent())) {
                         for(Map.Entry<String, String> param : params.entrySet()) {
                             if(param.getValue().equals(String.valueOf(world.getWorldNo()))) {

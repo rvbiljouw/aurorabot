@@ -2315,7 +2315,7 @@ is being used to size a border should also be in pixels.
     -fx-text-fill: -fx-text-inner-color;
 }
 /* When in constrained resize mode, the right-most visible cell should not have
-   a right-border, as it is not possible to get this cleanly out of view without
+   a right-border, as it is not possible to getAll this cleanly out of view without
    introducing horizontal scrollbars (see RT-14886). */
 .table-view:constrained-resize > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell:last-visible,
 .tree-table-view:constrained-resize > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell > .tree-table-cell:last-visible {
