@@ -134,4 +134,8 @@ public final class Viewport {
     public static boolean localTileOnScreen(RSTile location) {
         return BOUNDS.contains(convertLocal(location));
     }
+
+    public static boolean contains(Point clickLocation) {
+        return BOUNDS.contains(clickLocation);
+    }
 }

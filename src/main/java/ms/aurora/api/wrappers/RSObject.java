@@ -100,7 +100,7 @@ public final class RSObject implements Locatable, Interactable {
      * @return
      */
     public final boolean applyAction(String actionName) {
-        if (!Viewport.tileOnScreen(getLocation())) {
+        if (!Viewport.tileOnScreen(getLocation()) && !Viewport.contains(getClickLocation())) {
             logger.info("Object not on screen");
             return false;
         }

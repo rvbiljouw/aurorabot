@@ -3,6 +3,7 @@ package ms.aurora.api.methods;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Locatable;
+import ms.aurora.api.wrappers.RSPlayer;
 import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.input.VirtualKeyboard;
 
@@ -140,15 +141,36 @@ public final class Camera {
         VirtualKeyboard.releaseKey(direction);
     }
 
-    private static int getAngleTo(RSTile tile) {
-        RSTile playerLocation = Players.getLocal().getLocation();
-        int angle = ((int) Math.toDegrees(Math.atan2(tile.getY() - playerLocation.getY(),
-                tile.getX() - playerLocation.getX()))) - 90;
-        if (angle < 0) {
-            angle += 360;
-        }
-        return angle % 360;
+    public static int getAngleTo(RSTile tile) {
+        RSPlayer myPlayer = Players.getLocal();
+        int x1 = myPlayer.getLocation().getX();
+        int y1 = myPlayer.getLocation().getY();
+        int x = x1 - tile.getX();
+        int y = y1 - tile.getY();
+        double angle = Math.toDegrees(Math.atan2(x , y));
+        if(x == 0 && y > 0)
+            angle = 180;
+        if(x < 0 && y == 0)
+            angle = 90;
+        if(x == 0 && y < 0)
+            angle = 0;
+        if(x < 0 && y == 0)
+            angle = 270;
+        if(x < 0 && y > 0)
+            angle+=270;
+        if(x > 0 && y > 0)
+            angle+=90;
+        if(x < 0 && y < 0)
+            angle=Math.abs(angle)-180;
+        if(x > 0 && y < 0)
+            angle=Math.abs(angle)+270;
+        if(angle<0)
+            angle=360+angle;
+        if(angle>=360)
+            angle-=360;
+        return (int)angle;
     }
+
 
     /**
      * Turns to the tile with the given deviation.

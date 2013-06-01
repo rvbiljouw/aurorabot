@@ -39,8 +39,10 @@ public class Context {
     }
 
     public static boolean isActive() {
-        return getSession().getScriptManager().getState() == ScriptState.RUNNING;
+        return getSession().getScriptManager().getState() != ScriptState.STOP &&
+                getSession().getScriptManager().getState() != ScriptState.PAUSED;
     }
+
 
     public static boolean isLoggedIn() {
         return getClient().getLoginIndex() == 30 && getWidget(378, 6) == null;

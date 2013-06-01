@@ -104,7 +104,7 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
      * @return
      */
     public final boolean applyAction(final String actionName) {
-        if (!Viewport.tileOnScreen(getLocation())) {
+        if (!Viewport.tileOnScreen(getLocation()) && !Viewport.contains(getClickLocation())) {
             logger.info("Character not on screen");
             return false;
         }
