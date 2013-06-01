@@ -1,6 +1,7 @@
 package ms.aurora.api;
 
 import ms.aurora.api.script.ScriptState;
+import ms.aurora.api.script.task.EventBus;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;
@@ -56,5 +57,9 @@ public class Context {
     public static void invokeLater(ThreadGroup group,Runnable runnable) {
         Thread thread = new Thread(group, runnable);
         thread.start();
+    }
+
+    public static EventBus getEventBus() {
+        return getSession().getEventBus();
     }
 }

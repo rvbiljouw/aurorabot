@@ -1,6 +1,7 @@
 package ms.aurora.core;
 
 import ms.aurora.api.methods.web.model.World;
+import ms.aurora.api.script.task.EventBus;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
@@ -17,6 +18,7 @@ public final class Session implements Runnable {
     private final SessionProperties properties = new SessionProperties();
     private final PaintManager paintManager = new PaintManager();
     private final ClientWrapper wrapper = new ClientWrapper();
+    private final EventBus eventBus = new EventBus();
     private final ThreadGroup threadGroup;
     private final SessionUI ui;
     private ScriptManager scriptManager;
@@ -96,5 +98,9 @@ public final class Session implements Runnable {
         if(wrapper.setWorld(this, world)) {
             ui.getContainer().setApplet(wrapper.getApplet());
         }
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
     }
 }
