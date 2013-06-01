@@ -27,9 +27,9 @@ public class Swarm extends Random {
 
         if (interacting instanceof RSNPC) {
             RSNPC npc = (RSNPC) interacting;
-            if (npc.getName().toLowerCase().contains("swarm")) {
-                String combatRandomProperty = Context.getProperty("combatRandomsEnabled");
-                if (combatRandomProperty == null || combatRandomProperty.equals("true")) {
+            if (npc.getName().toLowerCase().contains("swarm") || npc.getName().toLowerCase().contains("troll")) {
+                String combatRandomProperty = Context.getProperty("combatRandomsDisabled");
+                if (combatRandomProperty == null || combatRandomProperty.equals("false")) {
                     return Players.getLocal().isInCombat();
                 }
             }

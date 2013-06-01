@@ -21,10 +21,9 @@ import static ms.aurora.api.util.Utilities.random;
 @AfterLogin
 @RandomManifest(name = "Ent", version = 1.0)
 public class Ent extends Random {
-    private static final int[] ENT_IDS = {
-            1740, 1731, 1735,
-            1736, 1739, 1737,
-            1734};
+    private static final String[] ENT_NAMES = {
+        "Tree", "Willow", "Oak", "Yew", "Maple" // lolwot ?
+    };
 
 
     @Override
@@ -36,9 +35,10 @@ public class Ent extends Random {
 
         if (interacting instanceof RSNPC) {
             RSNPC npc = (RSNPC) interacting;
-            Arrays.sort(ENT_IDS);
-            if (Arrays.binarySearch(ENT_IDS, npc.getId()) > 0) {
-                return true;
+            for(String entName: ENT_NAMES) {
+                if(npc.getName().toLowerCase().contains(entName.toLowerCase())) {
+                    return true;
+                }
             }
         }
         return false;

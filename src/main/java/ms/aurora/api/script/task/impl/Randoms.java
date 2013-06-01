@@ -29,9 +29,8 @@ public class Randoms extends PassiveTask {
             new AutoLogin(), new Talker(),
             new Teleother(), new WelcomeScreen(),
             new StrangeBox(), new Pinball(),
-            new MrMordaut(), new FrogCave(),
-            new Mime(), new Ent(),
-            new Swarm(), new DrillDemon()
+            new FrogCave(), new Mime(),
+            new Ent(), new Swarm()
     };
 
     public Randoms () {
