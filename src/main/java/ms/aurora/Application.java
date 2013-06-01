@@ -9,7 +9,7 @@ import ms.aurora.gui.Main;
 import ms.aurora.gui.Messages;
 import ms.aurora.gui.sdn.LoginWindow;
 import ms.aurora.sdn.SDNConnection;
-import ms.aurora.sdn.net.api.Hooks;
+import ms.aurora.sdn.net.api.ClientData;
 import ms.aurora.sdn.net.api.Maps;
 import ms.aurora.sdn.net.api.Versioning;
 import ms.aurora.security.DefaultSecurityManager;
@@ -105,7 +105,7 @@ public final class Application {
     }
 
     private static void onReady() {
-        Hooks.obtainHooks();
+        ClientData.obtainData();
         Maps.obtainMap();
     }
 }

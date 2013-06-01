@@ -37,7 +37,7 @@ public class SDNConnection implements Runnable {
 
     public void start() {
         try {
-            socket = new Socket("208.94.241.76", 8008);
+            socket = new Socket("127.0.0.1", 8008);
             socket.setSoTimeout(5000);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
@@ -59,7 +59,7 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
             packetHandlers.add(new MapDataPacketHandler());
-            packetHandlers.add(new HookPacketHandler());
+            packetHandlers.add(new ClientDataPacketHandler());
             packetHandlers.add(new ScriptPacketHandler());
             packetHandlers.add(new PluginPacketHandler());
             packetHandlers.add(new FilePacketHandler());
@@ -91,6 +91,7 @@ public class SDNConnection implements Runnable {
     }
 
     public void writePacket(OutgoingPacket packet) {
+        logger.info("Wrote packet: " + packet.getOpcode());
         try {
             packet.prepare(); // Prepare zeh meal
             byte[] buffer = packet.getPayload();

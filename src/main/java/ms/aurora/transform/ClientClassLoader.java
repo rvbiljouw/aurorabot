@@ -1,6 +1,8 @@
 package ms.aurora.transform;
 
-
+import flexjson.JSONDeserializer;
+import ms.aurora.browser.wrapper.Plaintext;
+import ms.aurora.sdn.net.encode.Base64;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.ConstantClass;
 import org.apache.bcel.classfile.JavaClass;
@@ -9,47 +11,24 @@ import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * @author Rick
+ * @author tobiewarburton
  */
 public final class ClientClassLoader extends ClassLoader {
     private final Logger logger = Logger.getLogger(ClientClassLoader.class);
     private final Map<String, byte[]> classMap = new HashMap<String, byte[]>();
-    private final ClientDefinition clientDef;
 
-    public ClientClassLoader(ClientDefinition clientDef, JarFile file) throws IOException {
+    public ClientClassLoader(Plaintext plaintext) throws IOException {
         super(ClientClassLoader.class.getClassLoader());
-        this.clientDef = clientDef;
-
-        Enumeration<JarEntry> entries = file.entries();
-        while (entries.hasMoreElements()) {
-            JarEntry entry = entries.nextElement();
-            if (entry.getName().endsWith(".class")) {
-                ByteArrayOutputStream classBytes = new ByteArrayOutputStream();
-                InputStream classIn = file.getInputStream(entry);
-
-                byte[] buffer = new byte[4096];
-                while (classIn.available() > 0) {
-                    int read = classIn.read(buffer, 0, buffer.length);
-
-                    if (read < 0) {
-                        break;
-                    } else {
-                        classBytes.write(buffer, 0, read);
-                    }
-                }
-                classMap.put(entry.getName().replace(".class", ""),
-                        classBytes.toByteArray());
-            }
+        JSONDeserializer<Map<String, String>> deserializer = new JSONDeserializer<Map<String, String>>();
+        Map<String, String> nameBaseMap = deserializer.deserialize(plaintext.getText());
+        for (Map.Entry<String, String> entry : nameBaseMap.entrySet()) {
+            classMap.put(entry.getKey(), Base64.decode(entry.getValue()));
         }
     }
 
@@ -61,18 +40,6 @@ public final class ClientClassLoader extends ClassLoader {
                 JavaClass javaClass = new ClassParser(clazz, name + ".class").parse();
                 ClassGen classGen = new ClassGen(javaClass);
                 logger.debug("Loaded class " + name + " into BCEL.");
-                ClassDefinition definition = clientDef.lookup(name);
-                if (definition != null) {
-                    classGen.addInterface(definition.getIface());
-                    logger.debug("Added interface " + definition.getIface() +
-                            " to " + name);
-                    for (AccessorDefinition accessor : definition.getAccessors()) {
-                        accessor.inject(classGen);
-                        logger.debug("Added getter to " + name);
-                    }
-                } else {
-                    logger.debug("Couldn't find a class definition for " + name);
-                }
 
                 if (classGen.getSuperclassName().equals("java.awt.Canvas")) {
                     String canvasSuperclass = "ms/aurora/input/ClientCanvas";
@@ -89,7 +56,6 @@ public final class ClientClassLoader extends ClassLoader {
             }
             return defineClass(name, data, 0, data.length);
         }
-
         return null;
     }
 
