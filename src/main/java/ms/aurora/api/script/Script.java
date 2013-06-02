@@ -142,8 +142,4 @@ public abstract class Script extends Context implements Runnable {
     public TaskQueue getQueue() {
         return taskQueue;
     }
-
-    public EventBus getEventBus() {
-        return eventBus;
-    }
 }
