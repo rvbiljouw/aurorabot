@@ -56,7 +56,7 @@ public class AStarPathFinder {
         stackDepth = 0;
     }
 
-    public Path findPath(int sx, int sy, int tx, int ty, int full) {
+    public Path findPath(int plane, int sx, int sy, int tx, int ty, int full) {
         if (!Context.isActive()) {
             System.out.println("Stack dropped...");
             for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
@@ -66,7 +66,7 @@ public class AStarPathFinder {
         }
 
 
-        if (map.solid(sx, sy)) {
+        if (map.solid(plane, sx, sy)) {
             System.out.println("Starting tile has a blockade..");
             for (int x = -3; x <= 3; x++) {
                 for (int y = -3; y <= 3; y++) {
@@ -74,9 +74,9 @@ public class AStarPathFinder {
                     int mY = sy + y;
 
                     if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
-                        if (!map.solid(mX, mY)) {
+                        if (!map.solid(plane, mX, mY)) {
                             System.out.println("Picking " + mX + "," + mY + " as a starting tile.");
-                            return findPath(mX, mY, tx, ty, full);
+                            return findPath(plane, mX, mY, tx, ty, full);
                         }
                     }
                 }
@@ -84,7 +84,7 @@ public class AStarPathFinder {
         }
 
         // easy first check, if the destination is blocked, we can't getAll there, find an adjacent tile instead
-        if (map.solid(tx, ty)) {
+        if (map.solid(plane, tx, ty)) {
             System.out.println("Destination tile has a blockade.. ( " + tx + ", " + ty + " )");
             for (int x = -3; x <= 3; x++) {
                 for (int y = -3; y <= 3; y++) {
@@ -92,9 +92,9 @@ public class AStarPathFinder {
                     int mY = ty + y;
 
                     if (mX < map.getWidthInTiles() && mX > 0 && mY < map.getHeightInTiles() && mY > 0) {
-                        if (!map.solid(mX, mY)) {
+                        if (!map.solid(plane, mX, mY)) {
                             System.out.println("Picking " + mX + "," + mY + " as a destination tile.");
-                            return findPath(sx, sy, mX, mY, full);
+                            return findPath(plane, sx, sy, mX, mY, full);
                         }
                     }
                 }
@@ -166,9 +166,9 @@ public class AStarPathFinder {
                         boolean isValid;
 
                         if (full == RSMapPathFinder.FULL) {
-                            isValid = isValidLocation(current.x, current.y, xp, yp, map.getDirection(x, y));
+                            isValid = isValidLocation(plane, current.x, current.y, xp, yp, map.getDirection(plane, x, y));
                         } else {
-                            isValid = isValidLocation(current.x, current.y, xp, yp, -1);
+                            isValid = isValidLocation(plane, current.x, current.y, xp, yp, -1);
                         }
 
                         if (isValid) {
@@ -178,12 +178,12 @@ public class AStarPathFinder {
 
                             // in the sorted open list
 
-                            float nextStepCost = current.cost + getMovementCost(current.x, current.y, xp, yp);
+                            float nextStepCost = current.cost + getMovementCost(plane, current.x, current.y, xp, yp);
                             if (nodes(xp, yp) == null) {
                                 nodes(xp, yp, new Node((short) xp, (short) yp));
                             }
                             Node neighbour = nodes(xp, yp);
-                            map.pathFinderVisited(xp, yp);
+                            map.pathFinderVisited(plane, xp, yp);
 
                             // if the new cost we've determined for this node is lower than
 
@@ -336,11 +336,11 @@ public class AStarPathFinder {
      * @param y  The y coordinate of the location to check
      * @return True if the location is valid for the given mover
      */
-    protected boolean isValidLocation(int sx, int sy, int x, int y, int direction) {
+    protected boolean isValidLocation(int plane, int sx, int sy, int x, int y, int direction) {
 
         boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
-        if (map.getBlock(x, y) == -128 || map.solid(x, y) || invalid) return false;
-        return map.isWalkable(sx, sy, x, y);
+        if (map.getBlock(plane, x, y) == -128 || map.solid(plane, x, y) || invalid) return false;
+        return map.isWalkable(plane, sx, sy, x, y);
     }
 
     /**
@@ -352,8 +352,8 @@ public class AStarPathFinder {
      * @param ty The y coordinate of the target location
      * @return The cost of movement through the given tile
      */
-    public float getMovementCost(int sx, int sy, int tx, int ty) {
-        return map.getCost(sx, sy, tx, ty);
+    public float getMovementCost(int plane, int sx, int sy, int tx, int ty) {
+        return map.getCost(plane, sx, sy, tx, ty);
     }
 
     /**

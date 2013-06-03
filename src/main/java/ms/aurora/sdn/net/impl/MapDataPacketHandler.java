@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * Handles the mapdata parser.
+ *
  * @author rvbiljouw
  */
 public class MapDataPacketHandler implements PacketHandler {
@@ -22,17 +23,18 @@ public class MapDataPacketHandler implements PacketHandler {
     public void handle(IncomingPacket incomingPacket) throws IOException {
         DataInputStream in = incomingPacket.getStream();
         while (in.available() > 0 && in.readByte() != -1) {
-            int rx = in.readInt();
-            int ry = in.readInt();
-            int len = in.readInt();
-            for (int i = 0; i < len; i++) {
-                int sublen = in.readInt();
-                for (int j = 0; j < sublen; j++) {
+            int plane = in.readInt();
+            int baseX = in.readInt();
+            int baseY = in.readInt();
+            int width = in.readInt();
+            for (int localX = 0; localX < width; localX++) {
+                int height = in.readInt();
+                for (int localY = 0; localY < height; localY++) {
                     int mask = in.readInt();
                     if ((mask & (RSMap.BLOCKED | RSMap.INVALID)) != 0) {
-                        RSMap.CLIPPING_MASKS[rx + i][ry + j] = -128;
+                        RSMap.CLIPPING_MASKS[plane][baseX + localX][baseY + localY] = -128;
                     } else {
-                        RSMap.CLIPPING_MASKS[rx + i][ry + j] = (byte) mask;
+                        RSMap.CLIPPING_MASKS[plane][baseX + localX][baseY + localY] = (byte) mask;
                     }
                 }
             }

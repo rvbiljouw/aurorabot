@@ -25,13 +25,13 @@ public class RSRegionPathFinder {
 
     private void reload() {
         Region current = getClient().getRegions()[getClient().getPlane()];
-        pathFinder = new AStarPathFinder(new RSRegion(current.getClippingMasks()), 90, true, new ClosestHeuristic());
+        pathFinder = new AStarPathFinder(new RSRegion(getClient().getPlane(), current.getClippingMasks()), 90, true, new ClosestHeuristic());
     }
 
     public Path getPath(int destX, int destY, int full) {
         reload();
         Point destPoint = getFixedPoint(destX, destY);
-        return getPath(Players.getLocal().getLocalX() >> 7,
+        return getPath(getClient().getPlane(), Players.getLocal().getLocalX() >> 7,
                 Players.getLocal().getLocalY() >> 7,
                 destPoint.x,
                 destPoint.y, full);
@@ -55,7 +55,7 @@ public class RSRegionPathFinder {
         return new Point(x, y);
     }
 
-    public Path getPath(int startX, int startY, int destX, int destY, int full) {
-        return pathFinder.findPath(startX, startY, destX, destY, full);
+    public Path getPath(int plane, int startX, int startY, int destX, int destY, int full) {
+        return pathFinder.findPath(plane, startX, startY, destX, destY, full);
     }
 }

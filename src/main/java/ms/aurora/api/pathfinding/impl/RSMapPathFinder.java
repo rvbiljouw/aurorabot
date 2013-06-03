@@ -7,6 +7,8 @@ import ms.aurora.api.pathfinding.Path;
 
 import java.awt.*;
 
+import static ms.aurora.api.Context.getClient;
+
 /**
  * @author rvbiljouw
  */
@@ -27,13 +29,13 @@ public class RSMapPathFinder {
     public Path getPath(int destX, int destY, int full) {
         reload();
         Point destPoint = new Point(destX, destY);
-        return getPath(Players.getLocal().getX(),
+        return getPath(getClient().getPlane(), Players.getLocal().getX(),
                 Players.getLocal().getY(),
                 destPoint.x,
                 destPoint.y, full);
     }
 
-    public Path getPath(int startX, int startY, int destX, int destY, int full) {
-        return pathFinder.findPath(startX, startY, destX, destY, full);
+    public Path getPath(int plane, int startX, int startY, int destX, int destY, int full) {
+        return pathFinder.findPath(plane, startX, startY, destX, destY, full);
     }
 }
