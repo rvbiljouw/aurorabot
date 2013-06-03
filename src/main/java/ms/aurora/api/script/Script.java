@@ -12,8 +12,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
-    private final EventBus eventBus = new EventBus();
-    private final TaskQueue taskQueue = new TaskQueue(this);
+    private TaskQueue taskQueue;
     private Thread taskQueueThread;
     private ScriptState state = ScriptState.START;
     private Randoms randoms;
@@ -119,6 +118,8 @@ public abstract class Script extends Context implements Runnable {
 
     private void init() {
         if (taskQueueThread == null || !taskQueueThread.isAlive()) {
+            Context.getEventBus().register(this);
+            taskQueue = new TaskQueue(this);
             taskQueueThread = new Thread(getSession().getThreadGroup(), taskQueue);
             if (this instanceof PaintListener) {
                 getSession().getPaintManager().register((PaintListener) this);
@@ -137,6 +138,7 @@ public abstract class Script extends Context implements Runnable {
         taskQueue.remove(randoms);
         taskQueue.destruct();
         taskQueueThread.interrupt();
+        Context.getEventBus().deregister(this);
     }
 
     public TaskQueue getQueue() {

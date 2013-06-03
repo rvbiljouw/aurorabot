@@ -23,7 +23,6 @@ public class MapDataPacketHandler implements PacketHandler {
     public void handle(IncomingPacket incomingPacket) throws IOException {
         DataInputStream in = incomingPacket.getStream();
         while (in.available() > 0 && in.readByte() != -1) {
-            int plane = in.readInt();
             int baseX = in.readInt();
             int baseY = in.readInt();
             int width = in.readInt();
@@ -32,9 +31,9 @@ public class MapDataPacketHandler implements PacketHandler {
                 for (int localY = 0; localY < height; localY++) {
                     int mask = in.readInt();
                     if ((mask & (RSMap.BLOCKED | RSMap.INVALID)) != 0) {
-                        RSMap.CLIPPING_MASKS[plane][baseX + localX][baseY + localY] = -128;
+                        RSMap.CLIPPING_MASKS[0][baseX + localX][baseY + localY] = -128;
                     } else {
-                        RSMap.CLIPPING_MASKS[plane][baseX + localX][baseY + localY] = (byte) mask;
+                        RSMap.CLIPPING_MASKS[0][baseX + localX][baseY + localY] = (byte) mask;
                     }
                 }
             }
