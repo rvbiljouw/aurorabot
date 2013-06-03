@@ -31,7 +31,7 @@ public interface TileBasedMap {
      * @param x The x coordinate of the tile that was visited
      * @param y The y coordinate of the tile that was visited
      */
-    public void pathFinderVisited(int x, int y);
+    public void pathFinderVisited(int plane, int x, int y);
 
 
     /**
@@ -42,18 +42,18 @@ public interface TileBasedMap {
      * @param y The y coordinate of the tile to check
      * @return True if the location is blocked
      */
-    public boolean blocked(int x, int y, int direction);
+    public boolean blocked(int plane, int x, int y, int direction);
 
-    public boolean free(int x, int y);
+    public boolean free(int plane, int x, int y);
 
 
-    public boolean solid(int x, int y);
+    public boolean solid(int plane, int x, int y);
 
-    public int getDirection(int x, int y);
+    public int getDirection(int plane, int x, int y);
 
-    public int getBlock(int x, int y);
+    public int getBlock(int plane, int x, int y);
 
-    public boolean isWalkable(int sx, int sy, int tx, int ty);
+    public boolean isWalkable(int plane, int sx, int sy, int tx, int ty);
 
     /**
      * Get the cost of moving through the given tile. This can be used to
@@ -66,5 +66,5 @@ public interface TileBasedMap {
      * @param ty The y coordinate of the tile we're moving to
      * @return The relative cost of moving across the given tile
      */
-    public float getCost(int sx, int sy, int tx, int ty);
+    public float getCost(int plane, int sx, int sy, int tx, int ty);
 }
