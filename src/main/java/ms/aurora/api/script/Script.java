@@ -1,6 +1,7 @@
 package ms.aurora.api.script;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.event.MessageEvent;
 import ms.aurora.api.script.task.EventBus;
 import ms.aurora.api.script.task.TaskQueue;
 import ms.aurora.api.script.task.impl.Randoms;
@@ -12,8 +13,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class Script extends Context implements Runnable {
     private final Logger logger = Logger.getLogger(getClass());
-    private final EventBus eventBus = new EventBus();
-    private final TaskQueue taskQueue = new TaskQueue(this);
+    private TaskQueue taskQueue;
     private Thread taskQueueThread;
     private ScriptState state = ScriptState.START;
     private Randoms randoms;
@@ -118,7 +118,10 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private void init() {
+        getEventBus().register(this);
+
         if (taskQueueThread == null || !taskQueueThread.isAlive()) {
+            taskQueue = new TaskQueue(this);
             taskQueueThread = new Thread(getSession().getThreadGroup(), taskQueue);
             if (this instanceof PaintListener) {
                 getSession().getPaintManager().register((PaintListener) this);
@@ -130,6 +133,8 @@ public abstract class Script extends Context implements Runnable {
     }
 
     private void cleanup() {
+        getEventBus().deregister(this);
+
         if (this instanceof PaintListener) {
             getSession().getPaintManager().deregister((PaintListener) this);
             getSession().getScriptManager().stop();
@@ -143,7 +148,8 @@ public abstract class Script extends Context implements Runnable {
         return taskQueue;
     }
 
-    public EventBus getEventBus() {
-        return eventBus;
+    @EventBus.EventHandler
+    public void onServerMessage(MessageEvent event) {
+        System.out.println("Received server message: " + event.getMessage());
     }
 }

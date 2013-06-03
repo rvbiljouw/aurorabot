@@ -1,5 +1,6 @@
 package ms.aurora.api.script.task;
 
+import ms.aurora.api.Context;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
 
@@ -29,7 +30,7 @@ public class TaskQueue extends PriorityQueue<Task> implements Runnable {
     public TaskQueue(Script owner) {
         super(16, taskComparator);
         this.owner = owner;
-        this.eventBus = owner.getEventBus();
+        this.eventBus = Context.getEventBus();
         this.self = this;
     }
 

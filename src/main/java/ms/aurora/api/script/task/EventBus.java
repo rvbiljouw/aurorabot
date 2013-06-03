@@ -1,6 +1,8 @@
 package ms.aurora.api.script.task;
 
 import ms.aurora.Application;
+import ms.aurora.api.event.MessageEvent;
+import ms.aurora.api.script.Script;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -47,6 +49,16 @@ public class EventBus {
                 bridge.handle(object);
             }
         }
+    }
+
+    public void deregister(Script script) {
+        List<EventHandlerBridge> deprecated = new ArrayList<EventHandlerBridge>();
+        for (EventHandlerBridge bridge : bridges) {
+            if (bridge.method.getDeclaringClass().equals(script.getClass())) {
+                deprecated.add(bridge);
+            }
+        }
+        bridges.removeAll(deprecated);
     }
 
     @Retention(RetentionPolicy.RUNTIME)

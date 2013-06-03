@@ -10,14 +10,18 @@ public class RSWidgetGroup {
     private final int index;
 
     public RSWidgetGroup(Widget[] widgets, int index) {
-        this.widgets = new RSWidget[widgets.length];
         this.index = index;
+        if (widgets != null) {
+            this.widgets = new RSWidget[widgets.length];
 
-        for (int child = 0; child < widgets.length; child++) {
-            Widget widget = widgets[child];
-            if (widget != null) {
-                this.widgets[child] = new RSWidget(widget, index, child);
+            for (int child = 0; child < widgets.length; child++) {
+                Widget widget = widgets[child];
+                if (widget != null) {
+                    this.widgets[child] = new RSWidget(widget, index, child);
+                }
             }
+        } else {
+            this.widgets = new RSWidget[0];
         }
     }
 

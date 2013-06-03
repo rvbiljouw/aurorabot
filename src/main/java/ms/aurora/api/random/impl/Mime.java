@@ -12,6 +12,7 @@ import ms.aurora.api.wrappers.RSNPC;
 import ms.aurora.api.wrappers.RSWidget;
 
 import static ms.aurora.api.methods.filters.NpcFilters.ID;
+import static ms.aurora.api.methods.filters.NpcFilters.NAMED;
 import static ms.aurora.api.util.Utilities.random;
 
 /**
@@ -23,14 +24,13 @@ import static ms.aurora.api.util.Utilities.random;
 @RandomManifest(name = "Mime", version = 1.0)
 public class Mime extends Random {
     private static final int WIDGET_PARENT_ID = 188;
-    private static final int MIME_ID = 1056;
     private Animation lastAnimation;
     private Animation lastPerformed;
 
 
     @Override
     public boolean activate() {
-        return Npcs.get(ID(MIME_ID)) != null;
+        return Npcs.get(NAMED("Mime")) != null;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Mime extends Random {
         if (!activate()) {
             return -1;
         }
-        RSNPC mime = Npcs.get(ID(MIME_ID));
+        RSNPC mime = Npcs.get(NAMED("Mime"));
         if (mime != null) {
             Animation anim = Animation.forAnim(mime.getAnimation());
             if (anim != null && anim != lastAnimation) {

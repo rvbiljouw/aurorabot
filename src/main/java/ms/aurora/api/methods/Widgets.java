@@ -8,7 +8,9 @@ import ms.aurora.rt3.Widget;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Widget related functions
@@ -34,7 +36,21 @@ public final class Widgets {
                 groups.add(group);
             }
         }
+
+        Widget[] widgets = new Widget[4];
+        widgets[0] = getClient().getInterface0();
+        widgets[1] = getClient().getInterface1();
+        widgets[2] = getClient().getInterface2();
+        widgets[3] = getClient().getInterface3();
+        groups.add(new RSWidgetGroup(widgets, 10000));
+
+        groups.add(new RSWidgetGroup(getClient().getAllWidgets(), 11000));
+
         return groups.toArray(new RSWidgetGroup[groups.size()]);
+    }
+
+    public static RSWidgetGroup[] getAllSingle() {
+        return new RSWidgetGroup[]{new RSWidgetGroup(getClient().getAllWidgets(), 10000)};
     }
 
     /**
