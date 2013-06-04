@@ -24,17 +24,16 @@ public class RegionDataCheckHandler implements PacketHandler {
     public void handle(IncomingPacket incomingPacket) throws IOException {
         DataInputStream in = incomingPacket.getStream();
         byte response = in.readByte();
-        if (response == 1) {
-            int baseX = in.readInt();
-            int baseY = in.readInt();
-            int plane = in.readInt();
-            for (RegionDataPacket check : RegionDataCheck.cache) {
-                if (check.getBaseX() == baseX
-                        && check.getBaseY() == baseY
-                        && check.getPlane() == plane) {
-                    SDNConnection.getInstance().writePacket(new RegionData(check));
-                }
+        int baseX = in.readInt();
+        int baseY = in.readInt();
+        int plane = in.readInt();
+        RegionDataPacket packet = RegionDataPacket.get(baseX, baseY, plane);
+        if (packet != null) {
+            if (response == 1) {
+                SDNConnection.instance.writePacket(new RegionData(packet));
+
             }
+            packet.delete();
         }
     }
 }

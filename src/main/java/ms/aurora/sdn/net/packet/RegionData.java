@@ -23,12 +23,10 @@ public class RegionData extends OutgoingPacket {
 
     @Override
     public void prepare() throws IOException {
-        byte[] json = new JSONSerializer().deepSerialize(check).getBytes();
+        byte[] json = new JSONSerializer().deepSerialize(check).getBytes("UTF-8");
         getStream().writeInt(json.length);
         getStream().write(json);
         getStream().flush();
         getStream().close();
-
-        RegionDataCheck.cache.remove(check);
     }
 }

@@ -4,14 +4,11 @@ import ms.aurora.sdn.model.RegionDataPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author tobiewarburton
  */
 public class RegionDataCheck extends OutgoingPacket {
-    public static List<RegionDataPacket> cache = new ArrayList<RegionDataPacket>();
     private int baseX;
     private int baseY;
     private int plane;
@@ -23,7 +20,7 @@ public class RegionDataCheck extends OutgoingPacket {
         this.baseY = baseY;
         this.plane = plane;
         this.masks = masks;
-        cache.add(new RegionDataPacket(baseX, baseY, plane, masks));
+        new RegionDataPacket(baseX, baseY, plane, masks);
     }
 
     @Override
