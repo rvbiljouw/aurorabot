@@ -1,17 +1,18 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.methods.Minimap;
-import ms.aurora.api.methods.Viewport;
-import ms.aurora.api.methods.Walking;
+import ms.aurora.api.methods.*;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Item;
 
 import java.awt.*;
 
 import static ms.aurora.api.Context.getProperty;
+import static ms.aurora.api.methods.Menu.contains;
+import static ms.aurora.api.methods.Menu.containsPred;
 
 /**
  * Wrapper for ground items.
@@ -89,23 +90,14 @@ public final class RSGroundItem implements Locatable, Interactable {
      */
     @Override
     public boolean applyAction(String actionName) {
-        if (!Viewport.tileOnScreen(getLocation())) {
-            if (getProperty("interaction.walkTo").equals("true")) {
-                if (Minimap.convert(getLocation()).x != -1) {
-                    Walking.walkToLocal(getLocation());
-                }
-            }
+        if (!Viewport.tileOnScreen(getLocation()) && !Viewport.contains(getScreenLocation())) {
             return false;
         }
-        Point screen = getScreenLocation();
-        if (screen.x == -1 && screen.y == -1) return false;
-        VirtualMouse.moveMouse(screen.x, screen.y);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return ms.aurora.api.methods.Menu.click(actionName);
+
+        Point click = getScreenLocation();
+        VirtualMouse.moveMouse(click.x, click.y);
+        Utilities.sleepUntil(containsPred(actionName), 400);
+        return contains(actionName) && ms.aurora.api.methods.Menu.click(actionName);
     }
 
     @Override

@@ -78,7 +78,7 @@ public final class EntityLoader {
     }
 
     private static void loadJar(File rawFile) throws Exception {
-        JarFile file = new JarFile(rawFile);
+        JarFile file = new JarFile(rawFile, false, JarFile.OPEN_READ);
         URL[] classpathURLs = new URL[]{rawFile.toURI().toURL()};
         ClassLoader loader = new URLClassLoader(classpathURLs,
                 Thread.currentThread().getContextClassLoader());
@@ -93,6 +93,7 @@ public final class EntityLoader {
                 loadClass(loader.loadClass(strip));
             }
         }
+        file.close();
     }
 
     @SuppressWarnings("unchecked")

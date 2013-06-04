@@ -16,7 +16,7 @@ import static ms.aurora.api.methods.Widgets.getWidget;
 public class Context {
     private static final Logger logger = Logger.getLogger(Context.class);
     private static final ThreadLocal<Session> session = new ThreadLocal<Session>();
-    private static boolean rendering;
+    private static boolean rendering = true;
 
     public static Session getSession() {
         if (session.get() == null) {
@@ -61,9 +61,6 @@ public class Context {
     }
 
     public static EventBus getEventBus() {
-        if(getSession() == null) {
-            System.out.println("Session not set " + Thread.currentThread().getThreadGroup().getName());
-        }
         return getSession().getEventBus();
     }
 
