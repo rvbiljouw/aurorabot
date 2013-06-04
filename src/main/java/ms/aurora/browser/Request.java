@@ -24,6 +24,6 @@ public interface Request {
     Type getRequestType();
 
     public static enum Type {
-        GET, POST
+        GET, POST, POST_JSON
     }
 }

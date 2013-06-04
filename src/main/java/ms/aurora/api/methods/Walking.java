@@ -1,5 +1,6 @@
 package ms.aurora.api.methods;
 
+import flexjson.JSONSerializer;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
 import ms.aurora.api.pathfinding.impl.RSRegionPathFinder;
@@ -7,12 +8,22 @@ import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Locatable;
 import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.browser.Browser;
+import ms.aurora.browser.Context;
+import ms.aurora.browser.ContextBuilder;
+import ms.aurora.browser.ResponseHandler;
+import ms.aurora.browser.exception.ParsingException;
+import ms.aurora.browser.impl.JsonPostRequest;
+import ms.aurora.browser.wrapper.Plaintext;
 import ms.aurora.input.VirtualKeyboard;
 import ms.aurora.input.VirtualMouse;
 import ms.aurora.rt3.Player;
+import ms.aurora.sdn.model.PathRequestPacket;
+import ms.aurora.sdn.model.PathResponse;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
+import java.io.InputStream;
 
 import static ms.aurora.api.methods.Calculations.distance;
 import static ms.aurora.api.util.Utilities.sleepNoException;
@@ -162,18 +173,39 @@ public final class Walking {
      * @param x Destination X
      * @param y Destination Y
      */
-    public static void walkTo(int x, int y) {
+    public static void walkTo(final int x, final int y) {
         logger.info("Attempting walkTo(" + x + ", " + y + ");");
 
         try {
-            RSMapPathFinder pf = new RSMapPathFinder();
-            Path path = pf.getPath(x, y, RSMapPathFinder.FULL);
-            if (path != null && path.getLength() != 0) {
-                final RSTile[] tiles = path.toTiles(1);
-                traverse(tiles, FORWARDS);
-            } else {
-                throw new RuntimeException("Path not found");
-            }
+            PathRequestPacket packet = new PathRequestPacket();
+            packet.setCurrentPlane(0);
+            packet.setCurrX(Players.getLocal().getX());
+            packet.setCurrY(Players.getLocal().getY());
+            packet.setDestX(x);
+            packet.setDestY(y);
+
+            JSONSerializer serializer = new JSONSerializer();
+            String json = serializer.serialize(packet);
+            Context ctx = ContextBuilder.get().domain("localhost").port(9000).build();
+            Browser browser = new Browser(ctx);
+            browser.doRequest(new JsonPostRequest("/api/path", json), new ResponseHandler() {
+                @Override
+                public void handleResponse(InputStream inputStream) {
+                    try {
+                        Plaintext plaintext = Plaintext.fromStream(inputStream);
+                        PathResponse response = PathResponse.deserialize(plaintext.getText());
+                        if(response.isSuccess()) {
+                            traverse(response.getPath(), FORWARDS);
+                        } else {
+                            logger.error("Path not found to " + x + ", " + y);
+                            logger.warn("Attempting local navigation to " + x + "," + y);
+                            walkToLocal(x, y);
+                        }
+                    } catch (ParsingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         } catch (Exception e) {
             logger.error("Path not found to " + x + ", " + y);
             logger.warn("Attempting local navigation to " + x + "," + y);
