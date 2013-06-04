@@ -14,6 +14,10 @@ public final class RSTile {
     private int z;
     private int y;
 
+    public RSTile() {
+        // fuk m8
+    }
+
     public RSTile(int x, int y) {
         this.x = x;
         this.y = y;

@@ -195,8 +195,12 @@ public final class Walking {
                         Plaintext plaintext = Plaintext.fromStream(inputStream);
                         PathResponse response = PathResponse.deserialize(plaintext.getText());
                         if(response.isSuccess()) {
+                            System.out.println("Success");
                             traverse(response.getPath(), FORWARDS);
                         } else {
+                            System.out.println("ERROR");
+                            System.out.println(plaintext.getText());
+
                             logger.error("Path not found to " + x + ", " + y);
                             logger.warn("Attempting local navigation to " + x + "," + y);
                             walkToLocal(x, y);
@@ -207,6 +211,7 @@ public final class Walking {
                 }
             });
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("Path not found to " + x + ", " + y);
             logger.warn("Attempting local navigation to " + x + "," + y);
             walkToLocal(x, y);
