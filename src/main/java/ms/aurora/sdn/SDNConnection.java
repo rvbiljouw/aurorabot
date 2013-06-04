@@ -63,6 +63,7 @@ public class SDNConnection implements Runnable {
             packetHandlers.add(new ScriptPacketHandler());
             packetHandlers.add(new PluginPacketHandler());
             packetHandlers.add(new FilePacketHandler());
+            packetHandlers.add(new RegionDataCheckHandler());
 
             while (socket.isConnected() && !self.isInterrupted()) {
                 if (dis.available() > 0) {

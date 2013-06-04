@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.script.task.EventBus;
 import ms.aurora.api.script.task.TaskQueue;
 import ms.aurora.api.script.task.impl.Randoms;
+import ms.aurora.api.script.task.impl.Regions;
 import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
@@ -126,6 +127,7 @@ public abstract class Script extends Context implements Runnable {
             }
             randoms = new Randoms();
             taskQueue.add(randoms);
+            taskQueue.add(new Regions());
             taskQueueThread.start();
         }
     }
