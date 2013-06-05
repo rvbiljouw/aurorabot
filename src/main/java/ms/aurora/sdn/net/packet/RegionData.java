@@ -5,15 +5,16 @@ import ms.aurora.sdn.model.RegionDataPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author tobiewarburton
  */
 public class RegionData extends OutgoingPacket {
-    private RegionDataPacket check;
+    private List<RegionDataPacket> checks;
 
-    public RegionData(RegionDataPacket check) {
-        this.check = check;
+    public RegionData(List<RegionDataPacket> checks) {
+        this.checks = checks;
     }
 
     @Override
@@ -23,7 +24,7 @@ public class RegionData extends OutgoingPacket {
 
     @Override
     public void prepare() throws IOException {
-        byte[] json = new JSONSerializer().deepSerialize(check).getBytes("UTF-8");
+        byte[] json = new JSONSerializer().deepSerialize(checks).getBytes("UTF-8");
         getStream().writeInt(json.length);
         getStream().write(json);
         getStream().flush();

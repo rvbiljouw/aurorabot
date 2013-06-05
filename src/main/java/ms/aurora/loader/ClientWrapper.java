@@ -32,6 +32,10 @@ public class ClientWrapper {
         return loader.getApplet();
     }
 
+    public boolean isLoaded() {
+        return loader.isLoaded();
+    }
+
     public boolean start() {
         config.visit();
         loader.start();

@@ -2,9 +2,13 @@ package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
+import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.pathfinding.impl.RSRegion;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.rt3.Player;
+import ms.aurora.rt3.Region;
 
 import java.awt.*;
 
@@ -42,5 +46,35 @@ public class MinimapPaint implements PaintListener {
         Point minimapLoc = Minimap.convert(Players.getLocal().getX(), Players.getLocal().getY());
         graphics.drawOval(minimapLoc.x - 1, minimapLoc.y - 1, 3, 3);
         graphics.drawString("Player on minimap: " + minimapLoc, x, y);
+
+
+        Region r = getClient().getRegions()[getClient().getPlane()];
+        RSRegion region = new RSRegion(getClient().getPlane(), r.getClippingMasks());
+        int lx = (Players.getLocal().getLocalX() >> 7);
+        int ly = (Players.getLocal().getLocalY() >> 7);
+        for(int i = lx - 10; i < lx + 10; i++) {
+            for(int j = ly - 10; j < ly + 10; j++) {
+                if(i > 0 && i < 104 && j > 0 && j < 104) {
+                    boolean n = region.blocked(getClient().getPlane(), i, j, RSRegion.DIRECTION_NORTH);
+                    boolean e = region.blocked(getClient().getPlane(), i, j, RSRegion.DIRECTION_EAST);
+                    boolean s = region.blocked(getClient().getPlane(), i, j, RSRegion.DIRECTION_SOUTH);
+                    boolean w = region.blocked(getClient().getPlane(), i, j, RSRegion.DIRECTION_WEST);
+                    boolean invalid = region.getBlock(getClient().getPlane(), i, j) == -128;
+
+                    Point pos = Viewport.convert((int)((i * 128) + 0.5D), (int)((j * 128) + 0.5D), Players.getLocal().getHeight());
+                    graphics.setColor(n ? Color.RED : Color.GREEN);
+                    graphics.drawString("n", pos.x - 7, pos.y);
+                    graphics.setColor(s ? Color.RED : Color.GREEN);
+                    graphics.drawString("s", pos.x, pos.y);
+                    graphics.setColor(e ? Color.RED : Color.GREEN);
+                    graphics.drawString("e", pos.x + 7, pos.y);
+                    graphics.setColor(w ? Color.RED : Color.GREEN);
+                    graphics.drawString("w", pos.x + 14, pos.y);
+                    graphics.setColor(invalid ? Color.RED : Color.GREEN);
+                    graphics.drawString("i" ,pos.x + 21, pos.y);
+
+                }
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@ public class RegionDataCheckHandler implements PacketHandler {
         RegionDataPacket packet = RegionDataPacket.get(baseX, baseY, plane);
         if (packet != null) {
             if (response == 1) {
-                SDNConnection.instance.writePacket(new RegionData(packet));
+                //SDNConnection.instance.writePacket(new RegionData(packet));
 
             }
             packet.delete();

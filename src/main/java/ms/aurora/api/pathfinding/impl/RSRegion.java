@@ -14,13 +14,13 @@ public class RSRegion implements TileBasedMap {
     private byte[][][] clippingMasks = new byte[3][104][104];
     private boolean[][][] visited = new boolean[3][getWidthInTiles()][getHeightInTiles()];
     private static final int DIRECTION_NORTHWEST = 0x1;
-    private static final int DIRECTION_NORTH = 0x2;
+    public static final int DIRECTION_NORTH = 0x2;
     private static final int DIRECTION_NORTHEAST = 0x4;
-    private static final int DIRECTION_EAST = 0x8;
+    public static final int DIRECTION_EAST = 0x8;
     private static final int DIRECTION_SOUTHEAST = 0x10;
-    private static final int DIRECTION_SOUTH = 0x20;
+    public static final int DIRECTION_SOUTH = 0x20;
     private static final int DIRECTION_SOUTHWEST = 0x40;
-    private static final int DIRECTION_WEST = 0x80;
+    public static final int DIRECTION_WEST = 0x80;
     public static final int BLOCKED = 0x100;
     public static final int INVALID = 0x200000 | 0x40000;
 
