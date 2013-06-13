@@ -85,12 +85,18 @@ public class JarInputStreamClassLoader extends ClassLoader {
         return result;
     }
 
-    public Class<?> loadClassWithManifest(Class manifest, Class<?> supe) {
+    /**
+     * Loads a class based on it's manifest.
+     * @param manifest
+     * @param parent
+     * @return
+     */
+    public Class<?> loadClassWithManifest(Class manifest, Class<?> parent) {
         try {
             for (String name : getClassNames()) {
                 Class<?> clazz = loadClass(name);
                 if (clazz.getAnnotation(manifest) != null) {
-                    if (supe.isAssignableFrom(clazz)) {
+                    if (parent.isAssignableFrom(clazz)) {
                         return clazz;
                     }
                 }

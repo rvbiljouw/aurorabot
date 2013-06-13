@@ -18,6 +18,9 @@ import java.util.jar.Manifest;
 
 import static ms.aurora.sdn.net.encode.Base64.decodeString;
 
+/**
+ * Reverse engineered from output produced by javafxpackager.
+ */
 public class Bootstrap {
     private static boolean verbose = true;
     private static Attributes attrs = null;
