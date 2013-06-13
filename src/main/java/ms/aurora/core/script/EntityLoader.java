@@ -49,6 +49,11 @@ public final class EntityLoader {
         logger.info("Default plugins added.");
     }
 
+    /**
+     * Obtains a list of all defined sources and then
+     * iterates through all these sources attempting
+     * to find and load any scriptable entities.
+     */
     public static void load() {
         List<Source> allSources = Source.getAll();
         for (Source source : allSources) {
@@ -57,11 +62,21 @@ public final class EntityLoader {
         }
     }
 
+    /**
+     * Clears all lists of entities and then reloads
+     */
     public static void reload() {
         clear();
         load();
     }
 
+    /**
+     * Recursively traverses a directory looking for jar files.
+     * Recursively in this context means that it will
+     * dive into sub-folders of the initial folder as well
+     * until it finds no more.
+     * @param root A directory root at which to start scanning.
+     */
     private static void traverse(File root) {
         File[] files = root.listFiles();
         for (File file : files != null ? files : new File[0]) {
@@ -77,6 +92,13 @@ public final class EntityLoader {
         }
     }
 
+    /**
+     * Opens a jar file, iterating through all entries.
+     * If a .class entry is found, finds out if it is
+     * a scriptable entity, and if so, loads it.
+     * @param rawFile a JAR file.
+     * @throws Exception
+     */
     private static void loadJar(File rawFile) throws Exception {
         JarFile file = new JarFile(rawFile, false, JarFile.OPEN_READ);
         URL[] classpathURLs = new URL[]{rawFile.toURI().toURL()};
@@ -188,11 +210,11 @@ public final class EntityLoader {
         return null;
     }
 
-    private static Class<?> loadRemoteClass(Class<?> manifest, Class<?> supe, ByteArrayInputStream stream) {
+    private static Class<?> loadRemoteClass(Class<?> manifest, Class<?> parent, ByteArrayInputStream stream) {
         JarInputStreamClassLoader cl = new JarInputStreamClassLoader(
                 Thread.currentThread().getContextClassLoader(),
                 stream);
-        return cl.loadClassWithManifest(manifest, supe);
+        return cl.loadClassWithManifest(manifest, parent);
     }
 
     private static ByteArrayInputStream getJarInputStream(byte[] bytes) {

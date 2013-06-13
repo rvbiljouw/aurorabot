@@ -12,9 +12,16 @@ import ms.aurora.sdn.net.api.Versioning;
 import static com.avaje.ebean.EbeanServerFactory.create;
 
 /**
+ * Database is responsible for maintaining connectivity
+ * to the h2 database, as well as recreating the schema
+ * in case it goes corrupt / m.i.a.
  * @author rvbiljouw
  */
 public class Database {
+    /**
+     * An array of bean classes that are (or should be) registered
+     * with the database server.
+     */
     private static final Class<?>[] BEAN_CLASSES = {
             AbstractModel.class, Account.class,
             PluginConfig.class, ms.aurora.core.model.Source.class,
@@ -24,6 +31,8 @@ public class Database {
     public static void init() {
         ServerConfig cfg = getConfig();
         if (!test(cfg)) {
+            // Database was corrupt or not present,
+            // regenerate the schema.
             cfg.setDdlGenerate(true);
             cfg.setDdlRun(true);
         }
@@ -50,6 +59,14 @@ public class Database {
         return config;
     }
 
+    /**
+     * Tests a server configuration to see if all
+     * beans were properly registered. If they weren't
+     * it will throw an exception allowing us to
+     * re-instantiate the database model.
+     * @param cfg A server configuration
+     * @return true when successful
+     */
     public static boolean test(ServerConfig cfg) {
         try {
             EbeanServer server = create(cfg);
