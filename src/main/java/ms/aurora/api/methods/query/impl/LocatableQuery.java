@@ -13,7 +13,7 @@ import ms.aurora.api.wrappers.RSTile;
  *
  * @author A_C/Cov
  */
-public abstract class LocatableQuery<RT extends Locatable, QT extends LocatableQuery> extends Query<RT, QT> {
+public abstract class LocatableQuery<RT extends Locatable, QT extends LocatableQuery> extends Query<RT> {
 
     public QT location(final RSTile tile) {
         this.addConditional(new Conditional() {

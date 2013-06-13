@@ -186,7 +186,7 @@ public final class Walking {
 
             JSONSerializer serializer = new JSONSerializer();
             String json = serializer.serialize(packet);
-            Context ctx = ContextBuilder.get().domain("localhost").port(9000).build();
+            Context ctx = ContextBuilder.get().domain("208.94.241.76").port(9000).build();
             Browser browser = new Browser(ctx);
             browser.doRequest(new JsonPostRequest("/api/path", json), new ResponseHandler() {
                 @Override

@@ -17,7 +17,7 @@ import java.util.List;
  * RT = Return Type, eg RSNPC
  * QT = Query Type, eg NPCQuery
  */
-public abstract class Query<RT, QT extends Query> {
+public abstract class Query<RT> {
 
     public abstract class Conditional {
         protected abstract boolean accept(RT type);
