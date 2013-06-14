@@ -2,10 +2,8 @@ package ms.aurora.core;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.event.RegionUpdateEvent;
-import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.web.model.World;
 import ms.aurora.api.script.task.EventBus;
-import ms.aurora.api.wrappers.RSTile;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
@@ -16,8 +14,6 @@ import ms.aurora.rt3.Region;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.sdn.model.RegionDataPacket;
 import ms.aurora.sdn.net.packet.RegionData;
-import ms.aurora.sdn.net.packet.RegionDataCheck;
-import org.apache.log4j.Logger;
 
 import java.applet.Applet;
 import java.util.ArrayList;
@@ -80,8 +76,8 @@ public final class Session implements Runnable {
                                             * 8 + sy];
                             RegionDataPacket check = new RegionDataPacket(rx + i * 8, ry + j * 8,
                                     getClient().getPlane(), subdata);
-                            if(!mappedIDs.contains(calcId(check.getBaseX(), check.getBaseY()))) {
-                                mappedIDs.add(calcId(check.getBaseX(), check.getBaseY()));
+                            if(!mappedIDs.contains(calcId(check.getBaseX(), check.getBaseY(), getClient().getPlane()))) {
+                                mappedIDs.add(calcId(check.getBaseX(), check.getBaseY(), getClient().getPlane()));
                                 checks.add(check);
                             }
                         }
@@ -98,8 +94,8 @@ public final class Session implements Runnable {
         }
     }
 
-    private int calcId(int x, int y) {
-        return (((x / 8) & 0xFFF) << 12) | ((y / 8) & 0xFFF);
+    private int calcId(int x, int y, int plane) {
+        return ((((x / 8) & 0xFFF) << 12) | ((y / 8) & 0xFFF)) * plane;
     }
 
 

@@ -51,7 +51,8 @@ public class Property extends AbstractModel {
     }
 
     public static Property getByName(String value) {
-        return Ebean.find(Property.class).where().eq("name", value).findUnique();
+        List<Property> props = Ebean.find(Property.class).where().eq("name", value).findList();
+        return props.size() == 0 ? null : props.get(props.size() - 1);
     }
 
 
