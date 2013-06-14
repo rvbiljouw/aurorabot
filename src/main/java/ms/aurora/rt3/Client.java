@@ -19,8 +19,6 @@ public interface Client {
 
     int getCameraPitch();
 
-    Widget[] getAllWidgets();
-
     String[] getMenuTargets();
 
     String[] getMenuActions();
@@ -91,11 +89,4 @@ public interface Client {
 
     Region[] getRegions();
 
-    Widget getInterface0();
-
-    Widget getInterface1();
-
-    Widget getInterface2();
-
-    Widget getInterface3();
 }
