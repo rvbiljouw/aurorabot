@@ -17,8 +17,13 @@ import java.net.URL;
  */
 public class FXUtils {
 
+    /**
+     * Creates and shows a modal dialog
+     *
+     * @param title the title of the dialog
+     * @param parent the parent object
+     */
     public static void showModalDialog(String title, Parent parent) {
-
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -30,6 +35,13 @@ public class FXUtils {
         stage.show();
     }
 
+    /**
+     * Creates a simple modal stage
+     *
+     * @param title the title of the dialog
+     * @param parent the parent object
+     * @return the stage in which is configured to be a modal
+     */
     public static Stage createModalStage(String title, Parent parent) {
         Stage stage = new Stage();
         stage.setTitle(title);
@@ -41,6 +53,13 @@ public class FXUtils {
         return stage;
     }
 
+    /**
+     * Shows a modal dialog with a close handler.
+     *
+     * @param title the title of the dialog
+     * @param parent the parent object
+     * @param closeHandler the handler in which is called on close
+     */
     public static void showModalDialog(String title, Parent parent, EventHandler<WindowEvent> closeHandler) {
         Stage stage = new Stage();
         stage.setTitle(title);
@@ -54,7 +73,7 @@ public class FXUtils {
         stage.centerOnScreen();
         stage.show();
     }
-
+    
     public static void load(URL resource, Parent object) {
         FXMLLoader fxmlLoader = new FXMLLoader(resource, Messages.getBundle());
         fxmlLoader.setRoot(object);

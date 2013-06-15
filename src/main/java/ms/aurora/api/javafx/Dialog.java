@@ -16,16 +16,25 @@ public abstract class Dialog extends AnchorPane {
 
     }
 
+    /**
+     * shows the dialog
+     */
     public void show() {
         currentStage = FXUtils.createModalStage(getTitle(), this);
         currentStage.show();
     }
 
+    /**
+     * shows the dialog and then blocks until it is closed.
+     */
     public void showAndWait() {
         currentStage = FXUtils.createModalStage(getTitle(), this);
         currentStage.showAndWait();
     }
 
+    /**
+     * closes the dialog
+     */
     public void close() {
         onClose();
 
