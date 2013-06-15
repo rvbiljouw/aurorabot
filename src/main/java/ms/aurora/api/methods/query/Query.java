@@ -9,21 +9,25 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Date: 23/05/13
- * Time: 10:39
- *
  * @author A_C/Cov
+ * @author tobiewarburton
  *
  * RT = Return Type, eg RSNPC
- * QT = Query Type, eg NPCQuery
  */
 public abstract class Query<RT> {
 
+    /**
+     * a simple condition
+     */
     public abstract class Conditional {
         protected abstract boolean accept(RT type);
     }
 
     private ArrayList<Conditional> conditionals = new ArrayList<Conditional>();
+    
+    /**
+     * a Comparator by distance
+     */
     protected static final Comparator DISTANCE_COMPARATOR = new Comparator<Locatable>() {
         @Override
         public int compare(Locatable o1, Locatable o2) {
@@ -32,10 +36,20 @@ public abstract class Query<RT> {
         }
     };;
 
+    /**
+     * adds a conditional to the list
+     *
+     * @param conditional the conditional to add
+     */
     protected void addConditional(Conditional conditional) {
         this.conditionals.add(conditional);
     }
 
+    /**
+     * filters the list provided by the conditionals.
+     *
+     * @param items a list of items to filter.
+     */
     protected List<RT> filterResults(List<RT> items) {
         List<RT> filtered = new ArrayList<RT>();
         for (RT item: items) {
@@ -53,11 +67,17 @@ public abstract class Query<RT> {
         return filtered;
     }
 
+    /**
+     * @return the head of the list or null
+     */
     public RT single() {
         RT[] result = result();
         return result.length > 0 ? result[0] : null;
     }
 
+    /**
+     * @return a list of items which are filtered by the conditionals
+     */
     public abstract RT[] result();
 
 }
