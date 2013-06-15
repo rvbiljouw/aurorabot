@@ -3,10 +3,8 @@ package ms.aurora.api.methods;
 import static ms.aurora.api.Context.getClient;
 
 /**
- * Date: 24/05/13
- * Time: 15:48
- *
  * @author A_C/Cov
+ * @author tobiewarburton
  */
 public enum Skill {
     ATTACK(0),
@@ -54,6 +52,11 @@ public enum Skill {
         return getClient().getSkillLevels()[index];
     }
 
+    /**
+     * Retrives the base level for the current skill
+     * 
+     * @return the base level
+     */
     public int getBaseLevel() {
         return getClient().getSkillLevelBases()[index];
     }

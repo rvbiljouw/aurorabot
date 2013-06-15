@@ -14,6 +14,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
 /**
  * @author A_C/Cov
  * @author Rick
+ * @author tobiewarburton
  */
 public final class Camera {
 
@@ -29,6 +30,9 @@ public final class Camera {
         return (int) mapAngle;
     }
 
+    /**
+     * Sets the angle to the angle in which tile is.
+     */
     public static void setAngle(RSTile tile) {
         setAngle(getAngleTo(tile));
     }
@@ -141,6 +145,13 @@ public final class Camera {
         VirtualKeyboard.releaseKey(direction);
     }
 
+    //TODO: dupe? Calculations.java
+    /**
+     * Calculates the angle to tile
+     *
+     * @param tile the tile in which you want to get the angle to
+     * @return the angle to tile
+     */
     public static int getAngleTo(RSTile tile) {
         RSPlayer myPlayer = Players.getLocal();
         int x1 = myPlayer.getLocation().getX();

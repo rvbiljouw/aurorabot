@@ -7,7 +7,8 @@ import java.awt.*;
 
 
 /**
- * @author no-one you know
+ * @author rvbiljouw
+ * @author tobiewarburton
  */
 public final class Calculations {
 
@@ -46,6 +47,12 @@ public final class Calculations {
         return Math.hypot(x1 - x2, y1 - y2);
     }
 
+    /**
+     * Calculates the angle to the specified tile
+     *
+     * @param tile the tile you wish to get the angle to
+     * @return the angle to tile
+     */
     public static int getAngleTo(RSTile tile) {
         RSPlayer myPlayer = Players.getLocal();
         int x1 = myPlayer.getLocation().getX();

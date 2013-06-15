@@ -15,6 +15,7 @@ import static ms.aurora.api.Context.getClient;
  * Player related functions
  *
  * @author Rick
+ * @author tobiewarburton
  */
 public final class Players {
 

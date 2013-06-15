@@ -19,6 +19,7 @@ import static ms.aurora.api.util.Utilities.sleepNoException;
  * Menu related functions
  *
  * @author Rick
+ * @author tobiewarburton
  */
 public final class Menu {
     private static final Logger logger = Logger.getLogger(Menu.class);
@@ -127,6 +128,13 @@ public final class Menu {
                 menuContent.size());
     }
 
+    /**
+     * A simple helper method which standardizes the naming of menu items
+     * Also prevents nullpointers
+     *
+     * @param in the input string
+     * @return the formatted string
+     */
     private static String removeFormatting(String in) {
         if (in == null)
             return "null";
@@ -134,6 +142,12 @@ public final class Menu {
     }
 
 
+    /**
+     * A state predicate which filters by the actionName
+     *
+     * @param actionName the action name you wish to filter for
+     * @return a StatePredicate which filters by the actionName
+     */
     public static StatePredicate containsPred(final String actionName) {
         return new StatePredicate() {
             @Override
