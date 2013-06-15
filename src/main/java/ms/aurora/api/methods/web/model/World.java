@@ -16,7 +16,10 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
 /**
+ * A simple class which represents a World ingame.
+ *
  * @author rvbiljouw
+ * @author tobiewarburton
  */
 public class World {
     private String name;

@@ -24,9 +24,15 @@ import static ms.aurora.api.util.Utilities.random;
 
 /**
  * @author rvbiljouw
+ * @author tobiewarburton
  */
 public class Worlds {
 
+    /**
+     * Retrives the World with the least players
+     *
+     * @return the most empty world.
+     */
     public static World getEmptiest() {
         List<World> worlds = getAll();
         sort(worlds, new Comparator<World>() {
@@ -38,6 +44,11 @@ public class Worlds {
         return worlds.size() > 0 ? worlds.get(0) : null;
     }
 
+    /**
+     * Retrives the world with the most players
+     *
+     * @return the busiest world.
+     */
     public static World getBusiest() {
         List<World> worlds = getAll();
         sort(worlds, new Comparator<World>() {
@@ -49,19 +60,39 @@ public class Worlds {
         return worlds.size() > 0 ? worlds.get(0) : null;
     }
 
+    /**
+     * Retrives a list of all the worlds and filters them with the specified filters.
+     *
+     * @return a filtered list of worlds.
+     */
     public static List<World> getFiltered(Predicate<World>... preds) {
         return ArrayUtils.filter(getAll().toArray(new World[0]), preds);
     }
 
+    /**
+     * Randomly selects a world from all of them.
+     * 
+     * @return a random world    
+     */
     public static World getAny() {
         List<World> worlds = getAll();
         return (worlds.size() > 0) ? worlds.get(random(0, worlds.size() - 1)) : null;
     }
 
+    /**
+     * Switches to the specified world
+     *
+     * @param world the world to switch to.
+     */
     public static void switchTo(World world) {
         Context.getSession().setWorld(world);
     }
 
+    /**
+     * Retrives a list of all the worlds.
+     *
+     * @return a list of all the worlds.
+     */
     public static List<World> getAll() {
         final List<World> worlds = new ArrayList<World>();
         Browser browser = new Browser(new ContextBuilder().domain("oldschool.runescape.com").build());
