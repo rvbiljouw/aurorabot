@@ -3,6 +3,7 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.action.impl.MouseMovedAction;
 import ms.aurora.rt3.Mouse;
 
 import java.awt.*;
@@ -52,24 +53,59 @@ public class RSWidgetItem implements Interactable {
 
     @Override
     public boolean applyAction(String actionName) {
-        Point click = getClickLocation();
-        VirtualMouse.moveMouse(click.x, click.y);
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return RSWidgetItem.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+        }.apply();
         Utilities.sleepUntil(containsPred(actionName), 600);
         return contains(actionName) && ms.aurora.api.methods.Menu.click(actionName);
     }
 
     @Override
     public boolean hover() {
-        Point p = getClickLocation();
-        VirtualMouse.moveMouse(p.x, p.y);
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return RSWidgetItem.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+        }.apply();
         Mouse clientMouse = Context.getClient().getMouse();
         return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
     }
 
     @Override
-    public boolean click(boolean left) {
-        Point p = getClickLocation();
-        VirtualMouse.clickMouse(p.x, p.y, left);
+    public boolean click(final boolean left) {
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+
+            @Override
+            public void end() {
+                VirtualMouse.clickMouse(left);
+            }
+        }.apply();
         return true;
     }
 }

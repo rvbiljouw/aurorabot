@@ -3,11 +3,13 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Menu;
 import ms.aurora.api.methods.Objects;
+import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.action.impl.MouseMovedAction;
 import ms.aurora.rt3.*;
 import org.apache.log4j.Logger;
 
@@ -105,8 +107,21 @@ public final class RSObject implements Locatable, Interactable {
             return false;
         }
 
-        Point click = getClickLocation();
-        VirtualMouse.moveMouse(click.x, click.y);
+        /*Point click = getClickLocation();
+        VirtualMouse.moveMouse(click.x, click.y);*/
+        final RSTile location = Players.getLocal().getLocation();
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return RSObject.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return Players.getLocal().getLocation().equals(location);
+            }
+        }.apply();
         Utilities.sleepUntil(containsPred(actionName), 400);
         boolean success = contains(actionName) && Menu.click(actionName);
         if (success && cachedModel != null) {

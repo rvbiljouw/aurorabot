@@ -3,6 +3,7 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.action.impl.MouseMovedAction;
 import ms.aurora.rt3.Mouse;
 import ms.aurora.rt3.Widget;
 import ms.aurora.rt3.WidgetNode;
@@ -10,6 +11,7 @@ import ms.aurora.rt3.WidgetNode;
 import java.awt.*;
 
 import static ms.aurora.api.Context.getClient;
+import static ms.aurora.api.methods.Menu.containsPred;
 
 /**
  * @author Rick
@@ -180,23 +182,61 @@ public final class RSWidget implements Interactable {
 
     @Override
     public boolean applyAction(String action) {
-        Point randomPoint = this.getRandomPoint();
-        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
-        return ms.aurora.api.methods.Menu.click(action);
+        /*Point randomPoint = this.getRandomPoint();
+        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);*/
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return RSWidget.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+        }.apply();
+        Utilities.sleepUntil(containsPred(action), 400);
+        return ms.aurora.api.methods.Menu.contains(action) && ms.aurora.api.methods.Menu.click(action);
     }
 
     @Override
     public boolean hover() {
-        Point randomPoint = this.getRandomPoint();
-        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return RSWidget.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+        }.apply();
         Mouse clientMouse = getClient().getMouse();
         return this.getArea().contains(clientMouse.getRealX(), clientMouse.getRealY());
     }
 
     @Override
-    public boolean click(boolean left) {
-        Point randomPoint = this.getRandomPoint();
-        VirtualMouse.clickMouse(randomPoint.x, randomPoint.y, left);
+    public boolean click(final boolean left) {
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return RSWidget.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+
+            @Override
+            public void end() {
+                VirtualMouse.clickMouse(left);
+            }
+        }.apply();
         return true;
     }
 
