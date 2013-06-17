@@ -1,20 +1,20 @@
 package ms.aurora.api.event;
 
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.rt3.Npc;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.rt3.INpc;
 
 /**
  * @author rvbiljouw
  */
 public class NpcSpawnEvent {
-    private Npc npc;
+    private INpc npc;
 
-    public NpcSpawnEvent(Npc npc) {
+    public NpcSpawnEvent(INpc npc) {
         this.npc = npc;
     }
 
-    public RSNPC getNpc() {
-        return npc == null ? null : new RSNPC(npc);
+    public NPC getNpc() {
+        return npc == null ? null : new NPC(npc);
     }
 
 }

@@ -3,8 +3,8 @@ package ms.aurora.api.methods;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Locatable;
-import ms.aurora.api.wrappers.RSPlayer;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Player;
+import ms.aurora.api.wrappers.Tile;
 import ms.aurora.input.VirtualKeyboard;
 
 import java.awt.event.KeyEvent;
@@ -33,7 +33,7 @@ public final class Camera {
     /**
      * Sets the angle to the angle in which tile is.
      */
-    public static void setAngle(RSTile tile) {
+    public static void setAngle(Tile tile) {
         setAngle(getAngleTo(tile));
     }
 
@@ -152,8 +152,8 @@ public final class Camera {
      * @param tile the tile in which you want to get the angle to
      * @return the angle to tile
      */
-    public static int getAngleTo(RSTile tile) {
-        RSPlayer myPlayer = Players.getLocal();
+    public static int getAngleTo(Tile tile) {
+        Player myPlayer = Players.getLocal();
         int x1 = myPlayer.getLocation().getX();
         int y1 = myPlayer.getLocation().getY();
         int x = x1 - tile.getX();
@@ -189,7 +189,7 @@ public final class Camera {
      * @param tile      RSTile to turn camera to.
      * @param deviation degree of accuracy.
      */
-    public static void turnTo(RSTile tile, int deviation) {
+    public static void turnTo(Tile tile, int deviation) {
         int angle = getAngleTo(tile);
         angle = Utilities.random(angle - deviation, angle + deviation + 1);
         setAngle(angle);
@@ -200,7 +200,7 @@ public final class Camera {
      *
      * @param tile RSTile to turn to.
      */
-    public static void turnTo(RSTile tile) {
+    public static void turnTo(Tile tile) {
         turnTo(tile, 0);
     }
 

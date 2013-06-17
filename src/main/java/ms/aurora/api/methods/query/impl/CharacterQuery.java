@@ -1,10 +1,6 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.methods.Calculations;
-import ms.aurora.api.methods.query.Query;
-import ms.aurora.api.wrappers.Locatable;
-import ms.aurora.api.wrappers.RSArea;
-import ms.aurora.api.wrappers.RSCharacter;
+import ms.aurora.api.wrappers.Entity;
 
 /**
  * Date: 23/05/13
@@ -12,9 +8,9 @@ import ms.aurora.api.wrappers.RSCharacter;
  *
  * @author A_C/Cov
  */
-public abstract class CharacterQuery<RT extends RSCharacter, QT extends CharacterQuery> extends LocatableQuery<RT, QT> {
+public abstract class CharacterQuery<RT extends Entity, QT extends CharacterQuery> extends LocatableQuery<RT, QT> {
 
-    public QT interacting(final RSCharacter character) {
+    public QT interacting(final Entity character) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RT type) {

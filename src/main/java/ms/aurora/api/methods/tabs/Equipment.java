@@ -3,8 +3,8 @@ package ms.aurora.api.methods.tabs;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetItem;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetItem;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public final class Equipment {
     public static final int EQUIPMENT_HANDS = 21;
     public static final int EQUIPMENT_RING = 22;
 
-    private static RSWidget getEquipmentWidget() {
+    private static Widget getEquipmentWidget() {
         return Widgets.getWidget(387, 28);
     }
 
@@ -34,16 +34,16 @@ public final class Equipment {
      * Gets all equipped items.
      * @return array of equipped items.
      */
-    public static RSWidgetItem[] getItems() {
-        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
-        RSWidget widget = getEquipmentWidget();
+    public static WidgetItem[] getItems() {
+        List<WidgetItem> items = new ArrayList<WidgetItem>();
+        Widget widget = getEquipmentWidget();
         int[] ids = widget.getInventoryItems();
         int[] amounts = widget.getInventoryStackSizes();
         for (int slot = 0; slot < ids.length; slot++) {
-            RSWidgetItem item = new RSWidgetItem(new Rectangle(), ids[slot], amounts[slot]); // TODO - work out rectangles
+            WidgetItem item = new WidgetItem(new Rectangle(), ids[slot], amounts[slot]); // TODO - work out rectangles
             items.add(item);
         }
-        return items.toArray(new RSWidgetItem[items.size()]);
+        return items.toArray(new WidgetItem[items.size()]);
     }
 
     /**
@@ -51,11 +51,11 @@ public final class Equipment {
      * @param ids array of ids to check.
      * @return true if there is a match else false.
      */
-    public static boolean isEquipped(Predicate<RSWidgetItem>... predicates) {
+    public static boolean isEquipped(Predicate<WidgetItem>... predicates) {
         return ArrayUtils.filter(getItems(), predicates).size() > 0;
     }
 
-    public static RSWidget getSlot(int id) {
+    public static Widget getSlot(int id) {
         return Widgets.getWidget(387, id);
     }
 

@@ -1,7 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.event.listeners.PaintListener;
-import ms.aurora.rt3.Mouse;
+import ms.aurora.rt3.IMouse;
 
 import java.awt.*;
 
@@ -14,7 +14,7 @@ public class MousePaint implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        Mouse mouse = getClient().getMouse();
+        IMouse mouse = getClient().getMouse();
         if (mouse != null) {
             drawMouse(graphics, mouse.getRealX(), mouse.getRealY());
             graphics.drawString(mouse.getRealX() + ", " + mouse.getRealY(), 10, 10);

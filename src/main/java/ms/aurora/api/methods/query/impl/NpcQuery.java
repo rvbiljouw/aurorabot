@@ -1,7 +1,7 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.rt3.Npc;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.rt3.INpc;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,25 +15,25 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
+public final class NpcQuery extends CharacterQuery<NPC, NpcQuery> {
 
     @Override
-    public RSNPC[] result() {
-        List<RSNPC> rsnpcList = new ArrayList<RSNPC>();
-        for (Npc npc : getClient().getAllNpcs()) {
+    public NPC[] result() {
+        List<NPC> rsnpcList = new ArrayList<NPC>();
+        for (INpc npc : getClient().getAllNpcs()) {
             if (npc != null) {
-                rsnpcList.add(new RSNPC(npc));
+                rsnpcList.add(new NPC(npc));
             }
         }
         rsnpcList = filterResults(rsnpcList);
         Collections.sort(rsnpcList, DISTANCE_COMPARATOR);
-        return rsnpcList.toArray(new RSNPC[rsnpcList.size()]);
+        return rsnpcList.toArray(new NPC[rsnpcList.size()]);
     }
 
     public NpcQuery named(final String... names) {
         this.addConditional(new Conditional() {
             @Override
-            protected boolean accept(RSNPC type) {
+            protected boolean accept(NPC type) {
                 for (String name : names) {
                     if (type.getName().equals(name)) {
                         return true;
@@ -48,7 +48,7 @@ public final class NpcQuery extends CharacterQuery<RSNPC, NpcQuery> {
     public NpcQuery id(final int... ids) {
         this.addConditional(new Conditional() {
             @Override
-            protected boolean accept(RSNPC type) {
+            protected boolean accept(NPC type) {
                 for (int id : ids) {
                     if (type.getId() == id) {
                         return true;

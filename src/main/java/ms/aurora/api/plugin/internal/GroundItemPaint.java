@@ -5,7 +5,7 @@ import ms.aurora.api.methods.GroundItems;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSGroundItem;
+import ms.aurora.api.wrappers.GroundItem;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -19,8 +19,8 @@ import java.awt.*;
 public class GroundItemPaint implements PaintListener {
     @Override
     public void onRepaint(Graphics graphics) {
-        RSGroundItem[] items = GroundItems.getAll(ITEMS);
-        for (RSGroundItem item: items) {
+        GroundItem[] items = GroundItems.getAll(ITEMS);
+        for (GroundItem item: items) {
             Point screenLocation = Viewport.convert(item.getLocation());
             graphics.drawString(String.format("Id: %s | Stack: %s", item.getId(), item.getStackSize())
                     , screenLocation.x, screenLocation.y);
@@ -28,9 +28,9 @@ public class GroundItemPaint implements PaintListener {
     }
 
 
-    private static final Predicate<RSGroundItem> ITEMS = new Predicate<RSGroundItem>() {
+    private static final Predicate<GroundItem> ITEMS = new Predicate<GroundItem>() {
         @Override
-        public boolean apply(RSGroundItem object) {
+        public boolean apply(GroundItem object) {
             return Calculations.distance(object.getLocation(), Players.getLocal().getLocation()) < 7;
         }
     };

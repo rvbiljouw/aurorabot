@@ -1,11 +1,11 @@
 package ms.aurora.api.methods.query.impl;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.wrappers.RSDeque;
-import ms.aurora.api.wrappers.RSGroundItem;
-import ms.aurora.rt3.Client;
-import ms.aurora.rt3.Deque;
-import ms.aurora.rt3.Item;
+import ms.aurora.api.wrappers.Deque;
+import ms.aurora.api.wrappers.GroundItem;
+import ms.aurora.rt3.IClient;
+import ms.aurora.rt3.IDeque;
+import ms.aurora.rt3.IItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,20 +17,20 @@ import java.util.List;
  *
  * @author A_C/Cov
  */
-public final class GroundItemQuery extends LocatableQuery<RSGroundItem, GroundItemQuery> {
+public final class GroundItemQuery extends LocatableQuery<GroundItem, GroundItemQuery> {
 
     @Override
-    public RSGroundItem[] result() {
-        List<RSGroundItem> rsGroundItems = getAll();
+    public GroundItem[] result() {
+        List<GroundItem> rsGroundItems = getAll();
         rsGroundItems =  filterResults(rsGroundItems);
         Collections.sort(rsGroundItems, DISTANCE_COMPARATOR);
-        return rsGroundItems.toArray(new RSGroundItem[rsGroundItems.size()]);
+        return rsGroundItems.toArray(new GroundItem[rsGroundItems.size()]);
     }
 
     public GroundItemQuery id(final int... ids) {
         this.addConditional(new Conditional() {
             @Override
-            protected boolean accept(RSGroundItem type) {
+            protected boolean accept(GroundItem type) {
                 for (int id: ids) {
                     if (id == type.getId()) {
                         return true;
@@ -42,8 +42,8 @@ public final class GroundItemQuery extends LocatableQuery<RSGroundItem, GroundIt
         return this;
     }
 
-    private List<RSGroundItem> getAll() {
-        List<RSGroundItem> items = new ArrayList<RSGroundItem>();
+    private List<GroundItem> getAll() {
+        List<GroundItem> items = new ArrayList<GroundItem>();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
                 items.addAll(getItemsAt(x, y));
@@ -52,17 +52,17 @@ public final class GroundItemQuery extends LocatableQuery<RSGroundItem, GroundIt
         return items;
     }
 
-    private List<RSGroundItem> getItemsAt(int x, int y) {
-        Client client = Context.getClient();
+    private List<GroundItem> getItemsAt(int x, int y) {
+        IClient client = Context.getClient();
         int z = client.getPlane();
-        Deque deque = client.getGroundItems()[z][x][y];
-        List<RSGroundItem> items = new ArrayList<RSGroundItem>();
+        IDeque deque = client.getGroundItems()[z][x][y];
+        List<GroundItem> items = new ArrayList<GroundItem>();
         if (deque != null) {
-            RSDeque rsDeque = new RSDeque(deque);
+            Deque rsDeque = new Deque(deque);
             while (rsDeque.hasNext()) {
-                Item item = (Item) rsDeque.next();
+                IItem item = (IItem) rsDeque.next();
                 if (item != null)
-                    items.add(new RSGroundItem(item, x, y, z));
+                    items.add(new GroundItem(item, x, y, z));
             }
         }
         return items;

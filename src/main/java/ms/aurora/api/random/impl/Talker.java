@@ -8,7 +8,7 @@ import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.Utilities;
-import ms.aurora.api.wrappers.RSNPC;
+import ms.aurora.api.wrappers.NPC;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,13 +21,13 @@ import java.util.List;
 public class Talker extends Random {
     public static final List<String> TALKERS = Arrays.asList("Mysterious Old Man", "Drunken Dwarf", "Genie",
             "Security Guard", "Rick Turpentine", "Dr Jekyll", "Cap'n Hand");
-    public static final Predicate<RSNPC> TALKERS_PREDICATE = new Predicate<RSNPC>() {
+    public static final Predicate<NPC> TALKERS_PREDICATE = new Predicate<NPC>() {
         @Override
-        public boolean apply(RSNPC object) {
+        public boolean apply(NPC object) {
             return TALKERS.contains(object.getName());
         }
     };
-    private RSNPC talker = null;
+    private NPC talker = null;
 
     @Override
     public boolean activate() {

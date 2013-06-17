@@ -1,6 +1,6 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Tile;
 
 import java.awt.*;
 
@@ -25,7 +25,7 @@ public final class Viewport {
      * @param height   height
      * @return A point representing the screen coordinate, of which the x/y may be -1.
      */
-    public static Point convert(RSTile location, int x, int z, int height) {
+    public static Point convert(Tile location, int x, int z, int height) {
         return convert(location.getX() - x, location.getY() - z, height);
     }
 
@@ -35,7 +35,7 @@ public final class Viewport {
      * @param tile tile
      * @return A point representing the screen coordinate, of which the x/y may be -1.
      */
-    public static Point convertLocal(RSTile tile) {
+    public static Point convertLocal(Tile tile) {
         return convert(tile.getX(), tile.getY(), tile.getZ());
     }
 
@@ -43,8 +43,8 @@ public final class Viewport {
      * Converts a world-wide tile to a regional tile and converts
      * that regional tile into a Point representing the position within the viewport.
      */
-    public static Point convert(RSTile tile) {
-        return convertLocal(new RSTile((tile.getX() - getClient().getBaseX()) * 128,
+    public static Point convert(Tile tile) {
+        return convertLocal(new Tile((tile.getX() - getClient().getBaseX()) * 128,
                 (tile.getY() - getClient().getBaseY()) * 128, tile.getZ()));
     }
 
@@ -127,11 +127,11 @@ public final class Viewport {
         }
     }
 
-    public static boolean tileOnScreen(RSTile location) {
+    public static boolean tileOnScreen(Tile location) {
         return BOUNDS.contains(convert(location));
     }
 
-    public static boolean localTileOnScreen(RSTile location) {
+    public static boolean localTileOnScreen(Tile location) {
         return BOUNDS.contains(convertLocal(location));
     }
 

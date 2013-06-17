@@ -1,8 +1,8 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetGroup;
 import org.apache.log4j.Logger;
 
 /**
@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 public final class Combat {
     private final static Logger logger = Logger.getLogger(Combat.class);
 
-    private static RSWidgetGroup getCombatGroup() {
+    private static WidgetGroup getCombatGroup() {
         return Widgets.getWidgetGroup(92);
     }
 
@@ -24,7 +24,7 @@ public final class Combat {
      * @return weapon name
      */
     public static String getWeaponName() {
-        RSWidget widget = getCombatGroup().getWidgets()[0];
+        Widget widget = getCombatGroup().getWidgets()[0];
         if (widget != null) {
             return widget.getText();
         }
@@ -36,7 +36,7 @@ public final class Combat {
      */
     public static void toggleAutoRetaliate() {
         Tabs.openTab(Tabs.Tab.COMBAT);
-        for (RSWidget child : getCombatGroup().getWidgets()) {
+        for (Widget child : getCombatGroup().getWidgets()) {
             if (child.getText().contains("Auto Retaliate")) {
                 child.applyAction(" ");
                 return;
@@ -49,7 +49,7 @@ public final class Combat {
      */
     public static void toggleSpecialAttack() {
         Tabs.openTab(Tabs.Tab.COMBAT);
-        for (RSWidget child : getCombatGroup().getWidgets()) {
+        for (Widget child : getCombatGroup().getWidgets()) {
             if (child.getText().contains("S P E C I A L  A T T A C K")) {
                 child.applyAction(" ");
                 return;
@@ -64,7 +64,7 @@ public final class Combat {
      */
     public static void selectCombatStyle(String style) {
         Tabs.openTab(Tabs.Tab.COMBAT);
-        for (RSWidget child : getCombatGroup().getWidgets()) {
+        for (Widget child : getCombatGroup().getWidgets()) {
             if (child.getText().contains(style)) {
                 child.applyAction(" ");
                 return;

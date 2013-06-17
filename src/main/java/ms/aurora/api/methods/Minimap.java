@@ -1,7 +1,7 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.wrappers.RSTile;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.Tile;
+import ms.aurora.api.wrappers.Widget;
 
 import java.awt.*;
 
@@ -24,7 +24,7 @@ public final class Minimap {
      * @param tile The tile to convert to minimap coordinate.
      * @return Point representing the position on the minimap. This point may have an x/y of -1.
      */
-    public static Point convert(RSTile tile) {
+    public static Point convert(Tile tile) {
         if (tile == null) return new Point(-1, -1);
         return convert(tile.getX(), tile.getY());
     }
@@ -41,7 +41,7 @@ public final class Minimap {
         y -= getClient().getBaseY();
         int calculatedX = x * 4 + 2 - Players.getLocal().getLocalX() / 32;
         int calculatedY = y * 4 + 2 - Players.getLocal().getLocalY() / 32;
-        RSWidget mm = Widgets.getWidget(MINIMAP_INTERFACE_GROUP, MINIMAP_INTERFACE_CHILD);
+        Widget mm = Widgets.getWidget(MINIMAP_INTERFACE_GROUP, MINIMAP_INTERFACE_CHILD);
         Rectangle minimap = new Rectangle(mm.getX(), mm.getY(), mm.getWidth() + 25, mm.getHeight());
         int angle = 0x7ff & getClient().getMinimapInt3() + getClient().getMinimapInt1();
         int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;

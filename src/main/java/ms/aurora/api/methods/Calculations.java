@@ -1,7 +1,7 @@
 package ms.aurora.api.methods;
 
-import ms.aurora.api.wrappers.RSPlayer;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Player;
+import ms.aurora.api.wrappers.Tile;
 
 import java.awt.*;
 
@@ -19,7 +19,7 @@ public final class Calculations {
      * @param t2 tile B
      * @return distance between A B
      */
-    public static double distance(RSTile t1, RSTile t2) {
+    public static double distance(Tile t1, Tile t2) {
         return distance(t1.getX(), t1.getY(), t2.getX(), t2.getY());
     }
 
@@ -53,8 +53,8 @@ public final class Calculations {
      * @param tile the tile you wish to get the angle to
      * @return the angle to tile
      */
-    public static int getAngleTo(RSTile tile) {
-        RSPlayer myPlayer = Players.getLocal();
+    public static int getAngleTo(Tile tile) {
+        Player myPlayer = Players.getLocal();
         int x1 = myPlayer.getLocation().getX();
         int y1 = myPlayer.getLocation().getY();
         int x = x1 - tile.getX();

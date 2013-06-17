@@ -6,9 +6,9 @@ import ms.aurora.api.methods.Walking;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
-import ms.aurora.api.wrappers.RSCharacter;
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Entity;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.api.wrappers.Tile;
 
 import static ms.aurora.api.util.Utilities.random;
 
@@ -20,13 +20,13 @@ import static ms.aurora.api.util.Utilities.random;
 public class Swarm extends Random {
     @Override
     public boolean activate() {
-        RSCharacter interacting = Players.getLocal().getInteracting();
+        Entity interacting = Players.getLocal().getInteracting();
         if (interacting == null) {
             return false;
         }
 
-        if (interacting instanceof RSNPC) {
-            RSNPC npc = (RSNPC) interacting;
+        if (interacting instanceof NPC) {
+            NPC npc = (NPC) interacting;
             if (npc.getName().toLowerCase().contains("swarm") || npc.getName().toLowerCase().contains("troll")) {
                 String combatRandomProperty = Context.getProperty("combatRandomsDisabled");
                 if (combatRandomProperty == null || combatRandomProperty.equals("false")) {
@@ -43,8 +43,8 @@ public class Swarm extends Random {
             return -1;
         }
 
-        RSTile base = Players.getLocal().getLocation();
-        RSTile deviated = RSTile.randomize(base, 40, 40);
+        Tile base = Players.getLocal().getLocation();
+        Tile deviated = Tile.randomize(base, 40, 40);
         Walking.walkTo(deviated);
         return random(200, 300);
     }

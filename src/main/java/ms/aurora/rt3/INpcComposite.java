@@ -1,0 +1,12 @@
+package ms.aurora.rt3;
+
+/**
+ * @author Rick
+ */
+public interface INpcComposite {
+
+    String getName();
+
+    int getId();
+
+}

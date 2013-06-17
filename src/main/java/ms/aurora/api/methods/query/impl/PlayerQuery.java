@@ -1,7 +1,7 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.wrappers.RSPlayer;
-import ms.aurora.rt3.Player;
+import ms.aurora.api.wrappers.Player;
+import ms.aurora.rt3.IPlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,28 +15,28 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public final class PlayerQuery extends CharacterQuery<RSPlayer, PlayerQuery> {
+public final class PlayerQuery extends CharacterQuery<Player, PlayerQuery> {
     @Override
-    public RSPlayer[] result() {
-        List<RSPlayer> rsPlayers = new ArrayList<RSPlayer>();
-        for (Player player: getClient().getAllPlayers()) {
+    public Player[] result() {
+        List<Player> rsPlayers = new ArrayList<Player>();
+        for (IPlayer player: getClient().getAllPlayers()) {
             if (player != null) {
-                rsPlayers.add(new RSPlayer(player));
+                rsPlayers.add(new Player(player));
             }
         }
         rsPlayers = filterResults(rsPlayers);
         Collections.sort(rsPlayers, DISTANCE_COMPARATOR);
-        return rsPlayers.toArray(new RSPlayer[rsPlayers.size()]);
+        return rsPlayers.toArray(new Player[rsPlayers.size()]);
     }
 
-    public RSPlayer local() {
-        return new RSPlayer(getClient().getLocalPlayer());
+    public Player local() {
+        return new Player(getClient().getLocalPlayer());
     }
 
     public PlayerQuery name(final String... names) {
         this.addConditional(new Conditional() {
             @Override
-            protected boolean accept(RSPlayer type) {
+            protected boolean accept(Player type) {
                 for (String name: names) {
                     if (name.equals(type.getName())) {
                         return true;

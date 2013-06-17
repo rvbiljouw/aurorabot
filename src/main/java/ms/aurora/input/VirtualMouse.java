@@ -4,7 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.algorithm.StraightLineGenerator;
 import ms.aurora.input.algorithm.ZetaMouseGenerator;
-import ms.aurora.rt3.Mouse;
+import ms.aurora.rt3.IMouse;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -98,7 +98,7 @@ public final class VirtualMouse {
         moveMouse(x, y);
     }
 
-    public static Mouse getMouse() {
+    public static IMouse getMouse() {
         return Context.getClient().getMouse();
     }
 

@@ -1,7 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.query.impl.NpcQuery;
-import ms.aurora.api.wrappers.RSNPC;
+import ms.aurora.api.wrappers.NPC;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -15,8 +15,8 @@ public class NpcPaint implements PaintListener {
 
     @Override
     public void onRepaint(Graphics graphics) {
-        RSNPC[] npcs = query.result();
-        for (RSNPC npc : npcs) {
+        NPC[] npcs = query.result();
+        for (NPC npc : npcs) {
             Point loc = npc.getScreenLocation();
             String s = String.format("Name: %s | Id: %s | Anim: %s",
                     npc.getName(), npc.getId(), npc.getAnimation());

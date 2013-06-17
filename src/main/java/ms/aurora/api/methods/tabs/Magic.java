@@ -1,8 +1,8 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetGroup;
 import org.apache.log4j.Logger;
 
 /**
@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 public final class Magic {
     private final static Logger logger = Logger.getLogger(Magic.class);
 
-    private static RSWidgetGroup getSpellGroup() {
+    private static WidgetGroup getSpellGroup() {
         return Widgets.getWidgetGroup(192);
     }
 
@@ -22,7 +22,7 @@ public final class Magic {
      */
     public static void castSpell(Spell spell) {
         Tabs.openTab(Tabs.Tab.MAGIC);
-        RSWidget spellButton = getSpellGroup().getWidgets()[spell.id];
+        Widget spellButton = getSpellGroup().getWidgets()[spell.id];
         if (spellButton != null) {
             spellButton.click(true);
         } else {

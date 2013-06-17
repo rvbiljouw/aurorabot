@@ -1,10 +1,10 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.Context;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetGroup;
-import ms.aurora.rt3.Client;
-import ms.aurora.rt3.Widget;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetGroup;
+import ms.aurora.rt3.IClient;
+import ms.aurora.rt3.IWidget;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,18 +23,18 @@ public final class Widgets {
      *
      * @return widget groups
      */
-    public static RSWidgetGroup[] getAll() {
-        Widget[][] cache = getClient().getWidgetCache();
-        if (cache == null) return new RSWidgetGroup[0];
+    public static WidgetGroup[] getAll() {
+        IWidget[][] cache = getClient().getWidgetCache();
+        if (cache == null) return new WidgetGroup[0];
 
-        List<RSWidgetGroup> groups = new ArrayList<RSWidgetGroup>();
+        List<WidgetGroup> groups = new ArrayList<WidgetGroup>();
         for (int i = 0; i < cache.length; i++) {
-            RSWidgetGroup group = getWidgetGroup(i);
+            WidgetGroup group = getWidgetGroup(i);
             if (group != null) {
                 groups.add(group);
             }
         }
-        return groups.toArray(new RSWidgetGroup[groups.size()]);
+        return groups.toArray(new WidgetGroup[groups.size()]);
     }
 
     /**
@@ -44,8 +44,8 @@ public final class Widgets {
      * @param child  child index
      * @return widget or null
      */
-    public static RSWidget getWidget(int parent, int child) {
-        RSWidgetGroup group = getWidgetGroup(parent);
+    public static Widget getWidget(int parent, int child) {
+        WidgetGroup group = getWidgetGroup(parent);
         if (group != null && group.getWidgets()[child] != null) {
             return group.getWidgets()[child];
         }
@@ -58,9 +58,9 @@ public final class Widgets {
      * @param parent widget group index
      * @return widget group or null
      */
-    public static RSWidgetGroup getWidgetGroup(int parent) {
+    public static WidgetGroup getWidgetGroup(int parent) {
         if (getClient().getWidgetCache()[parent] != null) {
-            return new RSWidgetGroup(getClient().getWidgetCache()[parent], parent);
+            return new WidgetGroup(getClient().getWidgetCache()[parent], parent);
         }
         return null;
     }
@@ -71,18 +71,18 @@ public final class Widgets {
      * @param predicate the string to search for
      * @return a list of all the RSWidget that contain the specified text
      */
-    public static RSWidget[] getWidgetsWithText(String predicate) {
+    public static Widget[] getWidgetsWithText(String predicate) {
         final Rectangle rect = new Rectangle(5, 350, 510, 130);
-        List<RSWidget> satisfied = new ArrayList<RSWidget>();
-        for (RSWidgetGroup groups : getAll()) {
-            for (RSWidget child : groups.getWidgets()) {
+        List<Widget> satisfied = new ArrayList<Widget>();
+        for (WidgetGroup groups : getAll()) {
+            for (Widget child : groups.getWidgets()) {
                 if (child != null && child.getText().contains(predicate) &&
                         rect.contains(child.getCenterPoint())) {
                     satisfied.add(child);
                 }
             }
         }
-        return satisfied.toArray(new RSWidget[satisfied.size()]);
+        return satisfied.toArray(new Widget[satisfied.size()]);
     }
 
     /**
@@ -91,7 +91,7 @@ public final class Widgets {
      * @return true if it's up
      */
     public static boolean canContinue() {
-        RSWidget[] possible = getWidgetsWithText("Click here to continue");
+        Widget[] possible = getWidgetsWithText("Click here to continue");
         return possible.length > 0;
     }
 
@@ -99,7 +99,7 @@ public final class Widgets {
      * Clicks the "Click here to continue" interface.
      */
     public static void clickContinue() {
-        for (RSWidget widget : getWidgetsWithText("Click here to continue")) {
+        for (Widget widget : getWidgetsWithText("Click here to continue")) {
             widget.click(true);
         }
     }
@@ -109,7 +109,7 @@ public final class Widgets {
      *
      * @return client
      */
-    private static Client getClient() {
+    private static IClient getClient() {
         return Context.getClient();
     }
 }

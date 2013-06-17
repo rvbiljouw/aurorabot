@@ -6,7 +6,7 @@ import ms.aurora.api.methods.filters.NpcFilters;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
-import ms.aurora.api.wrappers.RSNPC;
+import ms.aurora.api.wrappers.NPC;
 
 import static ms.aurora.api.util.Utilities.random;
 
@@ -17,7 +17,7 @@ import static ms.aurora.api.util.Utilities.random;
 @RandomManifest(name = "Frog Cave", version = 1.0)
 public class FrogCave extends Random {
 
-    private RSNPC frog;
+    private NPC frog;
     private boolean talkedToHerald;
     private int tries;
 
@@ -49,7 +49,7 @@ public class FrogCave extends Random {
                 return random(600, 800);
             }
             if (!talkedToHerald) {
-                final RSNPC herald = Npcs.get(NpcFilters.ID(567));
+                final NPC herald = Npcs.get(NpcFilters.ID(567));
                 if (Calculations.distance(Players.getLocal().getLocation(), herald.getLocation()) < 5) {
                     herald.applyAction("Talk-to");
                     return random(500, 1000);
@@ -83,8 +83,8 @@ public class FrogCave extends Random {
         return random(200, 400);
     }
 
-    private RSNPC findFrog() {
-        for (RSNPC npc : Npcs.getAll()) {
+    private NPC findFrog() {
+        for (NPC npc : Npcs.getAll()) {
             if (!npc.isMoving() && npc.getHeight() == -278) {
                 return npc;
             }

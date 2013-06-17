@@ -1,10 +1,10 @@
 package ms.aurora.api.methods.query.impl;
 
-import ms.aurora.api.wrappers.RSObject;
-import ms.aurora.rt3.AnimableObject;
-import ms.aurora.rt3.Client;
-import ms.aurora.rt3.Ground;
-import ms.aurora.rt3.WorldController;
+import ms.aurora.api.wrappers.GameObject;
+import ms.aurora.rt3.IAnimableObject;
+import ms.aurora.rt3.IClient;
+import ms.aurora.rt3.IGround;
+import ms.aurora.rt3.IWorldController;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,20 +18,20 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public final class ObjectQuery extends LocatableQuery<RSObject, ObjectQuery> {
+public final class ObjectQuery extends LocatableQuery<GameObject, ObjectQuery> {
 
     @Override
-    public RSObject[] result() {
-        List<RSObject> rsObjects = getAll();
+    public GameObject[] result() {
+        List<GameObject> rsObjects = getAll();
         rsObjects = filterResults(rsObjects);
         Collections.sort(rsObjects, DISTANCE_COMPARATOR);
-        return rsObjects.toArray(new RSObject[rsObjects.size()]);
+        return rsObjects.toArray(new GameObject[rsObjects.size()]);
     }
 
     public ObjectQuery id(final int... ids) {
         this.addConditional(new Conditional() {
             @Override
-            protected boolean accept(RSObject type) {
+            protected boolean accept(GameObject type) {
                 for (int id: ids) {
                     if (type.getId() == id) {
                         return true;
@@ -43,8 +43,8 @@ public final class ObjectQuery extends LocatableQuery<RSObject, ObjectQuery> {
         return this;
     }
 
-    private List<RSObject> getAll() {
-        List<RSObject> objects = new ArrayList<RSObject>();
+    private List<GameObject> getAll() {
+        List<GameObject> objects = new ArrayList<GameObject>();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
                 objects.addAll(getObjectsAtLocal(x, y));
@@ -53,30 +53,30 @@ public final class ObjectQuery extends LocatableQuery<RSObject, ObjectQuery> {
         return objects;
     }
 
-    private List<RSObject> getObjectsAtLocal(int x, int y) {
-        List<RSObject> objects = new ArrayList<RSObject>();
-        Client client = getClient();
-        WorldController worldController = client.getWorld();
-        Ground[][][] grounds = worldController.getGroundArray();
-        Ground ground = grounds[client.getPlane()][x][y];
+    private List<GameObject> getObjectsAtLocal(int x, int y) {
+        List<GameObject> objects = new ArrayList<GameObject>();
+        IClient client = getClient();
+        IWorldController worldController = client.getWorld();
+        IGround[][][] grounds = worldController.getGroundArray();
+        IGround ground = grounds[client.getPlane()][x][y];
 
         if (ground != null) {
             try {
                 if (ground.getGroundDecoration() != null) {
-                    objects.add(new RSObject(ground.getGroundDecoration(), x, y));
+                    objects.add(new GameObject(ground.getGroundDecoration(), x, y));
                 }
 
                 if (ground.getWallDecoration() != null) {
-                    objects.add(new RSObject(ground.getWallDecoration(), x, y));
+                    objects.add(new GameObject(ground.getWallDecoration(), x, y));
                 }
 
                 if (ground.getWallObject() != null) {
-                    objects.add(new RSObject(ground.getWallObject(), x, y));
+                    objects.add(new GameObject(ground.getWallObject(), x, y));
                 }
 
                 if (ground.getAnimableObjects() != null) {
-                    for (AnimableObject object : ground.getAnimableObjects()) {
-                        RSObject wrapped = new RSObject(object, x, y);
+                    for (IAnimableObject object : ground.getAnimableObjects()) {
+                        GameObject wrapped = new GameObject(object, x, y);
                         if (object != null && wrapped.getId() != 0) {
                             objects.add(wrapped);
                         }

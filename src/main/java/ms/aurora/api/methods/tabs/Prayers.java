@@ -1,7 +1,7 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.Widget;
 
 /**
  * @author Matty Cov / A_C
@@ -111,7 +111,7 @@ public final class Prayers {
      *
      * @return widget
      */
-    public static RSWidget getBook() {
+    public static Widget getBook() {
         return Widgets.getWidget(Constants.PRAYER_TAB, Constants.PRAYER_INTERFACE);
     }
 
@@ -121,7 +121,7 @@ public final class Prayers {
      * @param p prayer
      * @return toggle widget
      */
-    public static RSWidget getPrayer(Prayer p) {
+    public static Widget getPrayer(Prayer p) {
         return getBook().getChildren()[p.getInterface()];
     }
 

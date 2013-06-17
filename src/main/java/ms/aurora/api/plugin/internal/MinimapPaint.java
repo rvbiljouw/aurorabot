@@ -5,10 +5,9 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.pathfinding.impl.RSRegion;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.Widget;
 import ms.aurora.event.listeners.PaintListener;
-import ms.aurora.rt3.Player;
-import ms.aurora.rt3.Region;
+import ms.aurora.rt3.IRegion;
 
 import java.awt.*;
 
@@ -33,7 +32,7 @@ public class MinimapPaint implements PaintListener {
         y += graphics.getFontMetrics().getHeight();
 
         y += graphics.getFontMetrics().getHeight() * 2;
-        RSWidget mm = Widgets.getWidget(548, 85);
+        Widget mm = Widgets.getWidget(548, 85);
         graphics.drawString("Widget Position: " + new Point(mm.getX(), mm.getY()), x, y);
         y += graphics.getFontMetrics().getHeight();
         graphics.drawString("Widget Dimensions: W:" + mm.getWidth() + " H: " + mm.getHeight(), x, y);
@@ -48,7 +47,7 @@ public class MinimapPaint implements PaintListener {
         graphics.drawString("Player on minimap: " + minimapLoc, x, y);
 
 
-        Region r = getClient().getRegions()[getClient().getPlane()];
+        IRegion r = getClient().getRegions()[getClient().getPlane()];
         RSRegion region = new RSRegion(getClient().getPlane(), r.getClippingMasks());
         int lx = (Players.getLocal().getLocalX() >> 7);
         int ly = (Players.getLocal().getLocalY() >> 7);

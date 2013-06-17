@@ -14,8 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetGroup;
 import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
@@ -50,7 +50,7 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
     private TableView<InterfaceModel> tblInfo;
 
     @FXML
-    private TreeView<RSWidget> treeView;
+    private TreeView<Widget> treeView;
 
     private InterfacePlugin plugin;
 
@@ -75,7 +75,7 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
         Context.invokeLater(plugin.session.getThreadGroup(), new Runnable() {
             @Override
             public void run() {
-                RSWidgetGroup[] all = Widgets.getAll();
+                WidgetGroup[] all = Widgets.getAll();
                 reload(all);
             }
         });
@@ -97,22 +97,22 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
         treeView.getSelectionModel().selectedItemProperty().addListener(new TreeViewChangeListener());
     }
 
-    private void reload(final RSWidgetGroup[] widgetGroups) {
+    private void reload(final WidgetGroup[] widgetGroups) {
         if (widgetGroups == null) return;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                TreeItem<RSWidget> rootItem = new TreeItem<RSWidget>();
-                for (RSWidgetGroup group : widgetGroups) {
+                TreeItem<Widget> rootItem = new TreeItem<Widget>();
+                for (WidgetGroup group : widgetGroups) {
                     if (group == null || group.getWidgets().length == 0) continue;
-                    RSWidget[] groupItems = group.getWidgets();
-                    TreeItem<RSWidget> interfaceRoot = new TreeItem<RSWidget>(groupItems[0]);
+                    Widget[] groupItems = group.getWidgets();
+                    TreeItem<Widget> interfaceRoot = new TreeItem<Widget>(groupItems[0]);
                     for (int i = 1; i < groupItems.length; i++) {
                         if (groupItems[i] != null) {
-                            TreeItem<RSWidget> groupItem = new TreeItem<RSWidget>(groupItems[i]);
-                            for (RSWidget actualChild : groupItems[i].getChildren()) {
+                            TreeItem<Widget> groupItem = new TreeItem<Widget>(groupItems[i]);
+                            for (Widget actualChild : groupItems[i].getChildren()) {
                                 if (actualChild != null) {
-                                    groupItem.getChildren().add(new TreeItem<RSWidget>(actualChild));
+                                    groupItem.getChildren().add(new TreeItem<Widget>(actualChild));
                                 }
                             }
                             interfaceRoot.getChildren().add(groupItem);
@@ -152,11 +152,11 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
         }
     }
 
-    class TreeViewChangeListener implements ChangeListener<TreeItem<RSWidget>> {
+    class TreeViewChangeListener implements ChangeListener<TreeItem<Widget>> {
         @Override
-        public void changed(ObservableValue<? extends TreeItem<RSWidget>> observableValue, TreeItem<RSWidget> oldValue, TreeItem<RSWidget> newValue) {
+        public void changed(ObservableValue<? extends TreeItem<Widget>> observableValue, TreeItem<Widget> oldValue, TreeItem<Widget> newValue) {
             if (newValue == null || newValue.getValue() == null) return;
-            final RSWidget widget = newValue.getValue();
+            final Widget widget = newValue.getValue();
             Context.invokeLater(plugin.session.getThreadGroup(), new Runnable() { // so context is set !
                 @Override
                 public void run() {

@@ -4,7 +4,7 @@ import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.script.task.EventBus;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
-import ms.aurora.rt3.Client;
+import ms.aurora.rt3.IClient;
 import org.apache.log4j.Logger;
 
 import static java.lang.Thread.currentThread;
@@ -28,8 +28,8 @@ public class Context {
         return session.get();
     }
 
-    public static Client getClient() {
-        return (Client) getSession().getApplet();
+    public static IClient getClient() {
+        return (IClient) getSession().getApplet();
     }
 
     public static void setProperty(String key, String value) {

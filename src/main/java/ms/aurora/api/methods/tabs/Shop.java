@@ -4,8 +4,8 @@ import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetItem;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetItem;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -31,7 +31,7 @@ public final class Shop {
         ONE, FIVE, TEN, ALL
     }
 
-    private static RSWidget getShopWidget() {
+    private static Widget getShopWidget() {
         return Widgets.getWidget(SHOP_WIDGET_GROUP_ID, SHOP_ITEMS_WIDGET_ID);
     }
 
@@ -42,7 +42,7 @@ public final class Shop {
     public static boolean close() {
         if (!isOpen())
             return true;
-        RSWidget close = Widgets.getWidget(SHOP_WIDGET_GROUP_ID, SHOP_CLOSE_WIDGET_ID);
+        Widget close = Widgets.getWidget(SHOP_WIDGET_GROUP_ID, SHOP_CLOSE_WIDGET_ID);
         if (close != null) {
             close.click(true);
             return true;
@@ -55,10 +55,10 @@ public final class Shop {
      *
      * @return array containing all the items in the shop.
      */
-    public static RSWidgetItem[] getAll() {
-        List<RSWidgetItem> items = new ArrayList<RSWidgetItem>();
+    public static WidgetItem[] getAll() {
+        List<WidgetItem> items = new ArrayList<WidgetItem>();
         if (isOpen()) {
-            RSWidget itemPane = getShopWidget();
+            Widget itemPane = getShopWidget();
             int[] ids = itemPane.getInventoryItems();
             int[] stacks = itemPane.getInventoryStackSizes();
             for (int i = 0; i < ids.length; i++) {
@@ -68,12 +68,12 @@ public final class Shop {
                     int x = itemPane.getX() + (col * 47) + 22;
                     int y = itemPane.getY() + (row * 47) + 18;
                     Rectangle area = new Rectangle(x - (46 / 2), y - (36 / 2), 32, 32);
-                    RSWidgetItem item = new RSWidgetItem(area, ids[i] - 1, stacks[i]);
+                    WidgetItem item = new WidgetItem(area, ids[i] - 1, stacks[i]);
                     items.add(item);
                 }
             }
         }
-        return items.toArray(new RSWidgetItem[items.size()]);
+        return items.toArray(new WidgetItem[items.size()]);
     }
 
     /**
@@ -82,9 +82,9 @@ public final class Shop {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem>... predicate) {
-        List<RSWidgetItem> filter = ArrayUtils.filter(getAll(), predicate);
-        return filter.toArray(new RSWidgetItem[filter.size()]);
+    public static WidgetItem[] getAll(final Predicate<WidgetItem>... predicate) {
+        List<WidgetItem> filter = ArrayUtils.filter(getAll(), predicate);
+        return filter.toArray(new WidgetItem[filter.size()]);
     }
 
     /**
@@ -93,8 +93,8 @@ public final class Shop {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static RSWidgetItem get(final Predicate<RSWidgetItem>... predicate) {
-        RSWidgetItem[] items = getAll(predicate);
+    public static WidgetItem get(final Predicate<WidgetItem>... predicate) {
+        WidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
         }
@@ -107,8 +107,8 @@ public final class Shop {
      * @param predicate predicate of item to buy.
      * @param amount amount to buy.
      */
-    public static void buy(Predicate<RSWidgetItem> predicate, Amount amount) {
-        RSWidgetItem item = get(predicate);
+    public static void buy(Predicate<WidgetItem> predicate, Amount amount) {
+        WidgetItem item = get(predicate);
         if (item == null || !isOpen()) {
             return;
         }
