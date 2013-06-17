@@ -135,7 +135,8 @@ public final class RSObject implements Locatable, Interactable {
         return true;
     }
 
-    private Point getClickLocation() {
+    @Override
+    public Point getClickLocation() {
         try {
             if (getModel() != null) {
                 return getModel().getRandomPoint();

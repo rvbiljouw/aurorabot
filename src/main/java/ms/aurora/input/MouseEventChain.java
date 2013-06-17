@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class MouseEventChain {
 
-    public List<MouseEvent> eventList;
-    public List<Integer> sleepTimes;
+    private List<MouseEvent> eventList;
+    private List<Integer> sleepTimes;
 
     public MouseEventChain(int size) {
         this.eventList = new ArrayList<MouseEvent>(size);
@@ -70,18 +70,31 @@ public class MouseEventChain {
         return 3 + Utilities.random(0, 60); // his all over this shit, gonna need jesus to save us soon
     }
 
-    public static MouseEventChain createMouseDrag(Point[] points, int button) {
-        MouseEventChain chain = new MouseEventChain(points.length + 2);
+    public static MouseEventChain createMousePressed(int x, int y, int button) {
+        MouseEventChain chain = new MouseEventChain(1);
         long time = System.currentTimeMillis();
-        int lag = getRandomDragTime(), buttonModifiers = getButtonModifiers(button);
-        chain.add(new MouseEvent(getComponent(), MouseEvent.MOUSE_PRESSED, time, buttonModifiers, points[0].x, points[0].y, 1, false, button), 0);
-        time += lag;
+        int buttonModifiers = getButtonModifiers(button);
+        chain.add(new MouseEvent(getComponent(), MouseEvent.MOUSE_PRESSED, time, buttonModifiers, x, y, 1, false, button), 0);
+        return chain;
+    }
+
+    public static MouseEventChain createMouseReleased(int x, int y, int button) {
+        MouseEventChain chain = new MouseEventChain(1);
+        long time = System.currentTimeMillis();
+        int buttonModifiers = getButtonModifiers(button);
+        chain.add(new MouseEvent(getComponent(), MouseEvent.MOUSE_RELEASED, time, buttonModifiers, x, y, 1, false, button), 0);
+        return chain;
+    }
+
+    public static MouseEventChain createMouseDrag(Point[] points, int button) {
+        MouseEventChain chain = new MouseEventChain(points.length );
+        long time = System.currentTimeMillis();
+        int lag = getRandomDragTime();
         for (int i = 1; i < points.length - 1; i++) {
             chain.add(new MouseEvent(getComponent(), MouseEvent.MOUSE_DRAGGED, time, button, points[i].x, points[i].y, 0, false, 0), lag);
             lag += getRandomDragTime();
             time += lag;
         }
-        chain.add(new MouseEvent(getComponent(), MouseEvent.MOUSE_RELEASED, time, buttonModifiers, points[points.length - 1].x, points[points.length - 1].y, 1, false, button), lag);
         return chain;
     }
 

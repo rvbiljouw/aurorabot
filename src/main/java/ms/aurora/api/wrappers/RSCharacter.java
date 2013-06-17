@@ -33,7 +33,8 @@ public class RSCharacter extends RSRenderable implements Locatable, Interactable
         return Viewport.convertLocal(getRegionalLocation());
     }
 
-    private Point getClickLocation() {
+    @Override
+    public Point getClickLocation() {
         try {
             if (getModel() != null) {
                 return getModel().getRandomPoint();

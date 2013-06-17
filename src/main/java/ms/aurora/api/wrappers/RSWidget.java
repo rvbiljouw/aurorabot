@@ -174,6 +174,11 @@ public final class RSWidget implements Interactable {
     }
 
     @Override
+    public Point getClickLocation() {
+        return getRandomPoint();
+    }
+
+    @Override
     public boolean applyAction(String action) {
         Point randomPoint = this.getRandomPoint();
         VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);

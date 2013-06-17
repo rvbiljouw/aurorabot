@@ -1,6 +1,6 @@
-package ms.aurora.input.algorithm;
+package ms.aurora.input.algorithm.impl;
 
-import ms.aurora.input.MousePathGenerator;
+import ms.aurora.input.algorithm.MousePathGenerator;
 
 import java.awt.*;
 

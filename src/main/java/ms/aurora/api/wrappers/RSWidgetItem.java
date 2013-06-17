@@ -40,7 +40,8 @@ public class RSWidgetItem implements Interactable {
         return stackSize;
     }
 
-    private Point getRandomPoint() {
+    @Override
+    public Point getClickLocation() {
         int hx = (area.width / 2);
         int hy = (area.height / 2);
         int x = (int) area.getCenterX() + random(-hx, hx);
@@ -51,7 +52,7 @@ public class RSWidgetItem implements Interactable {
 
     @Override
     public boolean applyAction(String actionName) {
-        Point click = getRandomPoint();
+        Point click = getClickLocation();
         VirtualMouse.moveMouse(click.x, click.y);
         Utilities.sleepUntil(containsPred(actionName), 600);
         return contains(actionName) && ms.aurora.api.methods.Menu.click(actionName);
@@ -59,7 +60,7 @@ public class RSWidgetItem implements Interactable {
 
     @Override
     public boolean hover() {
-        Point p = getRandomPoint();
+        Point p = getClickLocation();
         VirtualMouse.moveMouse(p.x, p.y);
         Mouse clientMouse = Context.getClient().getMouse();
         return area.contains(clientMouse.getRealX(), clientMouse.getRealX());
@@ -67,7 +68,7 @@ public class RSWidgetItem implements Interactable {
 
     @Override
     public boolean click(boolean left) {
-        Point p = getRandomPoint();
+        Point p = getClickLocation();
         VirtualMouse.clickMouse(p.x, p.y, left);
         return true;
     }

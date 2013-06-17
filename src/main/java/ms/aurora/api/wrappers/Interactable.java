@@ -1,5 +1,7 @@
 package ms.aurora.api.wrappers;
 
+import java.awt.*;
+
 /**
  * Date: 19/03/13
  * Time: 09:01
@@ -7,6 +9,8 @@ package ms.aurora.api.wrappers;
  * @author A_C/Cov
  */
 public interface Interactable {
+
+    Point getClickLocation();
 
     boolean applyAction(String action);
 

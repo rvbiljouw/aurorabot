@@ -1,4 +1,4 @@
-package ms.aurora.input;
+package ms.aurora.input.algorithm;
 
 import java.awt.*;
 
