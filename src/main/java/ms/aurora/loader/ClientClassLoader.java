@@ -1,4 +1,4 @@
-package ms.aurora.transform;
+package ms.aurora.loader;
 
 import flexjson.JSONDeserializer;
 import ms.aurora.browser.wrapper.Plaintext;

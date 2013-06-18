@@ -2,7 +2,6 @@ package ms.aurora.loader;
 
 import ms.aurora.loader.impl.ClientStub;
 import ms.aurora.sdn.net.api.ClientData;
-import ms.aurora.transform.ClientClassLoader;
 import org.apache.log4j.Logger;
 
 import java.applet.Applet;
