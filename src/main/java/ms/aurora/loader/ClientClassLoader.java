@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Loads the client from a remote JSON file.
  * @author Rick
  * @author tobiewarburton
  */
