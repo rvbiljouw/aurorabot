@@ -3,11 +3,10 @@ package ms.aurora.core;
 import ms.aurora.api.Context;
 import ms.aurora.api.event.RegionUpdateEvent;
 import ms.aurora.api.methods.web.model.World;
-import ms.aurora.api.script.task.EventBus;
+import ms.aurora.event.EventBus;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
-import ms.aurora.event.PaintManager;
 import ms.aurora.gui.widget.AppletWidget;
 import ms.aurora.loader.ClientWrapper;
 import ms.aurora.rt3.Region;
@@ -29,7 +28,6 @@ public final class Session implements Runnable {
     private final List<RegionDataPacket> checks = new ArrayList<RegionDataPacket>();
     private final List<Integer> mappedIDs = new ArrayList<Integer>();
     private final SessionProperties properties = new SessionProperties();
-    private final PaintManager paintManager = new PaintManager();
     private final ClientWrapper wrapper = new ClientWrapper();
     private final EventBus eventBus = new EventBus();
     private final ThreadGroup threadGroup;
@@ -138,10 +136,6 @@ public final class Session implements Runnable {
 
     public PluginManager getPluginManager() {
         return pluginManager;
-    }
-
-    public PaintManager getPaintManager() {
-        return paintManager;
     }
 
     public ThreadGroup getThreadGroup() {

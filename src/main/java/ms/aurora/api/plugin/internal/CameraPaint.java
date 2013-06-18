@@ -1,7 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.Camera;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
@@ -11,8 +11,8 @@ import java.awt.*;
  *
  * @author A_C/Cov
  */
-public class CameraPaint implements PaintListener {
-    @Override
+public class CameraPaint {
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         int x = 10, y = 40;
         graphics.drawString("Camera Angle: " + Camera.getAngle(), x, y);

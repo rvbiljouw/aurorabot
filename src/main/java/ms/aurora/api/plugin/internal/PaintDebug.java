@@ -51,9 +51,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!npcPaintActive) {
-                    session.getPaintManager().register(npcPaint);
+                    session.getEventBus().register(npcPaint);
                 } else {
-                    session.getPaintManager().deregister(npcPaint);
+                    session.getEventBus().deregister(npcPaint);
                 }
                 npcPaintActive = !npcPaintActive;
             }
@@ -65,9 +65,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!groundObjectPaintActive) {
-                    session.getPaintManager().register(groundObjectPaint);
+                    session.getEventBus().register(groundObjectPaint);
                 } else {
-                    session.getPaintManager().deregister(groundObjectPaint);
+                    session.getEventBus().deregister(groundObjectPaint);
                 }
                 groundObjectPaintActive = !groundObjectPaintActive;
             }
@@ -79,9 +79,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!animableObjectPaintActive) {
-                    session.getPaintManager().register(animableObjectPaint);
+                    session.getEventBus().register(animableObjectPaint);
                 } else {
-                    session.getPaintManager().deregister(animableObjectPaint);
+                    session.getEventBus().deregister(animableObjectPaint);
                 }
                 animableObjectPaintActive = !animableObjectPaintActive;
             }
@@ -93,9 +93,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!wallDecorationPaintActive) {
-                    session.getPaintManager().register(wallDecorationPaint);
+                    session.getEventBus().register(wallDecorationPaint);
                 } else {
-                    session.getPaintManager().deregister(wallDecorationPaint);
+                    session.getEventBus().deregister(wallDecorationPaint);
                 }
                 wallDecorationPaintActive = !wallDecorationPaintActive;
             }
@@ -107,9 +107,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!wallObjectPaintActive) {
-                    session.getPaintManager().register(wallObjectPaint);
+                    session.getEventBus().register(wallObjectPaint);
                 } else {
-                    session.getPaintManager().deregister(wallObjectPaint);
+                    session.getEventBus().deregister(wallObjectPaint);
                 }
                 wallObjectPaintActive = !wallObjectPaintActive;
             }
@@ -121,9 +121,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!inventoryPaintActive) {
-                    session.getPaintManager().register(inventoryPaint);
+                    session.getEventBus().register(inventoryPaint);
                 } else {
-                    session.getPaintManager().deregister(inventoryPaint);
+                    session.getEventBus().deregister(inventoryPaint);
                 }
                 inventoryPaintActive = !inventoryPaintActive;
             }
@@ -135,9 +135,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!animationPaintActive) {
-                    session.getPaintManager().register(animationPaint);
+                    session.getEventBus().register(animationPaint);
                 } else {
-                    session.getPaintManager().deregister(animationPaint);
+                    session.getEventBus().deregister(animationPaint);
                 }
                 animationPaintActive = !animationPaintActive;
             }
@@ -149,9 +149,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!positionPaintActive) {
-                    session.getPaintManager().register(positionPaint);
+                    session.getEventBus().register(positionPaint);
                 } else {
-                    session.getPaintManager().deregister(positionPaint);
+                    session.getEventBus().deregister(positionPaint);
                 }
                 positionPaintActive = !positionPaintActive;
             }
@@ -163,9 +163,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!mousePaintActive) {
-                    session.getPaintManager().register(mousePaint);
+                    session.getEventBus().register(mousePaint);
                 } else {
-                    session.getPaintManager().deregister(mousePaint);
+                    session.getEventBus().deregister(mousePaint);
                 }
                 mousePaintActive = !mousePaintActive;
             }
@@ -177,9 +177,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!minimapPaintActive) {
-                    session.getPaintManager().register(minimapPaint);
+                    session.getEventBus().register(minimapPaint);
                 } else {
-                    session.getPaintManager().deregister(minimapPaint);
+                    session.getEventBus().deregister(minimapPaint);
                 }
                 minimapPaintActive = !minimapPaintActive;
             }
@@ -191,9 +191,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!shopPaintActive) {
-                    session.getPaintManager().register(shopPaint);
+                    session.getEventBus().register(shopPaint);
                 } else {
-                    session.getPaintManager().deregister(shopPaint);
+                    session.getEventBus().deregister(shopPaint);
                 }
                 shopPaintActive = !shopPaintActive;
             }
@@ -205,9 +205,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!cameraPaintActive) {
-                    session.getPaintManager().register(cameraPaint);
+                    session.getEventBus().register(cameraPaint);
                 } else {
-                    session.getPaintManager().deregister(cameraPaint);
+                    session.getEventBus().deregister(cameraPaint);
                 }
                 cameraPaintActive = !cameraPaintActive;
             }
@@ -219,9 +219,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!groundItemPaintActive) {
-                    session.getPaintManager().register(groundItemPaint);
+                    session.getEventBus().register(groundItemPaint);
                 } else {
-                    session.getPaintManager().deregister(groundItemPaint);
+                    session.getEventBus().deregister(groundItemPaint);
                 }
                 groundItemPaintActive = !groundItemPaintActive;
             }
@@ -233,9 +233,9 @@ public class PaintDebug extends Plugin {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (!bankItemPaintActive) {
-                    session.getPaintManager().register(bankPaint);
+                    session.getEventBus().register(bankPaint);
                 } else {
-                    session.getPaintManager().deregister(bankPaint);
+                    session.getEventBus().deregister(bankPaint);
                 }
                 bankItemPaintActive = !bankItemPaintActive;
             }

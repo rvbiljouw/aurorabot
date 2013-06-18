@@ -1,4 +1,4 @@
-package ms.aurora.api.script.task;
+package ms.aurora.event;
 
 import ms.aurora.Application;
 import ms.aurora.api.event.MessageEvent;
@@ -51,10 +51,10 @@ public class EventBus {
         }
     }
 
-    public void deregister(Script script) {
+    public void deregister(Object object) {
         List<EventHandlerBridge> deprecated = new ArrayList<EventHandlerBridge>();
         for (EventHandlerBridge bridge : bridges) {
-            if (bridge.method.getDeclaringClass().equals(script.getClass())) {
+            if (bridge.method.getDeclaringClass().equals(object.getClass())) {
                 deprecated.add(bridge);
             }
         }

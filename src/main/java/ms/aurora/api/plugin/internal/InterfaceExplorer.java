@@ -16,7 +16,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.RSWidget;
 import ms.aurora.api.wrappers.RSWidgetGroup;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import static javafx.collections.FXCollections.observableArrayList;
 /**
  * @author tobiewarburton
  */
-public class InterfaceExplorer extends AnchorPane implements PaintListener {
+public class InterfaceExplorer extends AnchorPane {
 
     @FXML
     private ResourceBundle resources;
@@ -144,7 +144,7 @@ public class InterfaceExplorer extends AnchorPane implements PaintListener {
         }
     }
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         if (x != -1 && y != -1) {
             graphics.setColor(Color.WHITE);

@@ -1,6 +1,6 @@
 package ms.aurora.api.plugin.internal;
 
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 import ms.aurora.rt3.Mouse;
 
 import java.awt.*;
@@ -10,9 +10,9 @@ import static ms.aurora.api.Context.getClient;
 /**
  * @author rvbiljouw
  */
-public class MousePaint implements PaintListener {
+public class MousePaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         Mouse mouse = getClient().getMouse();
         if (mouse != null) {

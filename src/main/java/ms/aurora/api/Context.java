@@ -1,7 +1,7 @@
 package ms.aurora.api;
 
 import ms.aurora.api.script.ScriptState;
-import ms.aurora.api.script.task.EventBus;
+import ms.aurora.event.EventBus;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
 import ms.aurora.rt3.Client;

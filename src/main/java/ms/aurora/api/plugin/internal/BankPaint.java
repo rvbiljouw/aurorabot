@@ -2,7 +2,7 @@ package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.tabs.Bank;
 import ms.aurora.api.wrappers.RSWidgetItem;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
@@ -13,8 +13,8 @@ import java.awt.*;
  * Time: 21:24
  * To change this template use File | Settings | File Templates.
  */
-public class BankPaint implements PaintListener {
-    @Override
+public class BankPaint {
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         if (Bank.isOpen()) {
             for (RSWidgetItem item: Bank.getAll()) {

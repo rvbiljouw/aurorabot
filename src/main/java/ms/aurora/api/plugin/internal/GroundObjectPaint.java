@@ -3,19 +3,17 @@ package ms.aurora.api.plugin.internal;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSModel;
 import ms.aurora.api.wrappers.RSObject;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 /**
  * @author rvbiljouw
  */
-public class GroundObjectPaint implements PaintListener {
+public class GroundObjectPaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         RSObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);

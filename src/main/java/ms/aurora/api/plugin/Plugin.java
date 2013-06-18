@@ -2,7 +2,6 @@ package ms.aurora.api.plugin;
 
 import javafx.scene.control.Menu;
 import ms.aurora.api.Context;
-import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -50,17 +49,11 @@ public abstract class Plugin extends Context {
     }
 
     private void init() {
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().
-                    register((PaintListener) this);
-        }
+        getSession().getEventBus().register(this);
     }
 
     private void shutdown() {
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().
-                    deregister((PaintListener) this);
-        }
+        getSession().getEventBus().deregister(this);
     }
 
     public abstract void startup();

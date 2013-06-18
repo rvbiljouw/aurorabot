@@ -6,8 +6,7 @@ import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.pathfinding.impl.RSRegion;
 import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.event.listeners.PaintListener;
-import ms.aurora.rt3.Player;
+import ms.aurora.event.EventBus;
 import ms.aurora.rt3.Region;
 
 import java.awt.*;
@@ -20,9 +19,9 @@ import static ms.aurora.api.Context.getClient;
  *
  * @author A_C/Cov
  */
-public class MinimapPaint implements PaintListener {
+public class MinimapPaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         int x = 10, y = 10;
         graphics.drawString("Minimap 1: " + getClient().getMinimapInt1(), x, y);

@@ -35,13 +35,13 @@ public class InterfacePlugin extends Plugin {
             public void handle(javafx.event.ActionEvent actionEvent) {
                 if (interfaceExplorerStage != null && interfaceExplorerStage.isShowing()) {
                     interfaceExplorerStage.hide();
-                    session.getPaintManager().deregister(interfaceExplorer);
+                    session.getEventBus().deregister(interfaceExplorer);
                 } else {
                     if (interfaceExplorerStage == null) {
                         interfaceExplorerStage = new InterfaceExplorerStage();
                     }
                     interfaceExplorerStage.show();
-                    session.getPaintManager().register(interfaceExplorer);
+                    session.getEventBus().register(interfaceExplorer);
                 }
             }
         });

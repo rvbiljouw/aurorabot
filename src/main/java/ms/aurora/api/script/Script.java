@@ -5,7 +5,6 @@ import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
 import ms.aurora.core.script.EntityLoader;
-import ms.aurora.event.listeners.PaintListener;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -132,16 +131,10 @@ public abstract class Script extends Context implements Runnable {
 
     private void init() {
         Context.getEventBus().register(this);
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().register((PaintListener) this);
-        }
         initializeRandoms();
     }
 
     private void cleanup() {
-        if (this instanceof PaintListener) {
-            getSession().getPaintManager().deregister((PaintListener) this);
-        }
         Context.getEventBus().deregister(this);
         getSession().getScriptManager().stop();
     }

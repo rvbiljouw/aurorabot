@@ -64,7 +64,7 @@ public class ClientCanvas extends Canvas {
         if (session == null) {
             session = Repository.get(getParent().hashCode());
         } else {
-            session.getPaintManager().onRepaint(g);
+            session.getEventBus().submit(g);
         }
     }
 

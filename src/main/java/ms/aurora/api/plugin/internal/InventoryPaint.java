@@ -2,16 +2,16 @@ package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.wrappers.RSWidgetItem;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
 /**
  * @author rvbiljouw
  */
-public class InventoryPaint implements PaintListener {
+public class InventoryPaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         RSWidgetItem[] items = Inventory.getAll();
         for (RSWidgetItem item : items) {

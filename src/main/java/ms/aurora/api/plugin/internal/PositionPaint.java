@@ -3,7 +3,7 @@ package ms.aurora.api.plugin.internal;
 import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.wrappers.RSPlayer;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
@@ -12,9 +12,9 @@ import static ms.aurora.api.Context.getClient;
 /**
  * @author rvbiljouw
  */
-public class PositionPaint implements PaintListener {
+public class PositionPaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         RSPlayer player = Players.getLocal();
         if (player != null) {
