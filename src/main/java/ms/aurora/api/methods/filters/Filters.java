@@ -1,8 +1,9 @@
 package ms.aurora.api.methods.filters;
 
-import ms.aurora.api.methods.web.model.World;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.*;
+import ms.aurora.api.wrappers.GameObject;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.api.wrappers.Tile;
 
 /**
  * A class containing all kinds of filters
@@ -18,10 +19,10 @@ public final class Filters {
      * @param ids A list of object IDs that are wanted
      * @return predicate
      */
-    public static Predicate<RSObject> OBJECT_ID(final int... ids) {
-        return new Predicate<RSObject>() {
+    public static Predicate<GameObject> OBJECT_ID(final int... ids) {
+        return new Predicate<GameObject>() {
             @Override
-            public boolean apply(RSObject object) {
+            public boolean apply(GameObject object) {
                 for (int id : ids) {
                     if (id == object.getId()) {
                         return true;
@@ -32,23 +33,6 @@ public final class Filters {
         };
     }
 
-
-    /**
-     * a predicate which tests the location of the {@link ms.aurora.api.wrappers.RSObject} matches specified.
-     *
-     * @param location location that the {@link ms.aurora.api.wrappers.RSObject} should be on.
-     * @return true if the location matches the {@link ms.aurora.api.wrappers.RSObject} location.
-     */
-    public static Predicate<RSObject> OBJECT_LOCATION(final RSTile location) {
-        return new Predicate<RSObject>() {
-            @Override
-            public boolean apply(RSObject object) {
-                return object.getLocation().equals(location);
-            }
-        };
-    }
-
-
     /**
      * Creates a predicate that filters a set of npcs by the
      * specified list of IDs, leaving only the matching
@@ -56,10 +40,10 @@ public final class Filters {
      * @param ids A list of npc IDs that are wanted
      * @return predicate
      */
-    public static Predicate<RSNPC> NPC_ID(final int... ids) {
-        return new Predicate<RSNPC>() {
+    public static Predicate<NPC> NPC_ID(final int... ids) {
+        return new Predicate<NPC>() {
             @Override
-            public boolean apply(RSNPC npc) {
+            public boolean apply(NPC npc) {
                 for (int id : ids) {
                     if (id == npc.getId()) {
                         return true;
@@ -77,10 +61,10 @@ public final class Filters {
      * @param names A list of npc names that are wanted
      * @return predicate
      */
-    public static Predicate<RSNPC> NPC_NAME(final String... names) {
-        return new Predicate<RSNPC>() {
+    public static Predicate<NPC> NPC_NAME(final String... names) {
+        return new Predicate<NPC>() {
             @Override
-            public boolean apply(RSNPC npc) {
+            public boolean apply(NPC npc) {
                 for (String name : names) {
                     if (npc.getName().toLowerCase().contains(name.toLowerCase())) {
                         return true;
@@ -92,115 +76,19 @@ public final class Filters {
     }
 
     /**
-     * @param name the name of the {@link RSPlayer} you want to match
-     * @return true if the name of the {@link RSPlayer} matches the specified name
-     * @see ms.aurora.api.wrappers.RSPlayer#getName()
-     */
-    public static Predicate<RSPlayer> PLAYER_NAME(final String name) {
-        return new Predicate<RSPlayer>() {
-            @Override
-            public boolean apply(RSPlayer object) {
-                return object.getName().equals(name);
-            }
-        };
-    }
-
-    /**
-     * tests of the current {@link ms.aurora.api.wrappers.RSCharacter] is not in combat
+     * a predicate which tests the location of the {@link ms.aurora.api.wrappers.GameObject} matches specified.
      *
-     * @see ms.aurora.api.wrappers.RSNPC#isInCombat()
+     * @param location location that the {@link ms.aurora.api.wrappers.GameObject} should be on.
+     * @return true if the location matches the {@link ms.aurora.api.wrappers.GameObject} location.
      */
-    public static final Predicate<RSCharacter> NOT_IN_COMBAT = new Predicate<RSCharacter>() {
-        @Override
-        public boolean apply(RSCharacter object) {
-            return !object.isInCombat();
-        }
-    };
-
-    /**
-     * tests if the given {@link ms.aurora.api.wrappers.RSCharacter} is idle
-     *
-     * @see ms.aurora.api.wrappers.RSCharacter#getAnimation()
-     * @see ms.aurora.api.wrappers.RSCharacter#isInCombat()
-     * @see ms.aurora.api.wrappers.RSCharacter#isMoving()
-     */
-    public static final Predicate<RSCharacter> IDLE = new Predicate<RSCharacter>() {
-        @Override
-        public boolean apply(RSCharacter object) {
-            return object.getAnimation() == -1 && !object.isInCombat()
-                    && !object.isMoving();
-        }
-    };
-
-    /**
-     * Filters a ground item out by checking if it's ID matches any of the ones specified.
-     *
-     * @param ids A list of IDs that are accepted by the filter.
-     * @return predicate
-     */
-    public static Predicate<RSGroundItem> GROUND_ITEM_IDS(final int... ids) {
-        return new Predicate<RSGroundItem>() {
+    public static Predicate<GameObject> OBJECT_LOCATION(final Tile location) {
+        return new Predicate<GameObject>() {
             @Override
-            public boolean apply(RSGroundItem object) {
-                for (int id : ids) {
-                    if (object.getId() == id) {
-                        return true;
-                    }
-                }
-                return false;
+            public boolean apply(GameObject object) {
+                return object.getLocation().equals(location);
             }
         };
     }
 
-
-    /**
-     * Filters a world based on it's world number
-     * @param worldNumber World number
-     * @return predicate
-     */
-    public static Predicate<World> WORLD_ID(final int worldNumber) {
-        return new Predicate<World>() {
-            @Override
-            public boolean apply(World object) {
-                return object.getWorldNo() == worldNumber;
-            }
-        };
-    }
-
-    /**
-     * Filters a world based on it's country name.
-     * @param countryName Country name
-     * @return predicate
-     */
-    public static Predicate<World> WORLD_COUNTRY(final String countryName) {
-        return new Predicate<World>() {
-            @Override
-            public boolean apply(World object) {
-                return object.getCountry().toLowerCase().contains(countryName.toLowerCase());
-            }
-        };
-    }
-
-    /**
-     * a predicate helper which creates a predicate for a widget item which
-     * is for one of the specified ids
-     *
-     * @param ids the id's in which you want the widget item to be
-     * @return a predicate which filters by the specified id's
-     * @see ms.aurora.api.wrappers.RSWidgetItem#getId()
-     */
-    public static Predicate<RSWidgetItem> ITEM_ID(final int... ids) {
-        return new Predicate<RSWidgetItem>() {
-            @Override
-            public boolean apply(RSWidgetItem object) {
-                for (int id : ids) {
-                    if (object.getId() == id) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-    }
 
 }

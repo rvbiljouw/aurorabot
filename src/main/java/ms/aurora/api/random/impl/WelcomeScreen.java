@@ -5,7 +5,7 @@ import ms.aurora.api.methods.Camera;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.Widget;
 
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
@@ -21,7 +21,7 @@ public class WelcomeScreen extends Random {
 
     @Override
     public int loop() {
-        RSWidget play = Widgets.getWidget(378, 6);
+        Widget play = Widgets.getWidget(378, 6);
         if (play != null) {
             play.click(true);
             sleepNoException(1000, 3000);

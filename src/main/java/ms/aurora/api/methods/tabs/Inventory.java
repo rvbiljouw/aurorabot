@@ -7,8 +7,8 @@ import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
-import ms.aurora.api.wrappers.RSWidget;
-import ms.aurora.api.wrappers.RSWidgetItem;
+import ms.aurora.api.wrappers.Widget;
+import ms.aurora.api.wrappers.WidgetItem;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public final class Inventory {
      *
      * @return inventory
      */
-    private static RSWidget getInventoryWidget() {
+    private static Widget getInventoryWidget() {
         return Widgets.getWidget(INVENTORY_ID, 0);
     }
 
@@ -56,8 +56,8 @@ public final class Inventory {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static RSWidgetItem get(final Predicate<RSWidgetItem>... predicate) {
-        RSWidgetItem[] items = getAll(predicate);
+    public static WidgetItem get(final Predicate<WidgetItem>... predicate) {
+        WidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
         }
@@ -70,13 +70,13 @@ public final class Inventory {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem>... predicate) {
-        List<RSWidgetItem> filter = ArrayUtils.filter(getAll(), predicate);
-        return filter.toArray(new RSWidgetItem[filter.size()]);
+    public static WidgetItem[] getAll(final Predicate<WidgetItem>... predicate) {
+        List<WidgetItem> filter = ArrayUtils.filter(getAll(), predicate);
+        return filter.toArray(new WidgetItem[filter.size()]);
     }
 
 
-    public static RSWidgetItem getItemAt(int slot) {
+    public static WidgetItem getItemAt(int slot) {
         return _getAll()[slot - 1];
     }
 
@@ -85,11 +85,11 @@ public final class Inventory {
      *
      * @return an array containing all items in the inventory.
      */
-    private static RSWidgetItem[] _getAll() {
-        RSWidget inventory = getInventoryWidget();
+    private static WidgetItem[] _getAll() {
+        Widget inventory = getInventoryWidget();
         int[] items = inventory.getInventoryItems();
         int[] stacks = inventory.getInventoryStackSizes();
-        List<RSWidgetItem> wrappers = new ArrayList<RSWidgetItem>();
+        List<WidgetItem> wrappers = new ArrayList<WidgetItem>();
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
@@ -99,22 +99,22 @@ public final class Inventory {
                 int y = inventory.getY() + (row * 36);
 
                 Rectangle area = new Rectangle(x, y, 31, 31);
-                RSWidgetItem item = new RSWidgetItem(area, items[i] - 1, stacks[i]);
+                WidgetItem item = new WidgetItem(area, items[i] - 1, stacks[i]);
                 wrappers.add(item);
             } else {
                 wrappers.add(null);
             }
         }
-        return wrappers.toArray(new RSWidgetItem[wrappers.size()]);
+        return wrappers.toArray(new WidgetItem[wrappers.size()]);
     }
 
-    public static RSWidgetItem[] getAll() {
-        return ArrayUtils.filter(_getAll(), new Predicate<RSWidgetItem>() {
+    public static WidgetItem[] getAll() {
+        return ArrayUtils.filter(_getAll(), new Predicate<WidgetItem>() {
             @Override
-            public boolean apply(RSWidgetItem object) {
+            public boolean apply(WidgetItem object) {
                 return object != null;
             }
-        }).toArray(new RSWidgetItem[]{});
+        }).toArray(new WidgetItem[]{});
     }
 
     /**
@@ -123,7 +123,7 @@ public final class Inventory {
      * @param predicates RSWidgetItem to look for
      * @return true if found, otherwise false.
      */
-    public static boolean contains(Predicate<RSWidgetItem>... predicates) {
+    public static boolean contains(Predicate<WidgetItem>... predicates) {
         return getAll(predicates).length > 0;
     }
 
@@ -133,8 +133,8 @@ public final class Inventory {
      * @param predicates A var-args list of item predicates.
      * @return true if all the items were found, false otherwise.
      */
-    public static boolean containsAll(Predicate<RSWidgetItem>... predicates) {
-        for (Predicate<RSWidgetItem> predicate : predicates) {
+    public static boolean containsAll(Predicate<WidgetItem>... predicates) {
+        for (Predicate<WidgetItem> predicate : predicates) {
             if (!contains(predicate)) {
                 return false;
             }
@@ -148,9 +148,9 @@ public final class Inventory {
      * @param predicates RSWidgetItem predicates of the items to count
      * @return total amount of items matching id in inventory.
      */
-    public static int count(Predicate<RSWidgetItem>... predicates) {
+    public static int count(Predicate<WidgetItem>... predicates) {
         int count = 0;
-        for (RSWidgetItem item : getAll(predicates)) {
+        for (WidgetItem item : getAll(predicates)) {
             count += item.getStackSize();
         }
         return count;
@@ -161,8 +161,8 @@ public final class Inventory {
      *
      * @param predicates Predicates of the item to drop.
      */
-    public static void dropItem(Predicate<RSWidgetItem>... predicates) {
-        RSWidgetItem firstMatch = get(predicates);
+    public static void dropItem(Predicate<WidgetItem>... predicates) {
+        WidgetItem firstMatch = get(predicates);
         if (firstMatch != null) {
             firstMatch.applyAction("Drop");
         }
@@ -173,11 +173,11 @@ public final class Inventory {
      *
      * @param predicates A var-args list of predicates to drop.
      */
-    public static void dropAll(Predicate<RSWidgetItem>... predicates) {
+    public static void dropAll(Predicate<WidgetItem>... predicates) {
         for (int i = 1; i < 29 && !Thread.currentThread().isInterrupted();) {
-            RSWidgetItem item = getItemAt(i);
+            WidgetItem item = getItemAt(i);
             boolean drop = false;
-            for (Predicate<RSWidgetItem> predicate: predicates) {
+            for (Predicate<WidgetItem> predicate: predicates) {
                 if (item != null && predicate.apply(item)) {
                     drop = true;
                 }
@@ -199,11 +199,11 @@ public final class Inventory {
      *
      * @param predicates A var-args list of items to exclude from dropping.
      */
-    public static void dropAllExcept(Predicate<RSWidgetItem>... predicates) {
+    public static void dropAllExcept(Predicate<WidgetItem>... predicates) {
         for (int i = 1; i < 29 && !Thread.currentThread().isInterrupted();) {
-            RSWidgetItem item = getItemAt(i);
+            WidgetItem item = getItemAt(i);
             boolean drop = true;
-            for (Predicate<RSWidgetItem> predicate: predicates) {
+            for (Predicate<WidgetItem> predicate: predicates) {
                 if (item != null && predicate.apply(item)) {
                     drop = false;
                 }
@@ -227,10 +227,10 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOnAll(int id, int targetId) { // TODO - switch to predicates
-        RSWidgetItem main = get(WidgetItemFilters.ID(id));
+        WidgetItem main = get(WidgetItemFilters.ID(id));
         if (main != null) {
-            RSWidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
-            for (RSWidgetItem target : targets) {
+            WidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
+            for (WidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click(true);
@@ -250,10 +250,10 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOn(int id, int targetId) {  // TODO - switch to predicates
-        RSWidgetItem main = get(WidgetItemFilters.ID(id));
+        WidgetItem main = get(WidgetItemFilters.ID(id));
         if (main != null) {
-            RSWidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
-            for (RSWidgetItem target : targets) {
+            WidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
+            for (WidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
                 target.click(true);
@@ -268,12 +268,12 @@ public final class Inventory {
     }
 
 
-    public static void dropAllByColumn(Predicate<RSWidgetItem>... predicates) {
+    public static void dropAllByColumn(Predicate<WidgetItem>... predicates) {
         for (int column = 1; column < 5 && !Thread.currentThread().isInterrupted(); column++) {
             for (int slot = 0; (slot + column) < 29 && !Thread.currentThread().isInterrupted();) {
-                RSWidgetItem item = getItemAt(slot + column);
+                WidgetItem item = getItemAt(slot + column);
                 boolean drop = false;
-                for (Predicate<RSWidgetItem> predicate: predicates) {
+                for (Predicate<WidgetItem> predicate: predicates) {
                     if (item != null && predicate.apply(item)) {
                         drop = true;
                     }

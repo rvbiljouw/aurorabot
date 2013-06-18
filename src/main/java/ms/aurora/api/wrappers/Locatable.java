@@ -9,9 +9,9 @@ public interface Locatable {
 
     Point getScreenLocation();
 
-    RSTile getLocation();
+    Tile getLocation();
 
-    RSTile getRegionalLocation();
+    Tile getRegionalLocation();
 
     int getX();
 

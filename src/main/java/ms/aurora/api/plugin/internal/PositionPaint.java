@@ -16,7 +16,7 @@ public class PositionPaint {
 
     @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
-        RSPlayer player = Players.getLocal();
+        Player player = Players.getLocal();
         if (player != null) {
             Point loc = player.getScreenLocation();
             Color original = graphics.getColor();

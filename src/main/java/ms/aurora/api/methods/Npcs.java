@@ -2,8 +2,8 @@ package ms.aurora.api.methods;
 
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.rt3.Npc;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.rt3.INpc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,42 +19,42 @@ import static ms.aurora.api.Context.getClient;
 public final class Npcs {
 
     /**
-     * returns the closest {@link RSNPC} which matches the given predicates
+     * returns the closest {@link ms.aurora.api.wrappers.NPC} which matches the given predicates
      *
      * @param predicates the {@link Predicate} in which are required to be satisfied
-     * @return the closest {@link RSNPC} which satisfies the predicates if there is one or null
-     * @see RSNPC#distance(ms.aurora.api.wrappers.Locatable)
+     * @return the closest {@link ms.aurora.api.wrappers.NPC} which satisfies the predicates if there is one or null
+     * @see ms.aurora.api.wrappers.NPC#distance(ms.aurora.api.wrappers.Locatable)
      * @see Predicate
      */
-    public static RSNPC get(final Predicate<RSNPC>... predicates) {
-        return getClosest(ArrayUtils.filter(getAll(), predicates).toArray(new RSNPC[0]));
+    public static NPC get(final Predicate<NPC>... predicates) {
+        return getClosest(ArrayUtils.filter(getAll(), predicates).toArray(new NPC[0]));
     }
 
     /**
-     * return an array of all the {@link RSNPC} which match any of the given predicates
+     * return an array of all the {@link ms.aurora.api.wrappers.NPC} which match any of the given predicates
      *
      * @param predicates a var-args array of {@link Predicate} in which is required to be satisfied
-     * @return an array of the {@link RSNPC} which satisfy the given predicates
+     * @return an array of the {@link ms.aurora.api.wrappers.NPC} which satisfy the given predicates
      * @see Predicate
      */
-    public static RSNPC[] getAll(final Predicate<RSNPC>... predicates) {
-        return ArrayUtils.filter(getAll(), predicates).toArray(new RSNPC[0]);
+    public static NPC[] getAll(final Predicate<NPC>... predicates) {
+        return ArrayUtils.filter(getAll(), predicates).toArray(new NPC[0]);
     }
 
 
     /**
-     * returns a list of all the {@link RSNPC} that are loaded in the client which aren't null
+     * returns a list of all the {@link ms.aurora.api.wrappers.NPC} that are loaded in the client which aren't null
      *
-     * @return a list of all the {@link RSNPC} that aren't null which are loaded into the client
+     * @return a list of all the {@link ms.aurora.api.wrappers.NPC} that aren't null which are loaded into the client
      */
-    public static RSNPC[] getAll() {
-        List<RSNPC> validNPCs = new ArrayList<RSNPC>();
-        for(Npc npc : getClient().getAllNpcs()) {
+    public static NPC[] getAll() {
+        List<NPC> validNPCs = new ArrayList<NPC>();
+        for(INpc npc : getClient().getAllNpcs()) {
             if(npc != null) {
-                validNPCs.add(new RSNPC(npc));
+                validNPCs.add(new NPC(npc));
             }
         }
-        return validNPCs.toArray(new RSNPC[validNPCs.size()]);
+        return validNPCs.toArray(new NPC[validNPCs.size()]);
     }
 
     /**
@@ -63,10 +63,10 @@ public final class Npcs {
      * @param npcs NPC array
      * @return closest NPC
      */
-    private static RSNPC getClosest(RSNPC[] npcs) {
-        RSNPC closest = null;
+    private static NPC getClosest(NPC[] npcs) {
+        NPC closest = null;
         int closestDistance = 9999;
-        for (RSNPC npc : npcs) {
+        for (NPC npc : npcs) {
             int distance = npc.distance(Players.getLocal());
             if (distance < closestDistance) {
                 closestDistance = distance;

@@ -4,7 +4,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.pathfinding.AStarPathFinder;
 import ms.aurora.api.pathfinding.ClosestHeuristic;
 import ms.aurora.api.pathfinding.Path;
-import ms.aurora.rt3.Region;
+import ms.aurora.rt3.IRegion;
 
 import java.awt.*;
 
@@ -24,7 +24,7 @@ public class RSRegionPathFinder {
     }
 
     private void reload() {
-        Region current = getClient().getRegions()[getClient().getPlane()];
+        IRegion current = getClient().getRegions()[getClient().getPlane()];
         pathFinder = new AStarPathFinder(new RSRegion(getClient().getPlane(), current.getClippingMasks()), 90, true, new ClosestHeuristic());
     }
 

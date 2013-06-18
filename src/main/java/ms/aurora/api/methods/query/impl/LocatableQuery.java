@@ -2,10 +2,10 @@ package ms.aurora.api.methods.query.impl;
 
 import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.query.Query;
+import ms.aurora.api.wrappers.Area;
 import ms.aurora.api.wrappers.Locatable;
-import ms.aurora.api.wrappers.RSArea;
-import ms.aurora.api.wrappers.RSPlayer;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Player;
+import ms.aurora.api.wrappers.Tile;
 
 /**
  * Date: 24/05/13
@@ -15,7 +15,7 @@ import ms.aurora.api.wrappers.RSTile;
  */
 public abstract class LocatableQuery<RT extends Locatable, QT extends LocatableQuery> extends Query<RT> {
 
-    public QT location(final RSTile tile) {
+    public QT location(final Tile tile) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RT type) {
@@ -25,7 +25,7 @@ public abstract class LocatableQuery<RT extends Locatable, QT extends LocatableQ
         return (QT) this;
     }
 
-    public QT area(final RSArea area) {
+    public QT area(final Area area) {
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RT type) {
@@ -49,7 +49,7 @@ public abstract class LocatableQuery<RT extends Locatable, QT extends LocatableQ
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RT type) {
-                RSPlayer currentPlayer = new PlayerQuery().local();
+                Player currentPlayer = new PlayerQuery().local();
                 return Calculations.distance(type.getX(), type.getY(), currentPlayer.getX(), currentPlayer.getY()) < distance;
             }
         });

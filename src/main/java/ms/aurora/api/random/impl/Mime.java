@@ -8,10 +8,9 @@ import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.util.StatePredicate;
 import ms.aurora.api.util.Utilities;
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.api.wrappers.Widget;
 
-import static ms.aurora.api.methods.filters.NpcFilters.ID;
 import static ms.aurora.api.methods.filters.NpcFilters.NAMED;
 import static ms.aurora.api.util.Utilities.random;
 
@@ -38,7 +37,7 @@ public class Mime extends Random {
         if (!activate()) {
             return -1;
         }
-        RSNPC mime = Npcs.get(NAMED("Mime"));
+        NPC mime = Npcs.get(NAMED("Mime"));
         if (mime != null) {
             Animation anim = Animation.forAnim(mime.getAnimation());
             if (anim != null && anim != lastAnimation) {
@@ -50,7 +49,7 @@ public class Mime extends Random {
             return 50;
         }
 
-        RSWidget widget = Widgets.getWidget(WIDGET_PARENT_ID, lastAnimation.widget);
+        Widget widget = Widgets.getWidget(WIDGET_PARENT_ID, lastAnimation.widget);
         if (widget != null) {
             widget.click(true);
             Utilities.sleepNoException(2000);

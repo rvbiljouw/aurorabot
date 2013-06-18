@@ -2,7 +2,7 @@ package ms.aurora.sdn.model;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Tile;
 
 /**
  * @author tobiewarburton
@@ -15,9 +15,9 @@ public class PathResponse {
     /**
      * the path if success is true else this will be null
      */
-    private RSTile[] path;
+    private Tile[] path;
 
-    public PathResponse(boolean success, RSTile[] path) {
+    public PathResponse(boolean success, Tile[] path) {
         this.success = success;
         this.path = path;
     }
@@ -34,11 +34,11 @@ public class PathResponse {
         this.success = success;
     }
 
-    public RSTile[] getPath() {
+    public Tile[] getPath() {
         return path;
     }
 
-    public void setPath(RSTile[] path) {
+    public void setPath(Tile[] path) {
         this.path = path;
     }
 

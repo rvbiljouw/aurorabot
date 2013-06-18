@@ -2,7 +2,7 @@ package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.tabs.Shop;
 import ms.aurora.api.wrappers.RSWidgetItem;
-import ms.aurora.event.EventBus;
+import ms.aurora.event.listeners.PaintListener;
 
 import java.awt.*;
 
@@ -16,9 +16,9 @@ public class ShopPaint {
 
     @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
-        RSWidgetItem[] items = Shop.getAll();
+        WidgetItem[] items = Shop.getAll();
         graphics.drawString(items.length + "", 10, 10);
-        for (RSWidgetItem item: items) {
+        for (WidgetItem item: items) {
             Rectangle r = item.getArea();
             graphics.drawRect(r.x, r.y, r.width, r.height);
         }

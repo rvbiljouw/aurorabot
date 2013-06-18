@@ -12,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.plugin.Plugin;
-import ms.aurora.api.wrappers.RSTile;
+import ms.aurora.api.wrappers.Tile;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -40,15 +40,15 @@ public class PathMaker extends AnchorPane {
     private Button btnCopy;
 
     @FXML
-    private ListView<RSTile> listTiles;
+    private ListView<Tile> listTiles;
 
     @FXML
     private ToggleButton tglStartStop;
 
     private Plugin plugin;
     private Thread thread;
-    private RSTile last;
-    private ArrayList<RSTile> tiles = new ArrayList<RSTile>();
+    private Tile last;
+    private ArrayList<Tile> tiles = new ArrayList<Tile>();
 
     public PathMaker(Plugin plugin) {
         this.plugin = plugin;
@@ -69,7 +69,7 @@ public class PathMaker extends AnchorPane {
         StringBuilder builder = new StringBuilder();
         builder.append("final RSTile[] PATH = new RSTile[] {");
         for (int i = 0; i < tiles.size(); i++) {
-            RSTile current = tiles.get(i);
+            Tile current = tiles.get(i);
             if (i % 4 == 0) {
                 builder.append("\n\t");
             }
@@ -127,7 +127,7 @@ public class PathMaker extends AnchorPane {
         }
     }
 
-    private void add(RSTile tile) {
+    private void add(Tile tile) {
         last = tile;
         tiles.add(tile);
         update();

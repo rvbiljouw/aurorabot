@@ -7,10 +7,10 @@ import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
 import ms.aurora.api.util.Utilities;
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.api.wrappers.RSObject;
-import ms.aurora.api.wrappers.RSTile;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.GameObject;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.api.wrappers.Tile;
+import ms.aurora.api.wrappers.Widget;
 
 /**
  * @author tobiewarburton
@@ -48,14 +48,14 @@ public class Certer extends Random {
 
         if (readyToLeave) {
             int PORTAL_ID = 11368;
-            final RSObject portal = Objects.get(ObjectFilters.ID(PORTAL_ID));
+            final GameObject portal = Objects.get(ObjectFilters.ID(PORTAL_ID));
             if (portal != null) {
-                final RSTile portalLocation = portal.getLocation();
+                final Tile portalLocation = portal.getLocation();
                 if (Calculations.distance(Players.getLocal().getLocation(), portal.getLocation()) < 4) {
                     portal.applyAction("Enter");
                     return Utilities.random(3000, 4000);
                 } else {
-                    Walking.clickOnMap(new RSTile(portalLocation.getX() - 1, portalLocation.getY()));
+                    Walking.clickOnMap(new Tile(portalLocation.getX() - 1, portalLocation.getY()));
                     return Utilities.random(6000, 8000);
                 }
             }
@@ -75,7 +75,7 @@ public class Certer extends Random {
             }
 
             for (int j = 0; j < 3; j++) {
-                final RSWidget iface = Widgets.getWidget(184, 8).getChildren()[j];
+                final Widget iface = Widgets.getWidget(184, 8).getChildren()[j];
                 if (iface.getText().contains(itemName)) {
                     iface.click(true);
                     return Utilities.random(3000, 5000);
@@ -88,14 +88,14 @@ public class Certer extends Random {
             return Utilities.random(3000, 4000);
         }
 
-        final RSNPC certer = Npcs.get(NpcFilters.NAMED("Niles", "Miles", "Giles"));
+        final NPC certer = Npcs.get(NpcFilters.NAMED("Niles", "Miles", "Giles"));
         if (certer != null) {
             if (Calculations.distance(Players.getLocal().getLocation(), certer.getLocation()) < 4) {
                 certer.applyAction("Talk-to");
                 return Utilities.random(4000, 5000);
             } else {
-                RSTile certerLocation = certer.getLocation();
-                Walking.clickOnMap(new RSTile(certerLocation.getX() + 2, certerLocation.getY()));
+                Tile certerLocation = certer.getLocation();
+                Walking.clickOnMap(new Tile(certerLocation.getX() + 2, certerLocation.getY()));
                 return Utilities.random(6000, 8000);
             }
         }

@@ -4,7 +4,7 @@ import ms.aurora.api.methods.web.model.World;
 import ms.aurora.browser.Browser;
 import ms.aurora.browser.Context;
 import ms.aurora.core.Session;
-import ms.aurora.rt3.Client;
+import ms.aurora.rt3.IClient;
 import org.apache.log4j.Logger;
 
 import java.applet.Applet;
@@ -24,8 +24,8 @@ public class ClientWrapper {
     private final ClientLoader loader = new ClientLoader(config);
     private World world;
 
-    public Client getClient() {
-        return (Client) loader.getApplet();
+    public IClient getClient() {
+        return (IClient) loader.getApplet();
     }
 
     public Applet getApplet() {

@@ -5,11 +5,9 @@ import ms.aurora.api.methods.Walking;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
-import ms.aurora.api.wrappers.RSCharacter;
-import ms.aurora.api.wrappers.RSNPC;
-import ms.aurora.api.wrappers.RSTile;
-
-import java.util.Arrays;
+import ms.aurora.api.wrappers.Entity;
+import ms.aurora.api.wrappers.NPC;
+import ms.aurora.api.wrappers.Tile;
 
 import static ms.aurora.api.util.Utilities.random;
 
@@ -28,13 +26,13 @@ public class Ent extends Random {
 
     @Override
     public boolean activate() {
-        RSCharacter interacting = Players.getLocal().getInteracting();
+        Entity interacting = Players.getLocal().getInteracting();
         if (interacting == null) {
             return false;
         }
 
-        if (interacting instanceof RSNPC) {
-            RSNPC npc = (RSNPC) interacting;
+        if (interacting instanceof NPC) {
+            NPC npc = (NPC) interacting;
             for(String entName: ENT_NAMES) {
                 if(npc.getName().toLowerCase().contains(entName.toLowerCase())) {
                     return true;
@@ -50,8 +48,8 @@ public class Ent extends Random {
             return -1;
         }
 
-        RSTile base = Players.getLocal().getLocation();
-        RSTile deviated = RSTile.randomize(base, 4, 4);
+        Tile base = Players.getLocal().getLocation();
+        Tile deviated = Tile.randomize(base, 4, 4);
         Walking.walkToLocal(deviated);
         return random(200, 300);
     }

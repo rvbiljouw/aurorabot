@@ -3,11 +3,11 @@ package ms.aurora.api.methods;
 import ms.aurora.api.Context;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSDeque;
-import ms.aurora.api.wrappers.RSGroundItem;
-import ms.aurora.rt3.Client;
-import ms.aurora.rt3.Deque;
-import ms.aurora.rt3.Item;
+import ms.aurora.api.wrappers.Deque;
+import ms.aurora.api.wrappers.GroundItem;
+import ms.aurora.rt3.IClient;
+import ms.aurora.rt3.IDeque;
+import ms.aurora.rt3.IItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,35 +20,35 @@ import java.util.List;
 public final class GroundItems {
 
     /**
-     * finds the closest {@link RSGroundItem} which matches the given predicate
+     * finds the closest {@link ms.aurora.api.wrappers.GroundItem} which matches the given predicate
      *
      * @param predicate the {@link Predicate} in which is required to be satisfied
-     * @return the closest {@link RSGroundItem} which satisfies the predicate if there is one or null
-     * @see RSGroundItem#distance(ms.aurora.api.wrappers.Locatable)
+     * @return the closest {@link ms.aurora.api.wrappers.GroundItem} which satisfies the predicate if there is one or null
+     * @see ms.aurora.api.wrappers.GroundItem#distance(ms.aurora.api.wrappers.Locatable)
      * @see Predicate
      */
-    public static RSGroundItem get(final Predicate<RSGroundItem>... predicate) {
-        return getClosest(ArrayUtils.filter(getAll(), predicate).toArray(new RSGroundItem[0]));
+    public static GroundItem get(final Predicate<GroundItem>... predicate) {
+        return getClosest(ArrayUtils.filter(getAll(), predicate).toArray(new GroundItem[0]));
     }
 
     /**
-     * finds an array of {@link RSGroundItem} which match the given predicate
+     * finds an array of {@link ms.aurora.api.wrappers.GroundItem} which match the given predicate
      *
      * @param predicate the {@link Predicate} in which is required to be satisfied
-     * @return the array containing all {@link RSGroundItem} which satisfy the predicate
+     * @return the array containing all {@link ms.aurora.api.wrappers.GroundItem} which satisfy the predicate
      * @see Predicate
      */
-    public static RSGroundItem[] getAll(final Predicate<RSGroundItem>... predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new RSGroundItem[0]);
+    public static GroundItem[] getAll(final Predicate<GroundItem>... predicate) {
+        return ArrayUtils.filter(getAll(), predicate).toArray(new GroundItem[0]);
     }
 
     /**
-     * finds an array containing all of the {@link RSGroundItem} in the current region
+     * finds an array containing all of the {@link ms.aurora.api.wrappers.GroundItem} in the current region
      *
-     * @return an array containing all of the {@link RSGroundItem} in the current region
+     * @return an array containing all of the {@link ms.aurora.api.wrappers.GroundItem} in the current region
      */
-    public static RSGroundItem[] getAll() {
-        return _getAll().toArray(new RSGroundItem[0]);
+    public static GroundItem[] getAll() {
+        return _getAll().toArray(new GroundItem[0]);
     }
 
     /**
@@ -57,10 +57,10 @@ public final class GroundItems {
      * @param objects array of ground items
      * @return closest ground item
      */
-    private static RSGroundItem getClosest(RSGroundItem[] objects) {
-        RSGroundItem closest = null;
+    private static GroundItem getClosest(GroundItem[] objects) {
+        GroundItem closest = null;
         int closestDistance = 9999;
-        for (RSGroundItem object : objects) {
+        for (GroundItem object : objects) {
             int distance = object.distance(Players.getLocal());
             if (distance < closestDistance) {
                 closestDistance = distance;
@@ -75,8 +75,8 @@ public final class GroundItems {
      *
      * @return list of ground items
      */
-    private static List<RSGroundItem> _getAll() {
-        List<RSGroundItem> items = new ArrayList<RSGroundItem>();
+    private static List<GroundItem> _getAll() {
+        List<GroundItem> items = new ArrayList<GroundItem>();
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
                 items.addAll(getItemsAt(x, y));
@@ -92,17 +92,17 @@ public final class GroundItems {
      * @param y shifted local Y of the tile
      * @return list of items on tile
      */
-    private static List<RSGroundItem> getItemsAt(int x, int y) {
-        Client client = Context.getClient();
+    private static List<GroundItem> getItemsAt(int x, int y) {
+        IClient client = Context.getClient();
         int z = client.getPlane();
-        Deque _deque = client.getGroundItems()[z][x][y];
-        List<RSGroundItem> items = new ArrayList<RSGroundItem>();
+        IDeque _deque = client.getGroundItems()[z][x][y];
+        List<GroundItem> items = new ArrayList<GroundItem>();
         if (_deque != null) {
-            RSDeque deque = new RSDeque(_deque);
+            Deque deque = new Deque(_deque);
             while (deque.hasNext()) {
-                Item item = (Item) deque.next();
+                IItem item = (IItem) deque.next();
                 if (item != null)
-                    items.add(new RSGroundItem(item, x, y, z));
+                    items.add(new GroundItem(item, x, y, z));
             }
         }
         return items;

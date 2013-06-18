@@ -1,7 +1,7 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidget;
+import ms.aurora.api.wrappers.Widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public final class Tabs {
      */
     public static boolean openTab(Tab tab) {
         if (isOpen(tab)) return true;
-        for (RSWidget widget : getTabWidgets()) {
+        for (Widget widget : getTabWidgets()) {
             if (widget.getId() == tab.getId()) {
                 return widget.click(true);
             }
@@ -48,10 +48,10 @@ public final class Tabs {
         return obtainOpen(getTabWidgets());
     }
 
-    private static Tab obtainOpen(List<RSWidget> widgetList) {
-        RSWidget[] widgets = widgetList.toArray(new RSWidget[widgetList.size()]);
+    private static Tab obtainOpen(List<Widget> widgetList) {
+        Widget[] widgets = widgetList.toArray(new Widget[widgetList.size()]);
         int targetTextureID = getOpenTextureID(widgets);
-        for (RSWidget widget : widgets) {
+        for (Widget widget : widgets) {
             if (widget.getTextureId() == targetTextureID) {
                 return Tab.byId(widget.getId());
             }
@@ -59,7 +59,7 @@ public final class Tabs {
         return null;
     }
 
-    private static int getOpenTextureID(RSWidget[] widgets) {
+    private static int getOpenTextureID(Widget[] widgets) {
         int[] textureIDs = new int[widgets.length];
         Map<Integer, Integer> frequency = new HashMap<Integer, Integer>();
         for (int i = 0; i < widgets.length; i++) {
@@ -84,8 +84,8 @@ public final class Tabs {
         return null;
     }
 
-    private static List<RSWidget> getTabWidgets() {
-        List<RSWidget> tabs = new ArrayList<RSWidget>();
+    private static List<Widget> getTabWidgets() {
+        List<Widget> tabs = new ArrayList<Widget>();
         for (Tab tab : Tab.values()) {
             tabs.add(Widgets.getWidget(548, tab.getId()));
         }

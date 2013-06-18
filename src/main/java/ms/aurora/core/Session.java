@@ -9,7 +9,7 @@ import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
 import ms.aurora.gui.widget.AppletWidget;
 import ms.aurora.loader.ClientWrapper;
-import ms.aurora.rt3.Region;
+import ms.aurora.rt3.IRegion;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.sdn.model.RegionDataPacket;
 import ms.aurora.sdn.net.packet.RegionData;
@@ -59,7 +59,7 @@ public final class Session implements Runnable {
                 int ry = getClient().getBaseY();
 
                 if (getClient().getPlane() == 0) {
-                    Region region = getClient().getRegions()[getClient().getPlane()];
+                    IRegion region = getClient().getRegions()[getClient().getPlane()];
                     int[][] flagData = region.getClippingMasks();
                     int[][] newArray = flagData.clone();
                     for (int i = 0; i < flagData.length; i++)

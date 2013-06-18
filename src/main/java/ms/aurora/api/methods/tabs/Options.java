@@ -2,7 +2,7 @@ package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Settings;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.wrappers.RSWidgetGroup;
+import ms.aurora.api.wrappers.WidgetGroup;
 import org.apache.log4j.Logger;
 
 /**
@@ -13,7 +13,7 @@ public final class Options {
     private final static Logger logger = Logger.getLogger(Options.class);
     private final int runIndex = 173; // stolen rofl
 
-    private static RSWidgetGroup getSettingsGroup() {
+    private static WidgetGroup getSettingsGroup() {
         return Widgets.getWidgetGroup(261);
     }
 

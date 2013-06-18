@@ -33,7 +33,7 @@ public final class Bank {
      *
      * @return bank
      */
-    private static RSWidget getBankWidget() {
+    private static Widget getBankWidget() {
         return Widgets.getWidget(BANK_ID, BANK_PANE_ID);
     }
 
@@ -65,10 +65,10 @@ public final class Bank {
             }
         }
 
-        if (bank instanceof RSNPC && !((RSNPC) bank).isOnScreen()) {
-            Walking.walkToLocal(((RSNPC) bank).getLocation());
-        } else if (bank instanceof RSObject && !((RSObject) bank).isOnScreen()) {
-            Walking.walkToLocal(((RSObject) bank).getLocation());
+        if (bank instanceof NPC && !((NPC) bank).isOnScreen()) {
+            Walking.walkToLocal(((NPC) bank).getLocation());
+        } else if (bank instanceof GameObject && !((GameObject) bank).isOnScreen()) {
+            Walking.walkToLocal(((GameObject) bank).getLocation());
         }
 
         Camera.setAngle(((Locatable) bank).getLocation());
@@ -84,7 +84,7 @@ public final class Bank {
     public static boolean close() {
         if (!isOpen())
             return true;
-        RSWidget close = Widgets.getWidget(BANK_ID, BANK_CLOSE_ID);
+        Widget close = Widgets.getWidget(BANK_ID, BANK_CLOSE_ID);
         if (close != null) {
             close.click(true);
             return true;
@@ -98,8 +98,8 @@ public final class Bank {
      * @param predicate Predicate to match items against
      * @return the first matching item, or null if none were found.
      */
-    public static RSWidgetItem get(final Predicate<RSWidgetItem>... predicate) {
-        RSWidgetItem[] items = getAll(predicate);
+    public static WidgetItem get(final Predicate<WidgetItem>... predicate) {
+        WidgetItem[] items = getAll(predicate);
         if (items.length > 0) {
             return items[0];
         }
@@ -112,8 +112,8 @@ public final class Bank {
      * @param predicate Predicate to match items against.
      * @return An array of all matching items (can be empty).
      */
-    public static RSWidgetItem[] getAll(final Predicate<RSWidgetItem>... predicate) {
-        return ArrayUtils.filter(getAll(), predicate).toArray(new RSWidgetItem[0]);
+    public static WidgetItem[] getAll(final Predicate<WidgetItem>... predicate) {
+        return ArrayUtils.filter(getAll(), predicate).toArray(new WidgetItem[0]);
     }
 
     /**
@@ -121,11 +121,11 @@ public final class Bank {
      *
      * @return an array containing all items in the Bank.
      */
-    public static RSWidgetItem[] getAll() {
-        RSWidget bank = getBankWidget();
+    public static WidgetItem[] getAll() {
+        Widget bank = getBankWidget();
         int[] items = bank.getInventoryItems();
         int[] stacks = bank.getInventoryStackSizes();
-        List<RSWidgetItem> wrappers = new ArrayList<RSWidgetItem>();
+        List<WidgetItem> wrappers = new ArrayList<WidgetItem>();
         for (int i = 0; i < items.length; i++) {
             if (items[i] > 0 && stacks[i] > 0) {
                 int col = (i % 8);
@@ -133,11 +133,11 @@ public final class Bank {
                 int x = bank.getX() + (col * 47) + 20;
                 int y = bank.getY() + (row * 38) + 18;
                 Rectangle area = new Rectangle(x - (46 / 2), y - (36 / 2), 36, 32);
-                RSWidgetItem item = new RSWidgetItem(area, items[i] - 1, stacks[i]);
+                WidgetItem item = new WidgetItem(area, items[i] - 1, stacks[i]);
                 wrappers.add(item);
             }
         }
-        return wrappers.toArray(new RSWidgetItem[wrappers.size()]);
+        return wrappers.toArray(new WidgetItem[wrappers.size()]);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class Bank {
      * @param predicates RSWidgetItem to look for
      * @return true if found, otherwise false.
      */
-    public static boolean contains(Predicate<RSWidgetItem>... predicates) {
+    public static boolean contains(Predicate<WidgetItem>... predicates) {
         return getAll(predicates).length > 0;
     }
 
@@ -156,8 +156,8 @@ public final class Bank {
      * @param predicates A var-args list of Predicates.
      * @return true if all the items were found, false otherwise.
      */
-    public static boolean containsAll(Predicate<RSWidgetItem>... predicates) {
-        for (Predicate<RSWidgetItem> predicate : predicates) {
+    public static boolean containsAll(Predicate<WidgetItem>... predicates) {
+        for (Predicate<WidgetItem> predicate : predicates) {
             if (!contains(predicate)) {
                 return false;
             }
@@ -171,9 +171,9 @@ public final class Bank {
      * @param predicates RSWidgetItem predicate of the items to count
      * @return total amount of items matching id in Bank.
      */
-    public static int count(Predicate<RSWidgetItem>... predicates) {
+    public static int count(Predicate<WidgetItem>... predicates) {
         int count = 0;
-        for (RSWidgetItem item : getAll(predicates)) {
+        for (WidgetItem item : getAll(predicates)) {
             count += item.getStackSize();
         }
         return count;
@@ -184,8 +184,8 @@ public final class Bank {
      *
      * @param ids set of IDs to deposit.
      */
-    public static void depositAll(Predicate<RSWidgetItem>... predicates) {
-        RSWidgetItem item = Inventory.get(predicates);
+    public static void depositAll(Predicate<WidgetItem>... predicates) {
+        WidgetItem item = Inventory.get(predicates);
         if (item != null && item.applyAction("Store All")) {
             sleepNoException(500, 1000);
         }
@@ -199,19 +199,19 @@ public final class Bank {
      *
      * @param ids set of IDs to deposit.
      */
-    public static void depositAllExcept(final Predicate<RSWidgetItem>... predicates) {
-        Predicate<RSWidgetItem> not = new Predicate<RSWidgetItem>() {
+    public static void depositAllExcept(final Predicate<WidgetItem>... predicates) {
+        Predicate<WidgetItem> not = new Predicate<WidgetItem>() {
             @Override
-            public boolean apply(RSWidgetItem object) {
+            public boolean apply(WidgetItem object) {
                 boolean match = false;
-                for (Predicate<RSWidgetItem> predicate : predicates) {
+                for (Predicate<WidgetItem> predicate : predicates) {
                     if (predicate.apply(object)) match = true;
                 }
                 return !match;
             }
         };
 
-        RSWidgetItem item = Inventory.get(not);
+        WidgetItem item = Inventory.get(not);
         if (item != null && item.applyAction("Store All")) {
             sleepNoException(500, 1000);
         }
@@ -225,8 +225,8 @@ public final class Bank {
      *
      * @param id ID of the item to deposit.
      */
-    public static void deposit(Predicate<RSWidgetItem>... predicates) {
-        RSWidgetItem item = Inventory.get(predicates);
+    public static void deposit(Predicate<WidgetItem>... predicates) {
+        WidgetItem item = Inventory.get(predicates);
         if (item != null) {
             item.click(true);
         }

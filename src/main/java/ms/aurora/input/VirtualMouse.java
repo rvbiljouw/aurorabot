@@ -2,13 +2,13 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.util.Utilities;
-import ms.aurora.input.action.MouseInputAction;
-import ms.aurora.input.action.impl.MouseDraggedAction;
-import ms.aurora.input.action.impl.MouseMovedAction;
-import ms.aurora.rt3.Mouse;
+import ms.aurora.input.algorithm.StraightLineGenerator;
+import ms.aurora.input.algorithm.ZetaMouseGenerator;
+import ms.aurora.rt3.IMouse;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 /**
  * This class controls virtual mouse movement.
@@ -18,39 +18,23 @@ import java.awt.event.MouseEvent;
  * @author Matty Cov
  */
 public final class VirtualMouse {
+    private static final MousePathGenerator algorithm = new ZetaMouseGenerator();
 
-    public static void dispatchEvent(MouseEvent event) {
-        switch (event.getID()) {
-            case MouseEvent.MOUSE_MOVED:
-                getMouse().mouseMoved(event);
-                break;
-            case MouseEvent.MOUSE_CLICKED:
-                getMouse().mouseClicked(event);
-                break;
-            case MouseEvent.MOUSE_PRESSED:
-                getMouse().mousePressed(event);
-                break;
-            case MouseEvent.MOUSE_RELEASED:
-                getMouse().mouseReleased(event);
-                break;
-            case MouseEvent.MOUSE_EXITED:
-                getMouse().mouseExited(event);
-                break;
-            case MouseEvent.MOUSE_ENTERED:
-                getMouse().mouseEntered(event);
-                break;
-            case MouseEvent.MOUSE_DRAGGED:
-                getMouse().mouseDragged(event);
-                break;
-        }
-    }
-
-    public static void dispatchChain(MouseEventChain chain) {
-        MouseEvent[] events = chain.getMouseEvents();
-        int[] sleepTimes = chain.getSleepTimes();
-        for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
-            dispatchEvent(events[i]);
-            Utilities.sleepNoException(sleepTimes[i]);
+    private static void dispatchEvent(MouseEvent event) {
+        if (event.getID() == MouseEvent.MOUSE_MOVED) {
+            getMouse().mouseMoved(event);
+        } else if (event.getID() == MouseEvent.MOUSE_CLICKED) {
+            getMouse().mouseClicked(event);
+        } else if (event.getID() == MouseEvent.MOUSE_PRESSED) {
+            getMouse().mousePressed(event);
+        } else if (event.getID() == MouseEvent.MOUSE_RELEASED) {
+            getMouse().mouseReleased(event);
+        } else if (event.getID() == MouseEvent.MOUSE_EXITED) {
+            getMouse().mouseExited(event);
+        } else if (event.getID() == MouseEvent.MOUSE_ENTERED) {
+            getMouse().mouseEntered(event);
+        } else if (event.getID() == MouseEvent.MOUSE_DRAGGED) {
+            getMouse().mouseDragged(event);
         }
     }
 
@@ -59,25 +43,22 @@ public final class VirtualMouse {
     }
 
     public static void moveMouse(final int x, final int y) {
-        /*Point currentPosition;
+        Point currentPosition;
         Point target = new Point(x, y);
         while ((currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY())).distance(target) > 4 && !Thread.currentThread().isInterrupted()) {
-            Point[] path = target.distance(currentPosition) < 20 ? STRAIGHT_MOUSE_GENERATOR.generate(currentPosition, target) :
-                    ZETA_MOUSE_GENERATOR.generate(currentPosition, target);
+            MousePathGenerator algorithm = new ZetaMouseGenerator();
+            if (target.distance(currentPosition) < 20) {
+                algorithm = new StraightLineGenerator();
+            }
+            Point[] path = algorithm.generate(currentPosition, new Point(x, y));
             MouseEventChain chain = MouseEventChain.createMousePath(path);
-            dispatchChain(chain);
-        }*/
-        new MouseMovedAction() {
-            @Override
-            public Point getTarget() {
-                return new Point(x, y);
+            MouseEvent[] events = chain.getMouseEvents();
+            int[] sleepTimes = chain.getSleepTimes();
+            for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
+                dispatchEvent(events[i]);
+                Utilities.sleepNoException(sleepTimes[i]);
             }
-
-            @Override
-            public boolean canStep() {
-                return true;
-            }
-        }.apply();
+        }
     }
 
     public static void clickMouse(boolean left) {
@@ -87,30 +68,28 @@ public final class VirtualMouse {
     public static void clickMouse(int x, int y, boolean left) {
         moveMouse(x, y);
         MouseEventChain chain = MouseEventChain.createMouseClick(new Point(x, y), left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3, 1);
-        dispatchChain(chain);
+        MouseEvent[] events = chain.getMouseEvents();
+        int[] sleepTimes = chain.getSleepTimes();
+        for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
+            dispatchEvent(events[i]);
+            Utilities.sleepNoException(sleepTimes[i]);
+        }
     }
 
-    public static void dragMouse(Point target) {
-        dragMouse(target.x, target.y);
+    public static void dragMouse(Point target, boolean left) {
+        dragMouse(target.x, target.y, left);
     }
 
-    public static void dragMouse(final int x, final int y) {
-        /*Point currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY());
-        Point[] path = ZETA_MOUSE_GENERATOR.generate(currentPosition, new Point(x, y));
+    public static void dragMouse(int x, int y, boolean left) {
+        Point currentPosition = new Point(getMouse().getRealX(), getMouse().getRealY());
+        Point[] path = algorithm.generate(currentPosition, new Point(x, y));
         MouseEventChain chain = MouseEventChain.createMouseDrag(path, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-        dispatchChain(chain);*/
-        new MouseDraggedAction() {
-
-            @Override
-            public Point getTarget() {
-                return new Point(x, y);
-            }
-
-            @Override
-            public boolean canStep() {
-                return true;
-            }
-        }.apply();
+        MouseEvent[] events = chain.getMouseEvents();
+        int[] sleepTimes = chain.getSleepTimes();
+        for (int i = 0; i < events.length && !Thread.currentThread().isInterrupted(); i++) {
+            dispatchEvent(events[i]);
+            Utilities.sleepNoException(sleepTimes[i]);
+        }
     }
 
     public static void moveRandomly(int distance) {
@@ -119,8 +98,14 @@ public final class VirtualMouse {
         moveMouse(x, y);
     }
 
-    public static Mouse getMouse() {
+    public static IMouse getMouse() {
         return Context.getClient().getMouse();
     }
+
+    public static Component getComponent() {
+        return Context.getClient().getCanvas();
+    }
+
+    private static final Random random = new Random();
 
 }

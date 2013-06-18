@@ -1,7 +1,7 @@
 package ms.aurora.api.methods.filters;
 
 import ms.aurora.api.util.Predicate;
-import ms.aurora.api.wrappers.RSGroundItem;
+import ms.aurora.api.wrappers.GroundItem;
 
 /**
  * A class containing several filters for RSGroundItem
@@ -20,10 +20,10 @@ public final class GroundItemFilters {
      * @param ids A list of IDs that are accepted by the filter.
      * @return predicate
      */
-    public static Predicate<RSGroundItem> ID(final int... ids) {
-        return new Predicate<RSGroundItem>() {
+    public static Predicate<GroundItem> ID(final int... ids) {
+        return new Predicate<GroundItem>() {
             @Override
-            public boolean apply(RSGroundItem object) {
+            public boolean apply(GroundItem object) {
                 for (int id : ids) {
                     if (object.getId() == id) {
                         return true;
