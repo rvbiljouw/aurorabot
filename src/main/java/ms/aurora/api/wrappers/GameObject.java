@@ -109,12 +109,12 @@ public final class GameObject implements Locatable, Interactable {
 
         /*Point click = getClickLocation();
         VirtualMouse.moveMouse(click.x, click.y);*/
-        final RSTile location = Players.getLocal().getLocation();
+        final Tile location = Players.getLocal().getLocation();
         new MouseMovedAction() {
 
             @Override
             public Point getTarget() {
-                return RSObject.this.getClickLocation();
+                return GameObject.this.getClickLocation();
             }
 
             @Override
@@ -135,18 +135,49 @@ public final class GameObject implements Locatable, Interactable {
         if (!Viewport.tileOnScreen(getLocation())) {
             return false;
         }
-        Point screen = getScreenLocation();
-        VirtualMouse.moveMouse(screen.x, screen.y);
+        /*Point screen = getScreenLocation();
+        VirtualMouse.moveMouse(screen.x, screen.y);*/
+        final Tile location = Players.getLocal().getLocation();
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return GameObject.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return Players.getLocal().getLocation().equals(location);
+            }
+        }.apply();
         return true;
     }
 
     @Override
-    public final boolean click(boolean left) {
+    public final boolean click(final boolean left) {
         if (!Viewport.tileOnScreen(getLocation())) {
             return false;
         }
-        Point screen = getClickLocation();
-        VirtualMouse.clickMouse(screen.x, screen.y, left);
+        /*oint screen = getClickLocation();
+        VirtualMouse.clickMouse(screen.x, screen.y, left);*/
+        final Tile location = Players.getLocal().getLocation();
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return GameObject.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return Players.getLocal().getLocation().equals(location);
+            }
+
+            @Override
+            public void end() {
+                VirtualMouse.clickMouse(left);
+            }
+        }.apply();
         return true;
     }
 

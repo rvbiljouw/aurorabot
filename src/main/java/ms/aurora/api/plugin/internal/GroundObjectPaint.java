@@ -4,16 +4,16 @@ import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.GameObject;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
 /**
  * @author rvbiljouw
  */
-public class GroundObjectPaint implements PaintListener {
+public class GroundObjectPaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         GameObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);

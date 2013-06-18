@@ -1,8 +1,8 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.tabs.Shop;
-import ms.aurora.api.wrappers.RSWidgetItem;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.api.wrappers.WidgetItem;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 

@@ -4,7 +4,7 @@ import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.GameObject;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
@@ -15,9 +15,9 @@ import java.awt.*;
  * Time: 22:26
  * To change this template use File | Settings | File Templates.
  */
-public class WallObjectPaint implements PaintListener {
+public class WallObjectPaint {
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         GameObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);

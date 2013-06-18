@@ -2,18 +2,18 @@ package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.query.impl.NpcQuery;
 import ms.aurora.api.wrappers.NPC;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
 /**
  * @author rvbiljouw
  */
-public class NpcPaint implements PaintListener {
+public class NpcPaint {
 
     private final NpcQuery query = new NpcQuery().distance(10);
 
-    @Override
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         NPC[] npcs = query.result();
         for (NPC npc : npcs) {

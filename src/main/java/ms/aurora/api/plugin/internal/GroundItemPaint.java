@@ -6,7 +6,7 @@ import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.GroundItem;
-import ms.aurora.event.listeners.PaintListener;
+import ms.aurora.event.EventBus;
 
 import java.awt.*;
 
@@ -16,8 +16,8 @@ import java.awt.*;
  *
  * @author A_C/Cov
  */
-public class GroundItemPaint implements PaintListener {
-    @Override
+public class GroundItemPaint {
+    @EventBus.EventHandler
     public void onRepaint(Graphics graphics) {
         GroundItem[] items = GroundItems.getAll(ITEMS);
         for (GroundItem item: items) {

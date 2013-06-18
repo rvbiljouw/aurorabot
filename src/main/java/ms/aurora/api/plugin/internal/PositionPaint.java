@@ -2,7 +2,7 @@ package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
-import ms.aurora.api.wrappers.RSPlayer;
+import ms.aurora.api.wrappers.Player;
 import ms.aurora.event.EventBus;
 
 import java.awt.*;

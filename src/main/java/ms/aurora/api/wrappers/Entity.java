@@ -1,11 +1,13 @@
 package ms.aurora.api.wrappers;
 
 import ms.aurora.api.methods.Menu;
+import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
 import ms.aurora.api.pathfinding.Path;
 import ms.aurora.api.pathfinding.impl.RSMapPathFinder;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.action.impl.MouseMovedAction;
 import ms.aurora.rt3.IEntity;
 import ms.aurora.rt3.IModel;
 import org.apache.log4j.Logger;
@@ -34,7 +36,8 @@ public class Entity extends Renderable implements Locatable, Interactable {
         return Viewport.convertLocal(getRegionalLocation());
     }
 
-    private Point getClickLocation() {
+    @Override
+    public Point getClickLocation() {
         try {
             if (getModel() != null) {
                 return getModel().getRandomPoint();
@@ -110,8 +113,23 @@ public class Entity extends Renderable implements Locatable, Interactable {
             return false;
         }
 
-        Point click = getClickLocation();
-        VirtualMouse.moveMouse(click.x, click.y);
+        /*Point click = getClickLocation();
+        VirtualMouse.moveMouse(click.x, click.y);*/
+        final Tile charLocation = getLocation();
+        final Tile playersLocation = Players.getLocal().getLocation();
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return Entity.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return Entity.this.getLocation().equals(charLocation)
+                        && Players.getLocal().getLocation().equals(playersLocation);
+            }
+        }.apply();
         Utilities.sleepUntil(containsPred(actionName), 300);
         return contains(actionName) && Menu.click(actionName);
     }
@@ -121,16 +139,51 @@ public class Entity extends Renderable implements Locatable, Interactable {
         if (!Viewport.tileOnScreen(getLocation())) {
             return false;
         }
-        Point screen = getClickLocation();
+        /*Point screen = getClickLocation();
         if (screen == null) return false;
-        moveMouse(screen.x, screen.y);
+        moveMouse(screen.x, screen.y);*/
+        final Tile charLocation = getLocation();
+        final Tile playersLocation = Players.getLocal().getLocation();
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return Entity.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return Entity.this.getLocation().equals(charLocation)
+                        && Players.getLocal().getLocation().equals(playersLocation);
+            }
+        }.apply();
         return true;
     }
 
     @Override
-    public final boolean click(boolean left) {
-        Point screen = getClickLocation();
-        VirtualMouse.clickMouse(screen.x, screen.y, left);
+    public final boolean click(final boolean left) {
+        /*Point screen = getClickLocation();
+        VirtualMouse.clickMouse(screen.x, screen.y, left);*/
+        final Tile location = getLocation();
+        final Tile playersLocation = Players.getLocal().getLocation();
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return Entity.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return Entity.this.getLocation().equals(location)
+                        && Players.getLocal().getLocation().equals(playersLocation);
+            }
+
+            @Override
+            public void end() {
+                VirtualMouse.clickMouse(left);
+            }
+        }.apply();
         return false;
     }
 

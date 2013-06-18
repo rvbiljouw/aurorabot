@@ -3,6 +3,7 @@ package ms.aurora.api.wrappers;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.input.VirtualMouse;
+import ms.aurora.input.action.impl.MouseMovedAction;
 import ms.aurora.rt3.IMouse;
 import ms.aurora.rt3.IWidget;
 import ms.aurora.rt3.IWidgetNode;
@@ -10,6 +11,7 @@ import ms.aurora.rt3.IWidgetNode;
 import java.awt.*;
 
 import static ms.aurora.api.Context.getClient;
+import static ms.aurora.api.methods.Menu.containsPred;
 
 /**
  * @author Rick
@@ -166,7 +168,8 @@ public final class Widget implements Interactable {
      *
      * @return the random point inside the widget
      */
-    public Point getRandomPoint() {
+    @Override
+    public Point getClickLocation() {
         Rectangle area = getArea();
         int x = (int) (area.getCenterX() + Utilities.random(-(area.width / 2.5), area.width / 2.5));
         int y = (int) (area.getCenterY() + Utilities.random(-(area.height / 2.5), area.height / 2.5));
@@ -175,23 +178,61 @@ public final class Widget implements Interactable {
 
     @Override
     public boolean applyAction(String action) {
-        Point randomPoint = this.getRandomPoint();
-        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
-        return ms.aurora.api.methods.Menu.click(action);
+        /*Point randomPoint = this.getRandomPoint();
+        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);*/
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return Widget.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+        }.apply();
+        Utilities.sleepUntil(containsPred(action), 400);
+        return ms.aurora.api.methods.Menu.contains(action) && ms.aurora.api.methods.Menu.click(action);
     }
 
     @Override
     public boolean hover() {
-        Point randomPoint = this.getRandomPoint();
-        VirtualMouse.moveMouse(randomPoint.x, randomPoint.y);
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return Widget.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+        }.apply();
         IMouse clientMouse = getClient().getMouse();
         return this.getArea().contains(clientMouse.getRealX(), clientMouse.getRealY());
     }
 
     @Override
-    public boolean click(boolean left) {
-        Point randomPoint = this.getRandomPoint();
-        VirtualMouse.clickMouse(randomPoint.x, randomPoint.y, left);
+    public boolean click(final boolean left) {
+        new MouseMovedAction() {
+
+            @Override
+            public Point getTarget() {
+                return Widget.this.getClickLocation();
+            }
+
+            @Override
+            public boolean canStep() {
+                return true;
+            }
+
+            @Override
+            public void end() {
+                VirtualMouse.clickMouse(left);
+            }
+        }.apply();
         return true;
     }
 
