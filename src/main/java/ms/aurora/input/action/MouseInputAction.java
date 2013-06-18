@@ -35,9 +35,9 @@ public abstract class MouseInputAction {
 
     public final void apply() {
         begin();
-        for (int i = 0; i < 10; i++) {
-            MouseEventChain chain = getMouseEventChain();
-            int index = 0;
+        int index = 0;
+        MouseEventChain chain = getMouseEventChain();
+        for (int i = 0; i < 10 && index != chain.getMouseEvents().length; i++, chain = getMouseEventChain(), index = 0) {
             while (canStep() && index != chain.getMouseEvents().length) {
                 step(index++, chain);
             }
