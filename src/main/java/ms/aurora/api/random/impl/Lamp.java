@@ -2,6 +2,7 @@ package ms.aurora.api.random.impl;
 
 import ms.aurora.api.methods.Settings;
 import ms.aurora.api.methods.Widgets;
+import ms.aurora.api.methods.filters.Filters;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.methods.tabs.Tabs;
 import ms.aurora.api.random.AfterLogin;
@@ -26,23 +27,13 @@ public class Lamp extends Random {
 
     @Override
     public boolean activate() {
-        return Tabs.isOpen(Tabs.Tab.INVENTORY) && Inventory.contains(new Predicate<WidgetItem>() {
-            @Override
-            public boolean apply(WidgetItem object) {
-                return object.getId() == LAMP_ID;
-            }
-        });
+        return Tabs.isOpen(Tabs.Tab.INVENTORY) && Inventory.contains(Filters.WIDGETITEM_ID(LAMP_ID));
     }
 
     @Override
     public int loop() {
         if (Widgets.getWidget(PARENT_ID, CONFIRM_ID) == null) {
-                   WidgetItem lamp = Inventory.get(new Predicate<WidgetItem>() {
-                       @Override
-                       public boolean apply(WidgetItem object) {
-                           return object.getId() == LAMP_ID;
-                       }
-                   });
+                   WidgetItem lamp = Inventory.get(Filters.WIDGETITEM_ID(LAMP_ID));
                    if (lamp != null) {
                        if (lamp.applyAction("Rub")) {
                            return 800;
@@ -54,7 +45,7 @@ public class Lamp extends Random {
                int widgetIndex = 5;
                Widget choice = Widgets.getWidget(PARENT_ID, widgetIndex);
                if (choice != null) {
-                   if (Settings.getSetting(SETTING) == (widgetIndex - 2)) {
+                   if (Settings.get(SETTING) == (widgetIndex - 2)) {
                        Widget confirm = Widgets.getWidget(PARENT_ID, CONFIRM_ID);
                        if (confirm != null) {
                            confirm.click(true);
