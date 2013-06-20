@@ -2,7 +2,7 @@ package ms.aurora.api.random.impl;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.methods.*;
-import ms.aurora.api.methods.filters.NpcFilters;
+import ms.aurora.api.methods.filters.Filters;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -23,7 +23,7 @@ public class FrogCave extends Random {
 
     @Override
     public boolean activate() {
-        return Npcs.get(NpcFilters.ID(567)) != null && Context.isLoggedIn();
+        return Npcs.get(Filters.NPC_ID(567)) != null && Context.isLoggedIn();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class FrogCave extends Random {
                 return random(600, 800);
             }
             if (!talkedToHerald) {
-                final NPC herald = Npcs.get(NpcFilters.ID(567));
+                final NPC herald = Npcs.get(Filters.NPC_ID(567));
                 if (Calculations.distance(Players.getLocal().getLocation(), herald.getLocation()) < 5) {
                     herald.applyAction("Talk-to");
                     return random(500, 1000);

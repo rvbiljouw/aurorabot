@@ -2,7 +2,7 @@ package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.methods.filters.WidgetItemFilters;
+import ms.aurora.api.methods.filters.Filters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
@@ -227,9 +227,9 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOnAll(int id, int targetId) { // TODO - switch to predicates
-        WidgetItem main = get(WidgetItemFilters.ID(id));
+        WidgetItem main = get(Filters.WIDGETITEM_ID(id));
         if (main != null) {
-            WidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
+            WidgetItem[] targets = getAll(Filters.WIDGETITEM_ID(targetId));
             for (WidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
@@ -250,9 +250,9 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOn(int id, int targetId) {  // TODO - switch to predicates
-        WidgetItem main = get(WidgetItemFilters.ID(id));
+        WidgetItem main = get(Filters.WIDGETITEM_ID(id));
         if (main != null) {
-            WidgetItem[] targets = getAll(WidgetItemFilters.ID(targetId));
+            WidgetItem[] targets = getAll(Filters.WIDGETITEM_ID(targetId));
             for (WidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);

@@ -10,12 +10,12 @@ import static ms.aurora.api.Context.getClient;
 public final class Settings {
 
     /**
-     * Retrieves a client setting
+     * Retrieves a client setting at the supplied index
      *
      * @param index index of the setting
      * @return setting value
      */
-    public static int getSetting(int index) {
+    public static int get(int index) {
         int[] settings = getClient().getWidgetSettings();
         return settings != null && index < settings.length ? settings[index] : -1;
     }

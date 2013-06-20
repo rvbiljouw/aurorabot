@@ -1,8 +1,7 @@
 package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.*;
-import ms.aurora.api.methods.filters.NpcFilters;
-import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.methods.filters.Filters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.*;
@@ -57,9 +56,9 @@ public final class Bank {
             return true;
         }
 
-        Interactable bank = Objects.get(ObjectFilters.ID(BANK_OBJECTS));
+        Interactable bank = Objects.get(Filters.OBJECT_ID(BANK_OBJECTS));
         if (bank == null) {
-            bank = Npcs.get(NpcFilters.NAMED("Banker"));
+            bank = Npcs.get(Filters.NPC_NAME("Banker"));
             if (bank == null) {
                 return false;
             }

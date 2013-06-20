@@ -1,8 +1,7 @@
 package ms.aurora.api.random.impl;
 
 import ms.aurora.api.methods.*;
-import ms.aurora.api.methods.filters.NpcFilters;
-import ms.aurora.api.methods.filters.ObjectFilters;
+import ms.aurora.api.methods.filters.Filters;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -27,7 +26,7 @@ public class Certer extends Random {
 
     @Override
     public boolean activate() {
-        return Objects.get(ObjectFilters.ID(bookPiles)) != null;
+        return Objects.get(Filters.OBJECT_ID(bookPiles)) != null;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class Certer extends Random {
 
         if (readyToLeave) {
             int PORTAL_ID = 11368;
-            final GameObject portal = Objects.get(ObjectFilters.ID(PORTAL_ID));
+            final GameObject portal = Objects.get(Filters.OBJECT_ID(PORTAL_ID));
             if (portal != null) {
                 final Tile portalLocation = portal.getLocation();
                 if (Calculations.distance(Players.getLocal().getLocation(), portal.getLocation()) < 4) {
@@ -88,7 +87,7 @@ public class Certer extends Random {
             return Utilities.random(3000, 4000);
         }
 
-        final NPC certer = Npcs.get(NpcFilters.NAMED("Niles", "Miles", "Giles"));
+        final NPC certer = Npcs.get(Filters.NPC_NAME("Niles", "Miles", "Giles"));
         if (certer != null) {
             if (Calculations.distance(Players.getLocal().getLocation(), certer.getLocation()) < 4) {
                 certer.applyAction("Talk-to");

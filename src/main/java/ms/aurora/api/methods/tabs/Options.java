@@ -44,6 +44,6 @@ public final class Options {
      * @return running
      */
     public static boolean isRunning() {
-        return Settings.getSetting(173) == 1;
+        return Settings.get(173) == 1;
     }
 }

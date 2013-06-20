@@ -40,7 +40,7 @@ public final class Equipment {
         int[] ids = widget.getInventoryItems();
         int[] amounts = widget.getInventoryStackSizes();
         for (int slot = 0; slot < ids.length; slot++) {
-            WidgetItem item = new WidgetItem(new Rectangle(), ids[slot], amounts[slot]); // TODO - work out rectangles
+            WidgetItem item = new WidgetItem(new Rectangle(), ids[slot] - 1, amounts[slot]); // TODO - work out rectangles
             items.add(item);
         }
         return items.toArray(new WidgetItem[items.size()]);
@@ -48,7 +48,7 @@ public final class Equipment {
 
     /**
      * Checks whether an item matching the supplied ids is equipped.
-     * @param ids array of ids to check.
+     * @param predicates array of predicates to check.
      * @return true if there is a match else false.
      */
     public static boolean isEquipped(Predicate<WidgetItem>... predicates) {
