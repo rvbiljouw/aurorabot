@@ -1,8 +1,8 @@
 package ms.aurora.api.plugin.internal;
 
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.methods.query.impl.NpcQuery;
 import ms.aurora.api.wrappers.NPC;
-import ms.aurora.event.EventBus;
 
 import java.awt.*;
 

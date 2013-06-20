@@ -1,7 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.methods.Camera;
-import ms.aurora.event.EventBus;
 
 import java.awt.*;
 

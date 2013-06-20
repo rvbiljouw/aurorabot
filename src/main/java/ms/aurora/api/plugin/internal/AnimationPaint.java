@@ -1,7 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.methods.Players;
-import ms.aurora.event.EventBus;
 import ms.aurora.api.wrappers.Player;
 
 import java.awt.*;

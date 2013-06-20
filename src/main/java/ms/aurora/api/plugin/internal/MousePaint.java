@@ -1,6 +1,6 @@
 package ms.aurora.api.plugin.internal;
 
-import ms.aurora.event.EventBus;
+import ms.aurora.api.event.EventBus;
 import ms.aurora.rt3.IMouse;
 
 import java.awt.*;

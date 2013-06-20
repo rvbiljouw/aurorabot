@@ -1,9 +1,9 @@
 package ms.aurora.core;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.event.RegionUpdateEvent;
 import ms.aurora.api.methods.web.model.World;
-import ms.aurora.event.EventBus;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;

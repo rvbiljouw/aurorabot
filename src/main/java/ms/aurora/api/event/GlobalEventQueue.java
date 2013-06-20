@@ -1,7 +1,6 @@
-package ms.aurora.event;
+package ms.aurora.api.event;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 /**

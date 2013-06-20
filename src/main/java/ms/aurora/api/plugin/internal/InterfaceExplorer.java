@@ -13,10 +13,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.api.Context;
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.Widget;
 import ms.aurora.api.wrappers.WidgetGroup;
-import ms.aurora.event.EventBus;
 
 import java.awt.*;
 import java.io.IOException;

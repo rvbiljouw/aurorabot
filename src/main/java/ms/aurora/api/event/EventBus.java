@@ -1,8 +1,6 @@
-package ms.aurora.event;
+package ms.aurora.api.event;
 
 import ms.aurora.Application;
-import ms.aurora.api.event.MessageEvent;
-import ms.aurora.api.script.Script;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

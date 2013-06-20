@@ -41,7 +41,6 @@ public final class ClientClassLoader extends ClassLoader {
                 JavaClass javaClass = new ClassParser(clazz, name + ".class").parse();
                 ClassGen classGen = new ClassGen(javaClass);
                 logger.debug("Loaded class " + name + " into BCEL.");
-
                 if (classGen.getSuperclassName().equals("java.awt.Canvas")) {
                     String canvasSuperclass = "ms/aurora/input/ClientCanvas";
                     ConstantPoolGen constantPool = classGen.getConstantPool();

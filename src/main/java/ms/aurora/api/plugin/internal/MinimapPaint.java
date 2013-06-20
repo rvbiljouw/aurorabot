@@ -1,5 +1,6 @@
 package ms.aurora.api.plugin.internal;
 
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.methods.Minimap;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Viewport;
@@ -7,7 +8,6 @@ import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.pathfinding.impl.RSRegion;
 import ms.aurora.api.wrappers.Widget;
 import ms.aurora.rt3.IRegion;
-import ms.aurora.event.EventBus;
 
 import java.awt.*;
 

@@ -1,9 +1,9 @@
 package ms.aurora.api.script.task;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.event.EventBus;
 import ms.aurora.api.script.Script;
 import ms.aurora.api.script.ScriptState;
-import ms.aurora.event.EventBus;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
