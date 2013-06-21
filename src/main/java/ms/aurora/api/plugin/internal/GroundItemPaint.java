@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Calculations;
 import ms.aurora.api.methods.GroundItems;
 import ms.aurora.api.methods.Players;
@@ -18,7 +19,8 @@ import java.awt.*;
  */
 public class GroundItemPaint {
     @EventBus.EventHandler
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(PaintEvent event) {
+        Graphics2D graphics = event.getGraphics();
         GroundItem[] items = GroundItems.getAll(ITEMS);
         for (GroundItem item: items) {
             Point screenLocation = Viewport.convert(item.getLocation());

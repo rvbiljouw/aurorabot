@@ -1,6 +1,8 @@
 package ms.aurora.input;
 
+import ms.aurora.Application;
 import ms.aurora.api.Context;
+import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
@@ -60,11 +62,11 @@ public class ClientCanvas extends Canvas {
         return backBuffer.getGraphics();
     }
 
-    private void dispatchEvent(Graphics g) {
+    private void dispatchEvent(Graphics2D g) {
         if (session == null) {
             session = Repository.get(getParent().hashCode());
         } else {
-            session.getEventBus().submit(g);
+            session.getEventBus().submit(new PaintEvent(g));
         }
     }
 

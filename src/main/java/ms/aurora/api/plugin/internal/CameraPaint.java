@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Camera;
 
 import java.awt.*;
@@ -13,7 +14,8 @@ import java.awt.*;
  */
 public class CameraPaint {
     @EventBus.EventHandler
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(PaintEvent event) {
+        Graphics2D graphics = event.getGraphics();
         int x = 10, y = 40;
         graphics.drawString("Camera Angle: " + Camera.getAngle(), x, y);
         y += graphics.getFontMetrics().getHeight();

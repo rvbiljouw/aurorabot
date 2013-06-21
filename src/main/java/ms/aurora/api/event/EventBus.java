@@ -92,5 +92,10 @@ public class EventBus {
                 throw new RuntimeException("Handler invocation failed.");
             }
         }
+
+        @Override
+        public String toString() {
+            return "Object: " + object.getClass() + " Method: " + method.toString();
+        }
     }
 }

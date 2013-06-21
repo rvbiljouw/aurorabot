@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.util.Predicate;
@@ -18,8 +19,8 @@ import java.awt.*;
 public class WallDecorationPaint {
 
     @EventBus.EventHandler
-    public void onRepaint(Graphics g) {
-        Graphics2D graphics = (Graphics2D) g;
+    public void onRepaint(PaintEvent event) {
+        Graphics2D graphics = event.getGraphics();
         GameObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);
         for (GameObject object : objects) {
             Point loc = object.getScreenLocation();

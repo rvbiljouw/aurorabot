@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.wrappers.WidgetItem;
 
@@ -12,7 +13,8 @@ import java.awt.*;
 public class InventoryPaint {
 
     @EventBus.EventHandler
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(PaintEvent event) {
+        Graphics2D graphics = event.getGraphics();
         WidgetItem[] items = Inventory.getAll();
         for (WidgetItem item : items) {
             Rectangle loc = item.getArea();

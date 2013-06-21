@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import ms.aurora.api.Context;
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Widgets;
 import ms.aurora.api.wrappers.Widget;
 import ms.aurora.api.wrappers.WidgetGroup;
@@ -145,7 +146,8 @@ public class InterfaceExplorer extends AnchorPane {
     }
 
     @EventBus.EventHandler
-    public void onRepaint(Graphics graphics) {
+    public void onRepaint(PaintEvent event) {
+        Graphics2D graphics = event.getGraphics();
         if (x != -1 && y != -1) {
             graphics.setColor(Color.WHITE);
             graphics.drawRect(x, y, w, h);
