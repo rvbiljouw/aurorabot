@@ -20,9 +20,14 @@ import static java.lang.reflect.Modifier.isStatic;
  */
 public class EventBus {
     private final List<EventHandlerBridge> bridges = new ArrayList<EventHandlerBridge>();
+    private final ThreadGroup threadGroup;
+
+    public EventBus(ThreadGroup threadGroup) {
+        this.threadGroup = threadGroup;
+    }
 
     public EventBus() {
-
+        this(null);
     }
 
     public void register(Object object) {
@@ -44,7 +49,15 @@ public class EventBus {
     public void submit(Object object) {
         for (EventHandlerBridge bridge : bridges) {
             if (bridge.accept(object.getClass())) {
-                bridge.handle(object);
+                Runnable runnable = invokable(bridge, object);
+                Thread thread = null;
+                if(threadGroup != null) {
+                    thread = new Thread(threadGroup, runnable);
+                } else {
+                    thread = new Thread(runnable);
+                }
+
+                thread.start();
             }
         }
     }
@@ -63,6 +76,15 @@ public class EventBus {
     @Target(ElementType.METHOD)
     public @interface EventHandler {
 
+    }
+
+    private Runnable invokable(final EventHandlerBridge bridge, final Object arg) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                bridge.handle(arg);
+            }
+        };
     }
 
     private class EventHandlerBridge {
@@ -84,12 +106,13 @@ public class EventBus {
         }
 
         public void handle(Object arg) {
+
             try {
                 method.invoke(this.object, arg);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException("Handler invocation failed.");
+                throw new RuntimeException("Handler invocation failed.", e);
             } catch (InvocationTargetException e) {
-                throw new RuntimeException("Handler invocation failed.");
+                throw new RuntimeException("Handler invocation failed.", e);
             }
         }
 

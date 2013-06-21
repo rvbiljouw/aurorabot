@@ -29,8 +29,8 @@ public final class Session implements Runnable {
     private final List<Integer> mappedIDs = new ArrayList<Integer>();
     private final SessionProperties properties = new SessionProperties();
     private final ClientWrapper wrapper = new ClientWrapper();
-    private final EventBus eventBus = new EventBus();
     private final ThreadGroup threadGroup;
+    private final EventBus eventBus;
     private final SessionUI ui;
     private ScriptManager scriptManager;
     private PluginManager pluginManager;
@@ -39,6 +39,7 @@ public final class Session implements Runnable {
 
     public Session(ThreadGroup threadGroup, AppletWidget container) {
         this.ui = new SessionUI(this, container);
+        this.eventBus = new EventBus(threadGroup);
         this.threadGroup = threadGroup;
     }
 

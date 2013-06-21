@@ -29,6 +29,9 @@ public class Context {
     }
 
     public static IClient getClient() {
+        if(getSession() == null) {
+            throw new RuntimeException("Req from tg " + currentThread().getThreadGroup().getName() + " results in null.");
+        }
         return (IClient) getSession().getApplet();
     }
 
