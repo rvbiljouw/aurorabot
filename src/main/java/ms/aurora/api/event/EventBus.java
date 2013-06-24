@@ -57,7 +57,7 @@ public class EventBus {
                     thread = new Thread(runnable);
                 }
 
-                thread.start();
+                thread.run();
             }
         }
     }
