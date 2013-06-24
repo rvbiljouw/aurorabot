@@ -31,7 +31,7 @@ public final class Application {
     public static final Logger logger = Logger.getLogger(Application.class);
     private static final Object initialisation_lock = new Object();
 
-    public static final double VERSION = 15;
+    public static final double VERSION = 1;
     public static LoginWindow LOGIN_WINDOW;
     public static JFrame mainFrame;
 
