@@ -8,6 +8,9 @@ import ms.aurora.core.model.Account;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.model.Property;
 import ms.aurora.sdn.net.api.Versioning;
+import org.h2.tools.Server;
+
+import java.sql.SQLException;
 
 import static com.avaje.ebean.EbeanServerFactory.create;
 
@@ -29,6 +32,12 @@ public class Database {
     };
 
     public static void init() {
+        try {
+            Server.createTcpServer().start();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         ServerConfig cfg = getConfig();
         if (!test(cfg)) {
             // Database was corrupt or not present,
@@ -52,7 +61,7 @@ public class Database {
         dataSource.setDriver("org.h2.Driver");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
-        dataSource.setUrl("jdbc:h2:~/.aurora.db;Recover=1");
+        dataSource.setUrl("jdbc:h2:tcp://localhost/~/.aurora.db;Recover=1");
         config.setDataSourceConfig(dataSource);
         config.setDefaultServer(true);
         config.setRegister(true);

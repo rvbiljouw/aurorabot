@@ -40,7 +40,9 @@ public final class Application {
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
 
         Database.init();
-        SDNConnection.getInstance().start();
+        while(!SDNConnection.getInstance().start()) {
+            SDNConnection.getInstance().start();
+        }
         Versioning.checkForUpdates();
 
         new JFXPanel();

@@ -92,6 +92,7 @@ public abstract class Script extends Context implements Runnable {
         randoms.add(new AutoLogin());
         randoms.add(new WelcomeScreen());
 
+        randoms.add(new Maze());
         randoms.add(new Certer());
         randoms.add(new Ent());
         randoms.add(new FrogCave());

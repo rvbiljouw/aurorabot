@@ -35,7 +35,7 @@ public class SDNConnection implements Runnable {
         return instance;
     }
 
-    public void start() {
+    public boolean start() {
         try {
             socket = new Socket("208.94.241.76", 443);
             socket.setSoTimeout(5000);
@@ -44,8 +44,17 @@ public class SDNConnection implements Runnable {
             dos = new DataOutputStream(socket.getOutputStream());
             self = new Thread(this);
             self.start();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            logger.info("Connection to SDN failed..");
+            logger.info("Retrying in 1s...");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            return false;
         }
     }
 
@@ -56,6 +65,7 @@ public class SDNConnection implements Runnable {
     @Override
     public void run() {
         try {
+            packetHandlers.clear();
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
             packetHandlers.add(new MapDataPacketHandler());
@@ -87,6 +97,8 @@ public class SDNConnection implements Runnable {
             logger.info("Connection lost..");
         } catch (IOException e) {
             e.printStackTrace();
+            logger.info("Attempting to re-establish.");
+            run();
             //System.exit(255);
         }
     }
@@ -94,10 +106,15 @@ public class SDNConnection implements Runnable {
     public void writePacket(OutgoingPacket packet) {
         logger.info("Wrote packet: " + packet.getOpcode());
         try {
-            packet.prepare(); // Prepare zeh meal
-            byte[] buffer = packet.getPayload();
-            dos.write(buffer, 0, buffer.length);
-            dos.flush();
+            if (socket.isConnected()) {
+                packet.prepare(); // Prepare zeh meal
+                byte[] buffer = packet.getPayload();
+                dos.write(buffer, 0, buffer.length);
+                dos.flush();
+            } else {
+                run();
+                writePacket(packet);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

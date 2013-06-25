@@ -7,10 +7,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import ms.aurora.core.model.Property;
 import ms.aurora.api.javafx.Dialog;
-import ms.aurora.gui.Messages;
 import ms.aurora.api.javafx.FXUtils;
+import ms.aurora.core.model.Property;
+import ms.aurora.gui.Messages;
 
 import static ms.aurora.core.model.Property.getByName;
 
@@ -98,7 +98,6 @@ public class MasterPasswordDialog extends Dialog {
             lblVerifyPassword.setVisible(false);
             txtVerifyPassword.setVisible(false);
         }
-        System.out.println(property);
     }
 
     private void showWarning() {
