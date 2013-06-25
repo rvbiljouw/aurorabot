@@ -46,10 +46,9 @@ public class Timer {
     }
 
     public static String formatTime(long timeMilliseconds) {
-        long runtime = timeMilliseconds;
-        int seconds = ((int) ((runtime / 1000) % 60));
-        int mins = ((int) (((runtime / 1000) / 60) % 60));
-        int hours = ((int) ((((runtime / 1000) / 60) / 60) % 60));
+        int seconds = ((int) ((timeMilliseconds / 1000) % 60));
+        int mins = ((int) (((timeMilliseconds / 1000) / 60) % 60));
+        int hours = ((int) ((((timeMilliseconds / 1000) / 60) / 60) % 60));
         return String.format("%02d:%02d:%02d", hours, mins, seconds);
     }
 

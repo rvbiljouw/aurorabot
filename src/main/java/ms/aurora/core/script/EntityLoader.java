@@ -13,7 +13,7 @@ import ms.aurora.core.model.Source;
 import ms.aurora.sdn.net.api.Repository;
 import ms.aurora.sdn.net.api.repository.RemotePlugin;
 import ms.aurora.sdn.net.api.repository.RemoteScript;
-import ms.aurora.util.JarInputStreamClassLoader;
+import ms.aurora.core.script.JarClassLoader;
 import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
@@ -211,7 +211,7 @@ public final class EntityLoader {
     }
 
     private static Class<?> loadRemoteClass(Class<?> manifest, Class<?> parent, ByteArrayInputStream stream) {
-        JarInputStreamClassLoader cl = new JarInputStreamClassLoader(
+        JarClassLoader cl = new JarClassLoader(
                 Thread.currentThread().getContextClassLoader(),
                 stream);
         return cl.loadClassWithManifest(manifest, parent);

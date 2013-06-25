@@ -1,4 +1,4 @@
-package ms.aurora.util;
+package ms.aurora.core.script;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,13 +12,14 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * Loads a jar file from an input stream.
  * @author tobiewarburton
  */
-public class JarInputStreamClassLoader extends ClassLoader {
-    private InputStream stream;
-    private Map<String, byte[]> classByteMap = new HashMap<String, byte[]>();
+public class JarClassLoader extends ClassLoader {
+    private final Map<String, byte[]> classByteMap = new HashMap<String, byte[]>();
+    private final  InputStream stream;
 
-    public JarInputStreamClassLoader(ClassLoader parentClassLoader, InputStream stream) {
+    public JarClassLoader(ClassLoader parentClassLoader, InputStream stream) {
         super(parentClassLoader);
         this.stream = stream;
         populate();

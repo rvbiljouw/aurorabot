@@ -60,7 +60,7 @@ public class PaintDebug extends Plugin {
         });
         paint.getItems().add(npcs);
 
-        CheckMenuItem groundObjects = new CheckMenuItem("Draw Ground Objects");
+        CheckMenuItem groundObjects = new CheckMenuItem("Draw Floor Decorations");
         groundObjects.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent actionEvent) {

@@ -1,6 +1,5 @@
 package ms.aurora.input;
 
-import ms.aurora.Application;
 import ms.aurora.api.Context;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.util.Utilities;
@@ -28,7 +27,6 @@ public class ClientCanvas extends Canvas {
     private static final long serialVersionUID = 4392449009242794406L;
     private static final Color MOUSE_BLUE = new Color(65, 169, 201);
     private static final Color MOUSE_GREY = new Color(236, 236, 236);
-
     public static int PAINT_DELAY = 10;
     private final BufferedImage backBuffer = new BufferedImage(765, 503,
             BufferedImage.TYPE_INT_ARGB);
@@ -62,11 +60,17 @@ public class ClientCanvas extends Canvas {
         return backBuffer.getGraphics();
     }
 
-    private void dispatchEvent(Graphics2D g) {
+    private void dispatchEvent(final Graphics2D g) {
         if (session == null) {
             session = Repository.get(getParent().hashCode());
         } else {
-            session.getEventBus().submit(new PaintEvent(g));
+            Thread thread = new Thread(session.getThreadGroup(), new Runnable() {
+                @Override
+                public void run() {
+                    session.getEventBus().submit(new PaintEvent(g));
+                }
+            });
+            thread.run();
         }
     }
 
@@ -80,7 +84,7 @@ public class ClientCanvas extends Canvas {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
 
-            if(MOUSE_POINTER != null) {
+            if (MOUSE_POINTER != null) {
                 g.drawImage(MOUSE_POINTER, mouseX, mouseY, null);
             }
 
