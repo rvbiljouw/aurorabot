@@ -49,7 +49,6 @@ public class PluginConfig extends AbstractModel {
     public static PluginConfig getByName(String pluginMain) {
         List<PluginConfig> results = find(PluginConfig.class).where().eq(
                 "pluginMain", pluginMain).findList();
-
         if (results.size() == 1) {
             return results.get(0);
         } else {
@@ -57,7 +56,6 @@ public class PluginConfig extends AbstractModel {
             PluginConfig config = new PluginConfig();
             config.setPluginMain(pluginMain);
             config.setEnabled(false);
-            config.save();
             return config;
         }
     }

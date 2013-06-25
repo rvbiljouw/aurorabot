@@ -102,6 +102,7 @@ public class PluginOverview extends Dialog {
                 config.setEnabled(enable);
                 select.setState(enable);
                 config.update();
+                System.out.println("Bean was saved.. " + enable);
             }
         }
     }
@@ -118,7 +119,8 @@ public class PluginOverview extends Dialog {
         for (Class<? extends Plugin> plugin : plugins) {
             PluginManifest manifest = plugin.getAnnotation(PluginManifest.class);
             if (filterName.length() == 0 || manifest.name().toLowerCase().contains(filterName)) {
-                pluginModelList.add(new PluginModel(manifest));
+                PluginModel model = new PluginModel(manifest, plugin);
+                pluginModelList.add(model);
             }
         }
         return pluginModelList;

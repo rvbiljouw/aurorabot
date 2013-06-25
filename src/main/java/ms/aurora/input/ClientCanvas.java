@@ -70,7 +70,12 @@ public class ClientCanvas extends Canvas {
                     session.getEventBus().submit(new PaintEvent(g));
                 }
             });
-            thread.run();
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

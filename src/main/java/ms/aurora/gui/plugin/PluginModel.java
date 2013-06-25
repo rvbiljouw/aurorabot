@@ -18,8 +18,8 @@ public class PluginModel {
     private SimpleStringProperty author;
     private SimpleBooleanProperty state;
 
-    public PluginModel(PluginManifest manifest) {
-        PluginConfig config = getByName(manifest.name());
+    public PluginModel(PluginManifest manifest, Class<? extends Plugin> plugin) {
+        PluginConfig config = PluginConfig.getByName(plugin.getName());
         this.manifest = manifest;
         this.name = new SimpleStringProperty(manifest.name());
         this.shortDesc = new SimpleStringProperty(manifest.shortDescription());
