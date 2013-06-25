@@ -49,15 +49,7 @@ public class EventBus {
     public void submit(Object object) {
         for (EventHandlerBridge bridge : bridges) {
             if (bridge.accept(object.getClass())) {
-                Runnable runnable = invokable(bridge, object);
-                Thread thread = null;
-                if(threadGroup != null) {
-                    thread = new Thread(threadGroup, runnable);
-                } else {
-                    thread = new Thread(runnable);
-                }
-
-                thread.run();
+                bridge.handle(object);
             }
         }
     }
@@ -70,15 +62,6 @@ public class EventBus {
             }
         }
         bridges.removeAll(deprecated);
-    }
-
-    private Runnable invokable(final EventHandlerBridge bridge, final Object arg) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                bridge.handle(arg);
-            }
-        };
     }
 
     private class EventHandlerBridge {
