@@ -51,6 +51,7 @@ public abstract class Script extends Context implements Runnable {
         init();
         try {
             onStart();
+            state = ScriptState.RUNNING;
             while (getState() != ScriptState.STOP) {
                 String _delay = getProperty("script.delay");
                 int delay = _delay == null ? 500 : Integer.parseInt(_delay);

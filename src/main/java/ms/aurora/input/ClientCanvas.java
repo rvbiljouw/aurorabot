@@ -51,9 +51,9 @@ public class ClientCanvas extends Canvas {
         Graphics _super = super.getGraphics();
         Graphics2D graphics2D = (Graphics2D) botBuffer.getGraphics();
         graphics2D.drawImage(backBuffer, 0, 0, null);
-        drawMouse(graphics2D);
         graphics2D.setColor(Color.RED);
         dispatchEvent(graphics2D);
+        drawMouse(graphics2D);
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
