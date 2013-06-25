@@ -1,5 +1,6 @@
 package ms.aurora.api.methods;
 
+import ms.aurora.api.methods.query.impl.ObjectQuery;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.GameObject;
@@ -131,4 +132,7 @@ public final class Objects {
         return objects;
     }
 
+    public static ObjectQuery find() {
+        return new ObjectQuery();
+    }
 }
