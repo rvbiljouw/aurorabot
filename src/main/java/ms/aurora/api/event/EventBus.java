@@ -72,12 +72,6 @@ public class EventBus {
         bridges.removeAll(deprecated);
     }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    public @interface EventHandler {
-
-    }
-
     private Runnable invokable(final EventHandlerBridge bridge, final Object arg) {
         return new Runnable() {
             @Override
