@@ -13,13 +13,12 @@ import ms.aurora.core.model.Source;
 import ms.aurora.sdn.net.api.Repository;
 import ms.aurora.sdn.net.api.repository.RemotePlugin;
 import ms.aurora.sdn.net.api.repository.RemoteScript;
-import ms.aurora.core.script.JarClassLoader;
 import org.apache.log4j.Logger;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -75,6 +74,7 @@ public final class EntityLoader {
      * Recursively in this context means that it will
      * dive into sub-folders of the initial folder as well
      * until it finds no more.
+     *
      * @param root A directory root at which to start scanning.
      */
     private static void traverse(File root) {
@@ -96,11 +96,17 @@ public final class EntityLoader {
      * Opens a jar file, iterating through all entries.
      * If a .class entry is found, finds out if it is
      * a scriptable entity, and if so, loads it.
+     *
      * @param rawFile a JAR file.
      * @throws Exception
      */
     private static void loadJar(File rawFile) throws Exception {
-        JarFile file = new JarFile(rawFile, false, JarFile.OPEN_READ);
+        File tempFile = File.createTempFile("wut", "lefux");
+        tempFile.deleteOnExit();
+        copyFile(rawFile, tempFile);
+        JarFile file = new JarFile(tempFile, false, JarFile.OPEN_READ);
+
+
         URL[] classpathURLs = new URL[]{rawFile.toURI().toURL()};
         ClassLoader loader = new URLClassLoader(classpathURLs,
                 Thread.currentThread().getContextClassLoader());
@@ -224,6 +230,23 @@ public final class EntityLoader {
     private static void loadRepository() {
         Repository.loadScripts();
         Repository.loadPlugins();
+    }
+
+    private static void copyFile(File sourceFile, File destFile) throws IOException {
+        FileChannel source = null;
+        FileChannel destination = null;
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
     }
 
     static {

@@ -29,5 +29,9 @@ public class RegionData extends OutgoingPacket {
         getStream().write(json);
         getStream().flush();
         getStream().close();
+
+        System.out.println();
+        System.out.println(new String(json));
+        System.out.println();
     }
 }
