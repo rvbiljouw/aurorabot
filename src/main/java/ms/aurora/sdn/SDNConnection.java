@@ -37,7 +37,7 @@ public class SDNConnection implements Runnable {
 
     public boolean start() {
         try {
-            socket = new Socket("208.94.241.76", 443);
+            socket = new Socket("sdn.aurora.ms", 443);
             socket.setSoTimeout(5000);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
