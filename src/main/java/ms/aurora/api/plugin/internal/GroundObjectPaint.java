@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
@@ -14,7 +15,7 @@ import java.awt.*;
  */
 public class GroundObjectPaint {
 
-    @EventBus.EventHandler
+    @EventHandler
     public void onRepaint(PaintEvent event) {
         Graphics2D graphics = event.getGraphics();
         GameObject[] objects = Objects.getAll(RSOBJECT_PREDICATE);

@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.tabs.Bank;
 import ms.aurora.api.wrappers.WidgetItem;
@@ -15,7 +16,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class BankPaint {
-    @EventBus.EventHandler
+    @EventHandler
     public void onRepaint(PaintEvent event) {
         Graphics2D graphics = event.getGraphics();
         if (Bank.isOpen()) {

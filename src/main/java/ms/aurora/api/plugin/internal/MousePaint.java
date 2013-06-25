@@ -1,6 +1,7 @@
 package ms.aurora.api.plugin.internal;
 
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.rt3.IMouse;
 
@@ -13,7 +14,7 @@ import static ms.aurora.api.Context.getClient;
  */
 public class MousePaint {
 
-    @EventBus.EventHandler
+    @EventHandler
     public void onRepaint(PaintEvent event) {
         Graphics2D graphics = event.getGraphics();
         IMouse mouse = getClient().getMouse();

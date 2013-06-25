@@ -2,6 +2,7 @@ package ms.aurora.core;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.event.EventBus;
+import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.RegionUpdateEvent;
 import ms.aurora.api.methods.web.model.World;
 import ms.aurora.core.model.Account;
@@ -98,7 +99,7 @@ public final class Session implements Runnable {
     }
 
 
-    @EventBus.EventHandler
+    @EventHandler
     public void onRegionUpdate(RegionUpdateEvent event) {
 
     }
