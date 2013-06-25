@@ -39,7 +39,7 @@ public final class GameObject implements Locatable, Interactable {
             objectType = ObjectType.WALL_DECORATION;
         } else if (wrapped instanceof IWallObject) {
             objectType = ObjectType.WALL_OBJECT;
-        } else if (wrapped instanceof IAnimableObject) {
+        } else {
             objectType = ObjectType.ANIMABLE;
         }
     }
