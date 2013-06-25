@@ -24,7 +24,6 @@ import java.awt.*;
 import java.io.InputStream;
 
 import static ms.aurora.api.methods.Calculations.distance;
-import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
  * Date: 25/03/13
@@ -184,7 +183,7 @@ public final class Walking {
 
             JSONSerializer serializer = new JSONSerializer();
             String json = serializer.serialize(packet);
-            Context ctx = ContextBuilder.get().domain("208.94.241.76").port(9000).build();
+            Context ctx = ContextBuilder.get().domain("sdn.aurora.ms").port(9000).build();
             Browser browser = new Browser(ctx);
             browser.doRequest(new JsonPostRequest("/api/path", json), new ResponseHandler() {
                 @Override
