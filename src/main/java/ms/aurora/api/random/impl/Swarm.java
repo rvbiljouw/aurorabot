@@ -20,7 +20,7 @@ import static ms.aurora.api.util.Utilities.random;
 public class Swarm extends Random {
     @Override
     public boolean activate() {
-        Entity interacting = Players.getLocal().getInteractingEntity();
+        Entity interacting = Players.getLocal().getInteracting();
         if (interacting == null) {
             return false;
         }
