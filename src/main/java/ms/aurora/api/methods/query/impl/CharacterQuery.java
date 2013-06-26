@@ -14,7 +14,7 @@ public abstract class CharacterQuery<RT extends Entity, QT extends CharacterQuer
         this.addConditional(new Conditional() {
             @Override
             protected boolean accept(RT type) {
-                return type.getInteracting().equals(character);
+                return type.getInteractingEntity().equals(character);
             }
         });
         return (QT) this;

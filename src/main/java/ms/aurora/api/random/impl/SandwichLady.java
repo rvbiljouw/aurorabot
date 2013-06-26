@@ -31,7 +31,7 @@ public class SandwichLady extends Random {
 
     @Override
     public int loop() {
-        if (Widgets.getWidget(WIDGET_PARENT_ID, WIDGET_CHILD_ID) == null && Players.getLocal().getInteracting() == null) {
+        if (Widgets.getWidget(WIDGET_PARENT_ID, WIDGET_CHILD_ID) == null && Players.getLocal().getInteractingEntity() == null) {
             NPC lady = Npcs.get(new Predicate<NPC>() {
                 @Override
                 public boolean apply(NPC object) {
@@ -47,7 +47,8 @@ public class SandwichLady extends Random {
                 return 1200;
             }
         }
-        if (Widgets.getWidget(WIDGET_PARENT_ID, WIDGET_CHILD_ID) != null && Players.getLocal().getInteracting() != null) {
+
+        if (Widgets.getWidget(WIDGET_PARENT_ID, WIDGET_CHILD_ID) != null && Players.getLocal().getInteractingEntity() != null) {
             String foodMessage = Widgets.getWidget(WIDGET_PARENT_ID, WIDGET_PARENT_ID).getText();
             Sandwiches sandwich = Sandwiches.getModelIdFor(foodMessage);
             if (sandwich != null) {

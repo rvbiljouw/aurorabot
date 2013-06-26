@@ -26,7 +26,7 @@ public class Ent extends Random {
 
     @Override
     public boolean activate() {
-        Entity interacting = Players.getLocal().getInteracting();
+        Entity interacting = Players.getLocal().getInteractingEntity();
         if (interacting == null) {
             return false;
         }

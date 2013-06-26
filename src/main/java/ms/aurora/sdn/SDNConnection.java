@@ -7,9 +7,7 @@ import ms.aurora.sdn.net.api.Authentication;
 import ms.aurora.sdn.net.impl.*;
 import org.apache.log4j.Logger;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class SDNConnection implements Runnable {
     private static Logger logger = getLogger(SDNConnection.class);
     private List<PacketHandler> packetHandlers = new ArrayList<PacketHandler>();
     private DataInputStream dis;
-    private DataOutputStream dos;
+    private OutputStream dos;
     private Socket socket;
     private Thread self;
 
@@ -41,8 +39,8 @@ public class SDNConnection implements Runnable {
             socket = new Socket("sdn.aurora.ms", 443);
             socket.setSoTimeout(5000);
             socket.setKeepAlive(true);
-            dis = new DataInputStream(socket.getInputStream());
-            dos = new DataOutputStream(socket.getOutputStream());
+            dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            dos = new BufferedOutputStream(socket.getOutputStream());
             self = new Thread(this);
             self.start();
             return true;
