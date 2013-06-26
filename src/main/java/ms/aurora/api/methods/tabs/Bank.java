@@ -26,9 +26,9 @@ public final class Bank {
     private static final int BANK_CLOSE_ID = 104;
     private static final int[] BANK_NPCS = {56, 494, 495, 496};
     private static final int[] BANK_OBJECTS = {782, 2012, 2015, 2213,
-            4483, 2453, 6084, 11402, 11758, 12759, 14367, 19230, 24914, 25808,
-            26972, 27663, 29085, 34752, 35647, 36786, 4483, 8981, 14382, 20607, 21301
-    };
+                4483, 2453, 6084, 11758, 12759, 14367, 19230, 24914, 25808,
+                26972, 27663, 29085, 34752, 35647, 36786, 4483, 8981, 14382, 20607, 21301
+        };
 
 
     private static final StatePredicate WALKING() {
@@ -206,8 +206,6 @@ public final class Bank {
 
     /**
      * Deposits all items of which the id matches any of the IDs specified.
-     *
-     * @param ids set of IDs to deposit.
      */
     public static void depositAll(Predicate<WidgetItem>... predicates) {
         WidgetItem item = Inventory.get(predicates);
@@ -221,8 +219,6 @@ public final class Bank {
 
     /**
      * Deposits all items of which the id matches any of the IDs specified.
-     *
-     * @param ids set of IDs to deposit.
      */
     public static void depositAllExcept(final Predicate<WidgetItem>... predicates) {
         Predicate<WidgetItem> not = new Predicate<WidgetItem>() {
@@ -248,7 +244,6 @@ public final class Bank {
     /**
      * Deposits a single item
      *
-     * @param id ID of the item to deposit.
      */
     public static void deposit(Predicate<WidgetItem>... predicates) {
         WidgetItem item = Inventory.get(predicates);
