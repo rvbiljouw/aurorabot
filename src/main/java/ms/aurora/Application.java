@@ -36,7 +36,7 @@ public final class Application {
     public static JFrame mainFrame;
 
     public static void main(String[] args) {
-        logger.error("Testing error!");
+        logger.error("Testing error!", new RuntimeException("Hello!"));
         System.setSecurityManager(new DefaultSecurityManager());
         getDefaultToolkit().getSystemEventQueue().push(new GlobalEventQueue());
 
