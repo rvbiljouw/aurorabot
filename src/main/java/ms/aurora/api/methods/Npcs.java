@@ -1,5 +1,6 @@
 package ms.aurora.api.methods;
 
+import ms.aurora.api.methods.query.impl.NpcQuery;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.NPC;
@@ -74,5 +75,9 @@ public final class Npcs {
             }
         }
         return closest;
+    }
+
+    public static NpcQuery find() {
+        return new NpcQuery();
     }
 }

@@ -2,6 +2,7 @@ package ms.aurora.input;
 
 import ms.aurora.api.Context;
 import ms.aurora.api.event.PaintEvent;
+import ms.aurora.api.script.ScriptState;
 import ms.aurora.api.util.Utilities;
 import ms.aurora.core.Repository;
 import ms.aurora.core.Session;
@@ -50,9 +51,9 @@ public class ClientCanvas extends Canvas {
         Graphics _super = super.getGraphics();
         Graphics2D graphics2D = (Graphics2D) botBuffer.getGraphics();
         graphics2D.drawImage(backBuffer, 0, 0, null);
-        drawMouse(graphics2D);
         graphics2D.setColor(Color.RED);
         dispatchEvent(graphics2D);
+        drawMouse(graphics2D);
         if (_super != null) {
             _super.drawImage(botBuffer, 0, 0, null);
         }
@@ -89,7 +90,7 @@ public class ClientCanvas extends Canvas {
             int mouseX = Context.getClient().getMouse().getRealX();
             int mouseY = Context.getClient().getMouse().getRealY();
 
-            if (MOUSE_POINTER != null) {
+            if (MOUSE_POINTER != null && session.getScriptManager().getState() == ScriptState.RUNNING) {
                 g.drawImage(MOUSE_POINTER, mouseX, mouseY, null);
             }
 

@@ -1,6 +1,7 @@
 package ms.aurora.api.methods;
 
 import ms.aurora.api.Context;
+import ms.aurora.api.methods.query.impl.GroundItemQuery;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Deque;
@@ -106,5 +107,9 @@ public final class GroundItems {
             }
         }
         return items;
+    }
+
+    public static GroundItemQuery find() {
+        return new GroundItemQuery();
     }
 }

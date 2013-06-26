@@ -1,5 +1,6 @@
 package ms.aurora.api.methods;
 
+import ms.aurora.api.methods.query.impl.PlayerQuery;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.wrappers.Player;
@@ -84,4 +85,7 @@ public final class Players {
         return closest;
     }
 
+    public static PlayerQuery find() {
+        return new PlayerQuery();
+    }
 }

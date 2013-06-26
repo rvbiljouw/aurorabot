@@ -4,6 +4,8 @@ import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.filters.Filters;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
+import ms.aurora.api.util.StatePredicate;
+import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.*;
 import org.apache.log4j.Logger;
 
@@ -11,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ms.aurora.api.methods.Calculations.distance;
 import static ms.aurora.api.util.Utilities.sleepNoException;
 
 /**
@@ -26,6 +29,25 @@ public final class Bank {
             4483, 2453, 6084, 11402, 11758, 12759, 14367, 19230, 24914, 25808,
             26972, 27663, 29085, 34752, 35647, 36786, 4483, 8981, 14382, 20607, 21301
     };
+
+
+    private static final StatePredicate WALKING() {
+        return new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return Players.getLocal().isMoving();
+            }
+        };
+    }
+
+    private static final StatePredicate WALKING(final Tile tile, final int distance) {
+        return new StatePredicate() {
+            @Override
+            public boolean apply() {
+                return Players.getLocal().isMoving() && distance(tile, Players.getLocal().getLocation()) > distance;
+            }
+        };
+    }
 
     /**
      * Retrieves the bank widget
@@ -72,6 +94,10 @@ public final class Bank {
 
         Camera.setAngle(((Locatable) bank).getLocation());
         bank.applyAction("Bank(.*)Bank");
+        Utilities.sleepUntil(WALKING(), 600);
+        if (Players.getLocal().isMoving()) {
+            Utilities.sleepWhile(WALKING(), 7500);
+        }
         return isOpen();
     }
 

@@ -7,14 +7,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import ms.aurora.api.javafx.Dialog;
+import ms.aurora.api.javafx.FXUtils;
 import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 import ms.aurora.core.impl.PluginRefreshVisitor;
 import ms.aurora.core.model.PluginConfig;
 import ms.aurora.core.script.EntityLoader;
-import ms.aurora.api.javafx.Dialog;
 import ms.aurora.gui.Messages;
-import ms.aurora.api.javafx.FXUtils;
 
 import java.util.List;
 
@@ -101,7 +101,7 @@ public class PluginOverview extends Dialog {
                 PluginConfig config = getByName(plugin.getName());
                 config.setEnabled(enable);
                 select.setState(enable);
-                config.update();
+                config.save();
                 System.out.println("Bean was saved.. " + enable);
             }
         }

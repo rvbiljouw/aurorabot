@@ -3,6 +3,7 @@ package ms.aurora.sdn;
 import ms.aurora.sdn.net.IncomingPacket;
 import ms.aurora.sdn.net.OutgoingPacket;
 import ms.aurora.sdn.net.PacketHandler;
+import ms.aurora.sdn.net.api.Authentication;
 import ms.aurora.sdn.net.impl.*;
 import org.apache.log4j.Logger;
 
@@ -37,7 +38,7 @@ public class SDNConnection implements Runnable {
 
     public boolean start() {
         try {
-            socket = new Socket("208.94.241.76", 443);
+            socket = new Socket("sdn.aurora.ms", 443);
             socket.setSoTimeout(5000);
             socket.setKeepAlive(true);
             dis = new DataInputStream(socket.getInputStream());
@@ -65,6 +66,8 @@ public class SDNConnection implements Runnable {
     @Override
     public void run() {
         try {
+            Authentication.reauthenticate();
+
             packetHandlers.clear();
             packetHandlers.add(new LoginPacketHandler());
             packetHandlers.add(new UpdatePacketHandler());
