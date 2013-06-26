@@ -55,6 +55,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import ms.aurora.api.javafx.FXUtils;
 import ms.aurora.gui.Messages;
 
 /**
@@ -206,20 +207,10 @@ public class MessageBox {
         // Default return value is CANCEL.
         final int[] result = new int[]{CANCEL};
 
-        // Create stage without iconized button.
-        final Stage dialog = new Stage(StageStyle.UTILITY);
-        dialog.setTitle(title);
-        dialog.setResizable(false);
-        dialog.initModality(Modality.WINDOW_MODAL);
-        if (parent != null) {
-            // Only set in case of not null.
-            dialog.initOwner(parent);
-        }
-
         final VBox totalPane = new VBox();
-        dialog.setScene(new Scene(totalPane));
         totalPane.setAlignment(Pos.CENTER);
         totalPane.setSpacing(2);
+        final Stage stage = FXUtils.createModalStage(title, totalPane);
 
         final HBox pane = new HBox();
         totalPane.getChildren().add(pane);
@@ -289,7 +280,7 @@ public class MessageBox {
                     btnAdd.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent e) {
-                            dialog.close();
+                            stage.close();
                             result[0] = resultValue;
                         }
                     });
@@ -312,7 +303,7 @@ public class MessageBox {
                 btnAdd.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
-                        dialog.close();
+                        stage.close();
                         result[0] = OK;
                     }
                 });
@@ -325,8 +316,7 @@ public class MessageBox {
         }
 
         // Below method is supported JavaFX 2.2 or lator.
-        dialog.showAndWait();
-
+        stage.showAndWait();
         return result[0];
     }
 

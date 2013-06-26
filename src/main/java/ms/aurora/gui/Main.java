@@ -215,7 +215,7 @@ public class Main extends AnchorPane {
      */
     public void onForums() {
         try {
-            Desktop.getDesktop().browse(new URL("http://www.aurora.ms/community").toURI());
+            Desktop.getDesktop().browse(new URL("http://www.aurora.ms").toURI());
         } catch (Exception e) {
             e.printStackTrace();
         }
