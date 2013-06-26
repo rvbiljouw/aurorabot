@@ -83,8 +83,8 @@ public class Entity extends Renderable implements Locatable, Interactable {
      * @return the character that the current character is interacting with, or
      *         null
      */
-    public final Entity getInteracting() {
-        int interacting = getInteractingEntity();
+    public final Entity getInteractingEntity() {
+        int interacting = getInteracting();
         if (interacting == -1) {
             return null;
         } else if (interacting < 32767) {
@@ -207,7 +207,7 @@ public class Entity extends Renderable implements Locatable, Interactable {
         return wrapped.getMessage() == null ? "" : wrapped.getMessage();
     }
 
-    public final int getInteractingEntity() {
+    public final int getInteracting() {
         return wrapped.getInteractingEntity();
     }
 
