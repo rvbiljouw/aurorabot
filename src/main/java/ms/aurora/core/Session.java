@@ -5,6 +5,7 @@ import ms.aurora.api.event.EventBus;
 import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.RegionUpdateEvent;
 import ms.aurora.api.methods.web.model.World;
+import ms.aurora.api.util.BreakHandler;
 import ms.aurora.core.model.Account;
 import ms.aurora.core.script.PluginManager;
 import ms.aurora.core.script.ScriptManager;
@@ -13,6 +14,7 @@ import ms.aurora.loader.ClientWrapper;
 import ms.aurora.rt3.IRegion;
 import ms.aurora.sdn.SDNConnection;
 import ms.aurora.sdn.model.RegionDataPacket;
+import ms.aurora.sdn.net.api.repository.StatusRepository;
 import ms.aurora.sdn.net.packet.RegionData;
 
 import java.applet.Applet;
@@ -39,6 +41,8 @@ public final class Session implements Runnable {
     private PluginManager pluginManager;
     private Account account;
     private long lastSyncTime = 0;
+    private StatusRepository statusRepository;
+    private BreakHandler breakHandler;
 
     public Session(ThreadGroup threadGroup, AppletWidget container) {
         this.ui = new SessionUI(this, container);
@@ -52,6 +56,7 @@ public final class Session implements Runnable {
         if (wrapper.getApplet() != null) {
             scriptManager = new ScriptManager(this);
             pluginManager = new PluginManager(this);
+            statusRepository = new StatusRepository(this);
             update();
         }
 
@@ -155,6 +160,10 @@ public final class Session implements Runnable {
         return account;
     }
 
+    public BreakHandler getBreakHandler() {
+        return breakHandler;
+    }
+
     public void setAccount(Account account) {
         this.account = account;
         this.ui.update();
@@ -168,5 +177,9 @@ public final class Session implements Runnable {
 
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public StatusRepository getStatusRepository() {
+        return statusRepository;
     }
 }

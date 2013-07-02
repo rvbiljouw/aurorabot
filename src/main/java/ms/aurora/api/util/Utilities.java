@@ -18,6 +18,11 @@ public final class Utilities {
         return (min + (Math.random() * max));
     }
 
+
+    public static long random(long min, long max) {
+        return (min + ((long) Math.random() * max));
+    }
+
     public static void sleepNoException(int ms) {
         try {
             Thread.sleep(ms);
