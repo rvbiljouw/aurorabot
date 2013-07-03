@@ -3,7 +3,7 @@ package ms.aurora.api.random.impl;
 import ms.aurora.api.methods.Npcs;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.methods.filters.Filters;
+import ms.aurora.api.methods.Predicates;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -29,7 +29,7 @@ public class Mime extends Random {
 
     @Override
     public boolean activate() {
-        return Npcs.get(Filters.NPC_NAME("Mime")) != null;
+        return Npcs.get(Predicates.NPC_NAME("Mime")) != null;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Mime extends Random {
         if (!activate()) {
             return -1;
         }
-        NPC mime = Npcs.get(Filters.NPC_NAME("Mime"));
+        NPC mime = Npcs.get(Predicates.NPC_NAME("Mime"));
         if (mime != null) {
             Animation anim = Animation.forAnim(mime.getAnimation());
             if (anim != null && anim != lastAnimation) {

@@ -2,7 +2,7 @@ package ms.aurora.api.random.impl;
 
 import ms.aurora.api.methods.*;
 import ms.aurora.api.methods.Menu;
-import ms.aurora.api.methods.filters.Filters;
+import ms.aurora.api.methods.Predicates;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -141,7 +141,7 @@ public class Maze extends Random {
 
     @Override
     public boolean activate() {
-        if (Objects.get(Filters.OBJECT_ID(3626, 3649)) != null) {
+        if (Objects.get(Predicates.OBJECT_ID(3626, 3649)) != null) {
             Camera.setPitch(true);
             return true;
         }
@@ -185,7 +185,7 @@ public class Maze extends Random {
                 if (((Camera.getAngle() - turnCameraTo()) < 30) || ((Camera.getAngle() - turnCameraTo()) > 30)) {
                     Camera.setAngle(turnCameraTo());
                 }
-                GameObject obj = Objects.get(Filters.OBJECT_LOCATION(walkToTile));
+                GameObject obj = Objects.get(Predicates.OBJECT_LOCATION(walkToTile));
                 if (obj != null && obj.applyAction("Open") || atDoor(walkToTile, doorDir)) {
                     return random(400, 500);
                 }

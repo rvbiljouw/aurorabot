@@ -4,7 +4,7 @@ import ms.aurora.api.methods.Camera;
 import ms.aurora.api.methods.Objects;
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.methods.filters.Filters;
+import ms.aurora.api.methods.Predicates;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -26,14 +26,14 @@ public class Pinball extends Random {
 
     @Override
     public boolean activate() {
-        return Objects.get(Filters.OBJECT_ID(POST_INVALID)) != null;
+        return Objects.get(Predicates.OBJECT_ID(POST_INVALID)) != null;
     }
 
     @Override
     public int loop() {
         if (!idle()) return random(1000, 2000);
-        GameObject exit = Objects.get(Filters.OBJECT_ID(DOOR_ID));
-        GameObject validPost = Objects.get(Filters.OBJECT_ID(POST_VALID));
+        GameObject exit = Objects.get(Predicates.OBJECT_ID(DOOR_ID));
+        GameObject validPost = Objects.get(Predicates.OBJECT_ID(POST_VALID));
 
         if (validPost != null) {
             if (validPost.isOnScreen() && validPost.applyAction("Tag")) {

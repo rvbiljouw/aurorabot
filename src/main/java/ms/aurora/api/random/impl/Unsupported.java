@@ -2,7 +2,7 @@ package ms.aurora.api.random.impl;
 
 import ms.aurora.api.methods.Npcs;
 import ms.aurora.api.methods.Objects;
-import ms.aurora.api.methods.filters.Filters;
+import ms.aurora.api.methods.Predicates;
 import ms.aurora.api.methods.tabs.Logout;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -20,8 +20,8 @@ public class Unsupported extends Random {
 
     @Override
     public boolean activate() {
-        return Npcs.getAll(Filters.NPC_NAME(UNSUPPORTED_NPC_NAMES)).length > 0
-                || Objects.getAll(Filters.OBJECT_ID(UNSUPPORTED_OBJ_IDS)).length > 0;
+        return Npcs.getAll(Predicates.NPC_NAME(UNSUPPORTED_NPC_NAMES)).length > 0
+                || Objects.getAll(Predicates.OBJECT_ID(UNSUPPORTED_OBJ_IDS)).length > 0;
     }
 
     @Override

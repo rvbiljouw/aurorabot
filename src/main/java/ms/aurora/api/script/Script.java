@@ -110,6 +110,8 @@ public abstract class Script extends Context implements Runnable {
         randoms.add(new Swarm());
         randoms.add(new Talker());
         randoms.add(new Teleother());
+        randoms.add(new OddAppendage());
+        randoms.add(new FreakyForester());
         randoms.add(new Unsupported());
         logger.info("Loaded " + randoms.size() + " randoms.");
     }

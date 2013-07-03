@@ -2,14 +2,12 @@ package ms.aurora.api.random.impl;
 
 import ms.aurora.api.methods.Settings;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.methods.filters.Filters;
+import ms.aurora.api.methods.Predicates;
 import ms.aurora.api.methods.tabs.Inventory;
 import ms.aurora.api.methods.tabs.Tabs;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
-import ms.aurora.api.util.Predicate;
-import ms.aurora.api.util.Utilities;
 import ms.aurora.api.wrappers.Widget;
 import ms.aurora.api.wrappers.WidgetItem;
 
@@ -27,13 +25,13 @@ public class Lamp extends Random {
 
     @Override
     public boolean activate() {
-        return Tabs.isOpen(Tabs.Tab.INVENTORY) && Inventory.contains(Filters.WIDGETITEM_ID(LAMP_ID));
+        return Tabs.isOpen(Tabs.Tab.INVENTORY) && Inventory.contains(Predicates.WIDGETITEM_ID(LAMP_ID));
     }
 
     @Override
     public int loop() {
         if (Widgets.getWidget(PARENT_ID, CONFIRM_ID) == null) {
-                   WidgetItem lamp = Inventory.get(Filters.WIDGETITEM_ID(LAMP_ID));
+                   WidgetItem lamp = Inventory.get(Predicates.WIDGETITEM_ID(LAMP_ID));
                    if (lamp != null) {
                        if (lamp.applyAction("Rub")) {
                            return 800;
