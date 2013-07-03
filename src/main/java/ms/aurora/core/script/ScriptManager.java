@@ -82,4 +82,8 @@ public final class ScriptManager {
     public ScriptState getState() {
         return currentScript != null ? currentScript.getState() : ScriptState.STOP;
     }
+
+    public Script getCurrentScript() {
+        return currentScript;
+    }
 }

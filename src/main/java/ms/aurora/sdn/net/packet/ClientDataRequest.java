@@ -8,6 +8,8 @@ import java.io.IOException;
  * @author rvbiljouw
  */
 public class ClientDataRequest extends OutgoingPacket {
+
+
     @Override
     public int getOpcode() {
         return 4;

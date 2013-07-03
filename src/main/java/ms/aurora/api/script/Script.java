@@ -4,6 +4,7 @@ import ms.aurora.api.Context;
 import ms.aurora.api.random.AfterLogin;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.impl.*;
+import ms.aurora.api.util.Timer;
 import ms.aurora.core.script.EntityLoader;
 import org.apache.log4j.Logger;
 
@@ -17,6 +18,7 @@ public abstract class Script extends Context implements Runnable {
     private final List<Random> randoms = new ArrayList<Random>();
     private final Logger logger = Logger.getLogger(getClass());
     private ScriptState state = ScriptState.START;
+    private Timer runTimer;
 
     public Script() {
     }
@@ -48,6 +50,7 @@ public abstract class Script extends Context implements Runnable {
     @Override
     public final void run() {
         logger.info("Started " + getManifest().name() + " by " + getManifest().author());
+        runTimer = new Timer();
         init();
         try {
             onStart();
@@ -78,6 +81,10 @@ public abstract class Script extends Context implements Runnable {
             onFinish();
             cleanup();
         }
+    }
+
+    public long getRunningTime() {
+        return runTimer.elapsed();
     }
 
     private void initializeRandoms() {
@@ -159,5 +166,11 @@ public abstract class Script extends Context implements Runnable {
     }
 
     public abstract int tick();
+
+    @Override
+    public String toString() {
+        return getState() + " : " + getManifest().name() + " By " + getManifest().author() + "Random ? " +
+                (isInRandom() ? "Yes" : "No");
+    }
 
 }
