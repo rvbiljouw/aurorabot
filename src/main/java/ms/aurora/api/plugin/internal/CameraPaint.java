@@ -1,6 +1,5 @@
 package ms.aurora.api.plugin.internal;
 
-import ms.aurora.api.event.EventBus;
 import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Camera;

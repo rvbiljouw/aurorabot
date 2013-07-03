@@ -19,7 +19,12 @@ public class PositionPaint {
     @EventHandler
     public void onRepaint(PaintEvent event) {
         Graphics2D graphics = event.getGraphics();
-        Player player = Players.getLocal();
+        Player player = null;
+        try {
+            player = Players.getLocal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (player != null) {
             Point loc = player.getScreenLocation();
             Color original = graphics.getColor();

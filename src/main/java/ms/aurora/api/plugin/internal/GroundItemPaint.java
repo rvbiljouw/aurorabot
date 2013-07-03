@@ -1,6 +1,5 @@
 package ms.aurora.api.plugin.internal;
 
-import ms.aurora.api.event.EventBus;
 import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Calculations;
@@ -34,7 +33,7 @@ public class GroundItemPaint {
     private static final Predicate<GroundItem> ITEMS = new Predicate<GroundItem>() {
         @Override
         public boolean apply(GroundItem object) {
-            return Calculations.distance(object.getLocation(), Players.getLocal().getLocation()) < 7;
+            return Calculations.distance(object.getLocation(), Players.getLocal().getLocation()) < 14;
         }
     };
 

@@ -1,6 +1,5 @@
 package ms.aurora.api.plugin.internal;
 
-import ms.aurora.api.event.EventBus;
 import ms.aurora.api.event.EventHandler;
 import ms.aurora.api.event.PaintEvent;
 import ms.aurora.api.methods.Objects;
@@ -33,7 +32,7 @@ public class WallDecorationPaint {
     private final static Predicate<GameObject> RSOBJECT_PREDICATE = new Predicate<GameObject>() {
         @Override
         public boolean apply(GameObject object) {
-            return object.distance(Players.getLocal()) < 7
+            return object.distance(Players.getLocal()) < 10
                     && object.getObjectType().equals(GameObject.ObjectType.WALL_DECORATION);
         }
     };
