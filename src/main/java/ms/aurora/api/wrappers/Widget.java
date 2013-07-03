@@ -265,16 +265,20 @@ public final class Widget implements Interactable {
         this.index = index;
     }
 
-    public int getGroup() {
+    public int getGroupId() {
         return group;
     }
 
-    public void setGroup(int group) {
+    public void setGroupId(int group) {
         this.group = group;
     }
 
     public int getModelId() {
         return widget.getModelId();
+    }
+
+    public boolean isValid() {
+        return Widgets.getWidgetGroup(getGroupId()).isValid() && getBoundsIndex() != -1;
     }
 
     //TODO: Extra hook!

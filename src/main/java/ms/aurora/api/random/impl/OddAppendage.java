@@ -20,6 +20,13 @@ import ms.aurora.api.wrappers.GameObject;
 @RandomManifest(name = "Odd Appandage", version = 1.0, author = "Cov")
 public class OddAppendage extends Random {
 
+    /*
+    alowaniak	appendE = 12722
+14:24	alowaniak	appendN = 12723
+14:24	alowaniak	appendW = 12724
+14:24	alowaniak	appendS = 12725
+     */
+
     private static final int[] LEVER_IDS = { 12724, 12723, 12722, 12725 };
 
     private GameObject lever = null;

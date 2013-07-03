@@ -4,6 +4,7 @@ import ms.aurora.api.plugin.Plugin;
 import ms.aurora.api.plugin.PluginManifest;
 import ms.aurora.api.plugin.internal.InterfacePlugin;
 import ms.aurora.api.plugin.internal.PaintDebug;
+import ms.aurora.api.plugin.internal.SettingsViewer;
 import ms.aurora.api.plugin.internal.TileUtilities;
 import ms.aurora.api.random.Random;
 import ms.aurora.api.random.RandomManifest;
@@ -45,6 +46,7 @@ public final class EntityLoader {
         plugins.add(PaintDebug.class);
         plugins.add(TileUtilities.class);
         plugins.add(InterfacePlugin.class);
+        plugins.add(SettingsViewer.class);
         logger.info("Default plugins added.");
     }
 
