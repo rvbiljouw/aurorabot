@@ -127,14 +127,32 @@ public final class Viewport {
         }
     }
 
+    /**
+     * Checks to see whether the specified Tile is visible on screen.
+     *
+     * @param location Tile to check.
+     * @return true if Tile is on screen, else false.
+     */
     public static boolean tileOnScreen(Tile location) {
         return BOUNDS.contains(convert(location));
     }
 
+    /**
+     * Checks to see whether the specified local Tile is visible on screen.
+     *
+     * @param location local Tile to check.
+     * @return true if local Tile is on screen, else false.
+     */
     public static boolean localTileOnScreen(Tile location) {
         return BOUNDS.contains(convertLocal(location));
     }
 
+    /**
+     * Checks to see whether the specified Point is in the game area.
+     *
+     * @param clickLocation Point to check.
+     * @return true if Point is in game area, else false.
+     */
     public static boolean contains(Point clickLocation) {
         return BOUNDS.contains(clickLocation);
     }

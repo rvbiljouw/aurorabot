@@ -96,4 +96,16 @@ public final class Tile {
         return new Tile(random(-deviationX, deviationX) + tile.getX(),
                 random(-deviationY, deviationY) + tile.getY());
     }
+
+    /**
+     * Translates Tile's location by the specified amount and returns then new Tile.
+     *
+     * @param tile Tile to translate.
+     * @param x x by which to translate.
+     * @param y y by which to translate.
+     * @return new translated Tile.
+     */
+    public static Tile translate(Tile tile, int x, int y) {
+        return new Tile(tile.getX() + x, tile.getY() + y);
+    }
 }

@@ -109,6 +109,11 @@ public final class GroundItems {
         return items;
     }
 
+    /**
+     * Creates an new GroundItemQuery to search for a particular GroundItem
+     *
+     * @return empty GroundItemQuery
+     */
     public static GroundItemQuery find() {
         return new GroundItemQuery();
     }

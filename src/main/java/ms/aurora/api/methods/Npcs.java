@@ -77,6 +77,11 @@ public final class Npcs {
         return closest;
     }
 
+    /**
+     * Creates a new NpcQuery to search for a particular Npc
+     *
+     * @return empty NpcQuery
+     */
     public static NpcQuery find() {
         return new NpcQuery();
     }

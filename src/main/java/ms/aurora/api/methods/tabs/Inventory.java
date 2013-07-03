@@ -2,7 +2,7 @@ package ms.aurora.api.methods.tabs;
 
 import ms.aurora.api.methods.Players;
 import ms.aurora.api.methods.Widgets;
-import ms.aurora.api.methods.filters.Filters;
+import ms.aurora.api.methods.Predicates;
 import ms.aurora.api.util.ArrayUtils;
 import ms.aurora.api.util.Predicate;
 import ms.aurora.api.util.StatePredicate;
@@ -75,7 +75,12 @@ public final class Inventory {
         return filter.toArray(new WidgetItem[filter.size()]);
     }
 
-
+    /**
+     * Retrieves the WidgetItem in the specified slot
+     *
+     * @param slot slot to get WidgetItem from.
+     * @return WidgetItem in the slot or null.
+     */
     public static WidgetItem getItemAt(int slot) {
         return _getAll()[slot - 1];
     }
@@ -108,6 +113,11 @@ public final class Inventory {
         return wrappers.toArray(new WidgetItem[wrappers.size()]);
     }
 
+    /**
+     * Gets all the WidgetItems in the inventory tab.
+     *
+     * @return WidgetItem array containing the inventory tab contents.
+     */
     public static WidgetItem[] getAll() {
         return ArrayUtils.filter(_getAll(), new Predicate<WidgetItem>() {
             @Override
@@ -227,9 +237,9 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOnAll(int id, int targetId) { // TODO - switch to predicates
-        WidgetItem main = get(Filters.WIDGETITEM_ID(id));
+        WidgetItem main = get(Predicates.WIDGETITEM_ID(id));
         if (main != null) {
-            WidgetItem[] targets = getAll(Filters.WIDGETITEM_ID(targetId));
+            WidgetItem[] targets = getAll(Predicates.WIDGETITEM_ID(targetId));
             for (WidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
@@ -250,9 +260,9 @@ public final class Inventory {
      * @param targetId ID of the target item
      */
     public static void useItemOn(int id, int targetId) {  // TODO - switch to predicates
-        WidgetItem main = get(Filters.WIDGETITEM_ID(id));
+        WidgetItem main = get(Predicates.WIDGETITEM_ID(id));
         if (main != null) {
-            WidgetItem[] targets = getAll(Filters.WIDGETITEM_ID(targetId));
+            WidgetItem[] targets = getAll(Predicates.WIDGETITEM_ID(targetId));
             for (WidgetItem target : targets) {
                 main.applyAction("Use");
                 sleepNoException(140, 200);
@@ -267,7 +277,11 @@ public final class Inventory {
         }
     }
 
-
+    /**
+     * Drops all items in the inventory tab that match with the specified predicates.
+     *
+     * @param predicates predicates to match items to drop.
+     */
     public static void dropAllByColumn(Predicate<WidgetItem>... predicates) {
         for (int column = 1; column < 5 && !Thread.currentThread().isInterrupted(); column++) {
             for (int slot = 0; (slot + column) < 29 && !Thread.currentThread().isInterrupted();) {

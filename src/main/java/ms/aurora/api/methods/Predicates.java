@@ -1,4 +1,4 @@
-package ms.aurora.api.methods.filters;
+package ms.aurora.api.methods;
 
 import ms.aurora.api.methods.web.model.World;
 import ms.aurora.api.util.Predicate;
@@ -9,7 +9,7 @@ import ms.aurora.api.wrappers.*;
  *
  * @author rvbiljouw
  */
-public final class Filters {
+public final class Predicates {
 
     /**
      * Creates a predicate that filters a set of objects by the

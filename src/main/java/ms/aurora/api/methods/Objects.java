@@ -132,6 +132,11 @@ public final class Objects {
         return objects;
     }
 
+    /**
+     * Creates a new ObjectQuery to search for a particular GameObject
+     *
+     * @return empty ObjectQuery
+     */
     public static ObjectQuery find() {
         return new ObjectQuery();
     }

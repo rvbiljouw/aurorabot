@@ -35,10 +35,20 @@ public final class Shop {
         return Widgets.getWidget(SHOP_WIDGET_GROUP_ID, SHOP_ITEMS_WIDGET_ID);
     }
 
+    /**
+     * Checks if the shop Widget is up and visible.
+     *
+     * @return true if shop is open else false.
+     */
     public static boolean isOpen() {
         return Widgets.getWidget(SHOP_WIDGET_GROUP_ID, SHOP_CLOSE_WIDGET_ID) != null;
     }
 
+    /**
+     * Close shop Widget.
+     *
+     * @return true if shop is closed else false.
+     */
     public static boolean close() {
         if (!isOpen())
             return true;

@@ -17,7 +17,7 @@ public class Area {
 
     private final Polygon area;
 
-    public Area(Tile[] tiles) {
+    public Area(Tile... tiles) {
         this.area = new Polygon();
         for (Tile tile: tiles) {
             this.area.addPoint(tile.getX(), tile.getY());
@@ -33,6 +33,11 @@ public class Area {
                 , new Tile(x1 > x2 ? x2 : x1, y1 > y2 ? y2 : y1));
     }
 
+    /**
+     * Gets all the tiles contained in the Area
+     *
+     * @return Tile[] containing all tiles in the array.
+     */
     public Tile[] getAllTiles() {
         HashSet<Tile> tiles = new HashSet<Tile>();
         Rectangle areaBounds = area.getBounds();
@@ -46,6 +51,11 @@ public class Area {
         return tiles.toArray(new Tile[tiles.size()]);
     }
 
+    /**
+     * Gets the closest Tile in the Area to the local Player
+     *
+     * @return Tile cloeset to Player
+     */
     public Tile getNearestTile() {
         Tile location = Players.getLocal().getLocation(), closest = null;
         double dist = Double.MAX_VALUE;
@@ -58,6 +68,11 @@ public class Area {
         return closest;
     }
 
+    /**
+     * Gets a random Tile in the Area
+     *
+     * @return random Tile from the Area
+     */
     public Tile getRandomTile() {
         Tile[] tiles = getAllTiles();
         return tiles[Utilities.random(0, tiles.length - 1)];

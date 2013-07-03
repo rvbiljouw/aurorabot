@@ -1,20 +1,5 @@
 package ms.aurora.api.methods.web.model;
 
-import ms.aurora.browser.Browser;
-import ms.aurora.browser.ContextBuilder;
-import ms.aurora.browser.ResponseHandler;
-import ms.aurora.browser.exception.ParsingException;
-import ms.aurora.browser.impl.GetRequest;
-import ms.aurora.browser.wrapper.Plaintext;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
-
 /**
  * A simple class which represents a World ingame.
  *

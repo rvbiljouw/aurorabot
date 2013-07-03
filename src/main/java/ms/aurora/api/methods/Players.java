@@ -85,6 +85,11 @@ public final class Players {
         return closest;
     }
 
+    /**
+     * Creates a new PlayerQuery to search for a particular Player
+     *
+     * @return empty PlayerQuery
+     */
     public static PlayerQuery find() {
         return new PlayerQuery();
     }

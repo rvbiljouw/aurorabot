@@ -30,6 +30,11 @@ public class EventBus {
         this(null);
     }
 
+    /**
+     * Register methods of an object that have the EventHandler annotation
+     *
+     * @param object object to be registered.
+     */
     public void register(Object object) {
         Class<?> clazz = object.getClass();
         for (Method method : clazz.getDeclaredMethods()) {
@@ -46,6 +51,11 @@ public class EventBus {
         }
     }
 
+    /**
+     * Submit an object to be handled by the appropriate EventHandler.
+     *
+     * @param object object to be handled.
+     */
     public void submit(Object object) {
         for (EventHandlerBridge bridge : bridges) {
             if (bridge.accept(object.getClass())) {
@@ -54,6 +64,11 @@ public class EventBus {
         }
     }
 
+    /**
+     * Deregister any EventHandlers of the object.
+     *
+     * @param object object to remove the listeners of.
+     */
     public void deregister(Object object) {
         List<EventHandlerBridge> deprecated = new ArrayList<EventHandlerBridge>();
         for (EventHandlerBridge bridge : bridges) {
@@ -64,6 +79,9 @@ public class EventBus {
         bridges.removeAll(deprecated);
     }
 
+    /**
+     * Internal wrapper class to help map EventHandler methods to the correct event.
+     */
     private class EventHandlerBridge {
         private Object object;
         private Method method;
@@ -73,17 +91,32 @@ public class EventBus {
             this.method = method;
         }
 
+        /**
+         * Checks if the EventHandler can handle the class type.
+         *
+         * @param eventType class type to check.
+         * @return true if the class type can be handled, else false.
+         */
         public boolean accept(Class<?> eventType) {
             Class<?> argType = method.getParameterTypes()[0];
             return argType.equals(eventType);
         }
 
+        /**
+         * Checks if the method is a valid EventHandler
+         *
+         * @return true if it is a valid EventHandler else false.
+         */
         public boolean validate() {
             return method.getParameterTypes().length == 1 && !isStatic(method.getModifiers());
         }
 
+        /**
+         * Calls the EventHandler method and passes the object as the argument.
+         *
+         * @param arg object to pass into the method.
+         */
         public void handle(Object arg) {
-
             try {
                 method.invoke(this.object, arg);
             } catch (IllegalAccessException e) {

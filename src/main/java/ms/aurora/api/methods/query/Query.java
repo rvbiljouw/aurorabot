@@ -34,7 +34,7 @@ public abstract class Query<RT> {
             return (int) Calculations.distance(o1.getLocation(), Players.getLocal().getLocation())
                     - (int)Calculations.distance(o2.getLocation(), Players.getLocal().getLocation());
         }
-    };;
+    };
 
     /**
      * adds a conditional to the list

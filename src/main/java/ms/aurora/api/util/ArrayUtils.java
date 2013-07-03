@@ -11,7 +11,7 @@ import java.util.List;
 public class ArrayUtils {
 
     /**
-     * Filters an array based on a set of predicates.
+     * Predicates an array based on a set of predicates.
      * @param items Array to filter
      * @param predicate varargs set of predicates
      * @param <T> A type parameter indicating what type

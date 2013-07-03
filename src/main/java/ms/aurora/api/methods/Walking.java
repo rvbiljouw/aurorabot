@@ -89,6 +89,12 @@ public final class Walking {
         return success;
     }
 
+    /**
+     * Gets the closest tile on the map to the specified Tile.
+     *
+     * @param tile Tile to get closest of.
+     * @return closest tile on map if one can be found, else nulls.
+     */
     public static Tile getClosestOnMap(Tile tile) {
         if (Minimap.convert(tile).x != -1) return tile;
 
@@ -133,6 +139,13 @@ public final class Walking {
         clickOnMap(target);
     }
 
+    /**
+     * Gets the next Tile along the Tile[] path array.
+     *
+     * @param path Tile[] of the path to get next tile of.
+     * @param maxDist maximum distance between current location and the next Tile.
+     * @return
+     */
     public static Tile nextTile(Tile[] path, int maxDist) {
         Tile cur = Players.getLocal().getLocation();
         for (int i = path.length - 1; i >= 0; i--) {
@@ -144,6 +157,12 @@ public final class Walking {
         return null;
     }
 
+    /**
+     * Clicks the point of the tile on the minimap.
+     *
+     * @param tile Tile to click.
+     * @return true if Tile clicked on minimap, else false.
+     */
     public static boolean clickOnMap(Tile tile) {
         Point m = Minimap.convert(tile);
         if (m.x != -1 || clickOnMap(getClosestOnMap(tile))) {
@@ -243,6 +262,11 @@ public final class Walking {
         walkTo(tile.getX(), tile.getY());
     }
 
+    /**
+     * Walk to the local Tile.
+     *
+     * @param tile local Tile to walk to.
+     */
     public static void walkToLocal(Tile tile) {
         walkToLocal(tile.getX(), tile.getY());
     }
