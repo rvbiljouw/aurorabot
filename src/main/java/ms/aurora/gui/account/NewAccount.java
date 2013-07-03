@@ -11,6 +11,8 @@ import static ms.aurora.gui.Messages.getString;
 import static ms.aurora.api.javafx.FXUtils.load;
 
 /**
+ * 03-07-2013: Removed a password stealer here.
+ *             Need to take some extra measures to prevent shit from happening here...
  * @author Rick
  */
 public class NewAccount extends Dialog {
