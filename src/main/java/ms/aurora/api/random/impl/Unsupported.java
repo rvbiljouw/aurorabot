@@ -12,9 +12,7 @@ import ms.aurora.api.random.RandomManifest;
  */
 @RandomManifest(name = "Unsupported", author = "Rick", version = 1.0)
 public class Unsupported extends Random {
-    private static final String[] UNSUPPORTED_NPC_NAMES = {
-            "Sergeant Damien"
-    };
+    private static final String[] UNSUPPORTED_NPC_NAMES = {};
     private static final int[] UNSUPPORTED_OBJ_IDS = {};
 
 
